@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.Pipeline;
@@ -7,29 +6,31 @@ using NServiceBus.Pipeline;
 class StreamReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
-    Func<SqlConnection> connectionBuilder;
+    Func<IInvokeHandlerContext, ConnectionAndTransaction> connectionBuilder;
 
-    public StreamReceiveBehavior(Func<SqlConnection> connectionBuilder)
+    public StreamReceiveBehavior(Func<IInvokeHandlerContext, ConnectionAndTransaction> connectionBuilder)
     {
         this.connectionBuilder = connectionBuilder;
     }
 
     public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        var lazy = new Lazy<Task<SqlConnection>>(async () =>
+        var connectionFactory = new Lazy<ConnectionAndTransaction>(() => connectionBuilder(context));
+        try
         {
-            var sqlConnection = connectionBuilder();
-            await sqlConnection.OpenAsync();
-            return sqlConnection;
-        });
-
-        var incomingAttachments = new IncomingAttachments(lazy, context.MessageId);
-        context.Extensions.Set(incomingAttachments);
-        await next()
-            .ConfigureAwait(false);
-        if (lazy.IsValueCreated)
+            var incomingAttachments = new IncomingAttachments(
+                connectionFactory: connectionFactory,
+                messageId: context.MessageId);
+            context.Extensions.Set(incomingAttachments);
+            await next()
+                .ConfigureAwait(false);
+        }
+        finally
         {
-            lazy.Value.Dispose();
+            if (connectionFactory.IsValueCreated)
+            {
+                connectionFactory.Value.Dispose();
+            }
         }
     }
 }

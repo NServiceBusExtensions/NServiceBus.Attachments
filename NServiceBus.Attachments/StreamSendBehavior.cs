@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.DeliveryConstraints;
+using NServiceBus.Extensibility;
 using NServiceBus.Performance.TimeToBeReceived;
 using NServiceBus.Pipeline;
 
 class StreamSendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<SqlConnection> connectionBuilder;
+    Func<IOutgoingLogicalMessageContext, ConnectionAndTransaction> connectionBuilder;
 
-    public StreamSendBehavior(Func<SqlConnection> connectionBuilder)
+    public StreamSendBehavior(Func<IOutgoingLogicalMessageContext, ConnectionAndTransaction> connectionBuilder)
     {
         this.connectionBuilder = connectionBuilder;
     }
@@ -25,51 +24,30 @@ class StreamSendBehavior :
             return;
         }
 
-        var timeToBeReceived = TimeSpan.MaxValue;
+        var timeToBeReceived = GetTimeToBeReceivedFromConstraint(extensions);
 
-        if (extensions.TryGetDeliveryConstraint<DiscardIfNotReceivedBefore>(out var constraint))
+        var connectionAndTransaction = connectionBuilder(context);
+        var messageId = context.MessageId;
+        foreach (var attachmentsStream in attachments.Streams)
         {
-            timeToBeReceived = constraint.MaxTime;
-        }
-
-        using (var sqlConnection = connectionBuilder())
-        {
-            await sqlConnection.OpenAsync();
-            foreach (var attachmentsStream in attachments.Streams)
-            {
-                var outgoingStream = attachmentsStream.Value;
-                var streamTimeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
-                var stream = outgoingStream.Func();
-                using (var command = sqlConnection.CreateCommand())
-                {
-                    command.CommandText = @"
-INSERT INTO Attachments
-(
-    MessageId,
-    Name,
-    Expiry,
-    Data
-)
-VALUES
-(
-    @MessageId,
-    @Name,
-    @Expiry,
-    @Data
-)";
-                    var parameters = command.Parameters;
-                    parameters.Add("@MessageId", SqlDbType.NVarChar).Value = context.MessageId;
-                    parameters.Add("@Name", SqlDbType.NVarChar).Value = attachmentsStream.Key;
-                    parameters.Add("@Expiry", SqlDbType.DateTime).Value = DateTime.UtcNow.Add(streamTimeToKeep);
-                    parameters.Add("@Data", SqlDbType.Binary, -1).Value = stream;
-
-                    // Send the data to the server asynchronously
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            var name = attachmentsStream.Key;
+            var outgoingStream = attachmentsStream.Value;
+            var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
+            var stream = outgoingStream.Func();
+            await StreamPersister.SaveStream(connectionAndTransaction.Connection, connectionAndTransaction.Transaction, messageId, name, timeToKeep, stream);
         }
 
         await next()
             .ConfigureAwait(false);
+    }
+
+    static TimeSpan? GetTimeToBeReceivedFromConstraint(ContextBag extensions)
+    {
+        if (extensions.TryGetDeliveryConstraint<DiscardIfNotReceivedBefore>(out var constraint))
+        {
+            return constraint.MaxTime;
+        }
+
+        return null;
     }
 }
