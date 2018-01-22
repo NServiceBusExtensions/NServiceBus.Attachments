@@ -19,8 +19,7 @@ class Program
         transport.Transactions(TransportTransactionMode.ReceiveOnly);
         transport.ConnectionString(@"Data Source=.\SQLExpress;Database=NServiceBusAttachments; Integrated Security=True;Max Pool Size=100");
         configuration.AuditProcessedMessagesTo("audit");
-        var attachments = configuration.EnableAttachments();
-        attachments.UseSqlTransportContext();
+        configuration.EnableAttachments(BuildSqlConnection);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");

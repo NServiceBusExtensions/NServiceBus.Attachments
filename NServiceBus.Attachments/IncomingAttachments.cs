@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -6,10 +7,10 @@ namespace NServiceBus.Attachments
 {
     public class IncomingAttachments
     {
-        Lazy<ConnectionAndTransaction> connectionFactory;
+        Lazy<SqlConnection> connectionFactory;
         string messageId;
 
-        internal IncomingAttachments(Lazy<ConnectionAndTransaction> connectionFactory, string messageId)
+        internal IncomingAttachments(Lazy<SqlConnection> connectionFactory, string messageId)
         {
             this.connectionFactory = connectionFactory;
             this.messageId = messageId;
@@ -18,9 +19,7 @@ namespace NServiceBus.Attachments
         public Task CopyTo(string name, Stream target)
         {
             var connection = connectionFactory.Value;
-            var connectionConnection = connection.Connection;
-            var transaction = connection.Transaction;
-            return StreamPersister.CopyTo(name, target, connectionConnection, transaction, messageId);
+            return StreamPersister.CopyTo(name, target, connection, messageId);
         }
     }
 }

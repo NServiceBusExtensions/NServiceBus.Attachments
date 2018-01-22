@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.DeliveryConstraints;
@@ -9,9 +11,9 @@ using NServiceBus.Pipeline;
 class StreamSendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<IOutgoingLogicalMessageContext, ConnectionAndTransaction> connectionBuilder;
+    Func<SqlConnection> connectionBuilder;
 
-    public StreamSendBehavior(Func<IOutgoingLogicalMessageContext, ConnectionAndTransaction> connectionBuilder)
+    public StreamSendBehavior(Func<SqlConnection> connectionBuilder)
     {
         this.connectionBuilder = connectionBuilder;
     }
@@ -24,17 +26,24 @@ class StreamSendBehavior :
             return;
         }
 
-        var timeToBeReceived = GetTimeToBeReceivedFromConstraint(extensions);
-
-        var connectionAndTransaction = connectionBuilder(context);
-        var messageId = context.MessageId;
-        foreach (var attachmentsStream in attachments.Streams)
+        var streams = attachments.Streams;
+        if (streams.Any())
         {
-            var name = attachmentsStream.Key;
-            var outgoingStream = attachmentsStream.Value;
-            var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
-            var stream = outgoingStream.Func();
-            await StreamPersister.SaveStream(connectionAndTransaction.Connection, connectionAndTransaction.Transaction, messageId, name, timeToKeep, stream);
+            var timeToBeReceived = GetTimeToBeReceivedFromConstraint(extensions);
+
+            using (var connection = connectionBuilder())
+            {
+                await connection.OpenAsync();
+                var messageId = context.MessageId;
+                foreach (var attachmentsStream in streams)
+                {
+                    var name = attachmentsStream.Key;
+                    var outgoingStream = attachmentsStream.Value;
+                    var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
+                    var stream = outgoingStream.Func();
+                    await StreamPersister.SaveStream(connection, messageId, name, timeToKeep, stream);
+                }
+            }
         }
 
         await next()

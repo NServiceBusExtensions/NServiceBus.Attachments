@@ -6,24 +6,19 @@ using System.Threading.Tasks;
 
 static class StreamPersister
 {
-    public static async Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, TimeSpan streamTimeToKeep, Stream stream)
+    public static async Task SaveStream(SqlConnection connection, string messageId, string name, TimeSpan streamTimeToKeep, Stream stream)
     {
         using (var command = connection.CreateCommand())
         {
-            if (transaction != null)
-            {
-                command.Transaction = transaction;
-            }
-
             command.CommandText = @"
-INSERT INTO Attachments
+insert into Attachments
 (
     MessageId,
     Name,
     Expiry,
     Data
 )
-VALUES
+values
 (
     @MessageId,
     @Name,
@@ -40,15 +35,10 @@ VALUES
             await command.ExecuteNonQueryAsync();
         }
     }
-    public static async Task CopyTo(string name, Stream target, SqlConnection connectionConnection, SqlTransaction transaction, string messageId)
+    public static async Task CopyTo(string name, Stream target, SqlConnection connectionConnection, string messageId)
     {
         using (var command = connectionConnection.CreateCommand())
         {
-            if (transaction != null)
-            {
-                command.Transaction = transaction;
-            }
-
             command.CommandText = @"
 select
     Data

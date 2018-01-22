@@ -13,8 +13,7 @@ class Program
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.AuditProcessedMessagesTo("audit");
-        var attachments = configuration.EnableAttachments();
-        attachments.UseSqlConnection(BuildSqlConnection);
+        configuration.EnableAttachments(BuildSqlConnection);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");
