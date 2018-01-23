@@ -29,7 +29,7 @@ public class StreamPersisterTests: TestBase
         {
             Installer.CreateTable(connection);
             streamPersister.DeleteAllRows(connection);
-            await streamPersister.SaveStream(connection, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
+            await streamPersister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
             var memoryStream = new MemoryStream();
             await streamPersister.CopyTo("theMessageId", "theName", connection, memoryStream);
 
@@ -45,7 +45,7 @@ public class StreamPersisterTests: TestBase
         {
             Installer.CreateTable(connection);
             streamPersister.DeleteAllRows(connection);
-            streamPersister.SaveStream(connection, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
+            streamPersister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(streamPersister.ReadAllRows(connection));
         }
     }
@@ -57,8 +57,8 @@ public class StreamPersisterTests: TestBase
         {
             Installer.CreateTable(connection);
             streamPersister.DeleteAllRows(connection);
-            streamPersister.SaveStream(connection, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            streamPersister.SaveStream(connection, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
+            streamPersister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
+            streamPersister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             streamPersister.CleanupItemsOlderThan(connection, new DateTime(2001, 1, 1, 1, 1, 1));
             ObjectApprover.VerifyWithJson(streamPersister.ReadAllRows(connection));
         }
