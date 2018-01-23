@@ -12,10 +12,11 @@ class StreamPersister
     {
         fullTableName = $"[{schema}].[{tableName}]";
     }
-    public async Task SaveStream(SqlConnection connection, string messageId, string name, DateTime expiry, Stream stream)
+    public async Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
     {
         using (var command = connection.CreateCommand())
         {
+            command.Transaction = transaction;
             command.CommandText = $@"
 insert into {fullTableName}
 (

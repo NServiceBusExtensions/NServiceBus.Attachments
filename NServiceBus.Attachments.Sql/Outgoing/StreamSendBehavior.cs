@@ -37,13 +37,19 @@ class StreamSendBehavior :
             {
                 await connection.OpenAsync();
                 var messageId = context.MessageId;
-                foreach (var attachment in streams)
+
+                using (var transaction = connection.BeginTransaction())
                 {
-                    var name = attachment.Key;
-                    var outgoingStream = attachment.Value;
-                    var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
-                    var stream = outgoingStream.Func();
-                    await streamPersister.SaveStream(connection, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream);
+                    foreach (var attachment in streams)
+                    {
+                        var name = attachment.Key;
+                        var outgoingStream = attachment.Value;
+                        var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
+                        var stream = outgoingStream.Func();
+                        await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep),
+                            stream);
+                    }
+                    transaction.Commit();
                 }
             }
         }
