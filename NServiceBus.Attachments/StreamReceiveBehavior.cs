@@ -8,10 +8,12 @@ class StreamReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
     Func<SqlConnection> connectionBuilder;
+    StreamPersister streamPersister;
 
-    public StreamReceiveBehavior(Func<SqlConnection> connectionBuilder)
+    public StreamReceiveBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
     {
         this.connectionBuilder = connectionBuilder;
+        this.streamPersister = streamPersister;
     }
 
     public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
@@ -26,7 +28,7 @@ class StreamReceiveBehavior :
         {
             var incomingAttachments = new IncomingAttachments(
                 connectionFactory: connectionFactory,
-                messageId: context.MessageId);
+                messageId: context.MessageId, streamPersister: streamPersister);
             context.Extensions.Set(incomingAttachments);
             await next()
                 .ConfigureAwait(false);

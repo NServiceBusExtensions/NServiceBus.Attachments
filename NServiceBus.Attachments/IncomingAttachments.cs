@@ -9,17 +9,19 @@ namespace NServiceBus.Attachments
     {
         Lazy<SqlConnection> connectionFactory;
         string messageId;
+        StreamPersister streamPersister;
 
-        internal IncomingAttachments(Lazy<SqlConnection> connectionFactory, string messageId)
+        internal IncomingAttachments(Lazy<SqlConnection> connectionFactory, string messageId, StreamPersister streamPersister)
         {
             this.connectionFactory = connectionFactory;
             this.messageId = messageId;
+            this.streamPersister = streamPersister;
         }
 
         public Task CopyTo(string name, Stream target)
         {
             var connection = connectionFactory.Value;
-            return StreamPersister.CopyTo(name, target, connection, messageId);
+            return streamPersister.CopyTo(name, target, connection, messageId);
         }
     }
 }

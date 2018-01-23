@@ -1,0 +1,8 @@
+﻿[
+  {
+    "Id": "A Guid",
+    "MessageId": "theMessageId",
+    "Name": "theName",
+    "Expiry": "A DateTime"
+  }
+]
