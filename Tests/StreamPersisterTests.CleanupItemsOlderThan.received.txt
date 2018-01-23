@@ -1,8 +1,0 @@
-﻿[
-  {
-    "Id": "A Guid",
-    "MessageId": "theMessageId2",
-    "Name": "theName",
-    "Expiry": "2002-01-01T01:01:01"
-  }
-]

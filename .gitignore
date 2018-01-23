@@ -16,6 +16,7 @@
 .learningtransport
 
 .vs
+*.received.txt
 
 # Build results
 [Dd]ebug/

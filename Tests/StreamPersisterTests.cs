@@ -31,7 +31,7 @@ public class StreamPersisterTests: TestBase
             Installer.CreateTable(connection);
             await streamPersister.SaveStream(connection, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
             var memoryStream = new MemoryStream();
-            await streamPersister.CopyTo("theName", memoryStream, connection, "theMessageId");
+            await streamPersister.CopyTo("theMessageId", "theName", connection, memoryStream);
 
             memoryStream.Position = 0;
             Assert.Equal(5, memoryStream.GetBuffer()[0]);

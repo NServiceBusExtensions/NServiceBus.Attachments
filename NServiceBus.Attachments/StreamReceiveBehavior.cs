@@ -28,7 +28,8 @@ class StreamReceiveBehavior :
         {
             var incomingAttachments = new IncomingAttachments(
                 connectionFactory: connectionFactory,
-                messageId: context.MessageId, streamPersister: streamPersister);
+                messageId: context.MessageId,
+                streamPersister: streamPersister);
             context.Extensions.Set(incomingAttachments);
             await next()
                 .ConfigureAwait(false);

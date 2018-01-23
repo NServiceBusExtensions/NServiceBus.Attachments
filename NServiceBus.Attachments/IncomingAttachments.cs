@@ -21,7 +21,7 @@ namespace NServiceBus.Attachments
         public Task CopyTo(string name, Stream target)
         {
             var connection = connectionFactory.Value;
-            return streamPersister.CopyTo(name, target, connection, messageId);
+            return streamPersister.CopyTo(messageId, name, connection, target);
         }
     }
 }

@@ -88,7 +88,7 @@ from {fullTableName}";
         }
     }
 
-    public async Task CopyTo(string name, Stream target, SqlConnection connectionConnection, string messageId)
+    public async Task CopyTo(string messageId, string name, SqlConnection connectionConnection, Stream target)
     {
         using (var command = connectionConnection.CreateCommand())
         {
@@ -122,7 +122,7 @@ where
             }
         }
 
-        throw new Exception("Could not find");
+        throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
     }
 }
 
