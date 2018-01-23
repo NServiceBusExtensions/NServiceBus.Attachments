@@ -5,6 +5,7 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <ProjectReference Include="..\NServiceBus.Attachments\NServiceBus.Attachments.csproj" />
     <ProjectReference Include="..\SampleShared\SampleShared.csproj" />
   </ItemGroup>

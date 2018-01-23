@@ -9,7 +9,7 @@ namespace NServiceBus
     /// </summary>
     public static class AttachmentsConfigurationExtensions
     {
-        public static void EnableAttachments(this EndpointConfiguration configuration, Func<SqlConnection> connectionBuilder, bool runCleanTask = true, string schema = "dbo", string tableName = "Attachments")
+        public static void EnableAttachments(this EndpointConfiguration configuration, Func<SqlConnection> connectionBuilder, bool runCleanTask = true, string schema = "dbo", string tableName = "NServiceBusAttachments")
         {
             Guard.AgainstNull(configuration, nameof(configuration));
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));

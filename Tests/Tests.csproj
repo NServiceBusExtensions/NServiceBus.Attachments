@@ -13,6 +13,7 @@
     <PackageReference Include="ObjectApproval" Version="2.1.0" />
     <PackageReference Include="Xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <ProjectReference Include="..\NServiceBus.Attachments\NServiceBus.Attachments.csproj" />
   </ItemGroup>
 </Project>

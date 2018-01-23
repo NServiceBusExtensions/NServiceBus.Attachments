@@ -7,18 +7,28 @@ using NServiceBus.Attachments;
 
 class Program
 {
+    const string connection = @"Data Source=.\SQLExpress;Database=NServiceBusAttachments; Integrated Security=True;Max Pool Size=100";
     static async Task Main()
     {
+        SqlHelper.EnsureDatabaseExists(connection);
         var configuration = new EndpointConfiguration("AttachmentsSample");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.AuditProcessedMessagesTo("audit");
         configuration.EnableAttachments(BuildSqlConnection);
+        Installer.CreateTable(OpenConnection());
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");
         Console.Read();
         await endpoint.Stop();
+    }
+
+    static SqlConnection OpenConnection()
+    {
+        var connection = BuildSqlConnection();
+        connection.Open();
+        return connection;
     }
 
     static async Task SendMessage(IEndpointInstance endpoint)
@@ -44,6 +54,6 @@ class Program
 
     static SqlConnection BuildSqlConnection()
     {
-        return new SqlConnection(@"Data Source=.\SQLExpress;Database=NServiceBusAttachments; Integrated Security=True;Max Pool Size=100");
+        return new SqlConnection(connection);
     }
 }
