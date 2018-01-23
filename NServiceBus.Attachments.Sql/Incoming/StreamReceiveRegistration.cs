@@ -7,7 +7,7 @@ class StreamReceiveRegistration :
 {
     public StreamReceiveRegistration(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
         : base(
-            stepId: "StreamReceive",
+            stepId: $"{AssemblyHelper.Name}StreamReceive",
             behavior: typeof(StreamReceiveBehavior),
             description: "Copies the shared data back to the logical messages",
             factoryMethod: builder => new StreamReceiveBehavior(connectionBuilder, streamPersister))

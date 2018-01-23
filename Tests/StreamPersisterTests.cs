@@ -10,6 +10,7 @@ using Xunit.Abstractions;
 public class StreamPersisterTests: TestBase
 {
     StreamPersister streamPersister;
+    const string connectionString = @"Data Source=.\SQLExpress;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100";
 
     static StreamPersisterTests()
     {
@@ -18,17 +19,16 @@ public class StreamPersisterTests: TestBase
 
     public StreamPersisterTests(ITestOutputHelper output) : base(output)
     {
-        streamPersister = new StreamPersister("dbo", "Attachments");
+        streamPersister = new StreamPersister("dbo", "NServiceBusAttachments");
     }
-    const string connectionString = @"Data Source=.\SQLExpress;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100";
 
     [Fact]
     public async Task RoundTrip()
     {
         using (var connection = BuildSqlConnection())
         {
-            streamPersister.DeleteAllRows(connection);
             Installer.CreateTable(connection);
+            streamPersister.DeleteAllRows(connection);
             await streamPersister.SaveStream(connection, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
             var memoryStream = new MemoryStream();
             await streamPersister.CopyTo("theMessageId", "theName", connection, memoryStream);
@@ -43,8 +43,8 @@ public class StreamPersisterTests: TestBase
         SqlHelper.EnsureDatabaseExists(connectionString);
         using (var connection = BuildSqlConnection())
         {
-            streamPersister.DeleteAllRows(connection);
             Installer.CreateTable(connection);
+            streamPersister.DeleteAllRows(connection);
             streamPersister.SaveStream(connection, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(streamPersister.ReadAllRows(connection));
         }
@@ -55,8 +55,8 @@ public class StreamPersisterTests: TestBase
         SqlHelper.EnsureDatabaseExists(connectionString);
         using (var connection = BuildSqlConnection())
         {
-            streamPersister.DeleteAllRows(connection);
             Installer.CreateTable(connection);
+            streamPersister.DeleteAllRows(connection);
             streamPersister.SaveStream(connection, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             streamPersister.SaveStream(connection, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             streamPersister.CleanupItemsOlderThan(connection, new DateTime(2001, 1, 1, 1, 1, 1));

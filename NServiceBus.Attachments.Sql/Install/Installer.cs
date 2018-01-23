@@ -9,6 +9,8 @@ namespace NServiceBus.Attachments
         {
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
+            Guard.AgainstSqlDelimiters(schema, nameof(schema));
+            Guard.AgainstSqlDelimiters(tableName, nameof(tableName));
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = GetTableSql();
@@ -20,7 +22,7 @@ namespace NServiceBus.Attachments
 
         public static string GetTableSql()
         {
-            using (var stream = typeof(Installer).Assembly.GetManifestResourceStream("NServiceBus.Attachments.Table.sql"))
+            using (var stream = AssemblyHelper.Current.GetManifestResourceStream($"{AssemblyHelper.Name}.Table.sql"))
             using (var streamReader = new StreamReader(stream))
             {
                 return streamReader.ReadToEnd();

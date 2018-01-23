@@ -1,14 +1,10 @@
-﻿using NServiceBus.Extensibility;
+﻿using NServiceBus.Attachments;
+using NServiceBus.Extensibility;
 
-namespace NServiceBus.Attachments
+namespace NServiceBus
 {
-    public static class MessageContextExtensions
+    public static partial class MessageContextExtensions
     {
-        public static IncomingAttachments IncomingAttachments(this IMessageHandlerContext context)
-        {
-            return context.Extensions.Get<IncomingAttachments>();
-        }
-
         public static OutgoingAttachments OutgoingAttachments(this PublishOptions options)
         {
             return OutgoingAttachments((ExtendableOptions)options);

@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
+using NServiceBus.Attachments;
+using Xunit;
 
-class Program
+public class IntegrationTests
 {
-    const string connection = @"Data Source=.\SQLExpress;Database=NServiceBusAttachmentsSample; Integrated Security=True;Max Pool Size=100";
+    const string connection = @"Data Source=.\SQLExpress;Database=NServiceBusAttachments; Integrated Security=True;Max Pool Size=100";
+    static ManualResetEvent resetEvent = new ManualResetEvent(false);
 
-    static async Task Main()
+    [Fact]
+    public async Task Run()
     {
         SqlHelper.EnsureDatabaseExists(connection);
-        var configuration = new EndpointConfiguration("AttachmentsSample");
-        configuration.EnableInstallers();
+
+        var sqlConnection = new SqlConnection(connection);
+        sqlConnection.Open();
+        Installer.CreateTable(sqlConnection);
+        var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        configuration.AuditProcessedMessagesTo("audit");
         configuration.EnableAttachments(() => new SqlConnection(connection));
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
-        Console.WriteLine("Press any key to stop program");
-        Console.Read();
+        resetEvent.WaitOne();
         await endpoint.Stop();
     }
 
@@ -43,5 +50,24 @@ class Program
             timeToKeep: before => TimeSpan.FromDays(1));
 
         await endpoint.Send(new MyMessage(), sendOptions);
+    }
+    class Handler : IHandleMessages<MyMessage>
+    {
+        public async Task Handle(MyMessage message, IMessageHandlerContext context)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var incomingAttachments = context.IncomingAttachments();
+                await incomingAttachments.CopyTo("foo", memoryStream);
+                memoryStream.Position = 0;
+                var buffer = memoryStream.GetBuffer();
+                Debug.WriteLine(buffer);
+            }
+
+            resetEvent.Set();
+        }
+    }
+    class MyMessage : IMessage
+    {
     }
 }

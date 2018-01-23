@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
-using NServiceBus.Attachments;
 
 class MyHandler :
     IHandleMessages<MyMessage>

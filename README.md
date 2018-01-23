@@ -1,16 +1,16 @@
-![Icon](https://raw.githubusercontent.com/SimonCropp/NServiceBus.AuditFilter/master/package_icon.png)
+![Icon](https://raw.githubusercontent.com/SimonCropp/NServiceBus.Attachments.Sql/master/package_icon.png)
 
-NServiceBus.AuditFilter
+NServiceBus.Attachments.Sql
 ===========================
 
-Add message auditing filtering functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
+Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
 
 
-## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/NServiceBus.AuditFilter.svg?style=flat)](https://www.nuget.org/packages/NServiceBus.AuditFilter/)
+## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/NServiceBus.Attachments.Sql.svg?style=flat)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
 
-https://nuget.org/packages/NServiceBus.AuditFilter/
+https://nuget.org/packages/NServiceBus.Attachments.Sql/
 
-    PM> Install-Package NServiceBus.AuditFilter
+    PM> Install-Package NServiceBus.Attachments.Sql
 
 
 ## Icon

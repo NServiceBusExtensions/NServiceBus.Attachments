@@ -7,7 +7,7 @@ class StreamSendRegistration :
 {
     public StreamSendRegistration(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
         : base(
-            stepId: "StreamSend",
+            stepId: $"{AssemblyHelper.Name}StreamSend",
             behavior: typeof(StreamSendBehavior),
             description: "Saves the payload into the shared location",
             factoryMethod: builder => new StreamSendBehavior(connectionBuilder, streamPersister))
