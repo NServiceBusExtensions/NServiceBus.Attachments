@@ -7,8 +7,8 @@
     <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Copyright>Copyright $([System.DateTime]::UtcNow.ToString(yyyy)) Simon Cropp. All rights reserved</Copyright>
-    <PackageTags>NServiceBus, Audit, Filter</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/SimonCropp/NServiceBus.AuditFilter/master/package_icon.png</PackageIconUrl>
+    <PackageTags>NServiceBus, Attachments, DataBus</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/SimonCropp/NServiceBus.Attachments/master/package_icon.png</PackageIconUrl>
     <PackageProjectUrl>https://docs.particular.net/nuget/$(PackageId)</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>..\nugets</PackageOutputPath>
@@ -17,14 +17,10 @@
     <AssemblyOriginatorKeyFile>$(SolutionDir)key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Table.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Table.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" PrivateAssets="All" />
-    <PackageReference Include="NServiceBus" Version="7.0.0-beta0013" />
+    <PackageReference Include="NServiceBus" Version="7.0.0-beta0012" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Data.SqlClient" Version="4.4.2" />
