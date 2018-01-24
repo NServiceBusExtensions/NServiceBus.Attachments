@@ -41,7 +41,7 @@ class Program
                 streamWriter.Write("sdflgkndkjfgn");
                 streamWriter.Flush();
                 stream.Position = 0;
-                return stream;
+                return Task.FromResult<Stream>(stream);
             });
 
         await endpoint.Send(new MyMessage(), sendOptions);

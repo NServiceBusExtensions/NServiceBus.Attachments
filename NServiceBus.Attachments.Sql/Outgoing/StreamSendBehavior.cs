@@ -60,7 +60,7 @@ class StreamSendBehavior :
                     var outgoingStream = attachment.Value;
                     var outgoingStreamTimeToKeep = outgoingStream.TimeToKeep ?? endpointTimeToKeep;
                     var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
-                    var stream = outgoingStream.Func();
+                    var stream = await outgoingStream.Func().ConfigureAwait(false);
                     await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
                         .ConfigureAwait(false);
                 }

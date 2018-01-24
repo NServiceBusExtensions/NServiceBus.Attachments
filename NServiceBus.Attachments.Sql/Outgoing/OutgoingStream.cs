@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using NServiceBus.Attachments;
 
 class OutgoingStream
 {
-    internal Func<Stream> Func;
-    internal GetTimeToKeep TimeToKeep;
+    public Func<Task<Stream>> Func;
+    public GetTimeToKeep TimeToKeep;
+    public Action Cleanup;
 }
