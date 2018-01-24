@@ -88,21 +88,10 @@ from {fullTableName}";
         }
     }
 
-    public async Task CopyTo(string messageId, string name, SqlConnection connectionConnection, Stream target)
+    public async Task CopyTo(string messageId, string name, SqlConnection connection, Stream target)
     {
-        using (var command = connectionConnection.CreateCommand())
+        using (var command = CreateGetDataCommand(messageId, name, connection))
         {
-            command.CommandText = $@"
-select
-    Data
-from {fullTableName}
-where
-    Name=@Name and
-    MessageId=@MessageId";
-            var parameters = command.Parameters;
-            parameters.AddWithValue("Name", name);
-            parameters.AddWithValue("MessageId", messageId);
-
             // The reader needs to be executed with the SequentialAccess behavior to enable network streaming
             // Otherwise ReadAsync will buffer the entire BLOB into memory which can cause scalability issues or even OutOfMemoryExceptions
             using (var reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess).ConfigureAwait(false))
@@ -123,5 +112,21 @@ where
         }
 
         throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
+    }
+
+    SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection)
+    {
+        var sqlCommand = connection.CreateCommand();
+        sqlCommand.CommandText = $@"
+select
+    Data
+from {fullTableName}
+where
+    Name=@Name and
+    MessageId=@MessageId";
+        var parameters = sqlCommand.Parameters;
+        parameters.AddWithValue("Name", name);
+        parameters.AddWithValue("MessageId", messageId);
+        return sqlCommand;
     }
 }
