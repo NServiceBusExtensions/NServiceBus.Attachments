@@ -1,4 +1,4 @@
-![Icon](https://raw.githubusercontent.com/SimonCropp/NServiceBus.Attachments.Sql/master/package_icon.png)
+![Icon](https://raw.githubusercontent.com/SimonCropp/NServiceBus.Attachments/master/icon.png)
 
 NServiceBus.Attachments.Sql
 ===========================
