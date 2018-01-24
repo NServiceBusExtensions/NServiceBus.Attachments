@@ -25,7 +25,8 @@ class StreamSendBehavior :
         var extensions = context.Extensions;
         if (!extensions.TryGet<OutgoingAttachments>(out var attachments))
         {
-            return;
+            await next()
+                .ConfigureAwait(false);
         }
 
         var streams = attachments.Streams;
