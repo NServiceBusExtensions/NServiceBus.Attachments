@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace NServiceBus.Attachments
 {
     public class OutgoingAttachments
-        {
-            internal Dictionary<string, OutgoingStream> Streams = new Dictionary<string, OutgoingStream>(StringComparer.OrdinalIgnoreCase);
+    {
+        internal Dictionary<string, OutgoingStream> Streams = new Dictionary<string, OutgoingStream>(StringComparer.OrdinalIgnoreCase);
 
         public void Add<T>(string name, Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
         {
