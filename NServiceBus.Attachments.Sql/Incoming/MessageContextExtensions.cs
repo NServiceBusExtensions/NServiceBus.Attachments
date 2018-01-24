@@ -9,5 +9,10 @@ namespace NServiceBus
         {
             return context.Extensions.Get<IncomingAttachments>();
         }
+        public static IncomingAttachment IncomingAttachment(this IMessageHandlerContext context)
+        {
+            var incomingAttachments = context.Extensions.Get<IncomingAttachments>();
+            return new IncomingAttachment(incomingAttachments);
+        }
     }
 }

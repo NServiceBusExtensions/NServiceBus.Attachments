@@ -40,18 +40,24 @@ public class IntegrationTests
         var attachments = sendOptions.OutgoingAttachments();
         attachments.Add(
             name: "foo",
-            stream: () =>
-            {
-                var stream = new MemoryStream();
-                var streamWriter = new StreamWriter(stream);
-                streamWriter.Write("sdflgkndkjfgn");
-                streamWriter.Flush();
-                stream.Position = 0;
-                return stream;
-            });
+            stream: GetStream);
+        var attachment = sendOptions.OutgoingAttachment();
+        attachment.Add(GetStream);
+
 
         await endpoint.Send(new MyMessage(), sendOptions);
     }
+
+    static Stream GetStream()
+    {
+        var stream = new MemoryStream();
+        var streamWriter = new StreamWriter(stream);
+        streamWriter.Write("sdflgkndkjfgn");
+        streamWriter.Flush();
+        stream.Position = 0;
+        return stream;
+    }
+
     class Handler : IHandleMessages<MyMessage>
     {
         public async Task Handle(MyMessage message, IMessageHandlerContext context)
@@ -64,10 +70,19 @@ public class IntegrationTests
                 var buffer = memoryStream.GetBuffer();
                 Debug.WriteLine(buffer);
             }
+            using (var memoryStream = new MemoryStream())
+            {
+                var incomingAttachment = context.IncomingAttachment();
+                await incomingAttachment.CopyTo(memoryStream);
+                memoryStream.Position = 0;
+                var buffer = memoryStream.GetBuffer();
+                Debug.WriteLine(buffer);
+            }
 
             resetEvent.Set();
         }
     }
+
     class MyMessage : IMessage
     {
     }

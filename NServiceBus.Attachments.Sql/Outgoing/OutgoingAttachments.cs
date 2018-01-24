@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 namespace NServiceBus.Attachments
 {
     public class OutgoingAttachments
-    {
-        internal Dictionary<string, OutgoingStream> Streams = new Dictionary<string, OutgoingStream>(StringComparer.OrdinalIgnoreCase);
+        {
+            internal Dictionary<string, OutgoingStream> Streams = new Dictionary<string, OutgoingStream>(StringComparer.OrdinalIgnoreCase);
 
         public void Add<T>(string name, Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
         {
-            Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstNull(name, nameof(name));
             Guard.AgainstNull(stream, nameof(stream));
             Streams.Add(name, new OutgoingStream
             {
@@ -23,7 +23,7 @@ namespace NServiceBus.Attachments
 
         public void Add(string name, Func<Stream> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
         {
-            Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstNull(name, nameof(name));
             Guard.AgainstNull(stream, nameof(stream));
             Streams.Add(name, new OutgoingStream
             {
