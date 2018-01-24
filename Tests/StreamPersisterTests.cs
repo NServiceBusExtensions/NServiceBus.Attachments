@@ -52,6 +52,7 @@ public class StreamPersisterTests: TestBase
                 {
                     var array = GetBytes(stream);
                     Assert.Equal(5, array[0]);
+                    return Task.CompletedTask;
                 });
         }
     }
@@ -73,7 +74,7 @@ public class StreamPersisterTests: TestBase
             Installer.CreateTable(connection);
             persister.DeleteAllRows(connection);
             persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(persister.ReadAllRows(connection));
+            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection));
         }
     }
     [Fact]
@@ -86,7 +87,7 @@ public class StreamPersisterTests: TestBase
             persister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.CleanupItemsOlderThan(connection, new DateTime(2001, 1, 1, 1, 1, 1));
-            ObjectApprover.VerifyWithJson(persister.ReadAllRows(connection));
+            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection));
         }
     }
 

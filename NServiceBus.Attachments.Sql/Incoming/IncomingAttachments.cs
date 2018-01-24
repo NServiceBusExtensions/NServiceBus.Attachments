@@ -24,6 +24,12 @@ namespace NServiceBus.Attachments
             return streamPersister.CopyTo(messageId, name, connection, target);
         }
 
+        public Task ProcessStream(string name, Func<Stream, Task> action)
+        {
+            var connection = connectionFactory.Value;
+            return streamPersister.ProcessStream(messageId, name, connection, action);
+        }
+
         public async Task<byte[]> GetBytes(string name)
         {
             using (var memoryStream = new MemoryStream())

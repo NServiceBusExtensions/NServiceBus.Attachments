@@ -45,30 +45,33 @@ values
         }
     }
 
-    public IEnumerable<ReadRow> ReadAllRows(SqlConnection connection)
+    public IEnumerable<ReadRow> ReadAllMetadata(SqlConnection connection)
     {
-        using (var command = connection.CreateCommand())
+        using (var command = GetReadMetadataCommand(connection))
+        using (var reader = command.ExecuteReader())
         {
-            command.CommandText =
-                $@"
+            while (reader.Read())
+            {
+                yield return new ReadRow(
+                    id: reader.GetGuid(0),
+                    messageId: reader.GetString(1),
+                    name: reader.GetString(2),
+                    expiry: reader.GetDateTime(3));
+            }
+        }
+    }
+
+    SqlCommand GetReadMetadataCommand(SqlConnection connection)
+    {
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
 select
     [Id],
     [MessageId],
     [Name],
     [Expiry]
 from {fullTableName}";
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    yield return new ReadRow(
-                        id: reader.GetGuid(0),
-                        messageId: reader.GetString(1),
-                        name: reader.GetString(2),
-                        expiry: reader.GetDateTime(3));
-                }
-            }
-        }
+        return command;
     }
 
     public void DeleteAllRows(SqlConnection connection)
@@ -99,7 +102,6 @@ from {fullTableName}";
             {
                 using (var data = reader.GetStream(0))
                 {
-                    // Asynchronously copy the stream from the server to the file we just created
                     await data.CopyToAsync(target).ConfigureAwait(false);
                     return;
                 }
@@ -108,7 +110,8 @@ from {fullTableName}";
 
         ThrowNotFound(messageId, name);
     }
-    public async Task ProcessStream(string messageId, string name, SqlConnection connection, Action<Stream> action)
+
+    public async Task ProcessStream(string messageId, string name, SqlConnection connection, Func<Stream, Task> action)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection))
         using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
@@ -117,7 +120,7 @@ from {fullTableName}";
             {
                 using (var data = reader.GetStream(0))
                 {
-                    action(data);
+                    await action(data).ConfigureAwait(false);
                     return;
                 }
             }
@@ -126,7 +129,7 @@ from {fullTableName}";
         ThrowNotFound(messageId, name);
     }
 
-    private static void ThrowNotFound(string messageId, string name)
+    static void ThrowNotFound(string messageId, string name)
     {
         throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
     }
