@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +49,8 @@ class StreamSendBehavior :
 
         using (var connection = connectionBuilder())
         {
-            await connection.OpenAsync();
+            await connection.OpenAsync()
+                .ConfigureAwait(false);
             var messageId = context.MessageId;
 
             using (var transaction = connection.BeginTransaction())
