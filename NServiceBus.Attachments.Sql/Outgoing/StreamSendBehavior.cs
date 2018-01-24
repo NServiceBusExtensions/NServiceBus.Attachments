@@ -22,41 +22,49 @@ class StreamSendBehavior :
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
     {
-        var extensions = context.Extensions;
-        if (!extensions.TryGet<OutgoingAttachments>(out var attachments))
-        {
-            await next()
-                .ConfigureAwait(false);
-        }
-
-        var streams = attachments.Streams;
-        if (streams.Any())
-        {
-            var timeToBeReceived = GetTimeToBeReceivedFromConstraint(extensions);
-
-            using (var connection = connectionBuilder())
-            {
-                await connection.OpenAsync();
-                var messageId = context.MessageId;
-
-                using (var transaction = connection.BeginTransaction())
-                {
-                    foreach (var attachment in streams)
-                    {
-                        var name = attachment.Key;
-                        var outgoingStream = attachment.Value;
-                        var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
-                        var stream = outgoingStream.Func();
-                        await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep),
-                            stream);
-                    }
-                    transaction.Commit();
-                }
-            }
-        }
+        await ProcessStreams(context)
+            .ConfigureAwait(false);
 
         await next()
             .ConfigureAwait(false);
+    }
+
+    async Task ProcessStreams(IOutgoingLogicalMessageContext context)
+    {
+        var extensions = context.Extensions;
+        if (!extensions.TryGet<OutgoingAttachments>(out var attachments))
+        {
+            return;
+        }
+
+        var streams = attachments.Streams;
+        if (!streams.Any())
+        {
+            return;
+        }
+
+        var timeToBeReceived = GetTimeToBeReceivedFromConstraint(extensions);
+
+        using (var connection = connectionBuilder())
+        {
+            await connection.OpenAsync();
+            var messageId = context.MessageId;
+
+            using (var transaction = connection.BeginTransaction())
+            {
+                foreach (var attachment in streams)
+                {
+                    var name = attachment.Key;
+                    var outgoingStream = attachment.Value;
+                    var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
+                    var stream = outgoingStream.Func();
+                    await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
+                        .ConfigureAwait(false);
+                }
+
+                transaction.Commit();
+            }
+        }
     }
 
     static TimeSpan? GetTimeToBeReceivedFromConstraint(ContextBag extensions)
