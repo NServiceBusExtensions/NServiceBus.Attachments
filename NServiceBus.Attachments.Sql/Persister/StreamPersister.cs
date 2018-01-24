@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 class StreamPersister
 {
-        string fullTableName;
+    string fullTableName;
+
     public StreamPersister(string schema, string tableName)
     {
         fullTableName = $"[{schema}].[{tableName}]";
     }
+
     public async Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
     {
         using (var command = connection.CreateCommand())
@@ -60,7 +62,7 @@ from {fullTableName}";
                 while (reader.Read())
                 {
                     yield return new ReadRow(
-                        id : reader.GetGuid(0),
+                        id: reader.GetGuid(0),
                         messageId: reader.GetString(1),
                         name: reader.GetString(2),
                         expiry: reader.GetDateTime(3));
@@ -91,27 +93,27 @@ from {fullTableName}";
     public async Task CopyTo(string messageId, string name, SqlConnection connection, Stream target)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
         {
-            // The reader needs to be executed with the SequentialAccess behavior to enable network streaming
-            // Otherwise ReadAsync will buffer the entire BLOB into memory which can cause scalability issues or even OutOfMemoryExceptions
-            using (var reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess).ConfigureAwait(false))
+            if (await reader.ReadAsync().ConfigureAwait(false))
             {
-                if (await reader.ReadAsync().ConfigureAwait(false))
+                using (var data = reader.GetStream(0))
                 {
-                    if (!await reader.IsDBNullAsync(0).ConfigureAwait(false))
-                    {
-                        using (var data = reader.GetStream(0))
-                        {
-                            // Asynchronously copy the stream from the server to the file we just created
-                            await data.CopyToAsync(target).ConfigureAwait(false);
-                            return;
-                        }
-                    }
+                    // Asynchronously copy the stream from the server to the file we just created
+                    await data.CopyToAsync(target).ConfigureAwait(false);
+                    return;
                 }
             }
         }
 
         throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
+    }
+
+    // The reader needs to be executed with the SequentialAccess behavior to enable network streaming
+    // Otherwise ReadAsync will buffer the entire BLOB into memory which can cause scalability issues or even OutOfMemoryExceptions
+    static Task<SqlDataReader> ExecuteSequentialReader(SqlCommand command)
+    {
+        return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess);
     }
 
     SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection)
