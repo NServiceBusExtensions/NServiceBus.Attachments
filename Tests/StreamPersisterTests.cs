@@ -12,7 +12,10 @@ public class StreamPersisterTests: TestBase
 
     static StreamPersisterTests()
     {
-        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
+        if (!Connection.IsUsingEnvironmentVariable)
+        {
+            SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
+        }
     }
 
     public StreamPersisterTests(ITestOutputHelper output) : base(output)
@@ -38,7 +41,6 @@ public class StreamPersisterTests: TestBase
     [Fact]
     public void SaveStream()
     {
-        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
@@ -50,7 +52,6 @@ public class StreamPersisterTests: TestBase
     [Fact]
     public void CleanupItemsOlderThan()
     {
-        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
