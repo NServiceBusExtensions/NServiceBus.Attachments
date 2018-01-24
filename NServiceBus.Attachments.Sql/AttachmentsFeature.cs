@@ -14,17 +14,17 @@ class AttachmentsFeature : Feature
         if (settings.RunCleanTask)
         {
             context.RegisterStartupTask(
-                startupTaskFactory: b =>
+                startupTaskFactory: builder =>
                 {
                     return new AttachmentCleaner(async token =>
                         {
                             using (var connection = settings.ConnectionBuilder())
                             {
-                                await connection.OpenAsync(token);
+                                await connection.OpenAsync(token).ConfigureAwait(false);
                                 streamPersister.CleanupItemsOlderThan(connection, DateTime.UtcNow);
                             }
                         },
-                        criticalError: b.Build<CriticalError>().Raise,
+                        criticalError: builder.Build<CriticalError>().Raise,
                         frequencyToRunCleanup: TimeSpan.FromHours(1),
                         timer: new AsyncTimer());
                 });

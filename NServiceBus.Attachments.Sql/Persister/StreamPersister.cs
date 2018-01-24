@@ -39,7 +39,7 @@ values
             parameters.Add("@Data", SqlDbType.Binary, -1).Value = stream;
 
             // Send the data to the server asynchronously
-            await command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
     }
 
@@ -105,16 +105,16 @@ where
 
             // The reader needs to be executed with the SequentialAccess behavior to enable network streaming
             // Otherwise ReadAsync will buffer the entire BLOB into memory which can cause scalability issues or even OutOfMemoryExceptions
-            using (var reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess))
+            using (var reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess).ConfigureAwait(false))
             {
-                if (await reader.ReadAsync())
+                if (await reader.ReadAsync().ConfigureAwait(false))
                 {
-                    if (!await reader.IsDBNullAsync(0))
+                    if (!await reader.IsDBNullAsync(0).ConfigureAwait(false))
                     {
                         using (var data = reader.GetStream(0))
                         {
                             // Asynchronously copy the stream from the server to the file we just created
-                            await data.CopyToAsync(target);
+                            await data.CopyToAsync(target).ConfigureAwait(false);
                             return;
                         }
                     }
