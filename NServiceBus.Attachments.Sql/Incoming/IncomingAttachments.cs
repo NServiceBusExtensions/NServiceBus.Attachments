@@ -30,6 +30,12 @@ namespace NServiceBus.Attachments
             return streamPersister.ProcessStream(messageId, name, connection, action);
         }
 
+        public Task ProcessStreams(Func<string, Stream, Task> action)
+        {
+            var connection = connectionFactory.Value;
+            return streamPersister.ProcessStreams(messageId, connection, action);
+        }
+
         public async Task<byte[]> GetBytes(string name)
         {
             using (var memoryStream = new MemoryStream())

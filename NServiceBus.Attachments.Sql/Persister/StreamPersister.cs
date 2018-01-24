@@ -111,6 +111,22 @@ from {fullTableName}";
         ThrowNotFound(messageId, name);
     }
 
+    public async Task ProcessStreams(string messageId, SqlConnection connection, Func<string, Stream, Task> action)
+    {
+        using (var command = CreateGetDatasCommand(messageId, connection))
+        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        {
+            while (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                var name = reader.GetString(0);
+                using (var data = reader.GetStream(1))
+                {
+                    await action(name, data).ConfigureAwait(false);
+                }
+            }
+        }
+    }
+
     public async Task ProcessStream(string messageId, string name, SqlConnection connection, Func<Stream, Task> action)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection))
@@ -153,6 +169,21 @@ where
     MessageId=@MessageId";
         var parameters = sqlCommand.Parameters;
         parameters.AddWithValue("Name", name);
+        parameters.AddWithValue("MessageId", messageId);
+        return sqlCommand;
+    }
+
+    SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection)
+    {
+        var sqlCommand = connection.CreateCommand();
+        sqlCommand.CommandText = $@"
+select
+    Name,
+    Data
+from {fullTableName}
+where
+    MessageId=@MessageId";
+        var parameters = sqlCommand.Parameters;
         parameters.AddWithValue("MessageId", messageId);
         return sqlCommand;
     }

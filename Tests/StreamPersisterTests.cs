@@ -57,6 +57,25 @@ public class StreamPersisterTests: TestBase
         }
     }
 
+    [Fact]
+    public async Task ProcessStreams()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection);
+            persister.DeleteAllRows(connection);
+            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
+            await persister.ProcessStreams("theMessageId", connection,
+                action: (name,stream) =>
+                {
+                    var array = GetBytes(stream);
+                    Assert.Equal(5, array[0]);
+                    Assert.Equal("theName", name);
+                    return Task.CompletedTask;
+                });
+        }
+    }
+
     static byte[] GetBytes(Stream stream)
     {
         using (var memoryStream = new MemoryStream())
