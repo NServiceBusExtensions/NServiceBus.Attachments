@@ -8,43 +8,42 @@ namespace NServiceBus
     {
         public static OutgoingAttachment OutgoingAttachment(this PublishOptions options)
         {
-            return OutgoingAttachment(options);
+            return GetOutgoingAttachment(options);
         }
 
         public static OutgoingAttachment OutgoingAttachment(this SendOptions options)
         {
-            return OutgoingAttachment(options);
+            return GetOutgoingAttachment(options);
         }
 
         public static OutgoingAttachment OutgoingAttachment(this ReplyOptions options)
         {
-            return OutgoingAttachment(options);
+            return GetOutgoingAttachment(options);
         }
 
         public static OutgoingAttachments OutgoingAttachments(this PublishOptions options)
         {
-            return OutgoingAttachments(options);
+            return GetOutgoingAttachments(options);
         }
 
         public static OutgoingAttachments OutgoingAttachments(this SendOptions options)
         {
-            return OutgoingAttachments(options);
+            return GetOutgoingAttachments(options);
         }
 
         public static OutgoingAttachments OutgoingAttachments(this ReplyOptions options)
         {
-            return OutgoingAttachments(options);
+            return GetOutgoingAttachments(options);
         }
 
-        static OutgoingAttachments OutgoingAttachments(this ExtendableOptions options)
+        static OutgoingAttachments GetOutgoingAttachments(this ExtendableOptions options)
         {
             return options.GetExtensions().GetOrCreate<OutgoingAttachments>();
         }
 
-        static OutgoingAttachment OutgoingAttachment(this ExtendableOptions options)
+        static OutgoingAttachment GetOutgoingAttachment(this ExtendableOptions options)
         {
-            var outgoingAttachments = options.GetExtensions().GetOrCreate<OutgoingAttachments>();
-            return new OutgoingAttachment(outgoingAttachments);
+            return new OutgoingAttachment(GetOutgoingAttachments(options));
         }
     }
 }

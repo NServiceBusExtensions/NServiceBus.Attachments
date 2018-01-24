@@ -12,8 +12,18 @@ public static class Connection
             ConnectionString = @"Server=(local)\SQL2017;Database=master;User ID=sa;Password=Password12!";
             return;
         }
+
+        var connectionEnvironmentVariable = Environment.GetEnvironmentVariable("attachmentconnection");
+        if (connectionEnvironmentVariable != null)
+        {
+            ConnectionString = connectionEnvironmentVariable;
+            IsUsingEnvironmentVariable = true;
+            return;
+        }
         ConnectionString = @"Data Source=.\SQLExpress;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100";
     }
+
+    public static bool IsUsingEnvironmentVariable;
 
     public static SqlConnection OpenConnection()
     {

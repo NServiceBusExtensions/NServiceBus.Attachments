@@ -14,7 +14,10 @@ public class IntegrationTests
     [Fact]
     public async Task Run()
     {
-        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
+        if (!Connection.IsUsingEnvironmentVariable)
+        {
+            SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
+        }
 
         using (var sqlConnection = Connection.OpenConnection())
         {
