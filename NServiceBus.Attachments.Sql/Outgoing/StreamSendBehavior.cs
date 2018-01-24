@@ -13,11 +13,13 @@ class StreamSendBehavior :
 {
     Func<SqlConnection> connectionBuilder;
     StreamPersister streamPersister;
+    GetTimeToKeep endpointTimeToKeep;
 
-    public StreamSendBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
+    public StreamSendBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
     {
         this.connectionBuilder = connectionBuilder;
         this.streamPersister = streamPersister;
+        endpointTimeToKeep = timeToKeep;
     }
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
@@ -56,7 +58,8 @@ class StreamSendBehavior :
                 {
                     var name = attachment.Key;
                     var outgoingStream = attachment.Value;
-                    var timeToKeep = outgoingStream.TimeToKeep(timeToBeReceived);
+                    var outgoingStreamTimeToKeep = outgoingStream.TimeToKeep ?? endpointTimeToKeep;
+                    var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
                     var stream = outgoingStream.Func();
                     await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
                         .ConfigureAwait(false);

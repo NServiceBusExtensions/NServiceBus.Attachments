@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
+using NServiceBus.Attachments;
 
 class Program
 {
@@ -16,7 +17,9 @@ class Program
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.AuditProcessedMessagesTo("audit");
-        configuration.EnableAttachments(() => new SqlConnection(connection));
+        configuration.EnableAttachments(
+            connectionBuilder: () => new SqlConnection(connection),
+            timeToKeep: TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");
@@ -39,8 +42,7 @@ class Program
                 streamWriter.Flush();
                 stream.Position = 0;
                 return stream;
-            },
-            timeToKeep: before => TimeSpan.FromDays(1));
+            });
 
         await endpoint.Send(new MyMessage(), sendOptions);
     }

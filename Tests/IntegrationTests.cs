@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,23 +6,27 @@ using NServiceBus;
 using NServiceBus.Attachments;
 using Xunit;
 
+//TODO: add only send and only receive variants.
 public class IntegrationTests
 {
-    const string connection = @"Data Source=.\SQLExpress;Database=NServiceBusAttachments; Integrated Security=True;Max Pool Size=100";
     static ManualResetEvent resetEvent = new ManualResetEvent(false);
 
     [Fact]
     public async Task Run()
     {
-        SqlHelper.EnsureDatabaseExists(connection);
+        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
 
-        var sqlConnection = new SqlConnection(connection);
-        sqlConnection.Open();
-        Installer.CreateTable(sqlConnection);
+        using (var sqlConnection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(sqlConnection);
+        }
+
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        configuration.EnableAttachments(() => new SqlConnection(connection));
+        configuration.EnableAttachments(
+            connectionBuilder: Connection.NewConnection,
+            timeToKeep: TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         resetEvent.WaitOne();
@@ -46,8 +48,7 @@ public class IntegrationTests
                 streamWriter.Flush();
                 stream.Position = 0;
                 return stream;
-            },
-            timeToKeep: before => TimeSpan.FromDays(1));
+            });
 
         await endpoint.Send(new MyMessage(), sendOptions);
     }

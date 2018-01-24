@@ -10,7 +10,7 @@ class AttachmentsFeature : Feature
         var pipeline = context.Pipeline;
         var streamPersister = new StreamPersister(settings.Schema, settings.TableName);
         pipeline.Register(new StreamReceiveRegistration(settings.ConnectionBuilder, streamPersister));
-        pipeline.Register(new StreamSendRegistration(settings.ConnectionBuilder, streamPersister));
+        pipeline.Register(new StreamSendRegistration(settings.ConnectionBuilder, streamPersister, settings.TimeToKeep));
         if (settings.RunCleanTask)
         {
             context.RegisterStartupTask(

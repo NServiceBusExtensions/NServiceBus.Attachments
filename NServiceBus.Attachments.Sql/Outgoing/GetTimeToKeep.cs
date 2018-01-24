@@ -2,5 +2,5 @@
 
 namespace NServiceBus.Attachments
 {
-    public delegate TimeSpan GetTimeToKeep(TimeSpan? discardIfNotReceivedBefore);
+    public delegate TimeSpan GetTimeToKeep(TimeSpan? messageTimeToBeReceived);
 }

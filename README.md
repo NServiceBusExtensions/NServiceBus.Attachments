@@ -15,4 +15,4 @@ https://nuget.org/packages/NServiceBus.Attachments.Sql/
 
 ## Icon
 
-<a href="http://thenounproject.com/term/audit/618766/" target="_blank">Audit</a> designed by Delwar Hossain from <a href="http://thenounproject.com/" target="_blank">The Noun Project</a>
+<a href="http://thenounproject.com/term/gecko/258949/" target="_blank">Gecko</a> designed by Alex Podolsky from <a href="http://thenounproject.com/" target="_blank">The Noun Project</a>

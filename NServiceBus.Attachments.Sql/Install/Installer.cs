@@ -5,7 +5,7 @@ namespace NServiceBus.Attachments
 {
     public static class Installer
     {
-        public static void CreateTable(SqlConnection connection, string schema = "dbo", string tableName = "NServiceBusAttachments")
+        public static void CreateTable(SqlConnection connection, string schema = "dbo", string tableName = "Attachments")
         {
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));

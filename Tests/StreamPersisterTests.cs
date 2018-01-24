@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
@@ -9,29 +8,28 @@ using Xunit.Abstractions;
 
 public class StreamPersisterTests: TestBase
 {
-    StreamPersister streamPersister;
-    const string connectionString = @"Data Source=.\SQLExpress;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100";
+    StreamPersister persister;
 
     static StreamPersisterTests()
     {
-        SqlHelper.EnsureDatabaseExists(connectionString);
+        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
     }
 
     public StreamPersisterTests(ITestOutputHelper output) : base(output)
     {
-        streamPersister = new StreamPersister("dbo", "NServiceBusAttachments");
+        persister = new StreamPersister("dbo", "Attachments");
     }
 
     [Fact]
     public async Task RoundTrip()
     {
-        using (var connection = BuildSqlConnection())
+        using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            streamPersister.DeleteAllRows(connection);
-            await streamPersister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
+            persister.DeleteAllRows(connection);
+            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
             var memoryStream = new MemoryStream();
-            await streamPersister.CopyTo("theMessageId", "theName", connection, memoryStream);
+            await persister.CopyTo("theMessageId", "theName", connection, memoryStream);
 
             memoryStream.Position = 0;
             Assert.Equal(5, memoryStream.GetBuffer()[0]);
@@ -40,27 +38,27 @@ public class StreamPersisterTests: TestBase
     [Fact]
     public void SaveStream()
     {
-        SqlHelper.EnsureDatabaseExists(connectionString);
-        using (var connection = BuildSqlConnection())
+        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
+        using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            streamPersister.DeleteAllRows(connection);
-            streamPersister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(streamPersister.ReadAllRows(connection));
+            persister.DeleteAllRows(connection);
+            persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
+            ObjectApprover.VerifyWithJson(persister.ReadAllRows(connection));
         }
     }
     [Fact]
     public void CleanupItemsOlderThan()
     {
-        SqlHelper.EnsureDatabaseExists(connectionString);
-        using (var connection = BuildSqlConnection())
+        SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
+        using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            streamPersister.DeleteAllRows(connection);
-            streamPersister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            streamPersister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            streamPersister.CleanupItemsOlderThan(connection, new DateTime(2001, 1, 1, 1, 1, 1));
-            ObjectApprover.VerifyWithJson(streamPersister.ReadAllRows(connection));
+            persister.DeleteAllRows(connection);
+            persister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
+            persister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
+            persister.CleanupItemsOlderThan(connection, new DateTime(2001, 1, 1, 1, 1, 1));
+            ObjectApprover.VerifyWithJson(persister.ReadAllRows(connection));
         }
     }
 
@@ -70,12 +68,5 @@ public class StreamPersisterTests: TestBase
         stream.WriteByte(5);
         stream.Position = 0;
         return stream;
-    }
-
-    static SqlConnection BuildSqlConnection()
-    {
-        var connection = new SqlConnection(connectionString);
-        connection.Open();
-        return connection;
     }
 }

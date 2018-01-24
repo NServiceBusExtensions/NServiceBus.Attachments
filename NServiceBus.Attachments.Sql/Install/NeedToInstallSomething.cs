@@ -14,7 +14,7 @@ class NeedToInstallSomething : INeedToInstallSomething
 
     public async Task Install(string identity)
     {
-        if (installerSettings == null || !installerSettings.InstallerEnabled)
+        if (installerSettings == null || installerSettings.DisableInstaller)
         {
             return;
         }

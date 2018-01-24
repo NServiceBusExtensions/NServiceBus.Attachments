@@ -35,7 +35,7 @@ values
             var parameters = command.Parameters;
             parameters.Add("@MessageId", SqlDbType.NVarChar).Value = messageId;
             parameters.Add("@Name", SqlDbType.NVarChar).Value = name;
-            parameters.Add("@Expiry", SqlDbType.DateTime).Value = expiry;
+            parameters.Add("@Expiry", SqlDbType.DateTime2).Value = expiry;
             parameters.Add("@Data", SqlDbType.Binary, -1).Value = stream;
 
             // Send the data to the server asynchronously
