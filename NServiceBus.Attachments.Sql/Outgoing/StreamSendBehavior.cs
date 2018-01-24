@@ -75,6 +75,7 @@ class StreamSendBehavior :
         var stream = await outgoingStream.Func().ConfigureAwait(false);
         await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
             .ConfigureAwait(false);
+        outgoingStream.Cleanup?.Invoke();
     }
 
     static TimeSpan? GetTimeToBeReceivedFromConstraint(ContextBag extensions)
