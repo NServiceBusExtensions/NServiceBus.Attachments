@@ -24,7 +24,7 @@ public class StreamPersisterTests: TestBase
     }
 
     [Fact]
-    public async Task RoundTrip()
+    public async Task CopyTo()
     {
         using (var connection = Connection.OpenConnection())
         {
@@ -38,6 +38,33 @@ public class StreamPersisterTests: TestBase
             Assert.Equal(5, memoryStream.GetBuffer()[0]);
         }
     }
+
+    [Fact]
+    public async Task ProcessStream()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection);
+            persister.DeleteAllRows(connection);
+            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
+            await persister.ProcessStream("theMessageId", "theName", connection,
+                action: stream =>
+                {
+                    var array = GetBytes(stream);
+                    Assert.Equal(5, array[0]);
+                });
+        }
+    }
+
+    static byte[] GetBytes(Stream stream)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            stream.CopyTo(memoryStream);
+            return memoryStream.ToArray();
+        }
+    }
+
     [Fact]
     public void SaveStream()
     {
@@ -70,4 +97,5 @@ public class StreamPersisterTests: TestBase
         stream.Position = 0;
         return stream;
     }
+
 }

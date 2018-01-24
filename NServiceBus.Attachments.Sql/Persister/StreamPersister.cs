@@ -106,6 +106,28 @@ from {fullTableName}";
             }
         }
 
+        ThrowNotFound(messageId, name);
+    }
+    public async Task ProcessStream(string messageId, string name, SqlConnection connection, Action<Stream> action)
+    {
+        using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        {
+            if (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                using (var data = reader.GetStream(0))
+                {
+                    action(data);
+                    return;
+                }
+            }
+        }
+
+        ThrowNotFound(messageId, name);
+    }
+
+    private static void ThrowNotFound(string messageId, string name)
+    {
         throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
     }
 
