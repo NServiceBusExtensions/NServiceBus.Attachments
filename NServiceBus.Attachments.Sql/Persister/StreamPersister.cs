@@ -109,8 +109,8 @@ from {fullTableName}";
         throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
     }
 
-    // The reader needs to be executed with the SequentialAccess behavior to enable network streaming
-    // Otherwise ReadAsync will buffer the entire BLOB into memory which can cause scalability issues or even OutOfMemoryExceptions
+    // The reader needs to be executed with SequentialAccess to enable network streaming
+    // Otherwise ReadAsync will buffer the entire BLOB in memory which can cause scalability issues or OutOfMemoryExceptions
     static Task<SqlDataReader> ExecuteSequentialReader(SqlCommand command)
     {
         return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess);
