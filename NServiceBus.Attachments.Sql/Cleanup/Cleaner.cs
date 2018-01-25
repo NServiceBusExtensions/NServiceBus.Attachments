@@ -5,9 +5,9 @@ using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.Logging;
 
-class AttachmentCleaner : FeatureStartupTask
+class Cleaner : FeatureStartupTask
 {
-    public AttachmentCleaner(Func<CancellationToken, Task> cleanup, Action<string, Exception> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
+    public Cleaner(Func<CancellationToken, Task> cleanup, Action<string, Exception> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
     {
         this.cleanup = cleanup;
         this.frequencyToRunCleanup = frequencyToRunCleanup;
@@ -49,5 +49,5 @@ class AttachmentCleaner : FeatureStartupTask
     Func<CancellationToken, Task> cleanup;
     TimeSpan frequencyToRunCleanup;
 
-    static ILog log = LogManager.GetLogger<AttachmentCleaner>();
+    static ILog log = LogManager.GetLogger<Cleaner>();
 }

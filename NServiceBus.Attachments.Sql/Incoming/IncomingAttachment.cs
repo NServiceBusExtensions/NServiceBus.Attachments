@@ -1,25 +1,33 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
 {
-    public class IncomingAttachment
+    class IncomingAttachment : IIncomingAttachment
     {
-        IncomingAttachments incomingAttachments;
+        IIncomingAttachments attachments;
 
-        public IncomingAttachment(IncomingAttachments incomingAttachments)
+        public IncomingAttachment(IIncomingAttachments attachments)
         {
-            this.incomingAttachments = incomingAttachments;
+            this.attachments = attachments;
         }
 
         public Task CopyTo(Stream target)
         {
-            return incomingAttachments.CopyTo(string.Empty, target);
+            Guard.AgainstNull(target, nameof(target));
+            return attachments.CopyTo(string.Empty, target);
+        }
+
+        public Task ProcessStream(Func<Stream, Task> action)
+        {
+            Guard.AgainstNull(action, nameof(action));
+            return attachments.ProcessStream(string.Empty, action);
         }
 
         public Task<byte[]> GetBytes()
         {
-            return incomingAttachments.GetBytes(string.Empty);
+            return attachments.GetBytes(string.Empty);
         }
     }
 }

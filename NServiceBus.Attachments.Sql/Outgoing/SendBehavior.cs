@@ -8,14 +8,14 @@ using NServiceBus.Extensibility;
 using NServiceBus.Performance.TimeToBeReceived;
 using NServiceBus.Pipeline;
 
-class StreamSendBehavior :
+class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
     Func<SqlConnection> connectionBuilder;
     StreamPersister streamPersister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public StreamSendBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
     {
         this.connectionBuilder = connectionBuilder;
         this.streamPersister = streamPersister;
@@ -49,7 +49,8 @@ class StreamSendBehavior :
 
         using (var connection = connectionBuilder())
         {
-            await connection.OpenAsync();
+            await connection.OpenAsync()
+                .ConfigureAwait(false);
             var messageId = context.MessageId;
 
             using (var transaction = connection.BeginTransaction())
@@ -58,16 +59,23 @@ class StreamSendBehavior :
                 {
                     var name = attachment.Key;
                     var outgoingStream = attachment.Value;
-                    var outgoingStreamTimeToKeep = outgoingStream.TimeToKeep ?? endpointTimeToKeep;
-                    var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
-                    var stream = await outgoingStream.Func().ConfigureAwait(false);
-                    await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
+                    await ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoingStream, name)
                         .ConfigureAwait(false);
                 }
 
                 transaction.Commit();
             }
         }
+    }
+
+    async Task ProcessAttachment(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId, OutgoingStream outgoingStream, string name)
+    {
+        var outgoingStreamTimeToKeep = outgoingStream.TimeToKeep ?? endpointTimeToKeep;
+        var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
+        var stream = await outgoingStream.Func().ConfigureAwait(false);
+        await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
+            .ConfigureAwait(false);
+        outgoingStream.Cleanup?.Invoke();
     }
 
     static TimeSpan? GetTimeToBeReceivedFromConstraint(ContextBag extensions)

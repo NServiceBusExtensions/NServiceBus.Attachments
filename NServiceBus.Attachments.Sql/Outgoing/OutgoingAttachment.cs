@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
 {
-    public class OutgoingAttachment
+    class OutgoingAttachment : IOutgoingAttachment
     {
         OutgoingAttachments attachments;
 
@@ -15,11 +15,13 @@ namespace NServiceBus.Attachments
 
         public void Add<T>(Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
         {
+            Guard.AgainstNull(stream, nameof(stream));
             attachments.Add(string.Empty, stream, timeToKeep, cleanup);
         }
 
         public void Add(Func<Stream> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
         {
+            Guard.AgainstNull(stream, nameof(stream));
             attachments.Add(string.Empty, stream, timeToKeep, cleanup);
         }
     }

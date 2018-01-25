@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
 {
-    public class OutgoingAttachments
+    class OutgoingAttachments: IOutgoingAttachments
     {
         internal Dictionary<string, OutgoingStream> Streams = new Dictionary<string, OutgoingStream>(StringComparer.OrdinalIgnoreCase);
 

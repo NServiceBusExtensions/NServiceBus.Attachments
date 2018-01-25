@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.Pipeline;
 
-class StreamReceiveBehavior :
+class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
     Func<SqlConnection> connectionBuilder;
     StreamPersister streamPersister;
 
-    public StreamReceiveBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
+    public ReceiveBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
     {
         this.connectionBuilder = connectionBuilder;
         this.streamPersister = streamPersister;
@@ -18,10 +18,11 @@ class StreamReceiveBehavior :
 
     public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        var connectionFactory = new Lazy<SqlConnection>(() =>
+        var connectionFactory = new Lazy<Task<SqlConnection>>(async () =>
         {
             var sqlConnection = connectionBuilder();
-            sqlConnection.Open();
+            await sqlConnection.OpenAsync()
+                .ConfigureAwait(false);
             return sqlConnection;
         });
         try

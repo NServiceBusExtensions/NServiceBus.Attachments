@@ -45,30 +45,33 @@ values
         }
     }
 
-    public IEnumerable<ReadRow> ReadAllRows(SqlConnection connection)
+    public IEnumerable<ReadRow> ReadAllMetadata(SqlConnection connection)
     {
-        using (var command = connection.CreateCommand())
+        using (var command = GetReadMetadataCommand(connection))
+        using (var reader = command.ExecuteReader())
         {
-            command.CommandText =
-                $@"
+            while (reader.Read())
+            {
+                yield return new ReadRow(
+                    id: reader.GetGuid(0),
+                    messageId: reader.GetString(1),
+                    name: reader.GetString(2),
+                    expiry: reader.GetDateTime(3));
+            }
+        }
+    }
+
+    SqlCommand GetReadMetadataCommand(SqlConnection connection)
+    {
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
 select
     [Id],
     [MessageId],
     [Name],
     [Expiry]
 from {fullTableName}";
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    yield return new ReadRow(
-                        id: reader.GetGuid(0),
-                        messageId: reader.GetString(1),
-                        name: reader.GetString(2),
-                        expiry: reader.GetDateTime(3));
-                }
-            }
-        }
+        return command;
     }
 
     public void DeleteAllRows(SqlConnection connection)
@@ -99,14 +102,68 @@ from {fullTableName}";
             {
                 using (var data = reader.GetStream(0))
                 {
-                    // Asynchronously copy the stream from the server to the file we just created
                     await data.CopyToAsync(target).ConfigureAwait(false);
-                    return;
                 }
+
+                return;
             }
         }
 
-        throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
+        throw ThrowNotFound(messageId, name);
+    }
+
+    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection)
+    {
+        using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        {
+            if (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                return (byte[]) reader[0];
+            }
+        }
+
+        throw ThrowNotFound(messageId, name);
+    }
+
+    public async Task ProcessStreams(string messageId, SqlConnection connection, Func<string, Stream, Task> action)
+    {
+        using (var command = CreateGetDatasCommand(messageId, connection))
+        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        {
+            while (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                var name = reader.GetString(0);
+                using (var data = reader.GetStream(1))
+                {
+                    await action(name, data).ConfigureAwait(false);
+                }
+            }
+        }
+    }
+
+    public async Task ProcessStream(string messageId, string name, SqlConnection connection, Func<Stream, Task> action)
+    {
+        using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        {
+            if (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                using (var data = reader.GetStream(0))
+                {
+                    await action(data).ConfigureAwait(false);
+                }
+
+                return;
+            }
+        }
+
+        throw ThrowNotFound(messageId, name);
+    }
+
+    static Exception ThrowNotFound(string messageId, string name)
+    {
+        return new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
     }
 
     // The reader needs to be executed with SequentialAccess to enable network streaming
@@ -118,17 +175,32 @@ from {fullTableName}";
 
     SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection)
     {
-        var sqlCommand = connection.CreateCommand();
-        sqlCommand.CommandText = $@"
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
 select
     Data
 from {fullTableName}
 where
     Name=@Name and
     MessageId=@MessageId";
-        var parameters = sqlCommand.Parameters;
+        var parameters = command.Parameters;
         parameters.AddWithValue("Name", name);
         parameters.AddWithValue("MessageId", messageId);
-        return sqlCommand;
+        return command;
+    }
+
+    SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection)
+    {
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
+select
+    Name,
+    Data
+from {fullTableName}
+where
+    MessageId=@MessageId";
+        var parameters = command.Parameters;
+        parameters.AddWithValue("MessageId", messageId);
+        return command;
     }
 }

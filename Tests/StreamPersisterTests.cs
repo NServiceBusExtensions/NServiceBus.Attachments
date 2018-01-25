@@ -24,7 +24,7 @@ public class StreamPersisterTests: TestBase
     }
 
     [Fact]
-    public async Task RoundTrip()
+    public async Task CopyTo()
     {
         using (var connection = Connection.OpenConnection())
         {
@@ -38,6 +38,82 @@ public class StreamPersisterTests: TestBase
             Assert.Equal(5, memoryStream.GetBuffer()[0]);
         }
     }
+
+    [Fact]
+    public async Task GetBytes()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection);
+            persister.DeleteAllRows(connection);
+            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
+            var bytes = await persister.GetBytes("theMessageId", "theName", connection);
+            Assert.Equal(5, bytes[0]);
+        }
+    }
+
+    [Fact]
+    public async Task ProcessStream()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection);
+            persister.DeleteAllRows(connection);
+            var count = 0;
+            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
+            await persister.ProcessStream("theMessageId", "theName", connection,
+                action: stream =>
+                {
+                    count++;
+                    var array = ToBytes(stream);
+                    Assert.Equal(5, array[0]);
+                    return Task.CompletedTask;
+                });
+            Assert.Equal(1,count);
+        }
+    }
+
+    [Fact]
+    public async Task ProcessStreams()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection);
+            persister.DeleteAllRows(connection);
+            var count = 0;
+            await persister.SaveStream(connection, null, "theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(1));
+            await persister.SaveStream(connection, null, "theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(2));
+            await persister.ProcessStreams("theMessageId", connection,
+                action: (name, stream) =>
+                {
+                    count++;
+                    var array = ToBytes(stream);
+                    if (count == 1)
+                    {
+                        Assert.Equal(1, array[0]);
+                        Assert.Equal("theName1", name);
+                    }
+                    if (count == 2)
+                    {
+                        Assert.Equal(2, array[0]);
+                        Assert.Equal("theName2", name);
+                    }
+
+                    return Task.CompletedTask;
+                });
+            Assert.Equal(2, count);
+        }
+    }
+
+    static byte[] ToBytes(Stream stream)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            stream.CopyTo(memoryStream);
+            return memoryStream.ToArray();
+        }
+    }
+
     [Fact]
     public void SaveStream()
     {
@@ -46,7 +122,7 @@ public class StreamPersisterTests: TestBase
             Installer.CreateTable(connection);
             persister.DeleteAllRows(connection);
             persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(persister.ReadAllRows(connection));
+            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection));
         }
     }
     [Fact]
@@ -59,15 +135,16 @@ public class StreamPersisterTests: TestBase
             persister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.CleanupItemsOlderThan(connection, new DateTime(2001, 1, 1, 1, 1, 1));
-            ObjectApprover.VerifyWithJson(persister.ReadAllRows(connection));
+            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection));
         }
     }
 
-    Stream GetStream()
+    Stream GetStream(byte content=5)
     {
         var stream = new MemoryStream();
-        stream.WriteByte(5);
+        stream.WriteByte(content);
         stream.Position = 0;
         return stream;
     }
+
 }

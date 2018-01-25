@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using NServiceBus.Attachments;
 
-class AttachmentSettings
+class Settings
 {
     public readonly Func<SqlConnection> ConnectionBuilder;
     public readonly bool RunCleanTask;
@@ -11,7 +11,7 @@ class AttachmentSettings
     public readonly bool DisableInstaller;
     public readonly GetTimeToKeep TimeToKeep;
 
-    public AttachmentSettings(Func<SqlConnection> connectionBuilder, bool runCleanTask, string schema, string tableName, bool disableInstaller, GetTimeToKeep timeToKeep)
+    public Settings(Func<SqlConnection> connectionBuilder, bool runCleanTask, string schema, string tableName, bool disableInstaller, GetTimeToKeep timeToKeep)
     {
         ConnectionBuilder = connectionBuilder;
         RunCleanTask = runCleanTask;
