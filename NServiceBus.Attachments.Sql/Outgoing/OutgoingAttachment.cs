@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
 {
-    public class OutgoingAttachment
+    class OutgoingAttachment : IOutgoingAttachment
     {
         OutgoingAttachments attachments;
 

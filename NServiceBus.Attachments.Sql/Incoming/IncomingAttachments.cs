@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
 {
-    public class IncomingAttachments
+    class IncomingAttachments: IIncomingAttachments
     {
         Lazy<Task<SqlConnection>> connectionFactory;
         string messageId;

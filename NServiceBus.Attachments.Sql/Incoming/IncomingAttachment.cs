@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
 {
-    public class IncomingAttachment
+    class IncomingAttachment : IIncomingAttachment
     {
-        IncomingAttachments attachments;
+        IIncomingAttachments attachments;
 
-        public IncomingAttachment(IncomingAttachments attachments)
+        public IncomingAttachment(IIncomingAttachments attachments)
         {
             this.attachments = attachments;
         }
 
         public Task CopyTo(Stream target)
         {
-            Guard.AgainstNull(target,nameof(target));
+            Guard.AgainstNull(target, nameof(target));
             return attachments.CopyTo(string.Empty, target);
         }
 

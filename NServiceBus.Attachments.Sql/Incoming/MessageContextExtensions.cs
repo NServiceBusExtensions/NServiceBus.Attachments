@@ -5,13 +5,14 @@ namespace NServiceBus
     //todo: throw if attachments not enabled
     public static partial class MessageContextExtensions
     {
-        public static IncomingAttachments IncomingAttachments(this IMessageHandlerContext context)
+        public static IIncomingAttachments IncomingAttachments(this IMessageHandlerContext context)
         {
             return context.Extensions.Get<IncomingAttachments>();
         }
-        public static IncomingAttachment IncomingAttachment(this IMessageHandlerContext context)
+
+        public static IIncomingAttachment IncomingAttachment(this IMessageHandlerContext context)
         {
-            var incomingAttachments = context.Extensions.Get<IncomingAttachments>();
+            var incomingAttachments = context.IncomingAttachments();
             return new IncomingAttachment(incomingAttachments);
         }
     }
