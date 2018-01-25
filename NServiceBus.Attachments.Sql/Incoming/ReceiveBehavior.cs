@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.Pipeline;
 
-class StreamReceiveBehavior :
+class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
     Func<SqlConnection> connectionBuilder;
     StreamPersister streamPersister;
 
-    public StreamReceiveBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
+    public ReceiveBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
     {
         this.connectionBuilder = connectionBuilder;
         this.streamPersister = streamPersister;

@@ -15,11 +15,13 @@ namespace NServiceBus.Attachments
 
         public Task CopyTo(Stream target)
         {
+            Guard.AgainstNull(target,nameof(target));
             return attachments.CopyTo(string.Empty, target);
         }
 
         public Task ProcessStream(Func<Stream, Task> action)
         {
+            Guard.AgainstNull(action, nameof(action));
             return attachments.ProcessStream(string.Empty, action);
         }
 

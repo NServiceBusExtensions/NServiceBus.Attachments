@@ -20,24 +20,30 @@ namespace NServiceBus.Attachments
 
         public async Task CopyTo(string name, Stream target)
         {
+            Guard.AgainstNull(name, nameof(name));
+            Guard.AgainstNull(target, nameof(target));
             var connection = await connectionFactory.Value;
             await streamPersister.CopyTo(messageId, name, connection, target).ConfigureAwait(false);
         }
 
         public async Task ProcessStream(string name, Func<Stream, Task> action)
         {
+            Guard.AgainstNull(name, nameof(name));
+            Guard.AgainstNull(action, nameof(action));
             var connection = await connectionFactory.Value;
             await streamPersister.ProcessStream(messageId, name, connection, action).ConfigureAwait(false);
         }
 
         public async Task ProcessStreams(Func<string, Stream, Task> action)
         {
+            Guard.AgainstNull(action, nameof(action));
             var connection = await connectionFactory.Value;
             await streamPersister.ProcessStreams(messageId, connection, action).ConfigureAwait(false);
         }
 
         public async Task<byte[]> GetBytes(string name)
         {
+            Guard.AgainstNull(name, nameof(name));
             var connection = await connectionFactory.Value;
             return await streamPersister.GetBytes(messageId, name, connection).ConfigureAwait(false);
         }

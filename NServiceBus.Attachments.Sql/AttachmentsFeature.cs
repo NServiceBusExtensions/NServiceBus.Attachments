@@ -7,18 +7,18 @@ class AttachmentsFeature : Feature
 {
     protected override void Setup(FeatureConfigurationContext context)
     {
-        var settings = context.Settings.Get<AttachmentSettings>();
+        var settings = context.Settings.Get<Settings>();
         var pipeline = context.Pipeline;
         var streamPersister = new StreamPersister(settings.Schema, settings.TableName);
-        pipeline.Register(new StreamReceiveRegistration(settings.ConnectionBuilder, streamPersister));
-        pipeline.Register(new StreamSendRegistration(settings.ConnectionBuilder, streamPersister, settings.TimeToKeep));
+        pipeline.Register(new ReceiveRegistration(settings.ConnectionBuilder, streamPersister));
+        pipeline.Register(new SendRegistration(settings.ConnectionBuilder, streamPersister, settings.TimeToKeep));
         if (settings.RunCleanTask)
         {
             context.RegisterStartupTask(builder => CreateCleaner(settings, streamPersister, builder));
         }
     }
 
-    static Cleaner CreateCleaner(AttachmentSettings settings, StreamPersister streamPersister, IBuilder builder)
+    static Cleaner CreateCleaner(Settings settings, StreamPersister streamPersister, IBuilder builder)
     {
         return new Cleaner(async token =>
             {

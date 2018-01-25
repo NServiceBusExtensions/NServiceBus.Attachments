@@ -8,14 +8,14 @@ using NServiceBus.Extensibility;
 using NServiceBus.Performance.TimeToBeReceived;
 using NServiceBus.Pipeline;
 
-class StreamSendBehavior :
+class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
     Func<SqlConnection> connectionBuilder;
     StreamPersister streamPersister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public StreamSendBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
     {
         this.connectionBuilder = connectionBuilder;
         this.streamPersister = streamPersister;
