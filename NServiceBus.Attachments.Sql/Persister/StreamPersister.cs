@@ -159,32 +159,32 @@ from {fullTableName}";
 
     SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection)
     {
-        var sqlCommand = connection.CreateCommand();
-        sqlCommand.CommandText = $@"
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
 select
     Data
 from {fullTableName}
 where
     Name=@Name and
     MessageId=@MessageId";
-        var parameters = sqlCommand.Parameters;
+        var parameters = command.Parameters;
         parameters.AddWithValue("Name", name);
         parameters.AddWithValue("MessageId", messageId);
-        return sqlCommand;
+        return command;
     }
 
     SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection)
     {
-        var sqlCommand = connection.CreateCommand();
-        sqlCommand.CommandText = $@"
+        var command = connection.CreateCommand();
+        command.CommandText = $@"
 select
     Name,
     Data
 from {fullTableName}
 where
     MessageId=@MessageId";
-        var parameters = sqlCommand.Parameters;
+        var parameters = command.Parameters;
         parameters.AddWithValue("MessageId", messageId);
-        return sqlCommand;
+        return command;
     }
 }
