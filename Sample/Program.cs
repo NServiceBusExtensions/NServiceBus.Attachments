@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
@@ -7,18 +6,19 @@ using NServiceBus.Attachments;
 
 class Program
 {
-    const string connection = @"Data Source=.\SQLExpress;Database=NServiceBusAttachmentsSample; Integrated Security=True;Max Pool Size=100";
-
     static async Task Main()
     {
-        SqlHelper.EnsureDatabaseExists(connection);
+        if (!Connection.IsUsingEnvironmentVariable)
+        {
+            SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
+        }
         var configuration = new EndpointConfiguration("AttachmentsSample");
         configuration.EnableInstallers();
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.AuditProcessedMessagesTo("audit");
         configuration.EnableAttachments(
-            connectionBuilder: () => new SqlConnection(connection),
+            connectionBuilder: Connection.NewConnection,
             timeToKeep: TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
