@@ -66,10 +66,10 @@ values
         var command = connection.CreateCommand();
         command.CommandText = $@"
 select
-    [Id],
-    [MessageId],
-    [Name],
-    [Expiry]
+    Id,
+    MessageId,
+    Name,
+    Expiry
 from {fullTableName}";
         return command;
     }
