@@ -18,10 +18,11 @@ class StreamReceiveBehavior :
 
     public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        var connectionFactory = new Lazy<SqlConnection>(() =>
+        var connectionFactory = new Lazy<Task<SqlConnection>>(async () =>
         {
             var sqlConnection = connectionBuilder();
-            sqlConnection.Open();
+            await sqlConnection.OpenAsync()
+                .ConfigureAwait(false);
             return sqlConnection;
         });
         try

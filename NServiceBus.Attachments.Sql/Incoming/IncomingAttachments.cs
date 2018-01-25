@@ -7,39 +7,39 @@ namespace NServiceBus.Attachments
 {
     public class IncomingAttachments
     {
-        Lazy<SqlConnection> connectionFactory;
+        Lazy<Task<SqlConnection>> connectionFactory;
         string messageId;
         StreamPersister streamPersister;
 
-        internal IncomingAttachments(Lazy<SqlConnection> connectionFactory, string messageId, StreamPersister streamPersister)
+        internal IncomingAttachments(Lazy<Task<SqlConnection>> connectionFactory, string messageId, StreamPersister streamPersister)
         {
             this.connectionFactory = connectionFactory;
             this.messageId = messageId;
             this.streamPersister = streamPersister;
         }
 
-        public Task CopyTo(string name, Stream target)
+        public async Task CopyTo(string name, Stream target)
         {
-            var connection = connectionFactory.Value;
-            return streamPersister.CopyTo(messageId, name, connection, target);
+            var connection = await connectionFactory.Value;
+            await streamPersister.CopyTo(messageId, name, connection, target).ConfigureAwait(false);
         }
 
-        public Task ProcessStream(string name, Func<Stream, Task> action)
+        public async Task ProcessStream(string name, Func<Stream, Task> action)
         {
-            var connection = connectionFactory.Value;
-            return streamPersister.ProcessStream(messageId, name, connection, action);
+            var connection = await connectionFactory.Value;
+            await streamPersister.ProcessStream(messageId, name, connection, action).ConfigureAwait(false);
         }
 
-        public Task ProcessStreams(Func<string, Stream, Task> action)
+        public async Task ProcessStreams(Func<string, Stream, Task> action)
         {
-            var connection = connectionFactory.Value;
-            return streamPersister.ProcessStreams(messageId, connection, action);
+            var connection = await connectionFactory.Value;
+            await streamPersister.ProcessStreams(messageId, connection, action).ConfigureAwait(false);
         }
 
-        public Task<byte[]> GetBytes(string name)
+        public async Task<byte[]> GetBytes(string name)
         {
-            var connection = connectionFactory.Value;
-            return streamPersister.GetBytes(messageId, name, connection);
+            var connection = await connectionFactory.Value;
+            return await streamPersister.GetBytes(messageId, name, connection).ConfigureAwait(false);
         }
     }
 }

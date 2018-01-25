@@ -1,6 +1,7 @@
 ﻿using System;
 using NServiceBus;
 using NServiceBus.Features;
+using NServiceBus.ObjectBuilder;
 
 class AttachmentsFeature : Feature
 {
@@ -13,21 +14,22 @@ class AttachmentsFeature : Feature
         pipeline.Register(new StreamSendRegistration(settings.ConnectionBuilder, streamPersister, settings.TimeToKeep));
         if (settings.RunCleanTask)
         {
-            context.RegisterStartupTask(
-                startupTaskFactory: builder =>
-                {
-                    return new AttachmentCleaner(async token =>
-                        {
-                            using (var connection = settings.ConnectionBuilder())
-                            {
-                                await connection.OpenAsync(token).ConfigureAwait(false);
-                                streamPersister.CleanupItemsOlderThan(connection, DateTime.UtcNow);
-                            }
-                        },
-                        criticalError: builder.Build<CriticalError>().Raise,
-                        frequencyToRunCleanup: TimeSpan.FromHours(1),
-                        timer: new AsyncTimer());
-                });
+            context.RegisterStartupTask(builder => CreateCleaner(settings, streamPersister, builder));
         }
+    }
+
+    static Cleaner CreateCleaner(AttachmentSettings settings, StreamPersister streamPersister, IBuilder builder)
+    {
+        return new Cleaner(async token =>
+            {
+                using (var connection = settings.ConnectionBuilder())
+                {
+                    await connection.OpenAsync(token).ConfigureAwait(false);
+                    streamPersister.CleanupItemsOlderThan(connection, DateTime.UtcNow);
+                }
+            },
+            criticalError: builder.Build<CriticalError>().Raise,
+            frequencyToRunCleanup: TimeSpan.FromHours(1),
+            timer: new AsyncTimer());
     }
 }
