@@ -36,14 +36,10 @@ namespace NServiceBus.Attachments
             return streamPersister.ProcessStreams(messageId, connection, action);
         }
 
-        public async Task<byte[]> GetBytes(string name)
+        public Task<byte[]> GetBytes(string name)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                await CopyTo(name, memoryStream).ConfigureAwait(false);
-                memoryStream.Position = 0;
-                return memoryStream.GetBuffer();
-            }
+            var connection = connectionFactory.Value;
+            return streamPersister.GetBytes(messageId, name, connection);
         }
     }
 }

@@ -6,26 +6,26 @@ namespace NServiceBus.Attachments
 {
     public class IncomingAttachment
     {
-        IncomingAttachments incomingAttachments;
+        IncomingAttachments attachments;
 
-        public IncomingAttachment(IncomingAttachments incomingAttachments)
+        public IncomingAttachment(IncomingAttachments attachments)
         {
-            this.incomingAttachments = incomingAttachments;
+            this.attachments = attachments;
         }
 
         public Task CopyTo(Stream target)
         {
-            return incomingAttachments.CopyTo(string.Empty, target);
+            return attachments.CopyTo(string.Empty, target);
         }
 
         public Task ProcessStream(Func<Stream, Task> action)
         {
-            return incomingAttachments.ProcessStream(string.Empty, action);
+            return attachments.ProcessStream(string.Empty, action);
         }
 
         public Task<byte[]> GetBytes()
         {
-            return incomingAttachments.GetBytes(string.Empty);
+            return attachments.GetBytes(string.Empty);
         }
     }
 }

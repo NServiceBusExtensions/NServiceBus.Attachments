@@ -40,6 +40,19 @@ public class StreamPersisterTests: TestBase
     }
 
     [Fact]
+    public async Task GetBytes()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection);
+            persister.DeleteAllRows(connection);
+            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
+            var bytes = await persister.GetBytes("theMessageId", "theName", connection);
+            Assert.Equal(5, bytes[0]);
+        }
+    }
+
+    [Fact]
     public async Task ProcessStream()
     {
         using (var connection = Connection.OpenConnection())
@@ -52,7 +65,7 @@ public class StreamPersisterTests: TestBase
                 action: stream =>
                 {
                     count++;
-                    var array = GetBytes(stream);
+                    var array = ToBytes(stream);
                     Assert.Equal(5, array[0]);
                     return Task.CompletedTask;
                 });
@@ -74,7 +87,7 @@ public class StreamPersisterTests: TestBase
                 action: (name, stream) =>
                 {
                     count++;
-                    var array = GetBytes(stream);
+                    var array = ToBytes(stream);
                     if (count == 1)
                     {
                         Assert.Equal(1, array[0]);
@@ -92,7 +105,7 @@ public class StreamPersisterTests: TestBase
         }
     }
 
-    static byte[] GetBytes(Stream stream)
+    static byte[] ToBytes(Stream stream)
     {
         using (var memoryStream = new MemoryStream())
         {

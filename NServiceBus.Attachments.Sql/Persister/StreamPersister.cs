@@ -103,12 +103,27 @@ from {fullTableName}";
                 using (var data = reader.GetStream(0))
                 {
                     await data.CopyToAsync(target).ConfigureAwait(false);
-                    return;
                 }
+
+                return;
             }
         }
 
-        ThrowNotFound(messageId, name);
+        throw ThrowNotFound(messageId, name);
+    }
+
+    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection)
+    {
+        using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        {
+            if (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                return (byte[]) reader[0];
+            }
+        }
+
+        throw ThrowNotFound(messageId, name);
     }
 
     public async Task ProcessStreams(string messageId, SqlConnection connection, Func<string, Stream, Task> action)
@@ -137,17 +152,18 @@ from {fullTableName}";
                 using (var data = reader.GetStream(0))
                 {
                     await action(data).ConfigureAwait(false);
-                    return;
                 }
+
+                return;
             }
         }
 
-        ThrowNotFound(messageId, name);
+        throw ThrowNotFound(messageId, name);
     }
 
-    static void ThrowNotFound(string messageId, string name)
+    static Exception ThrowNotFound(string messageId, string name)
     {
-        throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
+        return new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
     }
 
     // The reader needs to be executed with SequentialAccess to enable network streaming
