@@ -7,7 +7,7 @@ class AttachmentsFeature : Feature
 {
     protected override void Setup(FeatureConfigurationContext context)
     {
-        var settings = context.Settings.Get<Settings>();
+        var settings = context.Settings.Get<AttachmentSettings>();
         var pipeline = context.Pipeline;
         var streamPersister = new StreamPersister(settings.Schema, settings.TableName);
         pipeline.Register(new ReceiveRegistration(settings.ConnectionBuilder, streamPersister));
@@ -18,13 +18,12 @@ class AttachmentsFeature : Feature
         }
     }
 
-    static Cleaner CreateCleaner(Settings settings, StreamPersister streamPersister, IBuilder builder)
+    static Cleaner CreateCleaner(AttachmentSettings settings, StreamPersister streamPersister, IBuilder builder)
     {
         return new Cleaner(async token =>
             {
-                using (var connection = settings.ConnectionBuilder())
+                using (var connection = await settings.ConnectionBuilder().ConfigureAwait(false))
                 {
-                    await connection.OpenAsync(token).ConfigureAwait(false);
                     streamPersister.CleanupItemsOlderThan(connection, DateTime.UtcNow);
                 }
             },

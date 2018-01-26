@@ -11,11 +11,11 @@ using NServiceBus.Pipeline;
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<SqlConnection> connectionBuilder;
+    Func<Task<SqlConnection>> connectionBuilder;
     StreamPersister streamPersister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Task<SqlConnection>> connectionBuilder, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
     {
         this.connectionBuilder = connectionBuilder;
         this.streamPersister = streamPersister;
@@ -47,10 +47,8 @@ class SendBehavior :
 
         var timeToBeReceived = GetTimeToBeReceivedFromConstraint(extensions);
 
-        using (var connection = connectionBuilder())
+        using (var connection = await connectionBuilder())
         {
-            await connection.OpenAsync()
-                .ConfigureAwait(false);
             var messageId = context.MessageId;
 
             using (var transaction = connection.BeginTransaction())

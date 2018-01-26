@@ -7,10 +7,10 @@ using NServiceBus.Pipeline;
 class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
-    Func<SqlConnection> connectionBuilder;
+    Func<Task<SqlConnection>> connectionBuilder;
     StreamPersister streamPersister;
 
-    public ReceiveBehavior(Func<SqlConnection> connectionBuilder, StreamPersister streamPersister)
+    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, StreamPersister streamPersister)
     {
         this.connectionBuilder = connectionBuilder;
         this.streamPersister = streamPersister;
@@ -18,13 +18,7 @@ class ReceiveBehavior :
 
     public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        var connectionFactory = new Lazy<Task<SqlConnection>>(async () =>
-        {
-            var sqlConnection = connectionBuilder();
-            await sqlConnection.OpenAsync()
-                .ConfigureAwait(false);
-            return sqlConnection;
-        });
+        var connectionFactory = new Lazy<Task<SqlConnection>>(() => connectionBuilder());
         try
         {
             var incomingAttachments = new IncomingAttachments(

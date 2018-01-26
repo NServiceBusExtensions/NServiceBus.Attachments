@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 public static class Connection
 {
@@ -29,6 +30,12 @@ public static class Connection
     {
         var connection = new SqlConnection(ConnectionString);
         connection.Open();
+        return connection;
+    }
+    public static async Task<SqlConnection> OpenAsyncConnection()
+    {
+        var connection = new SqlConnection(ConnectionString);
+        await connection.OpenAsync();
         return connection;
     }
 

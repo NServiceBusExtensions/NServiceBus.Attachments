@@ -28,7 +28,7 @@ public class IntegrationTests
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.EnableAttachments(
-            connectionBuilder: Connection.NewConnection,
+            connectionBuilder: Connection.OpenAsyncConnection,
             timeToKeep: TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);

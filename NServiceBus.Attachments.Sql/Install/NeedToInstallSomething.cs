@@ -5,11 +5,11 @@ using NServiceBus.Settings;
 
 class NeedToInstallSomething : INeedToInstallSomething
 {
-    Settings installerSettings;
+    AttachmentSettings installerSettings;
 
     public NeedToInstallSomething(ReadOnlySettings settings)
     {
-        installerSettings = settings.GetOrDefault<Settings>();
+        installerSettings = settings.GetOrDefault<AttachmentSettings>();
     }
 
     public async Task Install(string identity)
@@ -19,9 +19,8 @@ class NeedToInstallSomething : INeedToInstallSomething
             return;
         }
 
-        using (var connection = installerSettings.ConnectionBuilder())
+        using (var connection = await installerSettings.ConnectionBuilder().ConfigureAwait(false))
         {
-            await connection.OpenAsync().ConfigureAwait(false);
             Installer.CreateTable(connection, installerSettings.Schema, installerSettings.TableName);
         }
     }

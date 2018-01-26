@@ -18,7 +18,7 @@ class Program
         configuration.UseTransport<LearningTransport>();
         configuration.AuditProcessedMessagesTo("audit");
         configuration.EnableAttachments(
-            connectionBuilder: Connection.NewConnection,
+            connectionBuilder: Connection.OpenAsyncConnection,
             timeToKeep: TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);

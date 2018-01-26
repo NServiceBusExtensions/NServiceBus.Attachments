@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.Configuration.AdvancedExtensibility;
 
@@ -12,7 +13,7 @@ namespace NServiceBus
     {
         public static void EnableAttachments(
             this EndpointConfiguration configuration,
-            Func<SqlConnection> connectionBuilder,
+            Func<Task<SqlConnection>> connectionBuilder,
             GetTimeToKeep timeToKeep,
             bool runCleanTask = true,
             string schema = "dbo",
@@ -26,7 +27,7 @@ namespace NServiceBus
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             var settings = configuration.GetSettings();
-            settings.Set<global::Settings>(new global::Settings(connectionBuilder, runCleanTask, schema, tableName, disableInstaller, timeToKeep));
+            settings.Set<AttachmentSettings>(new AttachmentSettings(connectionBuilder, runCleanTask, schema, tableName, disableInstaller, timeToKeep));
             configuration.EnableFeature<AttachmentsFeature>();
         }
     }
