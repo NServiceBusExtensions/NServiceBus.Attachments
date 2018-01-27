@@ -3,7 +3,7 @@ using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.ObjectBuilder;
 
-class AttachmentsFeature : Feature
+class AttachmentFeature : Feature
 {
     protected override void Setup(FeatureConfigurationContext context)
     {

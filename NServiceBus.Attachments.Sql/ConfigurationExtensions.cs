@@ -28,7 +28,7 @@ namespace NServiceBus
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             var settings = configuration.GetSettings();
             settings.Set<AttachmentSettings>(new AttachmentSettings(connectionBuilder, runCleanTask, schema, tableName, disableInstaller, timeToKeep));
-            configuration.EnableFeature<AttachmentsFeature>();
+            configuration.EnableFeature<AttachmentFeature>();
         }
     }
 }
