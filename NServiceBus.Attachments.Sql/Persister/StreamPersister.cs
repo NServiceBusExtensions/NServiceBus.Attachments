@@ -115,7 +115,7 @@ from {fullTableName}";
     public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection))
-        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
         {
             if (await reader.ReadAsync().ConfigureAwait(false))
             {
