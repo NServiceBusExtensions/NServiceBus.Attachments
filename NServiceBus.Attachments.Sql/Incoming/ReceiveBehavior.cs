@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using NServiceBus.Attachments;
 using NServiceBus.Pipeline;
 
 class ReceiveBehavior :
@@ -25,9 +24,11 @@ class ReceiveBehavior :
                 return sqlConnection = await connectionBuilder().ConfigureAwait(false);
             });
 
+        Func<Task<SqlConnection>> factory = () => connectionFactory.Value;
+        context.SetConnectionFactory(factory);
         try
         {
-            await Inner(context, next, () => connectionFactory.Value);
+            await Inner(context, next, factory);
         }
         finally
         {
@@ -37,7 +38,7 @@ class ReceiveBehavior :
 
     Task Inner(IInvokeHandlerContext context, Func<Task> next, Func<Task<SqlConnection>> factory)
     {
-        var incomingAttachments = new IncomingAttachments(
+        var incomingAttachments = new MessageAttachments(
             sqlConnectionFactory: factory,
             messageId: context.MessageId,
             streamPersister: streamPersister);

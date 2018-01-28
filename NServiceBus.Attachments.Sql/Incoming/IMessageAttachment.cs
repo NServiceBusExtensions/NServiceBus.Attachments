@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
 {
-    public interface IIncomingAttachment
+    public interface IMessageAttachment
     {
         Task CopyTo(Stream target);
         Task ProcessStream(Func<Stream, Task> action);
