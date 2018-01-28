@@ -13,7 +13,6 @@ namespace NServiceBus
         internal string TableName = "Attachments";
         internal bool InstallerDisabled;
         internal GetTimeToKeep TimeToKeep;
-        internal StreamPersister Persister;
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {

@@ -31,9 +31,8 @@ namespace NServiceBus
         {
             Guard.AgainstNull(context, "context");
             Guard.AgainstNullOrEmpty(messageId, "messageId");
-            var settings = context.Extensions.Get<AttachmentSettings>();
-            var connectionFactory = context.GetConnectionFactory();
-            return new MessageAttachments(connectionFactory, messageId, settings.Persister);
+            var state = context.Extensions.Get<AttachmentReceiveState>();
+            return new MessageAttachments(state.ConnectionFactory, messageId, state.Persister);
         }
     }
 }

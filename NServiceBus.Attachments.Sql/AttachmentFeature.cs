@@ -10,13 +10,13 @@ class AttachmentFeature : Feature
         var settings = context.Settings.Get<AttachmentSettings>();
 
         var pipeline = context.Pipeline;
-        var streamPersister = new StreamPersister(settings.Schema, settings.TableName);
-        settings.Persister = streamPersister;
-        pipeline.Register(new ReceiveRegistration(settings.ConnectionFactory, streamPersister));
-        pipeline.Register(new SendRegistration(settings.ConnectionFactory, streamPersister, settings.TimeToKeep));
+        var persister = new StreamPersister(settings.Schema, settings.TableName);
+        pipeline.Register(new ReceiveRegistration(settings.ConnectionFactory, persister));
+
+        pipeline.Register(new SendRegistration(settings.ConnectionFactory, persister, settings.TimeToKeep));
         if (settings.RunCleanTask)
         {
-            context.RegisterStartupTask(builder => CreateCleaner(settings, streamPersister, builder));
+            context.RegisterStartupTask(builder => CreateCleaner(settings, persister, builder));
         }
     }
 
