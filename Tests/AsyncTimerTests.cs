@@ -10,13 +10,11 @@ public class AsyncTimerTests
         var errorCallbackInvoked = new TaskCompletionSource<bool>();
 
         var timer = new AsyncTimer();
-        timer.Start((time, token) =>
-        {
-            throw new Exception("Simulated!");
-        }, TimeSpan.Zero, e =>
-        {
-            errorCallbackInvoked.SetResult(true);
-        }, Task.Delay);
+        timer.Start(
+            callback: (time, token) => throw new Exception("Simulated!"),
+            interval: TimeSpan.Zero,
+            errorCallback: e => { errorCallbackInvoked.SetResult(true); },
+            delayStrategy: Task.Delay);
 
         Assert.True(await errorCallbackInvoked.Task.ConfigureAwait(false));
     }
@@ -29,20 +27,22 @@ public class AsyncTimerTests
         var fail = true;
         var exceptionThrown = false;
         var timer = new AsyncTimer();
-        timer.Start((time, token) =>
-        {
-            if (fail)
+        timer.Start(
+            callback: (time, token) =>
             {
-                fail = false;
-                throw new Exception("Simulated!");
-            }
-            Assert.True(exceptionThrown);
-            callbackInvokedAfterError.SetResult(true);
-            return Task.FromResult(0);
-        }, TimeSpan.Zero, e =>
-        {
-            exceptionThrown = true;
-        }, Task.Delay);
+                if (fail)
+                {
+                    fail = false;
+                    throw new Exception("Simulated!");
+                }
+
+                Assert.True(exceptionThrown);
+                callbackInvokedAfterError.SetResult(true);
+                return Task.FromResult(0);
+            },
+            interval: TimeSpan.Zero,
+            errorCallback: e => { exceptionThrown = true; },
+            delayStrategy: Task.Delay);
 
         Assert.True(await callbackInvokedAfterError.Task.ConfigureAwait(false));
     }
@@ -54,24 +54,25 @@ public class AsyncTimerTests
         var waitCancelled = false;
         var delayStarted = new TaskCompletionSource<bool>();
 
-        timer.Start((time, token) =>
-        {
-            throw new Exception("Simulated!");
-        }, TimeSpan.FromDays(7), e =>
-        {
-            //noop
-        }, async (delayTime, token) =>
-        {
-            delayStarted.SetResult(true);
-            try
+        timer.Start(
+            callback: (time, token) => throw new Exception("Simulated!"),
+            interval: TimeSpan.FromDays(7),
+            errorCallback: e =>
             {
-                await Task.Delay(delayTime, token).ConfigureAwait(false);
-            }
-            catch (OperationCanceledException)
+                //noop
+            },
+            delayStrategy: async (delayTime, token) =>
             {
-                waitCancelled = true;
-            }
-        });
+                delayStarted.SetResult(true);
+                try
+                {
+                    await Task.Delay(delayTime, token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    waitCancelled = true;
+                }
+            });
         await delayStarted.Task.ConfigureAwait(false);
         await timer.Stop().ConfigureAwait(false);
 
@@ -86,18 +87,22 @@ public class AsyncTimerTests
         var callbackStarted = new TaskCompletionSource<bool>();
         var stopInitiated = new TaskCompletionSource<bool>();
 
-        timer.Start(async (time, token) =>
-        {
-            callbackStarted.SetResult(true);
-            await stopInitiated.Task.ConfigureAwait(false);
-            if (token.IsCancellationRequested)
+        timer.Start(
+            callback: async (time, token) =>
             {
-                callbackCancelled = true;
-            }
-        }, TimeSpan.Zero, e =>
-        {
-            //noop
-        }, Task.Delay);
+                callbackStarted.SetResult(true);
+                await stopInitiated.Task.ConfigureAwait(false);
+                if (token.IsCancellationRequested)
+                {
+                    callbackCancelled = true;
+                }
+            },
+            interval: TimeSpan.Zero,
+            errorCallback: e =>
+            {
+                //noop
+            },
+            delayStrategy: Task.Delay);
 
         await callbackStarted.Task.ConfigureAwait(false);
         var stopTask = timer.Stop();
@@ -114,14 +119,18 @@ public class AsyncTimerTests
         var callbackCompleted = new TaskCompletionSource<bool>();
         var callbackTaskStarted = new TaskCompletionSource<bool>();
 
-        timer.Start((time, token) =>
-        {
-            callbackTaskStarted.SetResult(true);
-            return callbackCompleted.Task;
-        }, TimeSpan.Zero, e =>
-        {
-            //noop
-        }, Task.Delay);
+        timer.Start(
+            callback: (time, token) =>
+            {
+                callbackTaskStarted.SetResult(true);
+                return callbackCompleted.Task;
+            },
+            interval: TimeSpan.Zero,
+            errorCallback: e =>
+            {
+                //noop
+            },
+            delayStrategy: Task.Delay);
 
         await callbackTaskStarted.Task.ConfigureAwait(false);
 
