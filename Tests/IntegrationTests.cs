@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments;
+using NServiceBus.Features;
 using Xunit;
 
 public class IntegrationTests
@@ -28,22 +29,33 @@ public class IntegrationTests
     public async Task Run()
     {
         resetEvent = new ManualResetEvent(false);
-        var configuration = GetEndpointConfiguration();
+        var configuration = new EndpointConfiguration("AttachmentsTest");
+        configuration.UsePersistence<LearningPersistence>();
+        configuration.UseTransport<LearningTransport>();
+        configuration.PurgeOnStartup(true);
+        configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
         resetEvent.WaitOne();
         await endpoint.Stop();
     }
 
-    static EndpointConfiguration GetEndpointConfiguration(Action<AttachmentSettings> action = null)
+    [Fact]
+    public async Task RunSql()
     {
+        resetEvent = new ManualResetEvent(false);
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
-        configuration.UseTransport<LearningTransport>();
+        var transport = configuration.UseTransport<SqlServerTransport>();
+        transport.ConnectionString(Connection.ConnectionString);
+        configuration.DisableFeature<TimeoutManager>();
+        configuration.DisableFeature<MessageDrivenSubscriptions>();
         configuration.PurgeOnStartup(true);
-        var attachments = configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
-        action?.Invoke(attachments);
-        return configuration;
+        configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
+        var endpoint = await Endpoint.Start(configuration);
+        await SendStartMessage(endpoint);
+        resetEvent.WaitOne();
+        await endpoint.Stop();
     }
 
     static async Task SendStartMessage(IEndpointInstance endpoint)
