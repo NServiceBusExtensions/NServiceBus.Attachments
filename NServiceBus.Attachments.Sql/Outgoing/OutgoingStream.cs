@@ -6,6 +6,7 @@ using NServiceBus.Attachments;
 class OutgoingStream
 {
     public Func<Task<Stream>> Func;
+    public Stream Instance;
     public GetTimeToKeep TimeToKeep;
     public Action Cleanup;
 }

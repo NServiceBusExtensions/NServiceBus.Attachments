@@ -14,7 +14,7 @@ class OutgoingAttachments: IOutgoingAttachments
         Guard.AgainstNull(stream, nameof(stream));
         Streams.Add(name, new OutgoingStream
         {
-            Func = async () => await stream(),
+            Func = async () => await stream().ConfigureAwait(false),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
@@ -27,6 +27,18 @@ class OutgoingAttachments: IOutgoingAttachments
         Streams.Add(name, new OutgoingStream
         {
             Func = () => Task.FromResult(stream()),
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void Add(string name, Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(name, nameof(name));
+        Guard.AgainstNull(stream, nameof(stream));
+        Streams.Add(name, new OutgoingStream
+        {
+            Instance = stream,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });

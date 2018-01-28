@@ -86,10 +86,18 @@ class SendBehavior :
     {
         var outgoingStreamTimeToKeep = outgoingStream.TimeToKeep ?? endpointTimeToKeep;
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
-        using (var stream = await outgoingStream.Func().ConfigureAwait(false))
+        if (outgoingStream.Func == null)
         {
-            await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
+            await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), outgoingStream.Instance)
                 .ConfigureAwait(false);
+        }
+        else
+        {
+            using (var stream = await outgoingStream.Func().ConfigureAwait(false))
+            {
+                await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
+                    .ConfigureAwait(false);
+            }
         }
 
         outgoingStream.Cleanup?.Invoke();

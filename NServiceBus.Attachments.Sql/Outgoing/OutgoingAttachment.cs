@@ -23,4 +23,10 @@ class OutgoingAttachment : IOutgoingAttachment
         Guard.AgainstNull(stream, nameof(stream));
         attachments.Add(string.Empty, stream, timeToKeep, cleanup);
     }
+
+    public void Add(Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(stream, nameof(stream));
+        attachments.Add(string.Empty, stream, timeToKeep, cleanup);
+    }
 }
