@@ -49,8 +49,12 @@ namespace NServiceBus
             return attachments;
         }
 
-        static OutgoingAttachment GetOutgoingAttachment(this ExtendableOptions options)
+        static IOutgoingAttachment GetOutgoingAttachment(this ExtendableOptions options)
         {
+            if (options.GetExtensions().TryGet<IOutgoingAttachment>(out var attachment))
+            {
+                return attachment;
+            }
             return new OutgoingAttachment(GetOutgoingAttachments(options));
         }
     }

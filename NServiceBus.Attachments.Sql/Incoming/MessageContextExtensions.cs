@@ -12,6 +12,10 @@ namespace NServiceBus
 
         public static IMessageAttachment IncomingAttachment(this IMessageHandlerContext context)
         {
+            if (context.Extensions.TryGet<IMessageAttachment>(out var attachment))
+            {
+                return attachment;
+            }
             var incomingAttachments = context.IncomingAttachments();
             return new MessageAttachment(incomingAttachments);
         }
@@ -23,6 +27,12 @@ namespace NServiceBus
 
         public static IMessageAttachment AttachmentForMessage(this IMessageHandlerContext context, string messageId)
         {
+            var contextBag = context.Extensions;
+            //TODO: how to mock multiple calls to diff messageId
+            if (contextBag.TryGet<IMessageAttachment>(out var attachment))
+            {
+                return attachment;
+            }
             var incomingAttachments = context.AttachmentsForMessage(messageId);
             return new MessageAttachment(incomingAttachments);
         }
