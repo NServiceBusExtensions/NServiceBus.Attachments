@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments;
 using NServiceBus.Features;
+using NServiceBus.Transport.SQLServer;
 using Xunit;
 
 public class IntegrationTests
@@ -45,7 +46,7 @@ public class IntegrationTests
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
-        transport.ConnectionString(Connection.ConnectionString);
+        transport.UseCustomSqlConnectionFactory(Connection.OpenAsyncConnection);
         configuration.DisableFeature<TimeoutManager>();
         configuration.DisableFeature<MessageDrivenSubscriptions>();
         configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
