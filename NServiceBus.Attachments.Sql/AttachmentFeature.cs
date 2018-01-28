@@ -11,8 +11,8 @@ class AttachmentFeature : Feature
 
         var pipeline = context.Pipeline;
         var streamPersister = new StreamPersister(settings.Schema, settings.TableName);
-        pipeline.Register(new ReceiveRegistration(settings.ConnectionBuilder, streamPersister));
-        pipeline.Register(new SendRegistration(settings.ConnectionBuilder, streamPersister, settings.TimeToKeep));
+        pipeline.Register(new ReceiveRegistration(settings.ConnectionFactory, streamPersister));
+        pipeline.Register(new SendRegistration(settings.ConnectionFactory, streamPersister, settings.TimeToKeep));
         if (settings.RunCleanTask)
         {
             context.RegisterStartupTask(builder => CreateCleaner(settings, streamPersister, builder));
@@ -23,7 +23,7 @@ class AttachmentFeature : Feature
     {
         return new Cleaner(async token =>
             {
-                using (var connection = await settings.ConnectionBuilder().ConfigureAwait(false))
+                using (var connection = await settings.ConnectionFactory().ConfigureAwait(false))
                 {
                     streamPersister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow);
                 }

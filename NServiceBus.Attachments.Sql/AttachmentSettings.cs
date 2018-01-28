@@ -7,18 +7,18 @@ namespace NServiceBus
 {
     public class AttachmentSettings
     {
-        internal Func<Task<SqlConnection>> ConnectionBuilder;
+        internal Func<Task<SqlConnection>> ConnectionFactory;
         internal bool RunCleanTask = true;
         internal string Schema = "dbo";
         internal string TableName = "Attachments";
         internal bool InstallerDisabled;
         internal GetTimeToKeep TimeToKeep;
 
-        internal AttachmentSettings(Func<Task<SqlConnection>> connectionBuilder,GetTimeToKeep timeToKeep)
+        internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
-            Guard.AgainstNull(connectionBuilder, nameof(connectionBuilder));
+            Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
             TimeToKeep = timeToKeep;
-            ConnectionBuilder = connectionBuilder;
+            ConnectionFactory = connectionFactory;
         }
 
         public void DisableCleanupTask()

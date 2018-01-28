@@ -6,12 +6,12 @@ using NServiceBus.Pipeline;
 class ReceiveRegistration :
     RegisterStep
 {
-    public ReceiveRegistration(Func<Task<SqlConnection>> connectionBuilder, StreamPersister streamPersister)
+    public ReceiveRegistration(Func<Task<SqlConnection>> connectionFactory, StreamPersister streamPersister)
         : base(
             stepId: $"{AssemblyHelper.Name}Receive",
             behavior: typeof(ReceiveBehavior),
             description: "Copies the shared data back to the logical messages",
-            factoryMethod: builder => new ReceiveBehavior(connectionBuilder, streamPersister))
+            factoryMethod: builder => new ReceiveBehavior(connectionFactory, streamPersister))
     {
     }
 }

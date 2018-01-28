@@ -13,14 +13,14 @@ namespace NServiceBus
     {
         public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
-            Func<Task<SqlConnection>> connectionBuilder,
+            Func<Task<SqlConnection>> connectionFactory,
             GetTimeToKeep timeToKeep)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
             Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
-            Guard.AgainstNull(connectionBuilder, nameof(connectionBuilder));
+            Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
             var settings = configuration.GetSettings();
-            var attachmentSettings = new AttachmentSettings(connectionBuilder,timeToKeep);
+            var attachmentSettings = new AttachmentSettings(connectionFactory,timeToKeep);
             settings.Set<AttachmentSettings>(attachmentSettings);
             configuration.EnableFeature<AttachmentFeature>();
             return attachmentSettings;

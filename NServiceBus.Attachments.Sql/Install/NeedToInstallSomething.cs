@@ -20,7 +20,7 @@ class NeedToInstallSomething : INeedToInstallSomething
             return;
         }
 
-        using (var connection = await installerSettings.ConnectionBuilder().ConfigureAwait(false))
+        using (var connection = await installerSettings.ConnectionFactory().ConfigureAwait(false))
         {
             Installer.CreateTable(connection, installerSettings.Schema, installerSettings.TableName);
         }
