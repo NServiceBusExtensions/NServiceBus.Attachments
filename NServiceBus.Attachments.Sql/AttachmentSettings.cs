@@ -32,12 +32,6 @@ namespace NServiceBus
             InstallerDisabled = true;
         }
 
-        public void SetTimeToKeep(GetTimeToKeep timeToKeep)
-        {
-            Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
-            TimeToKeep = timeToKeep;
-        }
-
         public void UseTableName(string tableName, string schema = "dbo")
         {
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
