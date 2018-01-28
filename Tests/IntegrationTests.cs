@@ -39,7 +39,7 @@ public class IntegrationTests
         await endpoint.Stop();
     }
 
-    [Fact]
+    [Fact(Skip = "ignore")]
     public async Task RunSql()
     {
         resetEvent = new ManualResetEvent(false);
