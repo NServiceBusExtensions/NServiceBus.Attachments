@@ -5,9 +5,9 @@ using NServiceBus.Attachments;
 
 class OutgoingAttachment : IOutgoingAttachment
 {
-    OutgoingAttachments attachments;
+    IOutgoingAttachments attachments;
 
-    public OutgoingAttachment(OutgoingAttachments attachments)
+    public OutgoingAttachment(IOutgoingAttachments attachments)
     {
         this.attachments = attachments;
     }

@@ -13,13 +13,13 @@ class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
     Func<Task<SqlConnection>> connectionFactory;
-    StreamPersister streamPersister;
+    StreamPersister persister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, StreamPersister streamPersister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, StreamPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
-        this.streamPersister = streamPersister;
+        this.persister = persister;
         endpointTimeToKeep = timeToKeep;
     }
 
@@ -35,12 +35,12 @@ class SendBehavior :
     async Task ProcessStreams(IOutgoingLogicalMessageContext context)
     {
         var extensions = context.Extensions;
-        if (!extensions.TryGet<OutgoingAttachments>(out var attachments))
+        if (!extensions.TryGet<IOutgoingAttachments>(out var attachments))
         {
             return;
         }
 
-        var streams = attachments.Streams;
+        var streams = ((OutgoingAttachments)attachments).Streams;
         if (!streams.Any())
         {
             return;
@@ -88,14 +88,21 @@ class SendBehavior :
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
         if (outgoingStream.Func == null)
         {
-            await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), outgoingStream.Instance)
-                .ConfigureAwait(false);
+            try
+            {
+                await persister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), outgoingStream.Instance)
+                    .ConfigureAwait(false);
+            }
+            finally
+            {
+                outgoingStream.Instance.Dispose();
+            }
         }
         else
         {
             using (var stream = await outgoingStream.Func().ConfigureAwait(false))
             {
-                await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
+                await persister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
                     .ConfigureAwait(false);
             }
         }
