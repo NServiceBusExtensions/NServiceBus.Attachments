@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,13 +7,11 @@ using NServiceBus;
 using NServiceBus.Attachments;
 using Xunit;
 
-//TODO: add only send and only receive variants.
 public class IntegrationTests
 {
-    static ManualResetEvent resetEvent = new ManualResetEvent(false);
+    static ManualResetEvent resetEvent;
 
-    [Fact]
-    public async Task Run()
+    static IntegrationTests()
     {
         if (!Connection.IsUsingEnvironmentVariable)
         {
@@ -23,32 +22,37 @@ public class IntegrationTests
         {
             Installer.CreateTable(sqlConnection);
         }
+    }
 
-        var configuration = new EndpointConfiguration("AttachmentsTest");
-        configuration.UsePersistence<LearningPersistence>();
-        configuration.UseTransport<LearningTransport>();
-        configuration.EnableAttachments(
-            connectionBuilder: Connection.OpenAsyncConnection,
-            timeToKeep: TimeToKeep.Default);
+    [Fact]
+    public async Task Run()
+    {
+        resetEvent = new ManualResetEvent(false);
+        var configuration = GetEndpointConfiguration();
         var endpoint = await Endpoint.Start(configuration);
-        await SendMessage(endpoint);
+        await SendStartMessage(endpoint);
         resetEvent.WaitOne();
         await endpoint.Stop();
     }
 
-    static async Task SendMessage(IEndpointInstance endpoint)
+    static EndpointConfiguration GetEndpointConfiguration(Action<AttachmentSettings> action = null)
+    {
+        var configuration = new EndpointConfiguration("AttachmentsTest");
+        configuration.UsePersistence<LearningPersistence>();
+        configuration.UseTransport<LearningTransport>();
+        configuration.PurgeOnStartup(true);
+        var attachments = configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
+        action?.Invoke(attachments);
+        return configuration;
+    }
+
+    static async Task SendStartMessage(IEndpointInstance endpoint)
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
-        var attachments = sendOptions.OutgoingAttachments();
-        attachments.Add(
-            name: "foo",
-            stream: GetStream);
         var attachment = sendOptions.OutgoingAttachment();
         attachment.Add(GetStream);
-
-
-        await endpoint.Send(new MyMessage(), sendOptions);
+        await endpoint.Send(new SendMessage(), sendOptions);
     }
 
     static Stream GetStream()
@@ -61,18 +65,25 @@ public class IntegrationTests
         return stream;
     }
 
-    class Handler : IHandleMessages<MyMessage>
+    class SendHandler : IHandleMessages<SendMessage>
     {
-        public async Task Handle(MyMessage message, IMessageHandlerContext context)
+        public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
-            using (var memoryStream = new MemoryStream())
+            var replyOptions = new ReplyOptions();
+            var outgoingAttachment = replyOptions.OutgoingAttachment();
+            outgoingAttachment.Add(() =>
             {
-                var incomingAttachments = context.IncomingAttachments();
-                await incomingAttachments.CopyTo("foo", memoryStream);
-                memoryStream.Position = 0;
-                var buffer = memoryStream.GetBuffer();
-                Debug.WriteLine(buffer);
-            }
+                var incomingAttachment = context.IncomingAttachment();
+                return incomingAttachment.GetStream();
+            });
+            return context.Reply(new ReplyMessage(), replyOptions);
+        }
+    }
+
+    class ReplyHandler : IHandleMessages<ReplyMessage>
+    {
+        public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
+        {
             using (var memoryStream = new MemoryStream())
             {
                 var incomingAttachment = context.IncomingAttachment();
@@ -86,7 +97,11 @@ public class IntegrationTests
         }
     }
 
-    class MyMessage : IMessage
+    class SendMessage : IMessage
+    {
+    }
+
+    class ReplyMessage : IMessage
     {
     }
 }

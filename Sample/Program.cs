@@ -17,9 +17,7 @@ class Program
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.AuditProcessedMessagesTo("audit");
-        configuration.EnableAttachments(
-            connectionBuilder: Connection.OpenAsyncConnection,
-            timeToKeep: TimeToKeep.Default);
+        configuration.EnableAttachments(Connection.OpenAsyncConnection,TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");

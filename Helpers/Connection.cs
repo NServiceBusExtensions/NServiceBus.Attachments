@@ -8,7 +8,7 @@ public static class Connection
 
     static Connection()
     {
-        if (Environment.GetEnvironmentVariable("APPVEYOR")=="True")
+        if (Environment.GetEnvironmentVariable("APPVEYOR") == "True")
         {
             ConnectionString = @"Server=(local)\SQL2017;Database=master;User ID=sa;Password=Password12!";
             return;
@@ -21,6 +21,7 @@ public static class Connection
             IsUsingEnvironmentVariable = true;
             return;
         }
+
         ConnectionString = @"Data Source=.\SQLExpress;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100";
     }
 
@@ -32,6 +33,7 @@ public static class Connection
         connection.Open();
         return connection;
     }
+
     public static async Task<SqlConnection> OpenAsyncConnection()
     {
         var connection = new SqlConnection(ConnectionString);

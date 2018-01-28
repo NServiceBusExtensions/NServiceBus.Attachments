@@ -3,22 +3,46 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 
-class AttachmentSettings
+namespace NServiceBus
 {
-    public readonly Func<Task<SqlConnection>> ConnectionBuilder;
-    public readonly bool RunCleanTask;
-    public readonly string Schema;
-    public readonly string TableName;
-    public readonly bool DisableInstaller;
-    public readonly GetTimeToKeep TimeToKeep;
-
-    public AttachmentSettings(Func<Task<SqlConnection>> connectionBuilder, bool runCleanTask, string schema, string tableName, bool disableInstaller, GetTimeToKeep timeToKeep)
+    public class AttachmentSettings
     {
-        ConnectionBuilder = connectionBuilder;
-        RunCleanTask = runCleanTask;
-        Schema = schema;
-        TableName = tableName;
-        DisableInstaller = disableInstaller;
-        TimeToKeep = timeToKeep;
+        internal Func<Task<SqlConnection>> ConnectionBuilder;
+        internal bool RunCleanTask = true;
+        internal string Schema = "dbo";
+        internal string TableName = "Attachments";
+        internal bool InstallerDisabled;
+        internal GetTimeToKeep TimeToKeep;
+
+        internal AttachmentSettings(Func<Task<SqlConnection>> connectionBuilder,GetTimeToKeep timeToKeep)
+        {
+            Guard.AgainstNull(connectionBuilder, nameof(connectionBuilder));
+            TimeToKeep = timeToKeep;
+            ConnectionBuilder = connectionBuilder;
+        }
+
+        public void DisableCleanupTask()
+        {
+            RunCleanTask = false;
+        }
+
+        public void DisableInstaller()
+        {
+            InstallerDisabled = true;
+        }
+
+        public void SetTimeToKeep(GetTimeToKeep timeToKeep)
+        {
+            Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
+            TimeToKeep = timeToKeep;
+        }
+
+        public void UseTableName(string tableName, string schema = "dbo")
+        {
+            Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
+            Guard.AgainstNullOrEmpty(schema, nameof(schema));
+            TableName = tableName;
+            Schema = schema;
+        }
     }
 }

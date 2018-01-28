@@ -29,5 +29,10 @@ namespace NServiceBus.Attachments
         {
             return attachments.GetBytes(string.Empty);
         }
+
+        public Task<Stream> GetStream()
+        {
+            return attachments.GetStream(string.Empty);
+        }
     }
 }

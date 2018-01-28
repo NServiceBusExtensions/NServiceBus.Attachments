@@ -10,5 +10,6 @@ namespace NServiceBus.Attachments
         Task ProcessStream(string name, Func<Stream, Task> action);
         Task ProcessStreams(Func<string, Stream, Task> action);
         Task<byte[]> GetBytes(string name);
+        Task<Stream> GetStream(string name);
     }
 }

@@ -45,9 +45,9 @@ values
         }
     }
 
-    public IEnumerable<ReadRow> ReadAllMetadata(SqlConnection connection)
+    public IEnumerable<ReadRow> ReadAllMetadata(SqlConnection connection, SqlTransaction transaction)
     {
-        using (var command = GetReadMetadataCommand(connection))
+        using (var command = GetReadMetadataCommand(connection, transaction))
         using (var reader = command.ExecuteReader())
         {
             while (reader.Read())
@@ -61,9 +61,13 @@ values
         }
     }
 
-    SqlCommand GetReadMetadataCommand(SqlConnection connection)
+    SqlCommand GetReadMetadataCommand(SqlConnection connection, SqlTransaction transaction)
     {
         var command = connection.CreateCommand();
+        if (transaction != null)
+        {
+            command.Transaction = transaction;
+        }
         command.CommandText = $@"
 select
     Id,
@@ -74,28 +78,36 @@ from {fullTableName}";
         return command;
     }
 
-    public void DeleteAllRows(SqlConnection connection)
+    public void DeleteAllRows(SqlConnection connection,SqlTransaction transaction)
     {
         using (var command = connection.CreateCommand())
         {
+            if (transaction != null)
+            {
+                command.Transaction = transaction;
+            }
             command.CommandText = $@"delete from {fullTableName}";
             command.ExecuteNonQuery();
         }
     }
 
-    public void CleanupItemsOlderThan(SqlConnection connection, DateTime dateTime)
+    public void CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime)
     {
         using (var command = connection.CreateCommand())
         {
+            if (transaction != null)
+            {
+                command.Transaction = transaction;
+            }
             command.CommandText = $@"delete from {fullTableName} where expiry < @date";
             command.Parameters.AddWithValue("date", dateTime);
             command.ExecuteNonQuery();
         }
     }
 
-    public async Task CopyTo(string messageId, string name, SqlConnection connection, Stream target)
+    public async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target)
     {
-        using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
         using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
         {
             if (await reader.ReadAsync().ConfigureAwait(false))
@@ -112,9 +124,9 @@ from {fullTableName}";
         throw ThrowNotFound(messageId, name);
     }
 
-    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection)
+    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
     {
-        using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
         using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
         {
             if (await reader.ReadAsync().ConfigureAwait(false))
@@ -126,9 +138,34 @@ from {fullTableName}";
         throw ThrowNotFound(messageId, name);
     }
 
-    public async Task ProcessStreams(string messageId, SqlConnection connection, Func<string, Stream, Task> action)
+    public async Task<Stream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
     {
-        using (var command = CreateGetDatasCommand(messageId, connection))
+        SqlCommand command = null;
+        SqlDataReader reader = null;
+        try
+        {
+            command = CreateGetDataCommand(messageId, name, connection, transaction);
+            reader = await ExecuteSequentialReader(command).ConfigureAwait(false);
+            if (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                return new StreamWrapper(reader.GetStream(0), command, reader);
+            }
+        }
+        catch (Exception)
+        {
+            reader?.Dispose();
+            command?.Dispose();
+            throw;
+        }
+
+        reader?.Dispose();
+        command?.Dispose();
+        throw ThrowNotFound(messageId, name);
+    }
+
+    public async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, Stream, Task> action)
+    {
+        using (var command = CreateGetDatasCommand(messageId, connection, transaction))
         using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
         {
             while (await reader.ReadAsync().ConfigureAwait(false))
@@ -142,9 +179,9 @@ from {fullTableName}";
         }
     }
 
-    public async Task ProcessStream(string messageId, string name, SqlConnection connection, Func<Stream, Task> action)
+    public async Task ProcessStream(string messageId, string name, SqlConnection connection,SqlTransaction transaction, Func<Stream, Task> action)
     {
-        using (var command = CreateGetDataCommand(messageId, name, connection))
+        using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
         using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
         {
             if (await reader.ReadAsync().ConfigureAwait(false))
@@ -173,9 +210,14 @@ from {fullTableName}";
         return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess);
     }
 
-    SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection)
+    SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
     {
         var command = connection.CreateCommand();
+        if (transaction != null)
+        {
+            command.Transaction = transaction;
+        }
+
         command.CommandText = $@"
 select
     Data
@@ -189,9 +231,13 @@ where
         return command;
     }
 
-    SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection)
+    SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection,SqlTransaction transaction)
     {
         var command = connection.CreateCommand();
+        if (transaction != null)
+        {
+            command.Transaction = transaction;
+        }
         command.CommandText = $@"
 select
     Name,

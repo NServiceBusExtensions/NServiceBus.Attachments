@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using NServiceBus;
 using NServiceBus.Attachments;
 using NServiceBus.Installation;
 using NServiceBus.Settings;
@@ -14,7 +15,7 @@ class NeedToInstallSomething : INeedToInstallSomething
 
     public async Task Install(string identity)
     {
-        if (installerSettings == null || installerSettings.DisableInstaller)
+        if (installerSettings == null || installerSettings.InstallerDisabled)
         {
             return;
         }

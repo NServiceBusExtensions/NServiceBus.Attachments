@@ -7,13 +7,13 @@ namespace NServiceBus.Attachments
 {
     class IncomingAttachments: IIncomingAttachments
     {
-        Func<Task<SqlConnection>> connectionFactory;
+        Func<Task<SqlConnection>> sqlConnectionFactory;
         string messageId;
         StreamPersister streamPersister;
 
-        internal IncomingAttachments(Func<Task<SqlConnection>> connectionFactory, string messageId, StreamPersister streamPersister)
+        internal IncomingAttachments(Func<Task<SqlConnection>> sqlConnectionFactory, string messageId, StreamPersister streamPersister)
         {
-            this.connectionFactory = connectionFactory;
+            this.sqlConnectionFactory = sqlConnectionFactory;
             this.messageId = messageId;
             this.streamPersister = streamPersister;
         }
@@ -22,30 +22,37 @@ namespace NServiceBus.Attachments
         {
             Guard.AgainstNull(name, nameof(name));
             Guard.AgainstNull(target, nameof(target));
-            var connection = await connectionFactory();
-            await streamPersister.CopyTo(messageId, name, connection, target).ConfigureAwait(false);
+            var sqlConnection = await sqlConnectionFactory();
+            await streamPersister.CopyTo(messageId, name, sqlConnection, null, target).ConfigureAwait(false);
         }
 
         public async Task ProcessStream(string name, Func<Stream, Task> action)
         {
             Guard.AgainstNull(name, nameof(name));
             Guard.AgainstNull(action, nameof(action));
-            var connection = await connectionFactory();
-            await streamPersister.ProcessStream(messageId, name, connection, action).ConfigureAwait(false);
+            var sqlConnection = await sqlConnectionFactory();
+            await streamPersister.ProcessStream(messageId, name, sqlConnection, null, action).ConfigureAwait(false);
         }
 
         public async Task ProcessStreams(Func<string, Stream, Task> action)
         {
             Guard.AgainstNull(action, nameof(action));
-            var connection = await connectionFactory();
-            await streamPersister.ProcessStreams(messageId, connection, action).ConfigureAwait(false);
+            var sqlConnection = await sqlConnectionFactory();
+            await streamPersister.ProcessStreams(messageId, sqlConnection,null, action).ConfigureAwait(false);
         }
 
         public async Task<byte[]> GetBytes(string name)
         {
             Guard.AgainstNull(name, nameof(name));
-            var connection = await connectionFactory();
-            return await streamPersister.GetBytes(messageId, name, connection).ConfigureAwait(false);
+            var sqlConnection = await sqlConnectionFactory();
+            return await streamPersister.GetBytes(messageId, name, sqlConnection, null).ConfigureAwait(false);
+        }
+
+        public async Task<Stream> GetStream(string name)
+        {
+            Guard.AgainstNull(name, nameof(name));
+            var sqlConnection = await sqlConnectionFactory();
+            return await streamPersister.GetStream(messageId, name, sqlConnection,null).ConfigureAwait(false);
         }
     }
 }

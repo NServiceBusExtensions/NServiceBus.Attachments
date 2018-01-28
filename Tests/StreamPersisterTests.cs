@@ -29,10 +29,10 @@ public class StreamPersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            persister.DeleteAllRows(connection);
+            persister.DeleteAllRows(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
             var memoryStream = new MemoryStream();
-            await persister.CopyTo("theMessageId", "theName", connection, memoryStream);
+            await persister.CopyTo("theMessageId", "theName", connection, null, memoryStream);
 
             memoryStream.Position = 0;
             Assert.Equal(5, memoryStream.GetBuffer()[0]);
@@ -45,9 +45,9 @@ public class StreamPersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            persister.DeleteAllRows(connection);
+            persister.DeleteAllRows(connection,null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
-            var bytes = await persister.GetBytes("theMessageId", "theName", connection);
+            var bytes = await persister.GetBytes("theMessageId", "theName", connection, null);
             Assert.Equal(5, bytes[0]);
         }
     }
@@ -58,10 +58,10 @@ public class StreamPersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            persister.DeleteAllRows(connection);
+            persister.DeleteAllRows(connection, null);
             var count = 0;
             await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
-            await persister.ProcessStream("theMessageId", "theName", connection,
+            await persister.ProcessStream("theMessageId", "theName", connection, null,
                 action: stream =>
                 {
                     count++;
@@ -79,11 +79,11 @@ public class StreamPersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            persister.DeleteAllRows(connection);
+            persister.DeleteAllRows(connection, null);
             var count = 0;
             await persister.SaveStream(connection, null, "theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(1));
             await persister.SaveStream(connection, null, "theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(2));
-            await persister.ProcessStreams("theMessageId", connection,
+            await persister.ProcessStreams("theMessageId", connection,null,
                 action: (name, stream) =>
                 {
                     count++;
@@ -120,22 +120,23 @@ public class StreamPersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            persister.DeleteAllRows(connection);
+            persister.DeleteAllRows(connection,null);
             persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection));
+            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection, null));
         }
     }
+
     [Fact]
     public void CleanupItemsOlderThan()
     {
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection);
-            persister.DeleteAllRows(connection);
+            persister.DeleteAllRows(connection,null);
             persister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            persister.CleanupItemsOlderThan(connection, new DateTime(2001, 1, 1, 1, 1, 1));
-            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection));
+            persister.CleanupItemsOlderThan(connection,null, new DateTime(2001, 1, 1, 1, 1, 1));
+            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection,null));
         }
     }
 

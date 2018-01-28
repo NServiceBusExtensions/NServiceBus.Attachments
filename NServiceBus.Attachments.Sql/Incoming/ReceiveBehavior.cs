@@ -18,7 +18,12 @@ class ReceiveBehavior :
 
     public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        var connectionFactory = new Lazy<Task<SqlConnection>>(() => connectionBuilder());
+        SqlConnection sqlConnection = null;
+        var connectionFactory = new Lazy<Task<SqlConnection>>(
+            async () =>
+            {
+                return sqlConnection = await connectionBuilder().ConfigureAwait(false);
+            });
 
         try
         {
@@ -26,17 +31,14 @@ class ReceiveBehavior :
         }
         finally
         {
-            if (connectionFactory.IsValueCreated)
-            {
-                connectionFactory.Value.Dispose();
-            }
+            sqlConnection?.Dispose();
         }
     }
 
     Task Inner(IInvokeHandlerContext context, Func<Task> next, Func<Task<SqlConnection>> factory)
     {
         var incomingAttachments = new IncomingAttachments(
-            connectionFactory: factory,
+            sqlConnectionFactory: factory,
             messageId: context.MessageId,
             streamPersister: streamPersister);
         context.Extensions.Set(incomingAttachments);

@@ -9,5 +9,6 @@ namespace NServiceBus.Attachments
         Task CopyTo(Stream target);
         Task ProcessStream(Func<Stream, Task> action);
         Task<byte[]> GetBytes();
+        Task<Stream> GetStream();
     }
 }

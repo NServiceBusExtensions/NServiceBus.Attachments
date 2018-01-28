@@ -11,24 +11,19 @@ namespace NServiceBus
     /// </summary>
     public static class AttachmentsConfigurationExtensions
     {
-        public static void EnableAttachments(
+        public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
             Func<Task<SqlConnection>> connectionBuilder,
-            GetTimeToKeep timeToKeep,
-            bool runCleanTask = true,
-            string schema = "dbo",
-            string tableName = "Attachments",
-            bool disableInstaller = false)
+            GetTimeToKeep timeToKeep)
         {
-            Guard.AgainstSqlDelimiters(nameof(schema), schema);
-            Guard.AgainstSqlDelimiters(nameof(tableName), tableName);
             Guard.AgainstNull(configuration, nameof(configuration));
             Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
-            Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
-            Guard.AgainstNullOrEmpty(schema, nameof(schema));
+            Guard.AgainstNull(connectionBuilder, nameof(connectionBuilder));
             var settings = configuration.GetSettings();
-            settings.Set<AttachmentSettings>(new AttachmentSettings(connectionBuilder, runCleanTask, schema, tableName, disableInstaller, timeToKeep));
+            var attachmentSettings = new AttachmentSettings(connectionBuilder,timeToKeep);
+            settings.Set<AttachmentSettings>(attachmentSettings);
             configuration.EnableFeature<AttachmentFeature>();
+            return attachmentSettings;
         }
     }
 }

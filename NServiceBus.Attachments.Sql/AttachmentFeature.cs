@@ -8,6 +8,7 @@ class AttachmentFeature : Feature
     protected override void Setup(FeatureConfigurationContext context)
     {
         var settings = context.Settings.Get<AttachmentSettings>();
+
         var pipeline = context.Pipeline;
         var streamPersister = new StreamPersister(settings.Schema, settings.TableName);
         pipeline.Register(new ReceiveRegistration(settings.ConnectionBuilder, streamPersister));
@@ -24,7 +25,7 @@ class AttachmentFeature : Feature
             {
                 using (var connection = await settings.ConnectionBuilder().ConfigureAwait(false))
                 {
-                    streamPersister.CleanupItemsOlderThan(connection, DateTime.UtcNow);
+                    streamPersister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow);
                 }
             },
             criticalError: builder.Build<CriticalError>().Raise,

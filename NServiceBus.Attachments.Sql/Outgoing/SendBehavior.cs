@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,22 +48,37 @@ class SendBehavior :
 
         var timeToBeReceived = GetTimeToBeReceivedFromConstraint(extensions);
 
-        using (var connection = await connectionBuilder())
+        using (var connection = await connectionBuilder().ConfigureAwait(false))
         {
-            var messageId = context.MessageId;
-
-            using (var transaction = connection.BeginTransaction())
+            if (context.TryReadTransaction(out var transaction))
             {
-                foreach (var attachment in streams)
-                {
-                    var name = attachment.Key;
-                    var outgoingStream = attachment.Value;
-                    await ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoingStream, name)
-                        .ConfigureAwait(false);
-                }
-
-                transaction.Commit();
+                connection.EnlistTransaction(transaction);
             }
+
+            if (streams.Count == 1)
+            {
+                await ProcessStreams(streams, timeToBeReceived, connection, null, context.MessageId)
+                    .ConfigureAwait(false);
+                return;
+            }
+
+            using (var sqlTransaction = connection.BeginTransaction())
+            {
+                await ProcessStreams(streams, timeToBeReceived, connection, sqlTransaction, context.MessageId)
+                    .ConfigureAwait(false);
+                sqlTransaction.Commit();
+            }
+        }
+    }
+
+    async Task ProcessStreams(Dictionary<string, OutgoingStream> streams, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId)
+    {
+        foreach (var attachment in streams)
+        {
+            var name = attachment.Key;
+            var outgoingStream = attachment.Value;
+            await ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoingStream, name)
+                .ConfigureAwait(false);
         }
     }
 
@@ -70,9 +86,12 @@ class SendBehavior :
     {
         var outgoingStreamTimeToKeep = outgoingStream.TimeToKeep ?? endpointTimeToKeep;
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
-        var stream = await outgoingStream.Func().ConfigureAwait(false);
-        await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
-            .ConfigureAwait(false);
+        using (var stream = await outgoingStream.Func().ConfigureAwait(false))
+        {
+            await streamPersister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
+                .ConfigureAwait(false);
+        }
+
         outgoingStream.Cleanup?.Invoke();
     }
 
