@@ -31,7 +31,6 @@ public class IntegrationTests
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        configuration.PurgeOnStartup(true);
         configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
@@ -49,7 +48,6 @@ public class IntegrationTests
         transport.ConnectionString(Connection.ConnectionString);
         configuration.DisableFeature<TimeoutManager>();
         configuration.DisableFeature<MessageDrivenSubscriptions>();
-        configuration.PurgeOnStartup(true);
         configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
