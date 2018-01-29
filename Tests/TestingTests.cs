@@ -17,7 +17,7 @@ public class TestingTests
         var attachments = context.SentMessages
             .Single()
             .Options
-            .OutgoingAttachments();
+            .Attachments();
         var names = attachments.StreamNames;
         Assert.Single(names);
         Assert.Contains("theName", names);
@@ -29,7 +29,7 @@ public class TestingTests
         public Task Handle(AMessage message, IMessageHandlerContext context)
         {
             var options = new SendOptions();
-            var attachments = options.OutgoingAttachments();
+            var attachments = options.Attachments();
             attachments.Add("theName",() => File.OpenRead(""));
             return context.Send(new AMessage(), options);
         }
