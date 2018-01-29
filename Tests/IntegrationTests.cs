@@ -30,6 +30,7 @@ public class IntegrationTests
     {
         resetEvent = new ManualResetEvent(false);
         var configuration = new EndpointConfiguration("AttachmentsTest");
+        configuration.PurgeOnStartup(true);
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
@@ -60,7 +61,8 @@ public class IntegrationTests
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
-        var attachment = sendOptions.OutgoingAttachment();
+
+        var attachment = endpoint.OutgoingAttachmentFor(sendOptions);
         attachment.Add(GetStream);
         await endpoint.Send(new SendMessage(), sendOptions);
     }
@@ -80,7 +82,7 @@ public class IntegrationTests
         public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             var replyOptions = new ReplyOptions();
-            var outgoingAttachment = replyOptions.OutgoingAttachment();
+            var outgoingAttachment = context.OutgoingAttachmentFor(replyOptions);
             outgoingAttachment.Add(() =>
             {
                 var incomingAttachment = context.IncomingAttachment();

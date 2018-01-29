@@ -29,7 +29,7 @@ class Program
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
-        var attachments = sendOptions.OutgoingAttachments();
+        var attachments = endpoint.OutgoingAttachmentsFor(sendOptions);
         attachments.Add(
             name: "foo",
             stream: () =>
