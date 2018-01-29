@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 
 class OutgoingAttachments: IOutgoingAttachments
 {
     internal Dictionary<string, OutgoingStream> Streams = new Dictionary<string, OutgoingStream>(StringComparer.OrdinalIgnoreCase);
+
+    public bool HasPendingAttachments => Streams.Any();
+
+    public IReadOnlyList<string> StreamNames => Streams.Keys.ToList();
 
     public void Add<T>(string name, Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
     {

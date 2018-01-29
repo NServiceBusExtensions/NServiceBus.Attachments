@@ -6,13 +6,15 @@ using NServiceBus.Attachments;
 class OutgoingAttachment : IOutgoingAttachment
 {
     IOutgoingAttachments attachments;
+    public bool HasPendingAttachment => attachments.HasPendingAttachments;
 
     public OutgoingAttachment(IOutgoingAttachments attachments)
     {
         this.attachments = attachments;
     }
 
-    public void Add<T>(Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
+    public void Add<T>(Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+        where T : Stream
     {
         Guard.AgainstNull(stream, nameof(stream));
         attachments.Add(string.Empty, stream, timeToKeep, cleanup);

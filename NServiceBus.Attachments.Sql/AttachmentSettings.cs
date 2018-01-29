@@ -21,7 +21,6 @@ namespace NServiceBus
             ConnectionFactory = connectionFactory;
         }
 
-
         public void DisableCleanupTask()
         {
             RunCleanTask = false;

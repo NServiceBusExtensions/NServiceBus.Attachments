@@ -1,4 +1,5 @@
 ﻿using NServiceBus.Attachments;
+using NServiceBus.Attachments.Testing;
 
 namespace NServiceBus
 {
@@ -7,47 +8,72 @@ namespace NServiceBus
     {
         public static IMessageAttachments IncomingAttachments(this IMessageHandlerContext context)
         {
-            return IncomingAttachments(context, context.MessageId);
+            Guard.AgainstNull(context, nameof(context));
+            if (context.Extensions.TryGet<MockMessageAttachmentService>(out var attachments))
+            {
+                return attachments.BuildAttachments(context);
+            }
+
+            var state = context.AttachmentReceiveState();
+            return new MessageAttachments(state.ConnectionFactory, context.MessageId, state.Persister);
         }
 
         public static IMessageAttachment IncomingAttachment(this IMessageHandlerContext context)
         {
-            if (context.Extensions.TryGet<IMessageAttachment>(out var attachment))
+            Guard.AgainstNull(context, nameof(context));
+            if (context.Extensions.TryGet<MockMessageAttachmentService>(out var attachments))
             {
-                return attachment;
+                return attachments.BuildAttachment(context);
             }
-            var incomingAttachments = context.IncomingAttachments();
+
+            var state = context.AttachmentReceiveState();
+            var incomingAttachments = new MessageAttachments(state.ConnectionFactory, context.MessageId, state.Persister);
             return new MessageAttachment(incomingAttachments);
         }
 
         public static IMessageAttachments AttachmentsForMessage(this IMessageHandlerContext context, string messageId)
         {
-            return IncomingAttachments(context, messageId);
+            Guard.AgainstNull(context, nameof(context));
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            if (context.Extensions.TryGet<MockMessageAttachmentService>(out var attachments))
+            {
+                return attachments.BuildAttachmentsForMessage(context, messageId);
+            }
+
+            var state = context.AttachmentReceiveState();
+            return new MessageAttachments(state.ConnectionFactory, messageId, state.Persister);
         }
 
         public static IMessageAttachment AttachmentForMessage(this IMessageHandlerContext context, string messageId)
         {
-            var contextBag = context.Extensions;
-            //TODO: how to mock multiple calls to diff messageId
-            if (contextBag.TryGet<IMessageAttachment>(out var attachment))
+            Guard.AgainstNull(context, nameof(context));
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            if (context.Extensions.TryGet<MockMessageAttachmentService>(out var attachments))
             {
-                return attachment;
+                return attachments.BuildAttachmentForMessage(context, messageId);
             }
-            var incomingAttachments = context.AttachmentsForMessage(messageId);
-            return new MessageAttachment(incomingAttachments);
+
+            var state = context.AttachmentReceiveState();
+            var messageAttachments = new MessageAttachments(state.ConnectionFactory, messageId, state.Persister);
+            return new MessageAttachment(messageAttachments);
         }
 
         static IMessageAttachments IncomingAttachments(IMessageHandlerContext context, string messageId)
         {
             Guard.AgainstNull(context, "context");
             Guard.AgainstNullOrEmpty(messageId, "messageId");
-            var contextBag = context.Extensions;
-            if (contextBag.TryGet<IMessageAttachments>(out var attachments))
+            if (context.Extensions.TryGet<MockMessageAttachmentService>(out var attachments))
             {
-                return attachments;
+                return attachments.BuildAttachmentsForMessage(context, messageId);
             }
-            var state = contextBag.Get<AttachmentReceiveState>();
+
+            var state = context.AttachmentReceiveState();
             return new MessageAttachments(state.ConnectionFactory, messageId, state.Persister);
+        }
+
+        static AttachmentReceiveState AttachmentReceiveState(this IMessageHandlerContext context)
+        {
+            return context.Extensions.Get<AttachmentReceiveState>();
         }
     }
 }
