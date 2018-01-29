@@ -1,5 +1,4 @@
 ﻿using NServiceBus.Attachments;
-using NServiceBus.Attachments.Testing;
 
 namespace NServiceBus
 {
@@ -8,20 +7,14 @@ namespace NServiceBus
     {
         public static IMessageAttachments IncomingAttachments(this IMessageHandlerContext context)
         {
-            Guard.AgainstNull(context, nameof(context));
-            if (context.Extensions.TryGet<MockAttachmentService>(out var attachments))
-            {
-                return attachments.BuildIncomingAttachments(context);
-            }
             return IncomingAttachments(context, context.MessageId);
         }
 
         public static IMessageAttachment IncomingAttachment(this IMessageHandlerContext context)
         {
-            Guard.AgainstNull(context, nameof(context));
-            if (context.Extensions.TryGet<MockAttachmentService>(out var attachments))
+            if (context.Extensions.TryGet<IMessageAttachment>(out var attachment))
             {
-                return attachments.BuildIncomingAttachment(context);
+                return attachment;
             }
             var incomingAttachments = context.IncomingAttachments();
             return new MessageAttachment(incomingAttachments);
@@ -29,22 +22,16 @@ namespace NServiceBus
 
         public static IMessageAttachments AttachmentsForMessage(this IMessageHandlerContext context, string messageId)
         {
-            Guard.AgainstNull(context, nameof(context));
-            Guard.AgainstNull(messageId, nameof(messageId));
-            if (context.Extensions.TryGet<MockAttachmentService>(out var attachments))
-            {
-                return attachments.BuildAttachmentsForMessage(context, messageId);
-            }
             return IncomingAttachments(context, messageId);
         }
 
         public static IMessageAttachment AttachmentForMessage(this IMessageHandlerContext context, string messageId)
         {
-            Guard.AgainstNull(context, nameof(context));
-            Guard.AgainstNull(messageId, nameof(messageId));
-            if (context.Extensions.TryGet<MockAttachmentService>(out var attachments))
+            var contextBag = context.Extensions;
+            //TODO: how to mock multiple calls to diff messageId
+            if (contextBag.TryGet<IMessageAttachment>(out var attachment))
             {
-                return attachments.BuildAttachmentForMessage(context, messageId);
+                return attachment;
             }
             var incomingAttachments = context.AttachmentsForMessage(messageId);
             return new MessageAttachment(incomingAttachments);
@@ -52,7 +39,13 @@ namespace NServiceBus
 
         static IMessageAttachments IncomingAttachments(IMessageHandlerContext context, string messageId)
         {
+            Guard.AgainstNull(context, "context");
+            Guard.AgainstNullOrEmpty(messageId, "messageId");
             var contextBag = context.Extensions;
+            if (contextBag.TryGet<IMessageAttachments>(out var attachments))
+            {
+                return attachments;
+            }
             var state = contextBag.Get<AttachmentReceiveState>();
             return new MessageAttachments(state.ConnectionFactory, messageId, state.Persister);
         }
