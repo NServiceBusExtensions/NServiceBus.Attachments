@@ -12,7 +12,7 @@ class MyHandler :
         Console.WriteLine("Hello from MyHandler.");
         using (var memoryStream = new MemoryStream())
         {
-            var incomingAttachments = context.IncomingAttachments();
+            var incomingAttachments = context.Attachments();
             await incomingAttachments.CopyTo("foo", memoryStream);
             memoryStream.Position = 0;
             var buffer = memoryStream.GetBuffer();

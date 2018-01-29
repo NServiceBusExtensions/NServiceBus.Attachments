@@ -27,28 +27,93 @@ namespace NServiceBus.Attachments.Testing
             MessageId = messageId;
         }
 
-        public Task CopyTo(string name, Stream target)
+        public virtual Task CopyTo(string name, Stream target)
         {
             target.Dispose();
             return Task.CompletedTask;
         }
 
-        public Task ProcessStream(string name, Func<Stream, Task> action)
+        public virtual Task CopyTo(Stream target)
         {
             return Task.CompletedTask;
         }
 
-        public Task ProcessStreams(Func<string, Stream, Task> action)
+        public virtual Task ProcessStream(string name, Func<Stream, Task> action)
         {
             return Task.CompletedTask;
         }
 
-        public Task<byte[]> GetBytes(string name)
+        public virtual Task ProcessStream(Func<Stream, Task> action)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task ProcessStreams(Func<string, Stream, Task> action)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task<byte[]> GetBytes()
         {
             return Task.FromResult(new byte[] { });
         }
 
-        public Task<Stream> GetStream(string name)
+        public virtual Task<byte[]> GetBytes(string name)
+        {
+            return Task.FromResult(new byte[] { });
+        }
+
+        public virtual Task<Stream> GetStream()
+        {
+            return Task.FromResult<Stream>(null);
+        }
+
+        public virtual Task<Stream> GetStream(string name)
+        {
+            return Task.FromResult<Stream>(null);
+        }
+
+        public virtual Task CopyToForMessage(string messageId, string name, Stream target)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task CopyToForMessage(string messageId, Stream target)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task<byte[]> GetBytesForMessage(string messageId)
+        {
+            return Task.FromResult(new byte[] { });
+        }
+
+        public virtual Task<byte[]> GetBytesForMessage(string messageId, string name)
+        {
+            return Task.FromResult(new byte[] { });
+        }
+
+        public virtual Task<Stream> GetStreamForMessage(string messageId)
+        {
+            return Task.FromResult<Stream>(null);
+        }
+
+        public virtual Task<Stream> GetStreamForMessage(string messageId, string name)
         {
             return Task.FromResult<Stream>(null);
         }

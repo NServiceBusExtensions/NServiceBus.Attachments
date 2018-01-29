@@ -2,11 +2,11 @@
 {
     public static class MockAttachmentHelper
     {
-        public static void AddMockAttachmentService(this IMessageHandlerContext context, MockMessageAttachmentService mockAttachmentService)
+        public static void InjectAttachmentsInstance(this IMessageHandlerContext context, IMessageAttachments messageAttachments)
         {
             Guard.AgainstNull(context, nameof(context));
-            Guard.AgainstNull(mockAttachmentService, nameof(mockAttachmentService));
-            context.Extensions.Set(mockAttachmentService);
+            Guard.AgainstNull(messageAttachments, nameof(messageAttachments));
+            context.Extensions.Set(messageAttachments);
         }
     }
 }

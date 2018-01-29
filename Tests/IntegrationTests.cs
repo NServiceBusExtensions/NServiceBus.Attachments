@@ -83,7 +83,7 @@ public class IntegrationTests
             var outgoingAttachment = replyOptions.OutgoingAttachment();
             outgoingAttachment.Add(() =>
             {
-                var incomingAttachment = context.IncomingAttachment();
+                var incomingAttachment = context.Attachments();
                 return incomingAttachment.GetStream();
             });
             return context.Reply(new ReplyMessage(), replyOptions);
@@ -96,7 +96,7 @@ public class IntegrationTests
         {
             using (var memoryStream = new MemoryStream())
             {
-                var incomingAttachment = context.IncomingAttachment();
+                var incomingAttachment = context.Attachments();
                 await incomingAttachment.CopyTo(memoryStream);
                 memoryStream.Position = 0;
                 var buffer = memoryStream.GetBuffer();
