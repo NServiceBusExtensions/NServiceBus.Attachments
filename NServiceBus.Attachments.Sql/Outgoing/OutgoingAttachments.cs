@@ -13,6 +13,38 @@ class OutgoingAttachments: IOutgoingAttachments
 
     public IReadOnlyList<string> StreamNames => Streams.Keys.ToList();
 
+    public void Add<T>(Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
+    {
+        Guard.AgainstNull(stream, nameof(stream));
+        Streams.Add("", new OutgoingStream
+        {
+            Func = async () => await stream().ConfigureAwait(false),
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void Add(Func<Stream> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(stream, nameof(stream));
+        Streams.Add("", new OutgoingStream
+        {
+            Func = () => Task.FromResult(stream()),
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void Add(Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(stream, nameof(stream));
+        Streams.Add("", new OutgoingStream
+        {
+            Instance = stream,
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
     public void Add<T>(string name, Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
     {
         Guard.AgainstNull(name, nameof(name));

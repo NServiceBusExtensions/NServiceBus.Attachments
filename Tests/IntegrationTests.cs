@@ -60,7 +60,7 @@ public class IntegrationTests
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
-        var attachment = sendOptions.OutgoingAttachment();
+        var attachment = sendOptions.OutgoingAttachments();
         attachment.Add(GetStream);
         await endpoint.Send(new SendMessage(), sendOptions);
     }
@@ -80,7 +80,7 @@ public class IntegrationTests
         public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             var replyOptions = new ReplyOptions();
-            var outgoingAttachment = replyOptions.OutgoingAttachment();
+            var outgoingAttachment = replyOptions.OutgoingAttachments();
             outgoingAttachment.Add(() =>
             {
                 var incomingAttachment = context.Attachments();

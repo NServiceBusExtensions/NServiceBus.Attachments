@@ -6,21 +6,6 @@ namespace NServiceBus
     //todo: throw if attachments not enabled
     public static partial class MessageContextExtensions
     {
-        public static IOutgoingAttachment OutgoingAttachment(this PublishOptions options)
-        {
-            return GetOutgoingAttachment(options);
-        }
-
-        public static IOutgoingAttachment OutgoingAttachment(this SendOptions options)
-        {
-            return GetOutgoingAttachment(options);
-        }
-
-        public static IOutgoingAttachment OutgoingAttachment(this ReplyOptions options)
-        {
-            return GetOutgoingAttachment(options);
-        }
-
         public static IOutgoingAttachments OutgoingAttachments(this PublishOptions options)
         {
             return GetOutgoingAttachments(options);
@@ -47,15 +32,6 @@ namespace NServiceBus
             attachments = new OutgoingAttachments();
             contextBag.Set(attachments);
             return attachments;
-        }
-
-        static IOutgoingAttachment GetOutgoingAttachment(this ExtendableOptions options)
-        {
-            if (options.GetExtensions().TryGet<IOutgoingAttachment>(out var attachment))
-            {
-                return attachment;
-            }
-            return new OutgoingAttachment(GetOutgoingAttachments(options));
         }
     }
 }

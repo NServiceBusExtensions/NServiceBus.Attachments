@@ -9,29 +9,6 @@ using Xunit;
 public class TestingTests
 {
     [Fact]
-    public async Task OutgoingAttachment()
-    {
-        var context = new TestableMessageHandlerContext();
-        var handler = new OutgoingAttachmentHandler();
-        await handler.Handle(new AMessage(), context);
-        var attachment = context.SentMessages
-            .Single()
-            .Options
-            .OutgoingAttachment();
-        Assert.True(attachment.HasPendingAttachment);
-    }
-
-    public class OutgoingAttachmentHandler : IHandleMessages<AMessage>
-    {
-        public Task Handle(AMessage message, IMessageHandlerContext context)
-        {
-            var options = new SendOptions();
-            var attachment = options.OutgoingAttachment();
-            attachment.Add(() => File.OpenRead(""));
-            return context.Send(new AMessage(), options);
-        }
-    }
-    [Fact]
     public async Task OutgoingAttachments()
     {
         var context = new TestableMessageHandlerContext();
