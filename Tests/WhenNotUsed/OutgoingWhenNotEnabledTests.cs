@@ -1,39 +1,31 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using ApprovalTests;
 using NServiceBus;
-using NServiceBus.Attachments;
 using Xunit;
 
-public class UsedWhenNotEnabledTests
+public class OutgoingWhenNotEnabledTests
 {
-    static UsedWhenNotEnabledTests()
+    static OutgoingWhenNotEnabledTests()
     {
-        if (!Connection.IsUsingEnvironmentVariable)
-        {
-            SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
-        }
-
-        using (var sqlConnection = Connection.OpenConnection())
-        {
-            Installer.CreateTable(sqlConnection);
-        }
+        DbSetup.Setup();
     }
 
     [Fact]
-    public async Task Run()
+    public void Run()
     {
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        var endpoint = await Endpoint.Start(configuration);
+        var endpoint = Endpoint.Start(configuration).Result;
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => SendStartMessage(endpoint));
-        Assert.Equal(UsedWhenNotEnabledBehavior.Text, exception.Message);
-        await endpoint.Stop();
+        var exception = Assert.Throws<AggregateException>(() => SendStartMessageWithAttachment(endpoint).Wait());
+        Approvals.Verify(exception.InnerException.Message);
+        endpoint.Stop().Wait();
     }
 
-    static async Task SendStartMessage(IEndpointInstance endpoint)
+    static async Task SendStartMessageWithAttachment(IEndpointInstance endpoint)
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();

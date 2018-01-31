@@ -1,0 +1,1 @@
+﻿Attachments used when not enabled. For example IMessageHandlerContext.Attachments() was used but Attachments was not enabled via EndpointConfiguration.EnableAttachments().

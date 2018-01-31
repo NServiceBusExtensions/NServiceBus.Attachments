@@ -14,15 +14,7 @@ public class IntegrationTests
 
     static IntegrationTests()
     {
-        if (!Connection.IsUsingEnvironmentVariable)
-        {
-            SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
-        }
-
-        using (var sqlConnection = Connection.OpenConnection())
-        {
-            Installer.CreateTable(sqlConnection);
-        }
+        DbSetup.Setup();
     }
 
     [Fact]
