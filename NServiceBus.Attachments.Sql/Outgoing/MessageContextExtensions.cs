@@ -3,7 +3,6 @@ using NServiceBus.Extensibility;
 
 namespace NServiceBus
 {
-    //todo: throw if attachments not enabled
     public static partial class MessageContextExtensions
     {
         public static IOutgoingAttachments Attachments(this PublishOptions options)
