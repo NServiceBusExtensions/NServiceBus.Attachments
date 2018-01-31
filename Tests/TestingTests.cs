@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus;
@@ -63,6 +64,7 @@ public class TestingTests
         {
             var attachment = context.Attachments();
             var bytes = await attachment.GetBytes();
+            Trace.WriteLine(bytes);
         }
     }
 

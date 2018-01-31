@@ -23,6 +23,7 @@ namespace NServiceBus
             var attachments = new AttachmentSettings(connectionFactory,timeToKeep);
             settings.Set<AttachmentSettings>(attachments);
             configuration.EnableFeature<AttachmentFeature>();
+            configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();
             return attachments;
         }
     }
