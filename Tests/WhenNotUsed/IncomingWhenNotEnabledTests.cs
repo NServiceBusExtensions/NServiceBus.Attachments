@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using ApprovalTests;
@@ -23,13 +22,6 @@ public class IncomingWhenNotEnabledTests
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        //var recoverability = configuration.Recoverability();
-        //recoverability.Immediate(x => x.NumberOfRetries(0));
-        //recoverability.Delayed(x => x.NumberOfRetries(0));
-        //configuration.DefineCriticalErrorAction(x =>
-        //{
-        //    return Task.CompletedTask;
-        //});
         var endpoint = Endpoint.Start(configuration).Result;
         endpoint.SendLocal(new SendMessage()).Wait();
         resetEvent.WaitOne();
