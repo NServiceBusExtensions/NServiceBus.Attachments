@@ -3,8 +3,14 @@ using NServiceBus.Attachments;
 
 namespace NServiceBus
 {
+    /// <summary>
+    /// Contextual extensions to manipulate attachments.
+    /// </summary>
     public static partial class MessageContextExtensions
     {
+        /// <summary>
+        /// Provides an instance of <see cref="IMessageAttachments"/> for reading attachments.
+        /// </summary>
         public static IMessageAttachments Attachments(this IMessageHandlerContext context)
         {
             Guard.AgainstNull(context, nameof(context));
@@ -16,7 +22,7 @@ namespace NServiceBus
 
             if (!contextBag.TryGet<AttachmentReceiveState>(out var state))
             {
-                throw new Exception("Attachments used when not enabled. For example IMessageHandlerContext.Attachments() was used but Attachments was not enabled via EndpointConfiguration.EnableAttachments().");
+                throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(AttachmentsConfigurationExtensions.EnableAttachments)}().");
             }
             return new MessageAttachments(state.ConnectionFactory, context.MessageId, state.Persister);
         }

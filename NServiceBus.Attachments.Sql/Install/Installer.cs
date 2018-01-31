@@ -3,8 +3,14 @@ using System.IO;
 
 namespace NServiceBus.Attachments
 {
+    /// <summary>
+    /// Used to take control over the storage table creation.
+    /// </summary>
     public static class Installer
     {
+        /// <summary>
+        /// Create the attachments storage table.
+        /// </summary>
         public static void CreateTable(SqlConnection connection, string schema = "dbo", string tableName = "Attachments")
         {
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
@@ -20,6 +26,9 @@ namespace NServiceBus.Attachments
             }
         }
 
+        /// <summary>
+        /// Get the sql used to create the attachments storage table.
+        /// </summary>
         public static string GetTableSql()
         {
             using (var stream = AssemblyHelper.Current.GetManifestResourceStream($"{AssemblyHelper.Name}.Table.sql"))

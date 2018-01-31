@@ -32,7 +32,7 @@ class Program
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "foo",
-            stream: () =>
+            streamFactory: () =>
             {
                 var stream = new MemoryStream();
                 var streamWriter = new StreamWriter(stream);

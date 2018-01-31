@@ -11,6 +11,9 @@ namespace NServiceBus
     /// </summary>
     public static class AttachmentsConfigurationExtensions
     {
+        /// <summary>
+        /// Enable SQL attachments for this endpoint.
+        /// </summary>
         public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
             Func<Task<SqlConnection>> connectionFactory,

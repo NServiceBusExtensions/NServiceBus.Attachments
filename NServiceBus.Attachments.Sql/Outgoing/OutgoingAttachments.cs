@@ -13,23 +13,23 @@ class OutgoingAttachments: IOutgoingAttachments
 
     public IReadOnlyList<string> StreamNames => Streams.Keys.ToList();
 
-    public void Add<T>(Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
+    public void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
     {
-        Guard.AgainstNull(stream, nameof(stream));
+        Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add("", new OutgoingStream
         {
-            Func = async () => await stream().ConfigureAwait(false),
+            Func = async () => await streamFactory().ConfigureAwait(false),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
     }
 
-    public void Add(Func<Stream> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    public void Add(Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
     {
-        Guard.AgainstNull(stream, nameof(stream));
+        Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add("", new OutgoingStream
         {
-            Func = () => Task.FromResult(stream()),
+            Func = () => Task.FromResult(streamFactory()),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
@@ -45,25 +45,25 @@ class OutgoingAttachments: IOutgoingAttachments
             Cleanup = cleanup
         });
     }
-    public void Add<T>(string name, Func<Task<T>> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
+    public void Add<T>(string name, Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
     {
         Guard.AgainstNull(name, nameof(name));
-        Guard.AgainstNull(stream, nameof(stream));
+        Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add(name, new OutgoingStream
         {
-            Func = async () => await stream().ConfigureAwait(false),
+            Func = async () => await streamFactory().ConfigureAwait(false),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
     }
 
-    public void Add(string name, Func<Stream> stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    public void Add(string name, Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
     {
         Guard.AgainstNull(name, nameof(name));
-        Guard.AgainstNull(stream, nameof(stream));
+        Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add(name, new OutgoingStream
         {
-            Func = () => Task.FromResult(stream()),
+            Func = () => Task.FromResult(streamFactory()),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
