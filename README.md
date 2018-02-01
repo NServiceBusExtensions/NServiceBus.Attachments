@@ -5,6 +5,10 @@ NServiceBus.Attachments.Sql
 
 Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
 
+## Documentation
+
+https://docs.particular.net/nuget/NServiceBus.Attachments.Sql
+
 
 ## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/NServiceBus.Attachments.Sql.svg?style=flat)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
 
