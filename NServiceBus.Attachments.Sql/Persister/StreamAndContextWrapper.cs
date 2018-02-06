@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-class StreamWrapper : Stream
+class StreamAndContextWrapper : Stream
 {
     Stream inner;
+    SqlCommand command;
+    SqlDataReader reader;
 
-    public StreamWrapper(Stream inner, long length)
+    public StreamAndContextWrapper(Stream inner, SqlCommand command, SqlDataReader reader, long length)
     {
         this.inner = inner;
+        this.command = command;
+        this.reader = reader;
         Length = length;
     }
 
@@ -107,6 +112,8 @@ class StreamWrapper : Stream
     {
         base.Dispose(disposing);
         inner.Dispose();
+        reader?.Dispose();
+        command?.Dispose();
     }
 
     public override int EndRead(IAsyncResult asyncResult)

@@ -68,6 +68,7 @@ values
         {
             command.Transaction = transaction;
         }
+
         command.CommandText = $@"
 select
     Id,
@@ -78,7 +79,7 @@ from {fullTableName}";
         return command;
     }
 
-    public void DeleteAllRows(SqlConnection connection,SqlTransaction transaction)
+    public void DeleteAllRows(SqlConnection connection, SqlTransaction transaction)
     {
         using (var command = connection.CreateCommand())
         {
@@ -86,6 +87,7 @@ from {fullTableName}";
             {
                 command.Transaction = transaction;
             }
+
             command.CommandText = $@"delete from {fullTableName}";
             command.ExecuteNonQuery();
         }
@@ -99,6 +101,7 @@ from {fullTableName}";
             {
                 command.Transaction = transaction;
             }
+
             command.CommandText = $@"delete from {fullTableName} where expiry < @date";
             command.Parameters.AddWithValue("date", dateTime);
             command.ExecuteNonQuery();
@@ -110,18 +113,16 @@ from {fullTableName}";
         using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
         using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
         {
-            if (await reader.ReadAsync().ConfigureAwait(false))
+            if (!await reader.ReadAsync().ConfigureAwait(false))
             {
-                using (var data = reader.GetStream(0))
-                {
-                    await data.CopyToAsync(target).ConfigureAwait(false);
-                }
+                throw ThrowNotFound(messageId, name);
+            }
 
-                return;
+            using (var data = reader.GetStream(1))
+            {
+                await data.CopyToAsync(target).ConfigureAwait(false);
             }
         }
-
-        throw ThrowNotFound(messageId, name);
     }
 
     public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
@@ -131,7 +132,7 @@ from {fullTableName}";
         {
             if (await reader.ReadAsync().ConfigureAwait(false))
             {
-                return (byte[]) reader[0];
+                return (byte[]) reader[1];
             }
         }
 
@@ -148,7 +149,9 @@ from {fullTableName}";
             reader = await ExecuteSequentialReader(command).ConfigureAwait(false);
             if (await reader.ReadAsync().ConfigureAwait(false))
             {
-                return new StreamWrapper(reader.GetStream(0), command, reader);
+                var length = reader.GetInt64(0);
+                var sqlStream = reader.GetStream(1);
+                return new StreamAndContextWrapper(sqlStream, command, reader, length);
             }
         }
         catch (Exception)
@@ -171,31 +174,31 @@ from {fullTableName}";
             while (await reader.ReadAsync().ConfigureAwait(false))
             {
                 var name = reader.GetString(0);
-                using (var data = reader.GetStream(1))
+                var length = reader.GetInt64(1);
+                using (var sqlStream = reader.GetStream(2))
                 {
-                    await action(name, data).ConfigureAwait(false);
+                    await action(name, new StreamWrapper(sqlStream, length)).ConfigureAwait(false);
                 }
             }
         }
     }
 
-    public async Task ProcessStream(string messageId, string name, SqlConnection connection,SqlTransaction transaction, Func<Stream, Task> action)
+    public async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<Stream, Task> action)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
         using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
         {
-            if (await reader.ReadAsync().ConfigureAwait(false))
+            if (!await reader.ReadAsync().ConfigureAwait(false))
             {
-                using (var data = reader.GetStream(0))
-                {
-                    await action(data).ConfigureAwait(false);
-                }
+                throw ThrowNotFound(messageId, name);
+            }
 
-                return;
+            var length = reader.GetInt64(0);
+            using (var sqlStream = reader.GetStream(1))
+            {
+                await action(new StreamWrapper(sqlStream, length)).ConfigureAwait(false);
             }
         }
-
-        throw ThrowNotFound(messageId, name);
     }
 
     static Exception ThrowNotFound(string messageId, string name)
@@ -220,6 +223,7 @@ from {fullTableName}";
 
         command.CommandText = $@"
 select
+    datalength(Data),
     Data
 from {fullTableName}
 where
@@ -231,16 +235,18 @@ where
         return command;
     }
 
-    SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection,SqlTransaction transaction)
+    SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection, SqlTransaction transaction)
     {
         var command = connection.CreateCommand();
         if (transaction != null)
         {
             command.Transaction = transaction;
         }
+
         command.CommandText = $@"
 select
     Name,
+    datalength(Data),
     Data
 from {fullTableName}
 where
