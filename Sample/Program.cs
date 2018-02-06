@@ -12,12 +12,13 @@ class Program
         {
             SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
         }
+
         var configuration = new EndpointConfiguration("AttachmentsSample");
         configuration.EnableInstallers();
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.AuditProcessedMessagesTo("audit");
-        configuration.EnableAttachments(Connection.OpenAsyncConnection,TimeToKeep.Default);
+        configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");

@@ -14,7 +14,17 @@ class StreamPersister
         fullTableName = $"[{schema}].[{tableName}]";
     }
 
-    public async Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
+    public Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
+    {
+        return Save(connection, transaction, messageId, name, expiry, stream);
+    }
+
+    public Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes)
+    {
+        return Save(connection, transaction, messageId, name, expiry, bytes);
+    }
+
+    async Task Save(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, object stream)
     {
         using (var command = connection.CreateCommand())
         {
@@ -161,8 +171,8 @@ from {fullTableName}";
             throw;
         }
 
-        reader?.Dispose();
-        command?.Dispose();
+        reader.Dispose();
+        command.Dispose();
         throw ThrowNotFound(messageId, name);
     }
 

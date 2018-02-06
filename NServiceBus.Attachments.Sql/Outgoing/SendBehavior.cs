@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
@@ -86,28 +87,68 @@ class SendBehavior :
     {
         var outgoingStreamTimeToKeep = outgoingStream.TimeToKeep ?? endpointTimeToKeep;
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
-        if (outgoingStream.Func == null)
+        var expiry = DateTime.UtcNow.Add(timeToKeep);
+        try
         {
-            try
-            {
-                await persister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), outgoingStream.Instance)
-                    .ConfigureAwait(false);
-            }
-            finally
-            {
-                outgoingStream.Instance.Dispose();
-            }
+            await Process(connection, transaction, messageId, outgoingStream, name, expiry);
         }
-        else
+        finally
         {
-            using (var stream = await outgoingStream.Func().ConfigureAwait(false))
-            {
-                await persister.SaveStream(connection, transaction, messageId, name, DateTime.UtcNow.Add(timeToKeep), stream)
-                    .ConfigureAwait(false);
-            }
+            outgoingStream.Cleanup?.Invoke();
+        }
+    }
+
+    async Task Process(SqlConnection connection, SqlTransaction transaction, string messageId, OutgoingStream outgoingStream, string name, DateTime expiry)
+    {
+        if (outgoingStream.AsyncStreamFactory != null)
+        {
+            var stream = await outgoingStream.AsyncStreamFactory().ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, stream);
+            return;
         }
 
-        outgoingStream.Cleanup?.Invoke();
+        if (outgoingStream.StreamFactory != null)
+        {
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoingStream.StreamFactory());
+            return;
+        }
+
+        if (outgoingStream.StreamInstance != null)
+        {
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoingStream.StreamInstance);
+            return;
+        }
+        if (outgoingStream.AsyncBytesFactory != null)
+        {
+            var bytes = await outgoingStream.AsyncBytesFactory().ConfigureAwait(false);
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes)
+                .ConfigureAwait(false);
+            return;
+        }
+
+        if (outgoingStream.BytesFactory != null)
+        {
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoingStream.BytesFactory())
+                .ConfigureAwait(false);
+            return;
+        }
+
+        if (outgoingStream.BytesInstance != null)
+        {
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoingStream.BytesInstance)
+                .ConfigureAwait(false);
+            return;
+        }
+        throw new Exception("No matching way to handle outgoingStream.");
+    }
+
+    async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
+    {
+        using (stream)
+        {
+            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream)
+                .ConfigureAwait(false);
+        }
     }
 
     static TimeSpan? GetTimeToBeReceivedFromConstraint(ContextBag extensions)

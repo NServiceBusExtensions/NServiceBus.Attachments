@@ -37,6 +37,9 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Get a <see cref="byte"/> array, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
+        /// <remarks>
+        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// </remarks>
         Task<byte[]> GetBytes();
 
         /// <summary>
@@ -82,11 +85,17 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
+        /// <remarks>
+        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// </remarks>
         Task<byte[]> GetBytesForMessage(string messageId);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
         /// </summary>
+        /// <remarks>
+        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// </remarks>
         Task<byte[]> GetBytesForMessage(string messageId, string name);
 
         /// <summary>

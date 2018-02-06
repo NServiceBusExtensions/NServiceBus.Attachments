@@ -18,7 +18,19 @@ class OutgoingAttachments: IOutgoingAttachments
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add("", new OutgoingStream
         {
-            Func = async () => await streamFactory().ConfigureAwait(false),
+            AsyncStreamFactory = async () => await streamFactory().ConfigureAwait(false),
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void Add<T>(string name, Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
+    {
+        Guard.AgainstNull(name, nameof(name));
+        Guard.AgainstNull(streamFactory, nameof(streamFactory));
+        Streams.Add(name, new OutgoingStream
+        {
+            AsyncStreamFactory = async () => await streamFactory().ConfigureAwait(false),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
@@ -29,7 +41,7 @@ class OutgoingAttachments: IOutgoingAttachments
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add("", new OutgoingStream
         {
-            Func = () => Task.FromResult(streamFactory()),
+            StreamFactory = streamFactory,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
@@ -40,18 +52,7 @@ class OutgoingAttachments: IOutgoingAttachments
         Guard.AgainstNull(stream, nameof(stream));
         Streams.Add("", new OutgoingStream
         {
-            Instance = stream,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup
-        });
-    }
-    public void Add<T>(string name, Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null) where T : Stream
-    {
-        Guard.AgainstNull(name, nameof(name));
-        Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Streams.Add(name, new OutgoingStream
-        {
-            Func = async () => await streamFactory().ConfigureAwait(false),
+            StreamInstance = stream,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
@@ -63,7 +64,7 @@ class OutgoingAttachments: IOutgoingAttachments
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add(name, new OutgoingStream
         {
-            Func = () => Task.FromResult(streamFactory()),
+            StreamFactory = streamFactory,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
@@ -75,7 +76,53 @@ class OutgoingAttachments: IOutgoingAttachments
         Guard.AgainstNull(stream, nameof(stream));
         Streams.Add(name, new OutgoingStream
         {
-            Instance = stream,
+            StreamInstance = stream,
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void AddBytes(Func<byte[]> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
+        Streams.Add("", new OutgoingStream
+        {
+            BytesFactory = bytesFactory,
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void AddBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(bytes, nameof(bytes));
+        Streams.Add("", new OutgoingStream
+        {
+            BytesInstance = bytes,
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void AddBytes(string name, Func<byte[]> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(name, nameof(name));
+        Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
+        Streams.Add(name, new OutgoingStream
+        {
+            BytesFactory = bytesFactory,
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup
+        });
+    }
+
+    public void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(name, nameof(name));
+        Guard.AgainstNull(bytes, nameof(bytes));
+        Streams.Add(name, new OutgoingStream
+        {
+            BytesInstance = bytes,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup
         });
