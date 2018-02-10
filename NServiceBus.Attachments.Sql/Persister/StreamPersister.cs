@@ -89,7 +89,7 @@ from {fullTableName}";
         return command;
     }
 
-    public void DeleteAllRows(SqlConnection connection, SqlTransaction transaction)
+    public async Task DeleteAllRows(SqlConnection connection, SqlTransaction transaction)
     {
         using (var command = connection.CreateCommand())
         {
@@ -99,11 +99,11 @@ from {fullTableName}";
             }
 
             command.CommandText = $@"delete from {fullTableName}";
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
     }
 
-    public void CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime)
+    public async Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime)
     {
         using (var command = connection.CreateCommand())
         {
@@ -114,7 +114,7 @@ from {fullTableName}";
 
             command.CommandText = $@"delete from {fullTableName} where expiry < @date";
             command.Parameters.AddWithValue("date", dateTime);
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
     }
 

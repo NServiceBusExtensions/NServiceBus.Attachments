@@ -26,7 +26,7 @@ class AttachmentFeature : Feature
             {
                 using (var connection = await settings.ConnectionFactory().ConfigureAwait(false))
                 {
-                    streamPersister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow);
+                   await streamPersister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow).ConfigureAwait(false);
                 }
             },
             criticalError: builder.Build<CriticalError>().Raise,
