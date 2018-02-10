@@ -20,7 +20,7 @@ class MessageAttachments : IMessageAttachments
     public async Task CopyTo(Stream target)
     {
         Guard.AgainstNull(target, nameof(target));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.CopyTo(messageId, "", sqlConnection, null, target).ConfigureAwait(false);
     }
 
@@ -28,54 +28,54 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(target, nameof(target));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.CopyTo(messageId, name, sqlConnection, null, target).ConfigureAwait(false);
     }
 
     public async Task ProcessStream(Func<Stream, Task> action)
     {
         Guard.AgainstNull(action, nameof(action));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.ProcessStream(messageId, "", sqlConnection, null, action).ConfigureAwait(false);
     }
     public async Task ProcessStream(string name, Func<Stream, Task> action)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(action, nameof(action));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.ProcessStream(messageId, name, sqlConnection, null, action).ConfigureAwait(false);
     }
 
     public async Task ProcessStreams(Func<string, Stream, Task> action)
     {
         Guard.AgainstNull(action, nameof(action));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.ProcessStreams(messageId, sqlConnection, null, action).ConfigureAwait(false);
     }
 
     public async Task<byte[]> GetBytes()
     {
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetBytes(messageId, "", sqlConnection, null).ConfigureAwait(false);
     }
 
     public async Task<byte[]> GetBytes(string name)
     {
         Guard.AgainstNull(name, nameof(name));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetBytes(messageId, name, sqlConnection, null).ConfigureAwait(false);
     }
 
     public async Task<Stream> GetStream()
     {
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetStream(messageId, "", sqlConnection, null).ConfigureAwait(false);
     }
 
     public async Task<Stream> GetStream(string name)
     {
         Guard.AgainstNull(name, nameof(name));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetStream(messageId, name, sqlConnection, null).ConfigureAwait(false);
     }
 
@@ -83,7 +83,7 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(target, nameof(target));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.CopyTo(messageId, "", sqlConnection, null, target).ConfigureAwait(false);
     }
 
@@ -92,7 +92,7 @@ class MessageAttachments : IMessageAttachments
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(target, nameof(target));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.CopyTo(messageId, name, sqlConnection, null, target).ConfigureAwait(false);
     }
 
@@ -100,7 +100,7 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(action, nameof(action));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.ProcessStream(messageId, "", sqlConnection, null, action).ConfigureAwait(false);
     }
     public async Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action)
@@ -108,7 +108,7 @@ class MessageAttachments : IMessageAttachments
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(action, nameof(action));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.ProcessStream(messageId, name, sqlConnection, null, action).ConfigureAwait(false);
     }
 
@@ -116,14 +116,14 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(action, nameof(action));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         await streamPersister.ProcessStreams(messageId, sqlConnection, null, action).ConfigureAwait(false);
     }
 
     public async Task<byte[]> GetBytesForMessage(string messageId)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetBytes(messageId, "", sqlConnection, null).ConfigureAwait(false);
     }
 
@@ -131,14 +131,14 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetBytes(messageId, name, sqlConnection, null).ConfigureAwait(false);
     }
 
     public async Task<Stream> GetStreamForMessage(string messageId)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetStream(messageId, "", sqlConnection, null).ConfigureAwait(false);
     }
 
@@ -146,7 +146,7 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
-        var sqlConnection = await connectionFactory();
+        var sqlConnection = await connectionFactory().ConfigureAwait(false);
         return await streamPersister.GetStream(messageId, name, sqlConnection, null).ConfigureAwait(false);
     }
 }

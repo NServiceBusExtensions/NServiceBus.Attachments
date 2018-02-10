@@ -26,11 +26,8 @@ class SendBehavior :
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
     {
-        await ProcessStreams(context)
-            .ConfigureAwait(false);
-
-        await next()
-            .ConfigureAwait(false);
+        await ProcessStreams(context).ConfigureAwait(false);
+        await next().ConfigureAwait(false);
     }
 
     async Task ProcessStreams(IOutgoingLogicalMessageContext context)
@@ -103,7 +100,7 @@ class SendBehavior :
         if (outgoingStream.AsyncStreamFactory != null)
         {
             var stream = await outgoingStream.AsyncStreamFactory().ConfigureAwait(false);
-            await ProcessStream(connection, transaction, messageId, name, expiry, stream);
+            await ProcessStream(connection, transaction, messageId, name, expiry, stream).ConfigureAwait(false);
             return;
         }
 
@@ -115,7 +112,7 @@ class SendBehavior :
 
         if (outgoingStream.StreamInstance != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoingStream.StreamInstance);
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoingStream.StreamInstance).ConfigureAwait(false);
             return;
         }
         if (outgoingStream.AsyncBytesFactory != null)
