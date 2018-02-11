@@ -10,23 +10,23 @@ class AttachmentFeature : Feature
         var settings = context.Settings.Get<AttachmentSettings>();
 
         var pipeline = context.Pipeline;
-        var persister = new StreamPersister(settings.Schema, settings.TableName);
+        var persister = new Persister(settings.Schema, settings.TableName);
         pipeline.Register(new ReceiveRegistration(settings.ConnectionFactory, persister));
 
-        pipeline.Register(new SendRegistration(settings.ConnectionFactory, persister, settings.TimeToKeep));
+        pipeline.Register(new SendRegistration(settings.ConnectionFactory, persister, settings.TimeToKeep, settings.Cancellation));
         if (settings.RunCleanTask)
         {
             context.RegisterStartupTask(builder => CreateCleaner(settings, persister, builder));
         }
     }
 
-    static Cleaner CreateCleaner(AttachmentSettings settings, StreamPersister streamPersister, IBuilder builder)
+    static Cleaner CreateCleaner(AttachmentSettings settings, Persister persister, IBuilder builder)
     {
         return new Cleaner(async token =>
             {
-                using (var connection = await settings.ConnectionFactory().ConfigureAwait(false))
+                using (var connection = await settings.ConnectionFactory(token).ConfigureAwait(false))
                 {
-                   await streamPersister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow).ConfigureAwait(false);
+                   await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token).ConfigureAwait(false);
                 }
             },
             criticalError: builder.Build<CriticalError>().Raise,

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Testing;
@@ -49,7 +50,7 @@ public class TestingTests
 
     public class CustomMockMessageAttachments : MockMessageAttachments
     {
-        public override Task<byte[]> GetBytes()
+        public override Task<byte[]> GetBytes(CancellationToken cancellation = default)
         {
             GetBytesWasCalled = true;
             return Task.FromResult(new byte[] {5});

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Pipeline;
 
 class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
-    Func<Task<SqlConnection>> connectionBuilder;
-    StreamPersister persister;
+    Func<CancellationToken, Task<SqlConnection>> connectionBuilder;
+    Persister persister;
 
-    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, StreamPersister persister)
+    public ReceiveBehavior(Func<CancellationToken, Task<SqlConnection>> connectionBuilder, Persister persister)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;
@@ -18,14 +19,20 @@ class ReceiveBehavior :
     public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
         SqlConnection sqlConnection = null;
-        var connectionFactory = new Lazy<Task<SqlConnection>>(
-            async () => { return sqlConnection = await connectionBuilder().ConfigureAwait(false); });
+        var connectionFactory = new Lazy<Func<CancellationToken, Task<SqlConnection>>>(
+             () =>
+            {
+                return async x =>
+                {
+                    return sqlConnection = await connectionBuilder(x).ConfigureAwait(false);
+                };
+            });
 
         context.Extensions.Set(
             new AttachmentReceiveState
             {
                 Persister = persister,
-                ConnectionFactory = () => connectionFactory.Value
+                ConnectionFactory = x => connectionFactory.Value(x)
             });
         try
         {

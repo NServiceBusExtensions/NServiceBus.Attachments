@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Pipeline;
 
 class ReceiveRegistration :
     RegisterStep
 {
-    public ReceiveRegistration(Func<Task<SqlConnection>> connectionFactory, StreamPersister persister)
+    public ReceiveRegistration(Func<CancellationToken, Task<SqlConnection>> connectionFactory, Persister persister)
         : base(
             stepId: $"{AssemblyHelper.Name}Receive",
             behavior: typeof(ReceiveBehavior),

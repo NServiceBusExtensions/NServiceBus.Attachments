@@ -6,11 +6,11 @@ using ObjectApproval;
 using Xunit;
 using Xunit.Abstractions;
 
-public class StreamPersisterTests: TestBase
+public class PersisterTests: TestBase
 {
-    StreamPersister persister;
+    Persister persister;
 
-    static StreamPersisterTests()
+    static PersisterTests()
     {
         if (!Connection.IsUsingEnvironmentVariable)
         {
@@ -18,9 +18,9 @@ public class StreamPersisterTests: TestBase
         }
     }
 
-    public StreamPersisterTests(ITestOutputHelper output) : base(output)
+    public PersisterTests(ITestOutputHelper output) : base(output)
     {
-        persister = new StreamPersister("dbo", "Attachments");
+        persister = new Persister("dbo", "Attachments");
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class StreamPersisterTests: TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection);
+            await Installer.CreateTable(connection);
             await persister.DeleteAllRows(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
             var memoryStream = new MemoryStream();
@@ -44,7 +44,7 @@ public class StreamPersisterTests: TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection);
+            await Installer.CreateTable(connection);
             await persister.DeleteAllRows(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
             var bytes = await persister.GetBytes("theMessageId", "theName", connection, null);
@@ -57,7 +57,7 @@ public class StreamPersisterTests: TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection);
+            await Installer.CreateTable(connection);
             await persister.DeleteAllRows(connection, null);
             var count = 0;
             await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
@@ -78,7 +78,7 @@ public class StreamPersisterTests: TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection);
+            await Installer.CreateTable(connection);
             await persister.DeleteAllRows(connection, null);
             var count = 0;
             await persister.SaveStream(connection, null, "theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(1));
@@ -119,7 +119,7 @@ public class StreamPersisterTests: TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection);
+            Installer.CreateTable(connection).Wait();
             persister.DeleteAllRows(connection,null).Wait();
             persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection, null));
@@ -131,7 +131,7 @@ public class StreamPersisterTests: TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection);
+            Installer.CreateTable(connection).Wait();
             persister.DeleteAllRows(connection,null).Wait();
             persister.SaveBytes(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), new byte[]{1}).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection, null));
@@ -143,7 +143,7 @@ public class StreamPersisterTests: TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection);
+            Installer.CreateTable(connection).Wait();
             persister.DeleteAllRows(connection,null).Wait();
             persister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();

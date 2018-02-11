@@ -3,28 +3,29 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
-class StreamPersister
+class Persister
 {
     string fullTableName;
 
-    public StreamPersister(string schema, string tableName)
+    public Persister(string schema, string tableName)
     {
         fullTableName = $"[{schema}].[{tableName}]";
     }
 
-    public Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
+    public Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation= default )
     {
-        return Save(connection, transaction, messageId, name, expiry, stream);
+        return Save(connection, transaction, messageId, name, expiry, stream, cancellation);
     }
 
-    public Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes)
+    public Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default)
     {
-        return Save(connection, transaction, messageId, name, expiry, bytes);
+        return Save(connection, transaction, messageId, name, expiry, bytes, cancellation);
     }
 
-    async Task Save(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, object stream)
+    async Task Save(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, object stream, CancellationToken cancellation = default)
     {
         using (var command = connection.CreateCommand())
         {
@@ -51,7 +52,7 @@ values
             parameters.Add("@Data", SqlDbType.Binary, -1).Value = stream;
 
             // Send the data to the server asynchronously
-            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
         }
     }
 
@@ -89,7 +90,7 @@ from {fullTableName}";
         return command;
     }
 
-    public async Task DeleteAllRows(SqlConnection connection, SqlTransaction transaction)
+    public async Task DeleteAllRows(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
     {
         using (var command = connection.CreateCommand())
         {
@@ -99,11 +100,11 @@ from {fullTableName}";
             }
 
             command.CommandText = $@"delete from {fullTableName}";
-            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
         }
     }
 
-    public async Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime)
+    public async Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime, CancellationToken cancellation = default)
     {
         using (var command = connection.CreateCommand())
         {
@@ -114,16 +115,16 @@ from {fullTableName}";
 
             command.CommandText = $@"delete from {fullTableName} where expiry < @date";
             command.Parameters.AddWithValue("date", dateTime);
-            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+            await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
         }
     }
 
-    public async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target)
+    public async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target, CancellationToken cancellation = default)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        using (var reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false))
         {
-            if (!await reader.ReadAsync().ConfigureAwait(false))
+            if (!await reader.ReadAsync(cancellation).ConfigureAwait(false))
             {
                 throw ThrowNotFound(messageId, name);
             }
@@ -135,12 +136,12 @@ from {fullTableName}";
         }
     }
 
-    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
+    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-        using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
+        using (var reader = await command.ExecuteReaderAsync(cancellation).ConfigureAwait(false))
         {
-            if (await reader.ReadAsync().ConfigureAwait(false))
+            if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
             {
                 return (byte[]) reader[1];
             }
@@ -149,15 +150,15 @@ from {fullTableName}";
         throw ThrowNotFound(messageId, name);
     }
 
-    public async Task<Stream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
+    public async Task<Stream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation)
     {
         SqlCommand command = null;
         SqlDataReader reader = null;
         try
         {
             command = CreateGetDataCommand(messageId, name, connection, transaction);
-            reader = await ExecuteSequentialReader(command).ConfigureAwait(false);
-            if (await reader.ReadAsync().ConfigureAwait(false))
+            reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false);
+            if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
             {
                 var length = reader.GetInt64(0);
                 var sqlStream = reader.GetStream(1);
@@ -176,12 +177,12 @@ from {fullTableName}";
         throw ThrowNotFound(messageId, name);
     }
 
-    public async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, Stream, Task> action)
+    public async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, Stream, Task> action, CancellationToken cancellation = default)
     {
         using (var command = CreateGetDatasCommand(messageId, connection, transaction))
-        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        using (var reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false))
         {
-            while (await reader.ReadAsync().ConfigureAwait(false))
+            while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
             {
                 var name = reader.GetString(0);
                 var length = reader.GetInt64(1);
@@ -193,12 +194,12 @@ from {fullTableName}";
         }
     }
 
-    public async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<Stream, Task> action)
+    public async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-        using (var reader = await ExecuteSequentialReader(command).ConfigureAwait(false))
+        using (var reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false))
         {
-            if (!await reader.ReadAsync().ConfigureAwait(false))
+            if (!await reader.ReadAsync(cancellation).ConfigureAwait(false))
             {
                 throw ThrowNotFound(messageId, name);
             }
@@ -218,9 +219,9 @@ from {fullTableName}";
 
     // The reader needs to be executed with SequentialAccess to enable network streaming
     // Otherwise ReadAsync will buffer the entire BLOB in memory which can cause scalability issues or OutOfMemoryExceptions
-    static Task<SqlDataReader> ExecuteSequentialReader(SqlCommand command)
+    static Task<SqlDataReader> ExecuteSequentialReader(SqlCommand command, CancellationToken cancellation= default )
     {
-        return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess);
+        return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellation);
     }
 
     SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)

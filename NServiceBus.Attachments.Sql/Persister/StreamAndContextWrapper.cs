@@ -28,14 +28,14 @@ class StreamAndContextWrapper : Stream
         inner.Flush();
     }
 
-    public override Task FlushAsync(CancellationToken cancellationToken)
+    public override Task FlushAsync(CancellationToken cancellation)
     {
-        return inner.FlushAsync(cancellationToken);
+        return inner.FlushAsync(cancellation);
     }
 
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellation)
     {
-        return inner.ReadAsync(buffer, offset, count, cancellationToken);
+        return inner.ReadAsync(buffer, offset, count, cancellation);
     }
 
     public override int ReadByte()
@@ -63,9 +63,9 @@ class StreamAndContextWrapper : Stream
         inner.Write(buffer, offset, count);
     }
 
-    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellation)
     {
-        return inner.WriteAsync(buffer, offset, count, cancellationToken);
+        return inner.WriteAsync(buffer, offset, count, cancellation);
     }
 
     public override void WriteByte(byte value)
@@ -103,9 +103,9 @@ class StreamAndContextWrapper : Stream
         base.Close();
     }
 
-    public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
+    public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellation)
     {
-        return inner.CopyToAsync(destination, bufferSize, cancellationToken);
+        return inner.CopyToAsync(destination, bufferSize, cancellation);
     }
 
     protected override void Dispose(bool disposing)

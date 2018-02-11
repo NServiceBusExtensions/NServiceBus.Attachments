@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 
@@ -10,14 +11,15 @@ namespace NServiceBus
     /// </summary>
     public class AttachmentSettings
     {
-        internal Func<Task<SqlConnection>> ConnectionFactory;
+        internal Func<CancellationToken, Task<SqlConnection>> ConnectionFactory;
         internal bool RunCleanTask = true;
         internal string Schema = "dbo";
         internal string TableName = "Attachments";
         internal bool InstallerDisabled;
         internal GetTimeToKeep TimeToKeep;
+        internal CancellationToken Cancellation;
 
-        internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
+        internal AttachmentSettings(Func<CancellationToken, Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
             Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
             TimeToKeep = timeToKeep;
@@ -49,6 +51,14 @@ namespace NServiceBus
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             TableName = tableName;
             Schema = schema;
+        }
+
+        /// <summary>
+        /// The root <see cref="CancellationToken"/> for all operations. Defaults to <see cref="System.Threading.CancellationToken.None"/>
+        /// </summary>
+        public void CancellationToken(CancellationToken cancellation)
+        {
+            Cancellation = cancellation;
         }
     }
 }

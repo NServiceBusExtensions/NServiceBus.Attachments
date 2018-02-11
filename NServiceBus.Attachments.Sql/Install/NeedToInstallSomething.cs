@@ -6,23 +6,25 @@ using NServiceBus.Settings;
 
 class NeedToInstallSomething : INeedToInstallSomething
 {
-    AttachmentSettings installerSettings;
+    AttachmentSettings settings;
 
     public NeedToInstallSomething(ReadOnlySettings settings)
     {
-        installerSettings = settings.GetOrDefault<AttachmentSettings>();
+        this.settings = settings.GetOrDefault<AttachmentSettings>();
     }
 
     public async Task Install(string identity)
     {
-        if (installerSettings == null || installerSettings.InstallerDisabled)
+        if (settings == null || settings.InstallerDisabled)
         {
             return;
         }
 
-        using (var connection = await installerSettings.ConnectionFactory().ConfigureAwait(false))
+        var cancellation = settings.Cancellation;
+        using (var connection = await settings.ConnectionFactory(cancellation).ConfigureAwait(false))
         {
-            Installer.CreateTable(connection, installerSettings.Schema, installerSettings.TableName);
+            await Installer.CreateTable(connection, settings.Schema, settings.TableName, cancellation)
+                .ConfigureAwait(false);
         }
     }
 }
