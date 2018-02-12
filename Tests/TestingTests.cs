@@ -50,7 +50,7 @@ public class TestingTests
 
     public class CustomMockMessageAttachments : MockMessageAttachments
     {
-        public override Task<byte[]> GetBytes(CancellationToken? cancellation = null)
+        public override Task<byte[]> GetBytes(CancellationToken cancellation = default)
         {
             GetBytesWasCalled = true;
             return Task.FromResult(new byte[] {5});
