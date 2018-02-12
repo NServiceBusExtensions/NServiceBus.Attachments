@@ -15,7 +15,7 @@ class Persister
         fullTableName = $"[{schema}].[{tableName}]";
     }
 
-    public Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation= default )
+    public Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation = default)
     {
         return Save(connection, transaction, messageId, name, expiry, stream, cancellation);
     }
@@ -136,7 +136,7 @@ from {fullTableName}";
         }
     }
 
-    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default )
     {
         using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
         using (var reader = await command.ExecuteReaderAsync(cancellation).ConfigureAwait(false))
@@ -219,7 +219,7 @@ from {fullTableName}";
 
     // The reader needs to be executed with SequentialAccess to enable network streaming
     // Otherwise ReadAsync will buffer the entire BLOB in memory which can cause scalability issues or OutOfMemoryExceptions
-    static Task<SqlDataReader> ExecuteSequentialReader(SqlCommand command, CancellationToken cancellation= default )
+    static Task<SqlDataReader> ExecuteSequentialReader(SqlCommand command, CancellationToken cancellation = default)
     {
         return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellation);
     }

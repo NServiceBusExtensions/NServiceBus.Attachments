@@ -13,34 +13,34 @@ namespace NServiceBus.Attachments.Testing
     public class MockMessageAttachments : IMessageAttachments
     {
         /// <summary>
-        /// <see cref="IMessageAttachments.CopyTo(string,Stream,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.CopyTo(string,Stream,CancellationToken?)"/>
         /// </summary>
-        public virtual Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
+        public virtual Task CopyTo(string name, Stream target, CancellationToken? cancellation = null)
         {
             target.Dispose();
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.CopyTo(Stream,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.CopyTo(Stream,CancellationToken?)"/>
         /// </summary>
-        public virtual Task CopyTo(Stream target, CancellationToken cancellation = default)
+        public virtual Task CopyTo(Stream target, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(string,Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(string,Func{Stream,Task},CancellationToken?)"/>
         /// </summary>
-        public virtual Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(Func{Stream,Task},CancellationToken?)"/>
         /// </summary>
-        public virtual Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStream(Func<Stream, Task> action, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
@@ -48,111 +48,111 @@ namespace NServiceBus.Attachments.Testing
         /// <summary>
         /// <see cref="IMessageAttachments.ProcessStreams"/>
         /// </summary>
-        public virtual Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetBytes(CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetBytes(CancellationToken?)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytes(CancellationToken cancellation = default)
+        public virtual Task<byte[]> GetBytes(CancellationToken? cancellation = null)
         {
             return Task.FromResult(new byte[] { });
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetBytes(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetBytes(string,CancellationToken?)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytes(string name, CancellationToken cancellation = default)
+        public virtual Task<byte[]> GetBytes(string name, CancellationToken? cancellation = null)
         {
             return Task.FromResult(new byte[] { });
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStream(CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStream(CancellationToken?)"/>
         /// </summary>
-        public virtual Task<Stream> GetStream(CancellationToken cancellation = default)
+        public virtual Task<Stream> GetStream(CancellationToken? cancellation = null)
         {
             return Task.FromResult<Stream>(null);
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStream(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStream(string,CancellationToken?)"/>
         /// </summary>
-        public virtual Task<Stream> GetStream(string name, CancellationToken cancellation = default)
+        public virtual Task<Stream> GetStream(string name, CancellationToken? cancellation = null)
         {
             return Task.FromResult<Stream>(null);
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.CopyToForMessage(string,string,Stream,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.CopyToForMessage(string,string,Stream,CancellationToken?)"/>
         /// </summary>
-        public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
+        public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.CopyToForMessage(string,Stream,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.CopyToForMessage(string,Stream,CancellationToken?)"/>
         /// </summary>
-        public virtual Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
+        public virtual Task CopyToForMessage(string messageId, Stream target, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{Stream,Task},CancellationToken?)"/>
         /// </summary>
-        public virtual Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{Stream,Task},CancellationToken?)"/>
         /// </summary>
-        public virtual Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, Stream,Task},CancellationToken?)"/>
         /// </summary>
-        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken? cancellation = null)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetBytesForMessage(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetBytesForMessage(string,CancellationToken?)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
+        public virtual Task<byte[]> GetBytesForMessage(string messageId, CancellationToken? cancellation = null)
         {
             return Task.FromResult(new byte[] { });
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetBytesForMessage(string,string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetBytesForMessage(string,string,CancellationToken?)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
+        public virtual Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken? cancellation = null)
         {
             return Task.FromResult(new byte[] { });
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStreamForMessage(string,CancellationToken?)"/>
         /// </summary>
-        public virtual Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
+        public virtual Task<Stream> GetStreamForMessage(string messageId, CancellationToken? cancellation = null)
         {
             return Task.FromResult<Stream>(null);
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string,string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStreamForMessage(string,string,CancellationToken?)"/>
         /// </summary>
-        public virtual Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
+        public virtual Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken? cancellation = null)
         {
             return Task.FromResult<Stream>(null);
         }

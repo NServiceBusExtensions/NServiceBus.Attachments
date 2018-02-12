@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 
@@ -14,5 +13,4 @@ class Outgoing
     public byte[] BytesInstance;
     public GetTimeToKeep TimeToKeep;
     public Action Cleanup;
-    public CancellationToken Cancellation;
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.Configuration.AdvancedExtensibility;
@@ -17,7 +16,7 @@ namespace NServiceBus
         /// </summary>
         public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
-            Func<CancellationToken, Task<SqlConnection>> connectionFactory,
+            Func<Task<SqlConnection>> connectionFactory,
             GetTimeToKeep timeToKeep)
         {
             Guard.AgainstNull(configuration, nameof(configuration));

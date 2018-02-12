@@ -20,10 +20,9 @@ class NeedToInstallSomething : INeedToInstallSomething
             return;
         }
 
-        var cancellation = settings.Cancellation;
-        using (var connection = await settings.ConnectionFactory(cancellation).ConfigureAwait(false))
+        using (var connection = await settings.ConnectionFactory().ConfigureAwait(false))
         {
-            await Installer.CreateTable(connection, settings.Schema, settings.TableName, cancellation)
+            await Installer.CreateTable(connection, settings.Schema, settings.TableName)
                 .ConfigureAwait(false);
         }
     }

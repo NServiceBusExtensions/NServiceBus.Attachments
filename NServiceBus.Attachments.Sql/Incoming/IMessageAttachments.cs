@@ -13,27 +13,27 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Copy, for the current message, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.
         /// </summary>
-        Task CopyTo(string name, Stream target, CancellationToken cancellation = default);
+        Task CopyTo(string name, Stream target, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Copy, for the current message, the attachment with the default name of <see cref="string.Empty"/> to the <paramref name="target"/> <see cref="Stream"/>.
         /// </summary>
-        Task CopyTo(Stream target, CancellationToken cancellation = default);
+        Task CopyTo(Stream target, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStream(Func<Stream, Task> action, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, all attachments for the current message.
         /// </summary>
-        Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
@@ -41,47 +41,47 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<byte[]> GetBytes(CancellationToken cancellation = default);
+        Task<byte[]> GetBytes(CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task<byte[]> GetBytes(string name, CancellationToken cancellation = default);
+        Task<byte[]> GetBytes(string name, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="Stream"/>, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Task<Stream> GetStream(CancellationToken cancellation = default);
+        Task<Stream> GetStream(CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="Stream"/>, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task<Stream> GetStream(string name, CancellationToken cancellation = default);
+        Task<Stream> GetStream(string name, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Copy, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.
         /// </summary>
-        Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default);
+        Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Copy, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/> to the <paramref name="target"/> <see cref="Stream"/>.
         /// </summary>
-        Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default);
+        Task CopyToForMessage(string messageId, Stream target, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, all attachments for the for the message with <paramref name="messageId"/>.
         /// </summary>
-        Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
@@ -89,7 +89,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default);
+        Task<byte[]> GetBytesForMessage(string messageId, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
@@ -97,16 +97,16 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default);
+        Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="Stream"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default);
+        Task<Stream> GetStreamForMessage(string messageId, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Get a <see cref="Stream"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default);
+        Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken? cancellation = null);
     }
 }

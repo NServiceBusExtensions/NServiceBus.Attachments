@@ -24,34 +24,34 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
         /// </summary>
-        void Add<T>(string name, Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default)
+        void Add<T>(string name, Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
             where T : Stream;
 
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
         /// </summary>
-        void Add(string name, Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void Add(string name, Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
         /// </summary>
-        void Add(string name, Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void Add(string name, Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
         /// </summary>
-        void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default )
+        void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
             where T : Stream;
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
         /// </summary>
-        void Add(Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void Add(Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
         /// </summary>
-        void Add(Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void Add(Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
@@ -59,7 +59,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddBytes(string name, Func<byte[]> byteFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void AddBytes(string name, Func<byte[]> byteFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
@@ -67,7 +67,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
@@ -75,14 +75,40 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddBytes(Func<byte[]> byteFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void AddBytes(Func<byte[]> byteFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
         /// <summary>
-        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// Save an attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
         /// <remarks>
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken cancellation = default);
+        void AddBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null);
+
+        ///// <summary>
+        ///// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
+        ///// </summary>
+        //Task Save(string name, Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null);
+
+        ///// <summary>
+        ///// Save an attachment with the default name of <see cref="string.Empty"/>.
+        ///// </summary>
+        //Task Save(Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null);
+
+        ///// <summary>
+        ///// Save an attachment with <paramref name="name"/>.
+        ///// </summary>
+        ///// <remarks>
+        ///// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        ///// </remarks>
+        //Task SaveBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null);
+
+        ///// <summary>
+        ///// Save an attachment with the default name of <see cref="string.Empty"/>.
+        ///// </summary>
+        ///// <remarks>
+        ///// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        ///// </remarks>
+        //Task SaveBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null);
     }
 }

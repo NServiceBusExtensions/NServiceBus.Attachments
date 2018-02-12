@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments;
 using NServiceBus.Pipeline;
@@ -11,17 +10,15 @@ using NServiceBus.Pipeline;
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<CancellationToken, Task<SqlConnection>> connectionFactory;
+    Func<Task<SqlConnection>> connectionFactory;
     Persister persister;
     GetTimeToKeep endpointTimeToKeep;
-    CancellationToken endpointCancellation;
 
-    public SendBehavior(Func<CancellationToken, Task<SqlConnection>> connectionFactory, Persister persister, GetTimeToKeep timeToKeep, CancellationToken endpointCancellation)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, Persister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
         endpointTimeToKeep = timeToKeep;
-        this.endpointCancellation = endpointCancellation;
     }
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
@@ -45,10 +42,9 @@ class SendBehavior :
             return;
         }
 
-        var currentToken = outgoingAttachments.Cancellation.Or(endpointCancellation);
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        using (var connection = await connectionFactory(currentToken).ConfigureAwait(false))
+        using (var connection = await connectionFactory().ConfigureAwait(false))
         {
             if (context.TryReadTransaction(out var transaction))
             {
@@ -82,11 +78,11 @@ class SendBehavior :
         }
     }
 
-    async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation)
+    async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
     {
         using (stream)
         {
-            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, cancellation)
+            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream)
                 .ConfigureAwait(false);
         }
     }
@@ -111,40 +107,40 @@ class SendBehavior :
         if (outgoing.AsyncStreamFactory != null)
         {
             var stream = await outgoing.AsyncStreamFactory().ConfigureAwait(false);
-            await ProcessStream(connection, transaction, messageId, name, expiry, stream, outgoing.Cancellation).ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, stream).ConfigureAwait(false);
             return;
         }
 
         if (outgoing.StreamFactory != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory(), outgoing.Cancellation);
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory());
             return;
         }
 
         if (outgoing.StreamInstance != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance, outgoing.Cancellation).ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance).ConfigureAwait(false);
             return;
         }
 
         if (outgoing.AsyncBytesFactory != null)
         {
             var bytes = await outgoing.AsyncBytesFactory().ConfigureAwait(false);
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, outgoing.Cancellation)
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes)
                 .ConfigureAwait(false);
             return;
         }
 
         if (outgoing.BytesFactory != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), outgoing.Cancellation)
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory())
                 .ConfigureAwait(false);
             return;
         }
 
         if (outgoing.BytesInstance != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, outgoing.Cancellation)
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance)
                 .ConfigureAwait(false);
             return;
         }
