@@ -35,13 +35,13 @@ class AsyncTimer: IAsyncTimer
     {
         if (tokenSource == null)
         {
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         tokenSource.Cancel();
         tokenSource.Dispose();
 
-        return task ?? Task.FromResult(0);
+        return task ?? Task.CompletedTask;
     }
 
     Task task;

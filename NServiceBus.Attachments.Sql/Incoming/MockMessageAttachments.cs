@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NServiceBus.Attachments.Testing
+namespace NServiceBus.Attachments.Sql.Testing
 {
     /// <summary>
     /// An implementation of <see cref="IMessageAttachments"/> for use in unit testing.
