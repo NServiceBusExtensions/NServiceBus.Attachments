@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NServiceBus.Attachments
+namespace NServiceBus.Attachments.Sql
 {
     /// <summary>
     /// Helpers for defining how long to keep an attachment.

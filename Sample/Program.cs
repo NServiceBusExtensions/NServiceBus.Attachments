@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
-using NServiceBus.Attachments;
+using NServiceBus.Attachments.Sql;
 
 class Program
 {

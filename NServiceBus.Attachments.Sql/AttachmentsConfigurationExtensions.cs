@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using NServiceBus.Attachments;
+using NServiceBus.Attachments.Sql;
 using NServiceBus.Configuration.AdvancedExtensibility;
 
 namespace NServiceBus
