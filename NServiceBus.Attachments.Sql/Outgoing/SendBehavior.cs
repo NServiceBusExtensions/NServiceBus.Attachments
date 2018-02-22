@@ -94,7 +94,7 @@ class SendBehavior :
         var expiry = DateTime.UtcNow.Add(timeToKeep);
         try
         {
-            await Process(connection, transaction, messageId, outgoing, name, expiry);
+            await Process(connection, transaction, messageId, outgoing, name, expiry).ConfigureAwait(false);
         }
         finally
         {
@@ -113,7 +113,7 @@ class SendBehavior :
 
         if (outgoing.StreamFactory != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory());
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory()).ConfigureAwait(false);
             return;
         }
 
