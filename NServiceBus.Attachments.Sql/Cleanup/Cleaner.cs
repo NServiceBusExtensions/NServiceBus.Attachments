@@ -36,7 +36,7 @@ class Cleaner : FeatureStartupTask
                 }
             },
             delayStrategy: Task.Delay);
-        return Task.FromResult(0);
+        return Task.CompletedTask;
     }
 
     protected override Task OnStop(IMessageSession session)

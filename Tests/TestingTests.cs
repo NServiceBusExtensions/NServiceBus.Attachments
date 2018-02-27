@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
-using NServiceBus.Attachments.Testing;
+using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
 using Xunit;
 

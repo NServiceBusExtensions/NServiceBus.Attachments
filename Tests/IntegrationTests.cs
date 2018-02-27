@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
-using NServiceBus.Attachments;
+using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
 using NServiceBus.Transport.SQLServer;
 using Xunit;

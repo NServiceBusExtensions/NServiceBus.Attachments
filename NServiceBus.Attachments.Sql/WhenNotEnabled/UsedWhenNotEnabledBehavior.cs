@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NServiceBus.Attachments;
+using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 
 class UsedWhenNotEnabledBehavior :
