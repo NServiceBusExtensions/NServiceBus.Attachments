@@ -22,7 +22,7 @@ namespace NServiceBus
 
             if (!contextBag.TryGet<SqlAttachmentState>(out var state))
             {
-                throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(AttachmentsConfigurationExtensions.EnableAttachments)}().");
+                throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(SqlAttachmentsExtensions.EnableAttachments)}().");
             }
             return new MessageAttachments(state.GetConnection, context.MessageId, state.Persister);
         }
