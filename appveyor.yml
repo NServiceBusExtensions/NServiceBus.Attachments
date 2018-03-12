@@ -11,7 +11,8 @@ build:
   verbosity: minimal
 test_script:
 - cmd: >-
-    %xunit20%\xunit.console Tests\bin\Release\net47\Tests.dll
+    %xunit20%\xunit.console Attachments.Sql.Tests\bin\Release\net47\Attachments.Sql.Tests.dll
+    %xunit20%\xunit.console Attachments.FileShare.Tests\bin\Release\net47\Attachments.FileShare.Tests.dll
 
 artifacts:
 - path: nugets\**\*.nupkg
