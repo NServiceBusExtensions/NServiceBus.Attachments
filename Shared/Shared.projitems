@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AttachmentSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cleanup\AsyncTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cleanup\Cleaner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cleanup\IAsyncTimer.cs" />
@@ -22,5 +23,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\TimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\ToBeReceivedHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\AttachmentsUsedWhenNotEnabledFeature.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\UsedWhenNotEnabledBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\UsedWhenNotEnabledRegistration.cs" />
   </ItemGroup>
 </Project>

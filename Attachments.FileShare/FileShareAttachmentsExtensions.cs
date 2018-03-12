@@ -11,7 +11,7 @@ namespace NServiceBus
         /// <summary>
         /// Enable SQL attachments for this endpoint.
         /// </summary>
-        public static FileShareAttachmentSettings EnableAttachments(
+        public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
             string fileShare,
             GetTimeToKeep timeToKeep)
@@ -20,8 +20,8 @@ namespace NServiceBus
             Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
             Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
             var settings = configuration.GetSettings();
-            var attachments = new FileShareAttachmentSettings(fileShare, timeToKeep);
-            settings.Set<FileShareAttachmentSettings>(attachments);
+            var attachments = new AttachmentSettings(fileShare, timeToKeep);
+            settings.Set<AttachmentSettings>(attachments);
             configuration.EnableFeature<AttachmentFeature>();
             configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();
             return attachments;
