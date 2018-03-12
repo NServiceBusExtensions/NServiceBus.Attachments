@@ -30,17 +30,17 @@ namespace NServiceBus.Attachments.FileShare.Testing
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(string,Func{FileStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(string,Func{Stream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStream(string name, Func<FileStream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(Func{FileStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(Func{Stream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStream(Func<FileStream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
@@ -48,7 +48,7 @@ namespace NServiceBus.Attachments.FileShare.Testing
         /// <summary>
         /// <see cref="IMessageAttachments.ProcessStreams"/>
         /// </summary>
-        public virtual Task ProcessStreams(Func<string, FileStream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
@@ -70,17 +70,17 @@ namespace NServiceBus.Attachments.FileShare.Testing
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStream()"/>
+        /// <see cref="IMessageAttachments.GetStream(CancellationToken)"/>
         /// </summary>
-        public virtual FileStream GetStream()
+        public virtual Task<Stream> GetStream(CancellationToken cancellation = default)
         {
             return null;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStream(string)"/>
+        /// <see cref="IMessageAttachments.GetStream(string,CancellationToken)"/>
         /// </summary>
-        public virtual FileStream GetStream(string name)
+        public virtual Task<Stream> GetStream(string name, CancellationToken cancellation = default)
         {
             return null;
         }
@@ -102,25 +102,25 @@ namespace NServiceBus.Attachments.FileShare.Testing
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{FileStream,Task})"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{Stream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStreamForMessage(string messageId, string name, Func<FileStream, Task> action)
+        public virtual Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{FileStream,Task})"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{Stream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStreamForMessage(string messageId, Func<FileStream, Task> action)
+        public virtual Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, FileStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, Stream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, FileStream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
@@ -142,17 +142,17 @@ namespace NServiceBus.Attachments.FileShare.Testing
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string)"/>
+        /// <see cref="IMessageAttachments.GetStreamForMessage(string,CancellationToken)"/>
         /// </summary>
-        public virtual FileStream GetStreamForMessage(string messageId)
+        public virtual Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
         {
             return null;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string,string)"/>
+        /// <see cref="IMessageAttachments.GetStreamForMessage(string,string,CancellationToken)"/>
         /// </summary>
-        public virtual FileStream GetStreamForMessage(string messageId, string name)
+        public virtual Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
             return null;
         }

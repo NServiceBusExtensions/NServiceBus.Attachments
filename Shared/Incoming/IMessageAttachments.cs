@@ -4,6 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
+#if FileShare
+    .FileShare
+#endif
+#if Sql
+.Sql
+#endif
 {
     /// <summary>
     /// Provides access to read attachments.

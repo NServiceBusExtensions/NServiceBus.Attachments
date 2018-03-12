@@ -1,4 +1,6 @@
-﻿namespace NServiceBus.Attachments.Testing
+﻿using NServiceBus.Attachments.Sql;
+
+namespace NServiceBus.Attachments.Testing
 {
     /// <summary>
     /// Attachment testing helpers

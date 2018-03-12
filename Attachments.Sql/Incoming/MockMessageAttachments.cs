@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NServiceBus.Attachments.Sql;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
