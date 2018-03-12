@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\GetTimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\IOutgoingAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\Outgoing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Outgoing\OutgoingAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\TimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\ToBeReceivedHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamWrapper.cs" />
