@@ -3,7 +3,13 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NServiceBus.Attachments.Testing
+namespace NServiceBus.Attachments
+#if FileShare
+    .FileShare.Testing
+#endif
+#if Sql
+.Sql.Testing
+#endif
 {
     /// <summary>
     /// An implementation of <see cref="IMessageAttachments"/> for use in unit testing.

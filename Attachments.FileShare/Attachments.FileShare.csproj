@@ -1,17 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Name>NServiceBus.Attachments.FileShare</Name>
+    <AssemblyName>NServiceBus.Attachments.FileShare</AssemblyName>
+    <PackageName>NServiceBus.Attachments.FileShare</PackageName>
     <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DefineConstants>$(DefineConstants);FileShare</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\**\*.cs" />
-    <Compile Remove="..\Shared\obj\**" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-rc0001" />
   </ItemGroup>
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>

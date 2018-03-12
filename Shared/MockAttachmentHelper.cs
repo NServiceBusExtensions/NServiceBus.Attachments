@@ -1,4 +1,10 @@
-﻿namespace NServiceBus.Attachments.FileShare.Testing
+﻿namespace NServiceBus.Attachments
+#if FileShare
+.FileShare.Testing
+#endif
+#if Sql
+.Sql.Testing
+#endif
 {
     /// <summary>
     /// Attachment testing helpers

@@ -64,7 +64,6 @@ values
             while (reader.Read())
             {
                 yield return new ReadRow(
-                    id: reader.GetGuid(0),
                     messageId: reader.GetString(1),
                     name: reader.GetString(2),
                     expiry: reader.GetDateTime(3));

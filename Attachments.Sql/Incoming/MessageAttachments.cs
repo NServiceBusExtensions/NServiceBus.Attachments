@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using NServiceBus.Attachments;
+using NServiceBus.Attachments.Sql;
 
 class MessageAttachments : IMessageAttachments
 {

@@ -6,7 +6,7 @@ namespace NServiceBus
     /// <summary>
     /// Contextual extensions to manipulate attachments.
     /// </summary>
-    public static partial class FileShareMessageContextExtensions
+    public static partial class FileShareAttachmentsMessageContextExtensions
     {
         /// <summary>
         /// Provides an instance of <see cref="IMessageAttachments"/> for reading attachments.

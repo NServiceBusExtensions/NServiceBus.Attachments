@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using NServiceBus.Attachments.Sql;
 
 namespace NServiceBus.Attachments
+#if FileShare
+.FileShare
+#elif Sql
+.Sql
+#endif
 {
     /// <summary>
     /// Provides access to write attachments.

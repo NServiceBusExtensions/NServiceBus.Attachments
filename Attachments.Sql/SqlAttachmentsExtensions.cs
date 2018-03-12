@@ -9,7 +9,7 @@ namespace NServiceBus
     /// <summary>
     /// Extensions to control what messages are audited.
     /// </summary>
-    public static class AttachmentsConfigurationExtensions
+    public static class SqlAttachmentsExtensions
     {
         /// <summary>
         /// Enable SQL attachments for this endpoint.

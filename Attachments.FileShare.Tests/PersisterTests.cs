@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ObjectApproval;
 using Xunit;
@@ -7,19 +8,23 @@ using Xunit.Abstractions;
 
 public class PersisterTests: TestBase
 {
-    Persister persister;
-
     public PersisterTests(ITestOutputHelper output) : base(output)
     {
-        var fileShare = Path.GetFullPath("attachments/PersisterTests");
-        persister = new Persister(fileShare);
+    }
+
+    static Persister GetPersister([CallerMemberName] string path= null)
+    {
+        var fileShare = Path.GetFullPath($"attachments/{path}");
+        var persister = new Persister(fileShare);
         Directory.CreateDirectory(fileShare);
+        persister.DeleteAllRows();
+        return persister;
     }
 
     [Fact]
     public async Task CopyTo()
     {
-        persister.DeleteAllRows();
+        var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
         var memoryStream = new MemoryStream();
         await persister.CopyTo("theMessageId", "theName", memoryStream);
@@ -31,7 +36,7 @@ public class PersisterTests: TestBase
     [Fact]
     public async Task GetBytes()
     {
-        persister.DeleteAllRows();
+        var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
         var bytes = await persister.GetBytes("theMessageId", "theName");
         Assert.Equal(5, bytes[0]);
@@ -40,7 +45,7 @@ public class PersisterTests: TestBase
     [Fact]
     public async Task ProcessStream()
     {
-        persister.DeleteAllRows();
+        var persister = GetPersister();
         var count = 0;
         await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
         await persister.ProcessStream("theMessageId", "theName",
@@ -57,7 +62,7 @@ public class PersisterTests: TestBase
     [Fact]
     public async Task ProcessStreams()
     {
-        persister.DeleteAllRows();
+        var persister = GetPersister();
         var count = 0;
         await persister.SaveStream("theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(1));
         await persister.SaveStream("theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(2));
@@ -95,7 +100,7 @@ public class PersisterTests: TestBase
     [Fact]
     public void SaveStream()
     {
-        persister.DeleteAllRows();
+        var persister = GetPersister();
         persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
         ObjectApprover.VerifyWithJson(persister.ReadAllMetadata());
     }
@@ -103,7 +108,7 @@ public class PersisterTests: TestBase
     [Fact]
     public void SaveBytes()
     {
-        persister.DeleteAllRows();
+        var persister = GetPersister();
         persister.SaveBytes("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), new byte[] {1}).GetAwaiter().GetResult();
         ObjectApprover.VerifyWithJson(persister.ReadAllMetadata());
     }
@@ -111,7 +116,7 @@ public class PersisterTests: TestBase
     [Fact]
     public void CleanupItemsOlderThan()
     {
-        persister.DeleteAllRows();
+        var persister = GetPersister();
         persister.SaveStream("theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
         persister.SaveStream("theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
         persister.CleanupItemsOlderThan(new DateTime(2001, 1, 1, 1, 1, 1));

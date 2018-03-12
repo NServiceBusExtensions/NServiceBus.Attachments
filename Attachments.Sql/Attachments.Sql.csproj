@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Name>NServiceBus.Attachments.Sql</Name>
+    <AssemblyName>NServiceBus.Attachments.Sql</AssemblyName>
+    <PackageName>NServiceBus.Attachments.Sql</PackageName>
     <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DefineConstants>$(DefineConstants);Sql</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\**\*.cs" />
-    <Compile Remove="..\Shared\obj\**" />
-    <EmbeddedResource Include="Table.sql" />
+    <EmbeddedResource Include="Table.sql" LogicalName="Table.sql"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-rc0001" />
@@ -18,9 +17,5 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Data.SqlClient" Version="4.4.2" />
   </ItemGroup>
-  <Target Name="IncludePDBsInPackage">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\$(AssemblyName).pdb" PackagePath="lib/$(TargetFramework)" />
-    </ItemGroup>
-  </Target>
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>

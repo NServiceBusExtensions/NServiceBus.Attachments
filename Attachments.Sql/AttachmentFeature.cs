@@ -2,6 +2,7 @@
 using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.ObjectBuilder;
+using NServiceBus.Attachments.Sql;
 
 class AttachmentFeature : Feature
 {

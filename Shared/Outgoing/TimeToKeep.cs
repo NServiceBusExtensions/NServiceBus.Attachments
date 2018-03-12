@@ -4,6 +4,9 @@ namespace NServiceBus.Attachments
 #if FileShare
     .FileShare
 #endif
+#if Sql
+.Sql
+#endif
 {
     /// <summary>
     /// Helpers for defining how long to keep an attachment.

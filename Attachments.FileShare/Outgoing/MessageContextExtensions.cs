@@ -3,7 +3,7 @@ using NServiceBus.Extensibility;
 
 namespace NServiceBus
 {
-    public static partial class FileShareMessageContextExtensions
+    public static partial class FileShareAttachmentsMessageContextExtensions
     {
         /// <summary>
         /// Provides an instance of <see cref="IOutgoingAttachments"/> for writing attachments.

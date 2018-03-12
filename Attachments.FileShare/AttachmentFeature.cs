@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NServiceBus;
+using NServiceBus.Attachments.FileShare;
 using NServiceBus.Features;
 using NServiceBus.ObjectBuilder;
 
@@ -9,7 +10,7 @@ class AttachmentFeature : Feature
     protected override void Setup(FeatureConfigurationContext context)
     {
         var readOnlySettings = context.Settings;
-        var settings = readOnlySettings.Get<FileShareAttachmentSettings>();
+        var settings = readOnlySettings.Get<AttachmentSettings>();
 
         var pipeline = context.Pipeline;
         var persister = new Persister(settings.FileShare);

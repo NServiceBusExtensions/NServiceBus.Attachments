@@ -4,9 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using NServiceBus.Attachments.FileShare;
+using NServiceBus.Attachments;
 
-class OutgoingAttachments: IOutgoingAttachments
+#if FileShare
+using NServiceBus.Attachments.FileShare;
+#endif
+#if Sql
+using NServiceBus.Attachments.Sql;
+#endif
+
+class OutgoingAttachments : IOutgoingAttachments
 {
     internal Dictionary<string, Outgoing> Streams = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
 

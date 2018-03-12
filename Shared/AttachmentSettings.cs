@@ -1,23 +1,19 @@
-﻿using NServiceBus.Attachments.FileShare;
-
-namespace NServiceBus
+﻿namespace NServiceBus.Attachments
+#if FileShare
+.FileShare
+#endif
+#if Sql
+.Sql
+#endif
 {
     /// <summary>
     /// All settings for attachments
     /// </summary>
-    public class FileShareAttachmentSettings
+    public partial class AttachmentSettings
     {
         internal bool RunCleanTask = true;
         internal bool InstallerDisabled;
-        internal string FileShare;
         internal GetTimeToKeep TimeToKeep;
-
-        internal FileShareAttachmentSettings(string fileShare, GetTimeToKeep timeToKeep)
-        {
-            Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
-            FileShare = fileShare;
-            TimeToKeep = timeToKeep;
-        }
 
         /// <summary>
         /// Disable the attachment cleanup task.

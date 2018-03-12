@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NServiceBus.Attachments
+namespace NServiceBus.Attachments.Sql
 {
     /// <summary>
     /// Used to take control over the storage table creation.
@@ -33,7 +33,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public static string GetTableSql()
         {
-            using (var stream = AssemblyHelper.Current.GetManifestResourceStream($"{AssemblyHelper.Name}.Table.sql"))
+            using (var stream = AssemblyHelper.Current.GetManifestResourceStream("Table.sql"))
             using (var streamReader = new StreamReader(stream))
             {
                 return streamReader.ReadToEnd();
