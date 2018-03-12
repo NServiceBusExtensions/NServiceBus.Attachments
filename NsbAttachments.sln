@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{66DE4640-017E-4D62-AC42-C337815AF78E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Tests", "Shared.Tests\Shared.Tests.csproj", "{F1B0F321-D07B-4035-9E42-C7770DE5BA07}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.FileShare", "Attachments.FileShare\Attachments.FileShare.csproj", "{A300472D-FB9C-49E3-A9C8-85A49EC2D885}"
@@ -25,7 +23,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.FileShare.Sampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.Sql.Sample", "Attachments.Sql.Sample\Attachments.Sql.Sample.csproj", "{74F3ADF2-0A6D-4FFC-B6F0-290DB5B3E468}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{52D4A9CA-AA16-4979-9FFB-D4CC8DDE551B}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{52d4a9ca-aa16-4979-9ffb-d4cc8dde551b}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -43,10 +46,6 @@ Global
 		{EA61A805-4CD1-4325-9662-A093D919ACFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA61A805-4CD1-4325-9662-A093D919ACFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA61A805-4CD1-4325-9662-A093D919ACFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66DE4640-017E-4D62-AC42-C337815AF78E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66DE4640-017E-4D62-AC42-C337815AF78E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66DE4640-017E-4D62-AC42-C337815AF78E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66DE4640-017E-4D62-AC42-C337815AF78E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1B0F321-D07B-4035-9E42-C7770DE5BA07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1B0F321-D07B-4035-9E42-C7770DE5BA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1B0F321-D07B-4035-9E42-C7770DE5BA07}.Release|Any CPU.ActiveCfg = Release|Any CPU

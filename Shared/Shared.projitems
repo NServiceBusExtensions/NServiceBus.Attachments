@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>52d4a9ca-aa16-4979-9ffb-d4cc8dde551b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cleanup\AsyncTimer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cleanup\Cleaner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cleanup\IAsyncTimer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Guard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Outgoing\GetTimeToKeep.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Outgoing\Outgoing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Outgoing\TimeToKeep.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Outgoing\ToBeReceivedHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StreamWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Incoming\" />
+  </ItemGroup>
+</Project>
