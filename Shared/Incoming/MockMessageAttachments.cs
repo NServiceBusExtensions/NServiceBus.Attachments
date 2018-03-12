@@ -3,7 +3,13 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NServiceBus.Attachments.FileShare.Testing
+namespace NServiceBus.Attachments
+#if FileShare
+    .FileShare.Testing
+#endif
+#if Sql
+.Sql.Testing
+#endif
 {
     /// <summary>
     /// An implementation of <see cref="IMessageAttachments"/> for use in unit testing.
@@ -74,15 +80,15 @@ namespace NServiceBus.Attachments.FileShare.Testing
         /// </summary>
         public virtual Task<Stream> GetStream(CancellationToken cancellation = default)
         {
-            return null;
+            return Task.FromResult<Stream>(null);
         }
 
         /// <summary>
         /// <see cref="IMessageAttachments.GetStream(string,CancellationToken)"/>
         /// </summary>
-        public virtual Task<Stream> GetStream(string name, CancellationToken cancellation = default)
+        public virtual Task<Stream> GetStream(string name, CancellationToken cancellation = default )
         {
-            return null;
+            return Task.FromResult<Stream>(null);
         }
 
         /// <summary>
@@ -146,7 +152,7 @@ namespace NServiceBus.Attachments.FileShare.Testing
         /// </summary>
         public virtual Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
         {
-            return null;
+            return Task.FromResult<Stream>(null);
         }
 
         /// <summary>
@@ -154,7 +160,7 @@ namespace NServiceBus.Attachments.FileShare.Testing
         /// </summary>
         public virtual Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
-            return null;
+            return Task.FromResult<Stream>(null);
         }
     }
 }

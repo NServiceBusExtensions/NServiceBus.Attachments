@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NServiceBus.Attachments
+namespace NServiceBus.Attachments.Sql
 {
     /// <summary>
     /// Used to take control over the storage table creation.

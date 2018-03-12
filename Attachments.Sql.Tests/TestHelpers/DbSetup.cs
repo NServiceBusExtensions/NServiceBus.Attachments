@@ -1,4 +1,5 @@
 ﻿using NServiceBus.Attachments;
+using NServiceBus.Attachments.Sql;
 
 public class DbSetup
 {

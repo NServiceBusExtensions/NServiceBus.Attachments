@@ -16,7 +16,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Cleanup\IAsyncTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Guard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\IMessageAttachments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Incoming\MockMessageAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MockAttachmentHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\GetTimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\IOutgoingAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\Outgoing.cs" />
@@ -24,7 +26,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\TimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\ToBeReceivedHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReadRow.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StreamWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\AttachmentsUsedWhenNotEnabledFeature.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\UsedWhenNotEnabledBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\UsedWhenNotEnabledRegistration.cs" />
