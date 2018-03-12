@@ -4,7 +4,7 @@ using NServiceBus.Extensibility;
 
 namespace NServiceBus
 {
-    public static partial class MessageContextExtensions
+    public static partial class SqlAttachmentsMessageContextExtensions
     {
         /// <summary>
         /// Provides an instance of <see cref="IOutgoingAttachments"/> for writing attachments.

@@ -6,7 +6,7 @@ namespace NServiceBus
     /// <summary>
     /// Contextual extensions to manipulate attachments.
     /// </summary>
-    public static partial class MessageContextExtensions
+    public static partial class SqlAttachmentsMessageContextExtensions
     {
         /// <summary>
         /// Provides an instance of <see cref="IMessageAttachments"/> for reading attachments.
