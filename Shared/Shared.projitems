@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\OutgoingAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\TimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\ToBeReceivedHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReadRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\AttachmentsUsedWhenNotEnabledFeature.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\UsedWhenNotEnabledBehavior.cs" />
