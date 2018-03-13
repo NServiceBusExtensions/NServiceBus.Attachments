@@ -2,6 +2,6 @@
   {
     "MessageId": "themessageid1",
     "Name": "theName",
-    "Expiry": "2000-01-01T12:01:00+11:00"
+    "Expiry": "2000-01-01T01:01:00"
   }
 ]

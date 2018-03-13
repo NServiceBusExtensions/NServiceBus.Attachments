@@ -105,7 +105,7 @@ class Persister
 
     DateTime ParseExpiry(string value)
     {
-        return DateTime.ParseExact(value, dateTimeFormat, null, DateTimeStyles.AssumeUniversal);
+        return DateTime.ParseExact(value, dateTimeFormat, null, DateTimeStyles.AdjustToUniversal);
     }
 
     string dateTimeFormat = "yyyy-MM-ddTHHmm";
