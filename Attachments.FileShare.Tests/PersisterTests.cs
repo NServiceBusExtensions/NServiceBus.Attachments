@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using ObjectApproval;
 using Xunit;
 using Xunit.Abstractions;
@@ -110,7 +112,11 @@ public class PersisterTests: TestBase
     {
         var persister = GetPersister();
         persister.SaveBytes("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), new byte[] {1}).GetAwaiter().GetResult();
-        ObjectApprover.VerifyWithJson(persister.ReadAllMetadata());
+        var allMetadata = persister.ReadAllMetadata().ToList();
+
+        var serializeObject = JsonConvert.SerializeObject(allMetadata);
+        base.Output.WriteLine(serializeObject);
+        ObjectApprover.VerifyWithJson(allMetadata);
     }
 
     [Fact]
