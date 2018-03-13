@@ -59,6 +59,7 @@ class Persister
 
         Directory.CreateDirectory(attachmentDirectory);
         var dataFile = Path.Combine(attachmentDirectory, "data");
+        expiry = expiry.ToUniversalTime();
         var expiryFile = Path.Combine(attachmentDirectory, $"{expiry:yyyy-MM-ddTHHmm}.expiry");
         using (File.Create(expiryFile))
         {
