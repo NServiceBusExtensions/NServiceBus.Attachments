@@ -115,7 +115,7 @@ public class PersisterTests: TestBase
         var allMetadata = persister.ReadAllMetadata().ToList();
 
         var serializeObject = JsonConvert.SerializeObject(allMetadata);
-        base.Output.WriteLine(serializeObject);
+        base.Output.WriteLine("XX"+serializeObject);
         ObjectApprover.VerifyWithJson(allMetadata);
     }
 
