@@ -22,7 +22,7 @@ class Program
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");
-        Console.Read();
+        Console.ReadKey();
         await endpoint.Stop();
     }
 
