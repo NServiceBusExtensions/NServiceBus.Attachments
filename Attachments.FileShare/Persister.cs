@@ -32,6 +32,7 @@ class Persister
     }
 
     static int bufferSize = 4096;
+
     static Stream OpenWrite(string attachmentFilePath)
     {
         return new FileStream(
@@ -84,7 +85,7 @@ class Persister
 
     public Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default)
     {
-        return Save(messageId, name, expiry, fileStream => fileStream.WriteAsync(bytes,0, bytes.Length, cancellation));
+        return Save(messageId, name, expiry, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation));
     }
 
     public IEnumerable<ReadRow> ReadAllMetadata()
@@ -94,7 +95,7 @@ class Persister
             var messageId = Path.GetFileName(messageDirectory);
             foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
             {
-                var expiryFile = Directory.EnumerateFiles(attachmentDirectory,"*.expiry").Single();
+                var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
                 yield return new ReadRow(
                     messageId: messageId,
                     name: Path.GetFileName(attachmentDirectory),
@@ -126,6 +127,7 @@ class Persister
             {
                 return;
             }
+
             var expiry = ParseExpiry(Path.GetFileNameWithoutExtension(expiryFile));
             if (expiry > dateTime)
             {
@@ -161,14 +163,14 @@ class Persister
         using (var fileStream = OpenRead(dataFile))
         {
             var bytes = new byte[fileStream.Length];
-            await fileStream.ReadAsync(bytes, 0, (int)fileStream.Length, cancellation).ConfigureAwait(false);
+            await fileStream.ReadAsync(bytes, 0, (int) fileStream.Length, cancellation).ConfigureAwait(false);
             return bytes;
         }
     }
 
     public Task<Stream> GetStream(string messageId, string name)
     {
-       return OpenAttachmentStream(messageId, name);
+        return OpenAttachmentStream(messageId, name);
     }
 
     public async Task ProcessStreams(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
@@ -187,7 +189,7 @@ class Persister
 
     public async Task ProcessStream(string messageId, string name, Func<Stream, Task> action)
     {
-        var messageDirectory = GetAttachmentDirectory(messageId,name);
+        var messageDirectory = GetAttachmentDirectory(messageId, name);
         foreach (var dataFile in Directory.EnumerateFiles(messageDirectory, "data", SearchOption.AllDirectories))
         {
             using (var fileStream = OpenRead(dataFile))

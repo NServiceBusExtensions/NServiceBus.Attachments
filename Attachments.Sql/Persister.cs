@@ -130,12 +130,12 @@ from {fullTableName}";
 
             using (var data = reader.GetStream(1))
             {
-                await data.CopyToAsync(target, 81920,cancellation).ConfigureAwait(false);
+                await data.CopyToAsync(target, 81920, cancellation).ConfigureAwait(false);
             }
         }
     }
 
-    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default )
+    public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
     {
         using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
         using (var reader = await command.ExecuteReaderAsync(cancellation).ConfigureAwait(false))

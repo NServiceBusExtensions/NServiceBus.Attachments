@@ -9,7 +9,7 @@
     <DefineConstants>$(DefineConstants);Sql</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Table.sql" LogicalName="Table.sql"/>
+    <EmbeddedResource Include="Table.sql" LogicalName="Table.sql" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-rc0001" />
