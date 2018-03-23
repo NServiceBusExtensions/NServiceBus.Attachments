@@ -53,10 +53,7 @@ class Persister
         }
 
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);
-        if (Directory.Exists(attachmentDirectory))
-        {
-            throw ThrowExists(messageId, name);
-        }
+        ThrowIfDirectoryExists(attachmentDirectory, messageId, name);
 
         Directory.CreateDirectory(attachmentDirectory);
         var dataFile = Path.Combine(attachmentDirectory, "data");
@@ -139,6 +136,7 @@ class Persister
     public async Task CopyTo(string messageId, string name, Stream target, CancellationToken cancellation = default)
     {
         var dataFile = GetDataFile(messageId, name);
+        ThrowIfFileNotFound(dataFile, messageId, name);
         using (var fileStream = OpenRead(dataFile))
         {
             await fileStream.CopyToAsync(target, bufferSize, cancellation).ConfigureAwait(false);
@@ -148,6 +146,7 @@ class Persister
     public Stream OpenAttachmentStream(string messageId, string name)
     {
         var dataFile = GetDataFile(messageId, name);
+        ThrowIfFileNotFound(dataFile, messageId, name);
         return OpenRead(dataFile);
     }
 
@@ -160,6 +159,7 @@ class Persister
     public async Task<byte[]> GetBytes(string messageId, string name, CancellationToken cancellation = default)
     {
         var dataFile = GetDataFile(messageId, name);
+        ThrowIfFileNotFound(dataFile, messageId, name);
         using (var fileStream = OpenRead(dataFile))
         {
             var bytes = new byte[fileStream.Length];
@@ -176,6 +176,7 @@ class Persister
     public async Task ProcessStreams(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
     {
         var messageDirectory = GetMessageDirectory(messageId);
+        ThrowIfDirectoryNotFound(messageDirectory, messageId);
         foreach (var dataFile in Directory.EnumerateFiles(messageDirectory, "data", SearchOption.AllDirectories))
         {
             cancellation.ThrowIfCancellationRequested();
@@ -190,6 +191,7 @@ class Persister
     public async Task ProcessStream(string messageId, string name, Func<Stream, Task> action)
     {
         var messageDirectory = GetAttachmentDirectory(messageId, name);
+        ThrowIfDirectoryNotFound(messageDirectory, messageId);
         foreach (var dataFile in Directory.EnumerateFiles(messageDirectory, "data", SearchOption.AllDirectories))
         {
             using (var fileStream = OpenRead(dataFile))
@@ -199,13 +201,29 @@ class Persister
         }
     }
 
-    static Exception ThrowNotFound(string messageId, string name)
+    static void ThrowIfDirectoryNotFound(string path,string messageId)
     {
-        return new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
+        if (Directory.Exists(path))
+        {
+            return;
+        }
+        throw new Exception($"Could not find attachment. MessageId:{messageId}, Path:{path}");
+    }
+    static void ThrowIfFileNotFound(string path,string messageId, string name)
+    {
+        if (File.Exists(path))
+        {
+            return;
+        }
+        throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}, Path:{path}");
     }
 
-    static Exception ThrowExists(string messageId, string name)
+    static void ThrowIfDirectoryExists(string path, string messageId, string name)
     {
-        return new Exception($"Attachment already exists. MessageId:{messageId}, Name:{name}");
+        if (!Directory.Exists(path))
+        {
+            return;
+        }
+        throw new Exception($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
     }
 }
