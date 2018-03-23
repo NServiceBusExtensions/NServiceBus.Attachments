@@ -49,7 +49,7 @@ class Persister
         messageId = messageId.ToLowerInvariant();
         if (name == null)
         {
-            name = "defalt";
+            name = "default";
         }
 
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);

@@ -33,7 +33,7 @@ public class OutgoingWhenNotEnabledTests
     {
         var stream = new MemoryStream();
         var streamWriter = new StreamWriter(stream);
-        streamWriter.Write("sdflgkndkjfgn");
+        streamWriter.Write("content");
         streamWriter.Flush();
         stream.Position = 0;
         return stream;
