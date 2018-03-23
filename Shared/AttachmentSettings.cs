@@ -1,8 +1,7 @@
 ﻿namespace NServiceBus.Attachments
 #if FileShare
 .FileShare
-#endif
-#if Sql
+#elif Sql
 .Sql
 #endif
 {

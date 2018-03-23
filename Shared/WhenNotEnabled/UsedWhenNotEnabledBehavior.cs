@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NServiceBus.Pipeline;
-using NServiceBus.Attachments;
 
 #if FileShare
 using NServiceBus.Attachments.FileShare;
-#endif
-#if Sql
+#elif Sql
 using NServiceBus.Attachments.Sql;
+#else
+using NServiceBus.Attachments;
 #endif
 
 class UsedWhenNotEnabledBehavior :

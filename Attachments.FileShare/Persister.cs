@@ -145,10 +145,10 @@ class Persister
         }
     }
 
-    public Task<Stream> OpenAttachmentStream(string messageId, string name)
+    public Stream OpenAttachmentStream(string messageId, string name)
     {
         var dataFile = GetDataFile(messageId, name);
-        return Task.FromResult(OpenRead(dataFile));
+        return OpenRead(dataFile);
     }
 
     string GetDataFile(string messageId, string name)
@@ -168,7 +168,7 @@ class Persister
         }
     }
 
-    public Task<Stream> GetStream(string messageId, string name)
+    public Stream GetStream(string messageId, string name)
     {
         return OpenAttachmentStream(messageId, name);
     }

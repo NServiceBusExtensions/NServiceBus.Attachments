@@ -16,7 +16,7 @@ namespace NServiceBus.Attachments
     /// All members are stubbed out.
     /// </summary>
     /// <seealso cref="MockAttachmentHelper.InjectAttachmentsInstance"/>
-    public class MockMessageAttachments : IMessageAttachments
+    public partial class MockMessageAttachments : IMessageAttachments
     {
         /// <summary>
         /// <see cref="IMessageAttachments.CopyTo(string,Stream,CancellationToken)"/>
@@ -76,22 +76,6 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStream(CancellationToken)"/>
-        /// </summary>
-        public virtual Task<Stream> GetStream(CancellationToken cancellation = default)
-        {
-            return Task.FromResult<Stream>(null);
-        }
-
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStream(string,CancellationToken)"/>
-        /// </summary>
-        public virtual Task<Stream> GetStream(string name, CancellationToken cancellation = default )
-        {
-            return Task.FromResult<Stream>(null);
-        }
-
-        /// <summary>
         /// <see cref="IMessageAttachments.CopyToForMessage(string,string,Stream,CancellationToken)"/>
         /// </summary>
         public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
@@ -145,22 +129,6 @@ namespace NServiceBus.Attachments
         public virtual Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
             return Task.FromResult(new byte[] { });
-        }
-
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string,CancellationToken)"/>
-        /// </summary>
-        public virtual Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
-        {
-            return Task.FromResult<Stream>(null);
-        }
-
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string,string,CancellationToken)"/>
-        /// </summary>
-        public virtual Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
-        {
-            return Task.FromResult<Stream>(null);
         }
     }
 }

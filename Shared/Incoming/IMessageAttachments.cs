@@ -14,7 +14,7 @@ namespace NServiceBus.Attachments
     /// <summary>
     /// Provides access to read attachments.
     /// </summary>
-    public interface IMessageAttachments
+    public partial interface IMessageAttachments
     {
         /// <summary>
         /// Copy, for the current message, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.
@@ -53,16 +53,6 @@ namespace NServiceBus.Attachments
         /// Get a <see cref="byte"/> array, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
         Task<byte[]> GetBytes(string name, CancellationToken cancellation = default);
-
-        /// <summary>
-        /// Get a <see cref="Stream"/>, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
-        /// </summary>
-        Task<Stream> GetStream(CancellationToken cancellation = default);
-
-        /// <summary>
-        /// Get a <see cref="Stream"/>, for the current message, the attachment of <paramref name="name"/>.
-        /// </summary>
-        Task<Stream> GetStream(string name, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copy, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.
@@ -104,15 +94,5 @@ namespace NServiceBus.Attachments
         /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default);
-
-        /// <summary>
-        /// Get a <see cref="Stream"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
-        /// </summary>
-        Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default);
-
-        /// <summary>
-        /// Get a <see cref="Stream"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
-        /// </summary>
-        Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default);
     }
 }

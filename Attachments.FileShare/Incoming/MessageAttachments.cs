@@ -15,117 +15,117 @@ class MessageAttachments : IMessageAttachments
         this.persister = persister;
     }
 
-    public async Task CopyTo(Stream target, CancellationToken cancellation = default)
+    public Task CopyTo(Stream target, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(target, nameof(target));
-        await persister.CopyTo(messageId, "", target, cancellation).ConfigureAwait(false);
+        return persister.CopyTo(messageId, "", target, cancellation);
     }
 
-    public async Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
+    public Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(target, nameof(target));
-        await persister.CopyTo(messageId, name, target, cancellation).ConfigureAwait(false);
+        return persister.CopyTo(messageId, name, target, cancellation);
     }
 
-    public async Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(action, nameof(action));
-        await persister.ProcessStream(messageId, "", action).ConfigureAwait(false);
+        return persister.ProcessStream(messageId, "", action);
     }
 
-    public async Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(action, nameof(action));
-        await persister.ProcessStream(messageId, name, action).ConfigureAwait(false);
+        return persister.ProcessStream(messageId, name, action);
     }
 
-    public async Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(action, nameof(action));
-        await persister.ProcessStreams(messageId, action, cancellation).ConfigureAwait(false);
+        return persister.ProcessStreams(messageId, action, cancellation);
     }
 
-    public async Task<byte[]> GetBytes(CancellationToken cancellation = default)
+    public Task<byte[]> GetBytes(CancellationToken cancellation = default)
     {
-        return await persister.GetBytes(messageId, "", cancellation).ConfigureAwait(false);
+        return persister.GetBytes(messageId, "", cancellation);
     }
 
-    public async Task<byte[]> GetBytes(string name, CancellationToken cancellation = default)
+    public Task<byte[]> GetBytes(string name, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(name, nameof(name));
-        return await persister.GetBytes(messageId, name, cancellation).ConfigureAwait(false);
+        return persister.GetBytes(messageId, name, cancellation);
     }
 
-    public Task<Stream> GetStream(CancellationToken cancellation = default)
+    public Stream GetStream()
     {
         return persister.GetStream(messageId, "");
     }
 
-    public Task<Stream> GetStream(string name, CancellationToken cancellation = default)
+    public Stream GetStream(string name)
     {
         Guard.AgainstNull(name, nameof(name));
         return persister.GetStream(messageId, name);
     }
 
-    public async Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
+    public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(target, nameof(target));
-        await persister.CopyTo(messageId, "", target, cancellation).ConfigureAwait(false);
+        return persister.CopyTo(messageId, "", target, cancellation);
     }
 
-    public async Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
+    public Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(target, nameof(target));
-        await persister.CopyTo(messageId, name, target, cancellation).ConfigureAwait(false);
+        return persister.CopyTo(messageId, name, target, cancellation);
     }
 
-    public async Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(action, nameof(action));
-        await persister.ProcessStream(messageId, "", action).ConfigureAwait(false);
+        return persister.ProcessStream(messageId, "", action);
     }
 
-    public async Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(action, nameof(action));
-        await persister.ProcessStream(messageId, name, action).ConfigureAwait(false);
+        return persister.ProcessStream(messageId, name, action);
     }
 
-    public async Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(action, nameof(action));
-        await persister.ProcessStreams(messageId, action, cancellation).ConfigureAwait(false);
+        return persister.ProcessStreams(messageId, action, cancellation);
     }
 
-    public async Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
+    public Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        return await persister.GetBytes(messageId, "", cancellation).ConfigureAwait(false);
+        return persister.GetBytes(messageId, "", cancellation);
     }
 
-    public async Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
-        return await persister.GetBytes(messageId, name, cancellation).ConfigureAwait(false);
+        return persister.GetBytes(messageId, name, cancellation);
     }
 
-    public Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
+    public Stream GetStreamForMessage(string messageId)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         return persister.GetStream(messageId, "");
     }
 
-    public Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public Stream GetStreamForMessage(string messageId, string name)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));

@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using NServiceBus.Attachments;
 
 #if FileShare
 using NServiceBus.Attachments.FileShare;
-#endif
-#if Sql
+#elif Sql
 using NServiceBus.Attachments.Sql;
+#else
+using NServiceBus.Attachments;
 #endif
 
 class OutgoingAttachments : IOutgoingAttachments
