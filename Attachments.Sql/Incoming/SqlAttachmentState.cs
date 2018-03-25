@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 
-class SqlAttachmentState: IDisposable
+class SqlAttachmentState : IDisposable
 {
     public readonly Persister Persister;
     SqlConnection connection;
@@ -16,7 +16,29 @@ class SqlAttachmentState: IDisposable
             {
                 return async () =>
                 {
-                    return connection = await connectionFactory().ConfigureAwait(false);
+                    Task<SqlConnection> task;
+                    try
+                    {
+                        task = connectionFactory();
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new Exception("Provided ConnectionFactory threw an exception", exception);
+                    }
+
+                    Guard.ThrowIfNullReturned(null, null, task);
+                    SqlConnection sqlConnection;
+                    try
+                    {
+                        sqlConnection = await task.ConfigureAwait(false);
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new Exception("Provided ConnectionFactory threw an exception", exception);
+                    }
+
+                    Guard.ThrowIfNullReturned(null, null, sqlConnection);
+                    return connection = sqlConnection;
                 };
             });
         Persister = persister;

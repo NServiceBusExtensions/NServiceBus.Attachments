@@ -115,7 +115,7 @@ static class Guard
                 throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}'.");
             }
 
-            throw new Exception("Should not get here.");
+            throw new Exception("Provided delegate returned a null.");
         }
     }
 }
