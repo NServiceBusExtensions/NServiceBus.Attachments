@@ -20,30 +20,6 @@ class Persister
         return Save(messageId, name, expiry, fileStream => stream.CopyToAsync(fileStream, 4096, cancellation));
     }
 
-    static Stream OpenRead(string attachmentFilePath)
-    {
-        return new FileStream(
-            path: attachmentFilePath,
-            mode: FileMode.Open,
-            access: FileAccess.Read,
-            share: FileShare.Read,
-            bufferSize: bufferSize,
-            useAsync: true);
-    }
-
-    static int bufferSize = 4096;
-
-    static Stream OpenWrite(string attachmentFilePath)
-    {
-        return new FileStream(
-            path: attachmentFilePath,
-            mode: FileMode.CreateNew,
-            access: FileAccess.Write,
-            share: FileShare.None,
-            bufferSize: bufferSize,
-            useAsync: true);
-    }
-
     async Task Save(string messageId, string name, DateTime expiry, Func<Stream, Task> action)
     {
         messageId = messageId.ToLowerInvariant();
@@ -63,7 +39,7 @@ class Persister
         {
         }
 
-        using (var fileStream = OpenWrite(dataFile))
+        using (var fileStream = FileHelpers.OpenWrite(dataFile))
         {
             await action(fileStream).ConfigureAwait(false);
         }
@@ -85,13 +61,14 @@ class Persister
         return Save(messageId, name, expiry, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation));
     }
 
-    public IEnumerable<ReadRow> ReadAllMetadata()
+    public IEnumerable<ReadRow> ReadAllMetadata(CancellationToken cancellation = default)
     {
         foreach (var messageDirectory in Directory.EnumerateDirectories(fileShare))
         {
             var messageId = Path.GetFileName(messageDirectory);
             foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
             {
+                cancellation.ThrowIfCancellationRequested();
                 var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
                 yield return new ReadRow(
                     messageId: messageId,
@@ -108,12 +85,9 @@ class Persister
 
     string dateTimeFormat = "yyyy-MM-ddTHHmm";
 
-    public void DeleteAllRows()
+    public void DeleteAllAttachments()
     {
-        foreach (var directory in Directory.EnumerateDirectories(fileShare))
-        {
-            Directory.Delete(directory, true);
-        }
+        FileHelpers.PurgeDirectory(fileShare);
     }
 
     public void CleanupItemsOlderThan(DateTime dateTime, CancellationToken cancellation = default)
@@ -137,17 +111,14 @@ class Persister
     {
         var dataFile = GetDataFile(messageId, name);
         ThrowIfFileNotFound(dataFile, messageId, name);
-        using (var fileStream = OpenRead(dataFile))
-        {
-            await fileStream.CopyToAsync(target, bufferSize, cancellation).ConfigureAwait(false);
-        }
+        await FileHelpers.CopyTo(target, cancellation, dataFile);
     }
 
     public Stream OpenAttachmentStream(string messageId, string name)
     {
         var dataFile = GetDataFile(messageId, name);
         ThrowIfFileNotFound(dataFile, messageId, name);
-        return OpenRead(dataFile);
+        return FileHelpers.OpenRead(dataFile);
     }
 
     string GetDataFile(string messageId, string name)
@@ -160,12 +131,7 @@ class Persister
     {
         var dataFile = GetDataFile(messageId, name);
         ThrowIfFileNotFound(dataFile, messageId, name);
-        using (var fileStream = OpenRead(dataFile))
-        {
-            var bytes = new byte[fileStream.Length];
-            await fileStream.ReadAsync(bytes, 0, (int) fileStream.Length, cancellation).ConfigureAwait(false);
-            return bytes;
-        }
+        return await FileHelpers.ReadBytes(cancellation, dataFile);
     }
 
     public Stream GetStream(string messageId, string name)
@@ -181,40 +147,44 @@ class Persister
         {
             cancellation.ThrowIfCancellationRequested();
             var attachmentName = Directory.GetParent(dataFile).Name;
-            using (var fileStream = OpenRead(dataFile))
+            using (var fileStream = FileHelpers.OpenRead(dataFile))
             {
                 await action(attachmentName, fileStream).ConfigureAwait(false);
             }
         }
     }
 
-    public async Task ProcessStream(string messageId, string name, Func<Stream, Task> action)
+    public async Task ProcessStream(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         var messageDirectory = GetAttachmentDirectory(messageId, name);
         ThrowIfDirectoryNotFound(messageDirectory, messageId);
         foreach (var dataFile in Directory.EnumerateFiles(messageDirectory, "data", SearchOption.AllDirectories))
         {
-            using (var fileStream = OpenRead(dataFile))
+            cancellation.ThrowIfCancellationRequested();
+            using (var fileStream = FileHelpers.OpenRead(dataFile))
             {
                 await action(fileStream).ConfigureAwait(false);
             }
         }
     }
 
-    static void ThrowIfDirectoryNotFound(string path,string messageId)
+    static void ThrowIfDirectoryNotFound(string path, string messageId)
     {
         if (Directory.Exists(path))
         {
             return;
         }
+
         throw new Exception($"Could not find attachment. MessageId:{messageId}, Path:{path}");
     }
-    static void ThrowIfFileNotFound(string path,string messageId, string name)
+
+    static void ThrowIfFileNotFound(string path, string messageId, string name)
     {
         if (File.Exists(path))
         {
             return;
         }
+
         throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}, Path:{path}");
     }
 
@@ -224,6 +194,7 @@ class Persister
         {
             return;
         }
+
         throw new Exception($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
     }
 }

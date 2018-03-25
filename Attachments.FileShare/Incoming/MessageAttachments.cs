@@ -31,14 +31,14 @@ class MessageAttachments : IMessageAttachments
     public Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(action, nameof(action));
-        return persister.ProcessStream(messageId, "", action);
+        return persister.ProcessStream(messageId, "", action, cancellation);
     }
 
     public Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(action, nameof(action));
-        return persister.ProcessStream(messageId, name, action);
+        return persister.ProcessStream(messageId, name, action, cancellation);
     }
 
     public Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
@@ -88,7 +88,7 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(action, nameof(action));
-        return persister.ProcessStream(messageId, "", action);
+        return persister.ProcessStream(messageId, "", action, cancellation);
     }
 
     public Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
@@ -96,7 +96,7 @@ class MessageAttachments : IMessageAttachments
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(action, nameof(action));
-        return persister.ProcessStream(messageId, name, action);
+        return persister.ProcessStream(messageId, name, action, cancellation);
     }
 
     public Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)

@@ -18,7 +18,7 @@ public class PersisterTests : TestBase
         var fileShare = Path.GetFullPath($"attachments/{path}");
         var persister = new Persister(fileShare);
         Directory.CreateDirectory(fileShare);
-        persister.DeleteAllRows();
+        persister.DeleteAllAttachments();
         return persister;
     }
 
