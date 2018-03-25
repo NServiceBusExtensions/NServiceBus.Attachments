@@ -1,4 +1,5 @@
-﻿
+﻿using NServiceBus.Attachments.FileShare;
+
 class FileShareAttachmentState
 {
     public readonly Persister Persister;

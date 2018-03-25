@@ -1,4 +1,5 @@
-﻿using NServiceBus.Pipeline;
+﻿using NServiceBus.Attachments.FileShare;
+using NServiceBus.Pipeline;
 
 class ReceiveRegistration :
     RegisterStep

@@ -13,6 +13,5 @@
             FileShare = fileShare;
             TimeToKeep = timeToKeep;
         }
-
     }
 }

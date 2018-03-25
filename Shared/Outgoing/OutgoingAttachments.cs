@@ -24,13 +24,7 @@ class OutgoingAttachments : IOutgoingAttachments
     public void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
         where T : Stream
     {
-        Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Streams.Add("", new Outgoing
-        {
-            AsyncStreamFactory = async () => await streamFactory().ConfigureAwait(false),
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
-        });
+        Add("default", streamFactory, timeToKeep, cleanup);
     }
 
     public void Add<T>(string name, Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
@@ -40,32 +34,20 @@ class OutgoingAttachments : IOutgoingAttachments
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add(name, new Outgoing
         {
-            AsyncStreamFactory = async () => await streamFactory().ConfigureAwait(false),
+            AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name),
             TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
+            Cleanup = cleanup.WrapCleanupInCheck(name)
         });
     }
 
     public void Add(Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
     {
-        Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Streams.Add("", new Outgoing
-        {
-            StreamFactory = streamFactory,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
-        });
+        Add("default", streamFactory, timeToKeep, cleanup);
     }
 
     public void Add(Stream stream, GetTimeToKeep timeToKeep = null, Action cleanup = null)
     {
-        Guard.AgainstNull(stream, nameof(stream));
-        Streams.Add("", new Outgoing
-        {
-            StreamInstance = stream,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
-        });
+        Add("default", stream, timeToKeep, cleanup);
     }
 
     public void Add(string name, Func<Stream> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
@@ -74,9 +56,9 @@ class OutgoingAttachments : IOutgoingAttachments
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Streams.Add(name, new Outgoing
         {
-            StreamFactory = streamFactory,
+            StreamFactory = streamFactory.WrapFuncInCheck(name),
             TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
+            Cleanup = cleanup.WrapCleanupInCheck(name)
         });
     }
 
@@ -88,30 +70,18 @@ class OutgoingAttachments : IOutgoingAttachments
         {
             StreamInstance = stream,
             TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
+            Cleanup = cleanup.WrapCleanupInCheck(name)
         });
     }
 
     public void AddBytes(Func<byte[]> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
     {
-        Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Streams.Add("", new Outgoing
-        {
-            BytesFactory = bytesFactory,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
-        });
+        AddBytes("default", bytesFactory, timeToKeep, cleanup);
     }
 
     public void AddBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null)
     {
-        Guard.AgainstNull(bytes, nameof(bytes));
-        Streams.Add("", new Outgoing
-        {
-            BytesInstance = bytes,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
-        });
+        AddBytes("default", bytes, timeToKeep, cleanup);
     }
 
     public void AddBytes(string name, Func<byte[]> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
@@ -120,11 +90,12 @@ class OutgoingAttachments : IOutgoingAttachments
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
         Streams.Add(name, new Outgoing
         {
-            BytesFactory = bytesFactory,
+            BytesFactory = bytesFactory.WrapFuncInCheck(name),
             TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
+            Cleanup = cleanup.WrapCleanupInCheck(name)
         });
     }
+
 
     public void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null)
     {
@@ -134,7 +105,24 @@ class OutgoingAttachments : IOutgoingAttachments
         {
             BytesInstance = bytes,
             TimeToKeep = timeToKeep,
-            Cleanup = cleanup,
+            Cleanup = cleanup.WrapCleanupInCheck(name)
+        });
+    }
+
+    public void AddBytes(Func<Task<byte[]>> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        AddBytes("default", bytesFactory, timeToKeep, cleanup);
+    }
+
+    public void AddBytes(string name, Func<Task<byte[]>> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
+    {
+        Guard.AgainstNull(name, nameof(name));
+        Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
+        Streams.Add(name, new Outgoing
+        {
+            AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name),
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup.WrapCleanupInCheck(name)
         });
     }
 }

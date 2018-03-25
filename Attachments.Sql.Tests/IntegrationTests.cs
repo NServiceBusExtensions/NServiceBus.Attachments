@@ -24,6 +24,9 @@ public class IntegrationTests
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
+        var recoverability = configuration.Recoverability();
+        recoverability.Immediate(x =>x.NumberOfRetries(0));
+        recoverability.Delayed(x =>x.NumberOfRetries(0));
         configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);

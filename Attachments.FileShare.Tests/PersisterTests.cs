@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using NServiceBus.Attachments.FileShare;
 using ObjectApproval;
 using Xunit;
 using Xunit.Abstractions;
@@ -40,6 +41,15 @@ public class PersisterTests : TestBase
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream());
         var bytes = await persister.GetBytes("theMessageId", "theName");
+        Assert.Equal(5, bytes[0]);
+    }
+
+    [Fact]
+    public async Task CaseInsensitiveRead()
+    {
+        var persister = GetPersister();
+        await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream());
+        var bytes = await persister.GetBytes("themeSsageid", "Thename");
         Assert.Equal(5, bytes[0]);
     }
 

@@ -18,7 +18,7 @@ class MessageAttachments : IMessageAttachments
     public Task CopyTo(Stream target, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(target, nameof(target));
-        return persister.CopyTo(messageId, "", target, cancellation);
+        return persister.CopyTo(messageId, "default", target, cancellation);
     }
 
     public Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
@@ -31,7 +31,7 @@ class MessageAttachments : IMessageAttachments
     public Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNull(action, nameof(action));
-        return persister.ProcessStream(messageId, "", action, cancellation);
+        return persister.ProcessStream(messageId, "default", action, cancellation);
     }
 
     public Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
@@ -49,7 +49,7 @@ class MessageAttachments : IMessageAttachments
 
     public Task<byte[]> GetBytes(CancellationToken cancellation = default)
     {
-        return persister.GetBytes(messageId, "", cancellation);
+        return persister.GetBytes(messageId, "default", cancellation);
     }
 
     public Task<byte[]> GetBytes(string name, CancellationToken cancellation = default)
@@ -60,7 +60,7 @@ class MessageAttachments : IMessageAttachments
 
     public Stream GetStream()
     {
-        return persister.GetStream(messageId, "");
+        return persister.GetStream(messageId, "default");
     }
 
     public Stream GetStream(string name)
@@ -73,7 +73,7 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(target, nameof(target));
-        return persister.CopyTo(messageId, "", target, cancellation);
+        return persister.CopyTo(messageId, "default", target, cancellation);
     }
 
     public Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
@@ -88,7 +88,7 @@ class MessageAttachments : IMessageAttachments
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNull(action, nameof(action));
-        return persister.ProcessStream(messageId, "", action, cancellation);
+        return persister.ProcessStream(messageId, "default", action, cancellation);
     }
 
     public Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
@@ -109,7 +109,7 @@ class MessageAttachments : IMessageAttachments
     public Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        return persister.GetBytes(messageId, "", cancellation);
+        return persister.GetBytes(messageId, "default", cancellation);
     }
 
     public Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
@@ -122,7 +122,7 @@ class MessageAttachments : IMessageAttachments
     public Stream GetStreamForMessage(string messageId)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        return persister.GetStream(messageId, "");
+        return persister.GetStream(messageId, "default");
     }
 
     public Stream GetStreamForMessage(string messageId, string name)
