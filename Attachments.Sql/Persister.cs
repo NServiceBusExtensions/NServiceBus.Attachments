@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -85,20 +86,41 @@ values
         /// <summary>
         /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
         /// </summary>
-        public IEnumerable<AttachmentMetadata> ReadAllMetadata(SqlConnection connection, SqlTransaction transaction)
+        public async Task ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, Func<AttachmentMetadata, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
+            Guard.AgainstNull(action, nameof(action));
             using (var command = GetReadMetadataCommand(connection, transaction))
-            using (var reader = command.ExecuteReader())
+            using (var reader = await command.ExecuteReaderAsync(cancellation).ConfigureAwait(false))
             {
-                while (reader.Read())
+                while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
-                    yield return new AttachmentMetadata(
+                    cancellation.ThrowIfCancellationRequested();
+                    var metadata = new AttachmentMetadata(
                         messageId: reader.GetString(1),
                         name: reader.GetString(2),
                         expiry: reader.GetDateTime(3));
+                    var task = action(metadata);
+                    Guard.ThrowIfNullReturned(null, null, task);
+                    await task.ConfigureAwait(false);
                 }
             }
+        }
+
+        /// <summary>
+        /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
+        /// </summary>
+        public async Task<IEnumerable<AttachmentMetadata>> ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        {
+            var list = new ConcurrentBag<AttachmentMetadata>();
+            await ReadAllMetadata(connection, transaction,
+                    metadata =>
+                    {
+                        list.Add(metadata);
+                        return Task.CompletedTask;
+                    }, cancellation)
+                .ConfigureAwait(false);
+            return list;
         }
 
         SqlCommand GetReadMetadataCommand(SqlConnection connection, SqlTransaction transaction)
