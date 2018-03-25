@@ -22,7 +22,6 @@ class Persister
 
     async Task Save(string messageId, string name, DateTime expiry, Func<Stream, Task> action)
     {
-        messageId = messageId.ToLowerInvariant();
         if (name == null)
         {
             name = "default";
