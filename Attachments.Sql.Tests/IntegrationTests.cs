@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
-using NServiceBus.Transport.SQLServer;
 using Xunit;
 
 public class IntegrationTests
@@ -27,7 +26,7 @@ public class IntegrationTests
         var recoverability = configuration.Recoverability();
         recoverability.Immediate(x =>x.NumberOfRetries(0));
         recoverability.Delayed(x =>x.NumberOfRetries(0));
-        configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
+        configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
         resetEvent.WaitOne();
@@ -41,10 +40,10 @@ public class IntegrationTests
         var configuration = new EndpointConfiguration("AttachmentsTest");
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
-        transport.UseCustomSqlConnectionFactory(Connection.OpenAsyncConnection);
+        transport.ConnectionString(Connection.ConnectionString);
         configuration.DisableFeature<TimeoutManager>();
         configuration.DisableFeature<MessageDrivenSubscriptions>();
-        configuration.EnableAttachments(Connection.OpenAsyncConnection, TimeToKeep.Default);
+        configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
         resetEvent.WaitOne();

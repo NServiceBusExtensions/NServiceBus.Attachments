@@ -20,6 +20,13 @@ namespace NServiceBus.Attachments.Sql
             ConnectionFactory = connectionFactory;
         }
 
+        internal AttachmentSettings(string connection, GetTimeToKeep timeToKeep)
+        {
+            Guard.AgainstNullOrEmpty(connection, nameof(connection));
+            TimeToKeep = timeToKeep;
+            ConnectionFactory =() => OpenConnection(connection);
+        }
+
         /// <summary>
         /// Use a specific <paramref name="tableName"/> and <paramref name="schema"/> for the attachments table.
         /// </summary>
@@ -29,6 +36,21 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             TableName = tableName;
             Schema = schema;
+        }
+
+        async Task<SqlConnection> OpenConnection(string connectionString)
+        {
+            var connection = new SqlConnection(connectionString);
+            try
+            {
+                await connection.OpenAsync().ConfigureAwait(false);
+                return connection;
+            }
+            catch
+            {
+                connection.Dispose();
+                throw;
+            }
         }
     }
 }
