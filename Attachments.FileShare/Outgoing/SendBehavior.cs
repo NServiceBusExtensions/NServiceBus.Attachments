@@ -24,36 +24,35 @@ class SendBehavior :
         await next().ConfigureAwait(false);
     }
 
-    async Task ProcessStreams(IOutgoingLogicalMessageContext context)
+    Task ProcessStreams(IOutgoingLogicalMessageContext context)
     {
         var extensions = context.Extensions;
         if (!extensions.TryGet<IOutgoingAttachments>(out var attachments))
         {
-            return;
+            return Task.CompletedTask;
         }
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
         var streams = outgoingAttachments.Streams;
         if (!streams.Any())
         {
-            return;
+            return Task.CompletedTask;
         }
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        await ProcessOutgoing(streams, timeToBeReceived, context.MessageId)
-            .ConfigureAwait(false);
+        return ProcessOutgoing(streams, timeToBeReceived, context.MessageId);
     }
 
-    async Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, string messageId)
+    Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, string messageId)
     {
-        foreach (var attachment in attachments)
-        {
-            var name = attachment.Key;
-            var outgoing = attachment.Value;
-            await ProcessAttachment(timeToBeReceived, messageId, outgoing, name)
-                .ConfigureAwait(false);
-        }
+        return Task.WhenAll(
+            attachments.Select(pair =>
+            {
+                var name = pair.Key;
+                var outgoing = pair.Value;
+                return ProcessAttachment(timeToBeReceived, messageId, outgoing, name);
+            }));
     }
 
     async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream)
