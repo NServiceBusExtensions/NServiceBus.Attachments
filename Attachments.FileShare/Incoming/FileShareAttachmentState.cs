@@ -2,9 +2,9 @@
 
 class FileShareAttachmentState
 {
-    public readonly Persister Persister;
+    public readonly IPersister Persister;
 
-    public FileShareAttachmentState(Persister persister)
+    public FileShareAttachmentState(IPersister persister)
     {
         Persister = persister;
     }

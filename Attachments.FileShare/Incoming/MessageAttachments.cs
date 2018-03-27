@@ -7,9 +7,9 @@ using NServiceBus.Attachments.FileShare;
 class MessageAttachments : IMessageAttachments
 {
     string messageId;
-    Persister persister;
+    IPersister persister;
 
-    internal MessageAttachments(string messageId, Persister persister)
+    internal MessageAttachments(string messageId, IPersister persister)
     {
         this.messageId = messageId;
         this.persister = persister;

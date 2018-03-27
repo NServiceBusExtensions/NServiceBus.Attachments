@@ -11,10 +11,10 @@ class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
     Func<Task<SqlConnection>> connectionFactory;
-    Persister persister;
+    IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, Persister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;

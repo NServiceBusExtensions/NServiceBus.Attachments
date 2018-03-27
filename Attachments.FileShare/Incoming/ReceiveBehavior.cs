@@ -6,9 +6,9 @@ using NServiceBus.Pipeline;
 class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
-    Persister persister;
+    IPersister persister;
 
-    public ReceiveBehavior(Persister persister)
+    public ReceiveBehavior(IPersister persister)
     {
         this.persister = persister;
     }

@@ -9,10 +9,10 @@ using NServiceBus.Pipeline;
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Persister persister;
+    IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Persister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.persister = persister;
         endpointTimeToKeep = timeToKeep;

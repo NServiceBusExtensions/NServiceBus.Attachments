@@ -5,11 +5,11 @@ using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState : IDisposable
 {
-    public readonly Persister Persister;
+    public readonly IPersister Persister;
     SqlConnection connection;
     Lazy<Func<Task<SqlConnection>>> lazy;
 
-    public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, Persister persister)
+    public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
     {
         lazy = new Lazy<Func<Task<SqlConnection>>>(
             () =>

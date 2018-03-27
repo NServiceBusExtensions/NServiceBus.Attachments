@@ -12,7 +12,7 @@ namespace NServiceBus.Attachments.Sql
     /// <summary>
     /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
     /// </summary>
-    public class Persister
+    public class Persister : IPersister
     {
         string fullTableName;
 
@@ -30,7 +30,7 @@ namespace NServiceBus.Attachments.Sql
         /// Saves <paramref name="stream"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        public Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation = default)
+        public virtual Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -43,7 +43,7 @@ namespace NServiceBus.Attachments.Sql
         /// Saves <paramref name="bytes"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        public Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default)
+        public virtual Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -86,7 +86,7 @@ values
         /// <summary>
         /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
         /// </summary>
-        public async Task ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, Func<AttachmentMetadata, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, Func<AttachmentMetadata, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
@@ -110,7 +110,7 @@ values
         /// <summary>
         /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
         /// </summary>
-        public async Task<IEnumerable<AttachmentMetadata>> ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<IEnumerable<AttachmentMetadata>> ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
         {
             var list = new ConcurrentBag<AttachmentMetadata>();
             await ReadAllMetadata(connection, transaction,
@@ -144,7 +144,7 @@ from {fullTableName}";
         /// <summary>
         /// Deletes all attachments.
         /// </summary>
-        public async Task DeleteAllAttachments(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task DeleteAllAttachments(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())
@@ -162,7 +162,7 @@ from {fullTableName}";
         /// <summary>
         /// Deletes attachments older than <paramref name="dateTime"/>.
         /// </summary>
-        public async Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime, CancellationToken cancellation = default)
+        public virtual async Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())
@@ -181,7 +181,7 @@ from {fullTableName}";
         /// <summary>
         /// Copies an attachment to <paramref name="target"/>.
         /// </summary>
-        public async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target, CancellationToken cancellation = default)
+        public virtual async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -205,7 +205,7 @@ from {fullTableName}";
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        public async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -225,7 +225,7 @@ from {fullTableName}";
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        public async Task<Stream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation)
+        public virtual async Task<Stream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -258,7 +258,7 @@ from {fullTableName}";
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
         /// </summary>
-        public async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, Stream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
@@ -284,7 +284,7 @@ from {fullTableName}";
         /// <summary>
         /// Processes an attachment by passing it to <paramref name="action"/>.
         /// </summary>
-        public async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<Stream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));

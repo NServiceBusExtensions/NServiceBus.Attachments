@@ -4,7 +4,7 @@ using NServiceBus.Pipeline;
 class SendRegistration :
     RegisterStep
 {
-    public SendRegistration(Persister persister, GetTimeToKeep timeToKeep)
+    public SendRegistration(IPersister persister, GetTimeToKeep timeToKeep)
         : base(
             stepId: $"{AssemblyHelper.Name}Send",
             behavior: typeof(SendBehavior),

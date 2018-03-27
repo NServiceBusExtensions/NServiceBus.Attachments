@@ -22,7 +22,7 @@ class AttachmentFeature : Feature
         }
     }
 
-    static Cleaner CreateCleaner(Persister persister, IBuilder builder)
+    static Cleaner CreateCleaner(IPersister persister, IBuilder builder)
     {
         return new Cleaner(token =>
             {

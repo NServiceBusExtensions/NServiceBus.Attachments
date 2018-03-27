@@ -4,7 +4,7 @@ using NServiceBus.Pipeline;
 class ReceiveRegistration :
     RegisterStep
 {
-    public ReceiveRegistration(Persister persister)
+    public ReceiveRegistration(IPersister persister)
         : base(
             stepId: $"{AssemblyHelper.Name}Receive",
             behavior: typeof(ReceiveBehavior),

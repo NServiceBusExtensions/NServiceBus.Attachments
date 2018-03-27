@@ -8,9 +8,9 @@ class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
     Func<Task<SqlConnection>> connectionBuilder;
-    Persister persister;
+    IPersister persister;
 
-    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, Persister persister)
+    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;

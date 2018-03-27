@@ -11,7 +11,7 @@ namespace NServiceBus.Attachments.FileShare
     /// <summary>
     /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
     /// </summary>
-  public class Persister
+    public class Persister : IPersister
     {
         string fileShare;
 
@@ -20,7 +20,7 @@ namespace NServiceBus.Attachments.FileShare
         /// </summary>
         public Persister(string fileShare)
         {
-            Guard.AgainstNullOrEmpty(fileShare,nameof(fileShare));
+            Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
             this.fileShare = fileShare;
         }
 
@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.FileShare
         /// Saves <paramref name="stream"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        public Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation = default)
+        public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -75,7 +75,7 @@ namespace NServiceBus.Attachments.FileShare
         /// Saves <paramref name="bytes"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        public Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default)
+        public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -88,7 +88,7 @@ namespace NServiceBus.Attachments.FileShare
         /// </summary>
         /// <param name="cancellation"></param>
         /// <returns></returns>
-        public IEnumerable<AttachmentMetadata> ReadAllMetadata(CancellationToken cancellation = default)
+        public virtual IEnumerable<AttachmentMetadata> ReadAllMetadata(CancellationToken cancellation = default)
         {
             foreach (var messageDirectory in Directory.EnumerateDirectories(fileShare))
             {
@@ -115,7 +115,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Deletes all attachments.
         /// </summary>
-        public void DeleteAllAttachments()
+        public virtual void DeleteAllAttachments()
         {
             FileHelpers.PurgeDirectory(fileShare);
         }
@@ -123,7 +123,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Deletes attachments older than <paramref name="dateTime"/>.
         /// </summary>
-        public void CleanupItemsOlderThan(DateTime dateTime, CancellationToken cancellation = default)
+        public virtual void CleanupItemsOlderThan(DateTime dateTime, CancellationToken cancellation = default)
         {
             foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))
             {
@@ -143,17 +143,17 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Copies an attachment to <paramref name="target"/>.
         /// </summary>
-        public async Task CopyTo(string messageId, string name, Stream target, CancellationToken cancellation = default)
+        public virtual Task CopyTo(string messageId, string name, Stream target, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(target, nameof(target));
             var dataFile = GetDataFile(messageId, name);
             ThrowIfFileNotFound(dataFile, messageId, name);
-            await FileHelpers.CopyTo(target, cancellation, dataFile);
+            return FileHelpers.CopyTo(target, cancellation, dataFile);
         }
 
-         Stream OpenAttachmentStream(string messageId, string name)
+        Stream OpenAttachmentStream(string messageId, string name)
         {
             var dataFile = GetDataFile(messageId, name);
             ThrowIfFileNotFound(dataFile, messageId, name);
@@ -169,7 +169,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        public Task<byte[]> GetBytes(string messageId, string name, CancellationToken cancellation = default)
+        public virtual Task<byte[]> GetBytes(string messageId, string name, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -181,7 +181,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        public Stream GetStream(string messageId, string name)
+        public virtual Stream GetStream(string messageId, string name)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -191,7 +191,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
         /// </summary>
-        public async Task ProcessStreams(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreams(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(action, nameof(action));
@@ -211,7 +211,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Processes an attachment by passing it to <paramref name="action"/>.
         /// </summary>
-        public async Task ProcessStream(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStream(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));

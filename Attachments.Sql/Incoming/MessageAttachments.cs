@@ -9,9 +9,9 @@ class MessageAttachments : IMessageAttachments
 {
     Func<Task<SqlConnection>> connectionFactory;
     string messageId;
-    Persister persister;
+    IPersister persister;
 
-    internal MessageAttachments(Func<Task<SqlConnection>> connectionFactory, string messageId, Persister persister)
+    internal MessageAttachments(Func<Task<SqlConnection>> connectionFactory, string messageId, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         this.messageId = messageId;

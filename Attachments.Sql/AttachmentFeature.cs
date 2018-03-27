@@ -20,7 +20,7 @@ class AttachmentFeature : Feature
         }
     }
 
-    static Cleaner CreateCleaner(AttachmentSettings settings, Persister persister, IBuilder builder)
+    static Cleaner CreateCleaner(AttachmentSettings settings, IPersister persister, IBuilder builder)
     {
         return new Cleaner(async token =>
             {
