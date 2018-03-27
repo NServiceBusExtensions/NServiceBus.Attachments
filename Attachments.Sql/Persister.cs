@@ -17,7 +17,7 @@ namespace NServiceBus.Attachments.Sql
         string fullTableName;
 
         /// <summary>
-        /// Instatiate a new instance of <see cref="Persister"/>.
+        /// Instantiate a new instance of <see cref="Persister"/>.
         /// </summary>
         public Persister(string schema, string tableName)
         {
@@ -144,7 +144,7 @@ from {fullTableName}";
         /// <summary>
         /// Deletes all attachments.
         /// </summary>
-        public async Task DeleteAllAttachements(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public async Task DeleteAllAttachments(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())

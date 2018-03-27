@@ -16,7 +16,7 @@ namespace NServiceBus.Attachments.FileShare
         string fileShare;
 
         /// <summary>
-        /// Instatiate a new instance of <see cref="Persister"/>.
+        /// Instantiate a new instance of <see cref="Persister"/>.
         /// </summary>
         public Persister(string fileShare)
         {
