@@ -24,7 +24,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(connection, nameof(connection));
             TimeToKeep = timeToKeep;
-            ConnectionFactory =() => OpenConnection(connection);
+            ConnectionFactory = () => OpenConnection(connection);
         }
 
         /// <summary>

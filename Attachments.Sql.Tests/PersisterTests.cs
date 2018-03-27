@@ -20,7 +20,7 @@ public class PersisterTests: TestBase
 
     public PersisterTests(ITestOutputHelper output) : base(output)
     {
-        persister = new Persister("dbo", "Attachments");
+        persister = new Persister();
     }
 
     [Fact]
