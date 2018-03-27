@@ -113,7 +113,7 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
-        ObjectApprover.VerifyWithJson(persister.ReadAllMetadata());
+        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         persister.SaveBytes("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), new byte[] {1}).GetAwaiter().GetResult();
-        var allMetadata = persister.ReadAllMetadata().ToList();
+        var allMetadata = persister.ReadAllInfo().ToList();
 
         ObjectApprover.VerifyWithJson(allMetadata);
     }
@@ -133,7 +133,7 @@ public class PersisterTests : TestBase
         persister.SaveStream("theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
         persister.SaveStream("theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
         persister.CleanupItemsOlderThan(new DateTime(2001, 1, 1, 1, 1, 1));
-        ObjectApprover.VerifyWithJson(persister.ReadAllMetadata());
+        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 
     Stream GetStream(byte content = 5)

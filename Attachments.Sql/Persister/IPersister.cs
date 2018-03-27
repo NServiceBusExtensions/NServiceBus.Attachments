@@ -25,14 +25,14 @@ namespace NServiceBus.Attachments.Sql
         Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        Task ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, Func<AttachmentMetadata, Task> action, CancellationToken cancellation = default);
+        Task ReadAllInfo(SqlConnection connection, SqlTransaction transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        Task<IEnumerable<AttachmentMetadata>> ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task<IEnumerable<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes all attachments.

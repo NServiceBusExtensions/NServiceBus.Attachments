@@ -25,7 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\OutgoingAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\TimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\ToBeReceivedHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AttachmentMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AttachmentInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\AttachmentsUsedWhenNotEnabledFeature.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\UsedWhenNotEnabledBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhenNotEnabled\UsedWhenNotEnabledRegistration.cs" />

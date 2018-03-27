@@ -84,9 +84,9 @@ namespace NServiceBus.Attachments.FileShare
         }
 
         /// <summary>
-        /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        public virtual IEnumerable<AttachmentMetadata> ReadAllMetadata(CancellationToken cancellation = default)
+        public virtual IEnumerable<AttachmentInfo> ReadAllInfo(CancellationToken cancellation = default)
         {
             foreach (var messageDirectory in Directory.EnumerateDirectories(fileShare))
             {
@@ -95,7 +95,7 @@ namespace NServiceBus.Attachments.FileShare
                 {
                     cancellation.ThrowIfCancellationRequested();
                     var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
-                    yield return new AttachmentMetadata(
+                    yield return new AttachmentInfo(
                         messageId: messageId,
                         name: Path.GetFileName(attachmentDirectory),
                         expiry: ParseExpiry(Path.GetFileNameWithoutExtension(expiryFile)));

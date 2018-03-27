@@ -135,7 +135,7 @@ public class PersisterTests: TestBase
             Installer.CreateTable(connection).Wait();
             persister.DeleteAllAttachments(connection,null).Wait();
             persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection, null).GetAwaiter().GetResult());
+            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
         }
     }
 
@@ -147,7 +147,7 @@ public class PersisterTests: TestBase
             Installer.CreateTable(connection).Wait();
             persister.DeleteAllAttachments(connection,null).Wait();
             persister.SaveBytes(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), new byte[]{1}).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection, null).GetAwaiter().GetResult());
+            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
         }
     }
 
@@ -161,7 +161,7 @@ public class PersisterTests: TestBase
             persister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
             persister.CleanupItemsOlderThan(connection,null, new DateTime(2001, 1, 1, 1, 1, 1)).Wait();
-            ObjectApprover.VerifyWithJson(persister.ReadAllMetadata(connection,null).GetAwaiter().GetResult());
+            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection,null).GetAwaiter().GetResult());
         }
     }
 

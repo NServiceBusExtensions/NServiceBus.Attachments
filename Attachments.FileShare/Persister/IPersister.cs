@@ -24,11 +24,11 @@ namespace NServiceBus.Attachments.FileShare
         Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
         /// <param name="cancellation"></param>
         /// <returns></returns>
-        IEnumerable<AttachmentMetadata> ReadAllMetadata(CancellationToken cancellation = default);
+        IEnumerable<AttachmentInfo> ReadAllInfo(CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes all attachments.

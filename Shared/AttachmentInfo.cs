@@ -10,7 +10,7 @@ namespace NServiceBus.Attachments
     /// <summary>
     /// Information about an attachment.
     /// </summary>
-    public class AttachmentMetadata
+    public class AttachmentInfo
     {
         /// <summary>
         /// The id of the message that the attachment was written for.
@@ -26,9 +26,9 @@ namespace NServiceBus.Attachments
         public readonly DateTime Expiry;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AttachmentMetadata"/>.
+        /// Initializes a new instance of <see cref="AttachmentInfo"/>.
         /// </summary>
-        public AttachmentMetadata(string messageId, string name, DateTime expiry)
+        public AttachmentInfo(string messageId, string name, DateTime expiry)
         {
             Guard.AgainstNullOrEmpty(messageId,nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));

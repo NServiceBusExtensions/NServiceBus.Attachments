@@ -84,19 +84,19 @@ values
         }
 
         /// <summary>
-        /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        public virtual async Task ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, Func<AttachmentMetadata, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
-            using (var command = GetReadMetadataCommand(connection, transaction))
+            using (var command = GetReadInfoCommand(connection, transaction))
             using (var reader = await command.ExecuteReaderAsync(cancellation).ConfigureAwait(false))
             {
                 while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
                     cancellation.ThrowIfCancellationRequested();
-                    var metadata = new AttachmentMetadata(
+                    var metadata = new AttachmentInfo(
                         messageId: reader.GetString(1),
                         name: reader.GetString(2),
                         expiry: reader.GetDateTime(3));
@@ -108,12 +108,12 @@ values
         }
 
         /// <summary>
-        /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        public virtual async Task<IEnumerable<AttachmentMetadata>> ReadAllMetadata(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<IEnumerable<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
         {
-            var list = new ConcurrentBag<AttachmentMetadata>();
-            await ReadAllMetadata(connection, transaction,
+            var list = new ConcurrentBag<AttachmentInfo>();
+            await ReadAllInfo(connection, transaction,
                     metadata =>
                     {
                         list.Add(metadata);
@@ -123,7 +123,7 @@ values
             return list;
         }
 
-        SqlCommand GetReadMetadataCommand(SqlConnection connection, SqlTransaction transaction)
+        SqlCommand GetReadInfoCommand(SqlConnection connection, SqlTransaction transaction)
         {
             var command = connection.CreateCommand();
             if (transaction != null)
