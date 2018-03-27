@@ -86,8 +86,6 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads the <see cref="AttachmentMetadata"/> for all attachments.
         /// </summary>
-        /// <param name="cancellation"></param>
-        /// <returns></returns>
         public virtual IEnumerable<AttachmentMetadata> ReadAllMetadata(CancellationToken cancellation = default)
         {
             foreach (var messageDirectory in Directory.EnumerateDirectories(fileShare))
