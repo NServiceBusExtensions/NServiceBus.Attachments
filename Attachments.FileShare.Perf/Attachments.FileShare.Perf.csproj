@@ -5,7 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-rc0001" />
-    <PackageReference Include="NServiceBus.Transport.Msmq" Version="1.0.0-rc0001" />
     <ProjectReference Include="..\Attachments.FileShare\Attachments.FileShare.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
   </ItemGroup>
