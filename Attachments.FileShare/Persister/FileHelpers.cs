@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 static class FileHelpers
 {
+    static FileOptions fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
+    static int bufferSize = 1024 * 64;
     public static Stream OpenWrite(string path)
     {
         return new FileStream(
@@ -12,7 +14,7 @@ static class FileHelpers
             access: FileAccess.Write,
             share: FileShare.None,
             bufferSize: bufferSize,
-            useAsync: true);
+            options: fileOptions);
     }
 
     public static void PurgeDirectory(string directory)
@@ -31,10 +33,8 @@ static class FileHelpers
             access: FileAccess.Read,
             share: FileShare.Read,
             bufferSize: bufferSize,
-            useAsync: true);
+            options: fileOptions);
     }
-
-    static int bufferSize = 4096;
 
     public static async Task CopyTo(Stream target, CancellationToken cancellation, string dataFile)
     {
