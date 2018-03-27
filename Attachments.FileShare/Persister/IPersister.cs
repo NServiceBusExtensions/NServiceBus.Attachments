@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.FileShare
 {
+    /// <summary>
+    /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
+    /// </summary>
     public interface IPersister
     {
         /// <summary>
