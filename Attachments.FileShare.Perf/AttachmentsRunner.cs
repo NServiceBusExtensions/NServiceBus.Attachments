@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.FileShare;
-using NServiceBus.Features;
 
 public class AttachmentsRunner
 {

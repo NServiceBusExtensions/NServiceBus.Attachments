@@ -29,6 +29,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.FileShare.Perf"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBus.Perf", "DataBus.Perf\DataBus.Perf.csproj", "{0FD2E764-0947-4A20-B4C2-9915366962F4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.FileShare.Raw", "Attachments.FileShare.Raw\Attachments.FileShare.Raw.csproj", "{538B002E-80BB-416A-B435-679A2B8C85D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.Sql.Raw", "Attachments.Sql.Raw\Attachments.Sql.Raw.csproj", "{BEADD4A3-A01D-4A5C-9201-18F10E6FB130}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\Shared.projitems*{52d4a9ca-aa16-4979-9ffb-d4cc8dde551b}*SharedItemsImports = 13
@@ -78,6 +82,14 @@ Global
 		{0FD2E764-0947-4A20-B4C2-9915366962F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FD2E764-0947-4A20-B4C2-9915366962F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FD2E764-0947-4A20-B4C2-9915366962F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{538B002E-80BB-416A-B435-679A2B8C85D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{538B002E-80BB-416A-B435-679A2B8C85D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{538B002E-80BB-416A-B435-679A2B8C85D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{538B002E-80BB-416A-B435-679A2B8C85D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEADD4A3-A01D-4A5C-9201-18F10E6FB130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEADD4A3-A01D-4A5C-9201-18F10E6FB130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEADD4A3-A01D-4A5C-9201-18F10E6FB130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEADD4A3-A01D-4A5C-9201-18F10E6FB130}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

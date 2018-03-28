@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>NServiceBus.Attachments.Sql.Raw</AssemblyName>
+    <PackageName>NServiceBus.Attachments.Sql.Raw</PackageName>
+    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DefineConstants>$(DefineConstants);Sql</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Attachments.Sql\Persister\*.cs" />
+    <Compile Include="..\Attachments.Sql\Install\Installer.cs" />
+    <Compile Include="..\Attachments.Sql\StreamWrapper.cs" />
+    <Compile Include="..\Shared\AssemblyHelper.cs" />
+    <Compile Include="..\Shared\AttachmentMetadata.cs" />
+    <Compile Include="..\Shared\Guard.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Attachments.Sql\Table.sql" LogicalName="Table.sql" />
+  </ItemGroup>
+</Project>
