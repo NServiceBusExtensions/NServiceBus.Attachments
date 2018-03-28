@@ -16,7 +16,7 @@
     <Compile Include="..\Attachments.Sql\Install\Installer.cs" />
     <Compile Include="..\Attachments.Sql\StreamWrapper.cs" />
     <Compile Include="..\Shared\AssemblyHelper.cs" />
-    <Compile Include="..\Shared\AttachmentMetadata.cs" />
+    <Compile Include="..\Shared\AttachmentInfo.cs" />
     <Compile Include="..\Shared\Guard.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
@@ -147,7 +148,28 @@ public class PersisterTests: TestBase
             Installer.CreateTable(connection).Wait();
             persister.DeleteAllAttachments(connection,null).Wait();
             persister.SaveBytes(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), new byte[]{1}).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
+            var attachments = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
+            ObjectApprover.VerifyWithJson(attachments);
+        }
+    }
+
+    [Fact]
+    public void ReadAllMessageInfo()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection).Wait();
+            persister.DeleteAllAttachments(connection, null).Wait();
+            persister.SaveBytes(connection, null, "theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1), new byte[] {1}).GetAwaiter().GetResult();
+            persister.SaveBytes(connection, null, "theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1), new byte[] {1}).GetAwaiter().GetResult();
+            var list = new List<AttachmentInfo>();
+            persister.ReadAllMessageInfo(connection, null, "theMessageId",
+                info =>
+                {
+                    list.Add(info);
+                    return Task.CompletedTask;
+                }).GetAwaiter().GetResult();
+            ObjectApprover.VerifyWithJson(list);
         }
     }
 

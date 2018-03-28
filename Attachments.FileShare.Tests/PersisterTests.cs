@@ -117,6 +117,15 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
+    public void ReadAllMessageInfo()
+    {
+        var persister = GetPersister();
+        persister.SaveStream("theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
+        persister.SaveStream("theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
+        ObjectApprover.VerifyWithJson(persister.ReadAllMessageInfo("theMessageId"));
+    }
+
+    [Fact]
     public void SaveBytes()
     {
         var persister = GetPersister();

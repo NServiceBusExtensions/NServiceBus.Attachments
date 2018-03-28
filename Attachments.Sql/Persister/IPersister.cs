@@ -25,6 +25,16 @@ namespace NServiceBus.Attachments.Sql
         Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
+        /// </summary>
+        Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
+        /// </summary>
+        Task<IReadOnlyCollection<AttachmentInfo>> ReadAllMessageInfo(SqlConnection connection, SqlTransaction transaction, string messageId, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
         Task ReadAllInfo(SqlConnection connection, SqlTransaction transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
@@ -32,7 +42,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        Task<IEnumerable<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes all attachments.
