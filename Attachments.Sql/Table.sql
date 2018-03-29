@@ -18,7 +18,6 @@ create table ' + @fullName + '(
     Created datetime2 not null default sysutcdatetime(),
     Expiry datetime2 not null,
     Data varbinary(max) not null
-    Data varbinary(max) not null
 )
 create unique index Index_MessageIdName
   on ' + @fullName + '(MessageIdLower, NameLower);
