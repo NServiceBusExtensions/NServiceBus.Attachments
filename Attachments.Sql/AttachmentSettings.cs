@@ -12,6 +12,7 @@ namespace NServiceBus.Attachments.Sql
         internal Func<Task<SqlConnection>> ConnectionFactory;
         internal string Schema = "dbo";
         internal string TableName = "Attachments";
+        internal bool InstallerDisabled;
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
@@ -51,6 +52,13 @@ namespace NServiceBus.Attachments.Sql
                 connection.Dispose();
                 throw;
             }
+        }
+        /// <summary>
+        /// Disable the table creation installer.
+        /// </summary>
+        public void DisableInstaller()
+        {
+            InstallerDisabled = true;
         }
     }
 }

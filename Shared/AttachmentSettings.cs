@@ -11,7 +11,6 @@
     public partial class AttachmentSettings
     {
         internal bool RunCleanTask = true;
-        internal bool InstallerDisabled;
         internal GetTimeToKeep TimeToKeep;
 
         /// <summary>
@@ -22,12 +21,5 @@
             RunCleanTask = false;
         }
 
-        /// <summary>
-        /// Disable the table creation installer.
-        /// </summary>
-        public void DisableInstaller()
-        {
-            InstallerDisabled = true;
-        }
     }
 }
