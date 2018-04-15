@@ -38,7 +38,6 @@ namespace NServiceBus.Attachments.FileShare
 
         string dateTimeFormat = "yyyy-MM-ddTHHmm";
 
-
         string GetDataFile(string messageId, string name)
         {
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
