@@ -27,5 +27,12 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNullOrEmpty(name, nameof(name));
             return OpenAttachmentStream(messageId, name);
         }
+
+        Stream OpenAttachmentStream(string messageId, string name)
+        {
+            var dataFile = GetDataFile(messageId, name);
+            ThrowIfFileNotFound(dataFile, messageId, name);
+            return FileHelpers.OpenRead(dataFile);
+        }
     }
 }

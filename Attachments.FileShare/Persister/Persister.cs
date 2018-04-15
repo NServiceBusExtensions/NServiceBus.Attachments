@@ -38,12 +38,6 @@ namespace NServiceBus.Attachments.FileShare
 
         string dateTimeFormat = "yyyy-MM-ddTHHmm";
 
-        Stream OpenAttachmentStream(string messageId, string name)
-        {
-            var dataFile = GetDataFile(messageId, name);
-            ThrowIfFileNotFound(dataFile, messageId, name);
-            return FileHelpers.OpenRead(dataFile);
-        }
 
         string GetDataFile(string messageId, string name)
         {

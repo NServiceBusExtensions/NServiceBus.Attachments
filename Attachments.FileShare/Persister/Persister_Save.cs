@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +7,6 @@ namespace NServiceBus.Attachments.FileShare
 {
     public partial class Persister
     {
-
         /// <summary>
         /// Saves <paramref name="stream"/> as an attachment.
         /// </summary>
