@@ -15,7 +15,7 @@ public class OutgoingWhenNotEnabledTests
     [Fact]
     public void Run()
     {
-        var configuration = new EndpointConfiguration("AttachmentsTest");
+        var configuration = new EndpointConfiguration("OutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var endpoint = Endpoint.Start(configuration).Result;

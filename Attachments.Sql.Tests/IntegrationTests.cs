@@ -20,12 +20,12 @@ public class IntegrationTests
     public async Task Run()
     {
         resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("AttachmentsTest");
+        var configuration = new EndpointConfiguration("IntegrationTestsRun");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var recoverability = configuration.Recoverability();
-        recoverability.Immediate(x =>x.NumberOfRetries(0));
-        recoverability.Delayed(x =>x.NumberOfRetries(0));
+        recoverability.Immediate(x => x.NumberOfRetries(0));
+        recoverability.Delayed(x => x.NumberOfRetries(0));
         configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);

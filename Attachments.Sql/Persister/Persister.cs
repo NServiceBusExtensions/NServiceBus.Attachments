@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
@@ -72,11 +71,10 @@ values
     @Expiry,
     @Data
 )";
-                var parameters = command.Parameters;
-                parameters.Add("@MessageId", SqlDbType.NVarChar).Value = messageId;
-                parameters.Add("@Name", SqlDbType.NVarChar).Value = name;
-                parameters.Add("@Expiry", SqlDbType.DateTime2).Value = expiry;
-                parameters.Add("@Data", SqlDbType.Binary, -1).Value = stream;
+                command.AddParameter("MessageId", messageId);
+                command.AddParameter("Name", name);
+                command.AddParameter("Expiry", expiry);
+                command.AddBinary("Data", stream);
 
                 // Send the data to the server asynchronously
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
@@ -198,7 +196,7 @@ select
 from {fullTableName}
 where
     MessageIdLower = lower(@MessageId)";
-            command.Parameters.AddWithValue("MessageId", messageId);
+            command.AddParameter("MessageId", messageId);
 
             return command;
         }
@@ -235,7 +233,7 @@ where
                 }
 
                 command.CommandText = $@"delete from {fullTableName} where expiry < @date";
-                command.Parameters.AddWithValue("date", dateTime);
+                command.AddParameter("@date", dateTime);
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }
@@ -250,7 +248,7 @@ where
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(target, nameof(target));
             using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-            using (var reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
             {
                 if (!await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
@@ -297,7 +295,7 @@ where
             try
             {
                 command = CreateGetDataCommand(messageId, name, connection, transaction);
-                reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false);
+                reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false);
                 if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
                     var length = reader.GetInt64(0);
@@ -326,7 +324,7 @@ where
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
             using (var command = CreateGetDatasCommand(messageId, connection, transaction))
-            using (var reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
             {
                 while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
@@ -353,7 +351,7 @@ where
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
             using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-            using (var reader = await ExecuteSequentialReader(command, cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
             {
                 if (!await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
@@ -375,13 +373,6 @@ where
             return new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
         }
 
-        // The reader needs to be executed with SequentialAccess to enable network streaming
-        // Otherwise ReadAsync will buffer the entire BLOB in memory which can cause scalability issues or OutOfMemoryExceptions
-        static Task<SqlDataReader> ExecuteSequentialReader(SqlCommand command, CancellationToken cancellation = default)
-        {
-            return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellation);
-        }
-
         SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
         {
             var command = connection.CreateCommand();
@@ -398,9 +389,8 @@ from {fullTableName}
 where
     NameLower = lower(@Name) and
     MessageIdLower = lower(@MessageId)";
-            var parameters = command.Parameters;
-            parameters.AddWithValue("Name", name);
-            parameters.AddWithValue("MessageId", messageId);
+            command.AddParameter("Name", name);
+            command.AddParameter("MessageId", messageId);
             return command;
         }
 
@@ -420,8 +410,7 @@ select
 from {fullTableName}
 where
     MessageIdLower = lower(@MessageId)";
-            var parameters = command.Parameters;
-            parameters.AddWithValue("MessageId", messageId);
+            command.AddParameter("MessageId", messageId);
             return command;
         }
     }

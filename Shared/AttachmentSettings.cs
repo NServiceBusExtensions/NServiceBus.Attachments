@@ -20,6 +20,5 @@
         {
             RunCleanTask = false;
         }
-
     }
 }

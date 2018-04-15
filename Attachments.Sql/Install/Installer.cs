@@ -22,8 +22,8 @@ namespace NServiceBus.Attachments.Sql
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = GetTableSql();
-                command.Parameters.AddWithValue("schema", schema);
-                command.Parameters.AddWithValue("tableName", tableName);
+                command.AddParameter("schema", schema);
+                command.AddParameter("tableName", tableName);
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }

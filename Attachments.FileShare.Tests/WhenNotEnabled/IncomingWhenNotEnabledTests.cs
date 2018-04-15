@@ -14,7 +14,7 @@ public class IncomingWhenNotEnabledTests
     public void Run()
     {
         resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("AttachmentsTest");
+        var configuration = new EndpointConfiguration("IncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var endpoint = Endpoint.Start(configuration).Result;
