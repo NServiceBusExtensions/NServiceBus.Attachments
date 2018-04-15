@@ -1,4 +1,5 @@
-﻿namespace NServiceBus.Attachments
+﻿// ReSharper disable PartialTypeWithSinglePart
+namespace NServiceBus.Attachments
 #if FileShare
 .FileShare
 #elif Sql
