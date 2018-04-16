@@ -36,21 +36,7 @@ namespace NServiceBus.Attachments
             this.inner = inner;
             this.cleanups = cleanups;
             Length = length;
-        }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="AttachmentStream"/>.
-        /// </summary>
-        /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
-        /// <param name="length">The length of <paramref name="inner"/>.</param>
-        /// <param name="cleanups">Any extra <see cref="IDisposable"/>s to cleanup.</param>
-        public AttachmentStream(Stream inner, long length, params IDisposable[] cleanups)
-        {
-            Guard.AgainstNull(inner, nameof(inner));
-            Guard.AgainstNull(cleanups, nameof(cleanups));
-            this.inner = inner;
-            this.cleanups = cleanups;
-            Length = length;
+            Metadata = metadata;
         }
 
         public override void EndWrite(IAsyncResult asyncResult)
@@ -88,14 +74,13 @@ namespace NServiceBus.Attachments
             return inner.Read(buffer, offset, count);
         }
 
-
-
         public override bool CanRead => inner.CanRead;
         public override bool CanSeek => inner.CanSeek;
         public override bool CanTimeout => inner.CanTimeout;
         public override bool CanWrite => false;
 
         public override long Length { get; }
+        public IReadOnlyDictionary<string, string> Metadata;
         public override int ReadTimeout => inner.ReadTimeout;
 
         public override long Position
