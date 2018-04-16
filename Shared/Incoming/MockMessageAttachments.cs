@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+// ReSharper disable PartialTypeWithSinglePart
 
 namespace NServiceBus.Attachments
 #if FileShare
@@ -36,17 +37,17 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(string,Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(string,Func{AttachmentStream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(Func{AttachmentStream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
@@ -54,7 +55,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.ProcessStreams"/>
         /// </summary>
-        public virtual Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
@@ -92,25 +93,25 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{AttachmentStream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{AttachmentStream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, Stream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, AttachmentStream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }

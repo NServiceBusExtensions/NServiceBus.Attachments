@@ -30,19 +30,19 @@ class MessageAttachments : IMessageAttachments
         await persister.CopyTo(messageId, name, connection, null, target, cancellation).ConfigureAwait(false);
     }
 
-    public async Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         await persister.ProcessStream(messageId, "default", connection, null, action, cancellation).ConfigureAwait(false);
     }
 
-    public async Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         await persister.ProcessStream(messageId, name, connection, null, action, cancellation).ConfigureAwait(false);
     }
 
-    public async Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         await persister.ProcessStreams(messageId, connection, null, action, cancellation).ConfigureAwait(false);
@@ -60,13 +60,13 @@ class MessageAttachments : IMessageAttachments
         return await persister.GetBytes(messageId, name, connection, null, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<Stream> GetStream(CancellationToken cancellation = default)
+    public async Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetStream(messageId, "default", connection, null, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<Stream> GetStream(string name, CancellationToken cancellation = default)
+    public async Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetStream(messageId, name, connection, null, cancellation).ConfigureAwait(false);
@@ -84,19 +84,19 @@ class MessageAttachments : IMessageAttachments
         await persister.CopyTo(messageId, name, connection, null, target, cancellation).ConfigureAwait(false);
     }
 
-    public async Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         await persister.ProcessStream(messageId, "default", connection, null, action, cancellation).ConfigureAwait(false);
     }
 
-    public async Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         await persister.ProcessStream(messageId, name, connection, null, action, cancellation).ConfigureAwait(false);
     }
 
-    public async Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         await persister.ProcessStreams(messageId, connection, null, action, cancellation).ConfigureAwait(false);
@@ -114,13 +114,13 @@ class MessageAttachments : IMessageAttachments
         return await persister.GetBytes(messageId, name, connection, null, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<Stream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
+    public async Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetStream(messageId, "default", connection, null, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<Stream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public async Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetStream(messageId, name, connection, null, cancellation).ConfigureAwait(false);

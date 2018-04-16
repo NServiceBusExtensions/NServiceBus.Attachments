@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +10,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
         /// </summary>
-        public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
@@ -26,7 +25,7 @@ namespace NServiceBus.Attachments.Sql
                     var length = reader.GetInt64(1);
                     using (var sqlStream = reader.GetStream(2))
                     {
-                        var task = action(name, new StreamWrapper(sqlStream, length));
+                        var task = action(name, new AttachmentStream(sqlStream, length));
                         Guard.ThrowIfNullReturned(messageId,null, task);
                         await task.ConfigureAwait(false);
                     }
@@ -37,7 +36,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Processes an attachment by passing it to <paramref name="action"/>.
         /// </summary>
-        public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<Stream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -54,7 +53,7 @@ namespace NServiceBus.Attachments.Sql
                 var length = reader.GetInt64(0);
                 using (var sqlStream = reader.GetStream(1))
                 {
-                    var task = action(new StreamWrapper(sqlStream, length));
+                    var task = action(new AttachmentStream(sqlStream, length));
                     Guard.ThrowIfNullReturned(messageId, name, task);
                     await task.ConfigureAwait(false);
                 }

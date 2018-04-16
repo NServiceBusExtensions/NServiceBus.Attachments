@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +30,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        public virtual async Task<Stream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation)
+        public virtual async Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -46,7 +45,7 @@ namespace NServiceBus.Attachments.Sql
                 {
                     var length = reader.GetInt64(0);
                     var sqlStream = reader.GetStream(1);
-                    return new StreamWrapper(sqlStream, length, command, reader);
+                    return new AttachmentStream(sqlStream, length, command, reader);
                 }
             }
             catch (Exception)

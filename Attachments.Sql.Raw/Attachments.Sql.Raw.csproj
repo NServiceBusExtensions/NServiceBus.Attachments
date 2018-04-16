@@ -14,9 +14,9 @@
   <ItemGroup>
     <Compile Include="..\Attachments.Sql\Persister\*.cs" />
     <Compile Include="..\Attachments.Sql\Install\Installer.cs" />
-    <Compile Include="..\Attachments.Sql\StreamWrapper.cs" />
     <Compile Include="..\Shared\AssemblyHelper.cs" />
     <Compile Include="..\Shared\AttachmentInfo.cs" />
+    <Compile Include="..\Shared\Incoming\AttachmentStream.cs" />
     <Compile Include="..\Shared\Guard.cs" />
   </ItemGroup>
   <ItemGroup>

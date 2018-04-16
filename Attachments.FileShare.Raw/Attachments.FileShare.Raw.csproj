@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="..\Attachments.FileShare\Persister\*.cs" />
     <Compile Include="..\Shared\AttachmentInfo.cs" />
+    <Compile Include="..\Shared\Incoming\AttachmentStream.cs" />
     <Compile Include="..\Shared\Guard.cs" />
   </ItemGroup>
 </Project>

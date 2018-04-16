@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.FileShare
@@ -21,18 +20,19 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        public virtual Stream GetStream(string messageId, string name)
+        public virtual AttachmentStream GetStream(string messageId, string name)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             return OpenAttachmentStream(messageId, name);
         }
 
-        Stream OpenAttachmentStream(string messageId, string name)
+        AttachmentStream OpenAttachmentStream(string messageId, string name)
         {
             var dataFile = GetDataFile(messageId, name);
             ThrowIfFileNotFound(dataFile, messageId, name);
-            return FileHelpers.OpenRead(dataFile);
+            var read = FileHelpers.OpenRead(dataFile);
+            return new AttachmentStream(read, read.Length);
         }
     }
 }

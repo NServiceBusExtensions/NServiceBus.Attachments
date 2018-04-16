@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Cleanup\Cleaner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cleanup\IAsyncTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Guard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Incoming\AttachmentStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\IMessageAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\MockMessageAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleTo.cs" />

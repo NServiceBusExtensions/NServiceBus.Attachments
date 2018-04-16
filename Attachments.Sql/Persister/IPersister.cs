@@ -67,16 +67,16 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        Task<Stream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation);
+        Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation);
 
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
         /// </summary>
-        Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Processes an attachment by passing it to <paramref name="action"/>.
         /// </summary>
-        Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
     }
 }

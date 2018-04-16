@@ -25,17 +25,17 @@ class MessageAttachments : IMessageAttachments
         return persister.CopyTo(messageId, name, target, cancellation);
     }
 
-    public Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStream(messageId, "default", action, cancellation);
     }
 
-    public Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStream(messageId, name, action, cancellation);
     }
 
-    public Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStreams(messageId, action, cancellation);
     }
@@ -50,12 +50,12 @@ class MessageAttachments : IMessageAttachments
         return persister.GetBytes(messageId, name, cancellation);
     }
 
-    public Stream GetStream()
+    public AttachmentStream GetStream()
     {
         return persister.GetStream(messageId, "default");
     }
 
-    public Stream GetStream(string name)
+    public AttachmentStream GetStream(string name)
     {
         return persister.GetStream(messageId, name);
     }
@@ -70,17 +70,17 @@ class MessageAttachments : IMessageAttachments
         return persister.CopyTo(messageId, name, target, cancellation);
     }
 
-    public Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStream(messageId, "default", action, cancellation);
     }
 
-    public Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStream(messageId, name, action, cancellation);
     }
 
-    public Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStreams(messageId, action, cancellation);
     }
@@ -95,12 +95,12 @@ class MessageAttachments : IMessageAttachments
         return persister.GetBytes(messageId, name, cancellation);
     }
 
-    public Stream GetStreamForMessage(string messageId)
+    public AttachmentStream GetStreamForMessage(string messageId)
     {
         return persister.GetStream(messageId, "default");
     }
 
-    public Stream GetStreamForMessage(string messageId, string name)
+    public AttachmentStream GetStreamForMessage(string messageId, string name)
     {
         return persister.GetStream(messageId, name);
     }

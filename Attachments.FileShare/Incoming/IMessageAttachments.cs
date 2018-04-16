@@ -7,21 +7,21 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Get a <see cref="Stream"/>, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Stream GetStream();
+        AttachmentStream GetStream();
 
         /// <summary>
         /// Get a <see cref="Stream"/>, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
-        Stream GetStream(string name);
+        AttachmentStream GetStream(string name);
 
         /// <summary>
         /// Get a <see cref="Stream"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Stream GetStreamForMessage(string messageId);
+        AttachmentStream GetStreamForMessage(string messageId);
 
         /// <summary>
         /// Get a <see cref="Stream"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
         /// </summary>
-        Stream GetStreamForMessage(string messageId, string name);
+        AttachmentStream GetStreamForMessage(string messageId, string name);
     }
 }

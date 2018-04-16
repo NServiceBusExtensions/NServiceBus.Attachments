@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+// ReSharper disable PartialTypeWithSinglePart
 
 namespace NServiceBus.Attachments
 #if FileShare
@@ -29,23 +30,23 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task ProcessStream(string name, Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Task ProcessStream(Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, all attachments for the current message.
         /// </summary>
-        Task ProcessStreams(Func<string, Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         Task<byte[]> GetBytes(CancellationToken cancellation = default);
 
@@ -67,23 +68,23 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task ProcessStreamForMessage(string messageId, string name, Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
-        Task ProcessStreamForMessage(string messageId, Func<Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, all attachments for the for the message with <paramref name="messageId"/>.
         /// </summary>
-        Task ProcessStreamsForMessage(string messageId, Func<string, Stream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default);
 
@@ -91,7 +92,7 @@ namespace NServiceBus.Attachments
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default);
     }

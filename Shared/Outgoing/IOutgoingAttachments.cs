@@ -62,7 +62,7 @@ namespace NServiceBus.Attachments
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         void AddBytes(string name, Func<byte[]> byteFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
@@ -70,7 +70,7 @@ namespace NServiceBus.Attachments
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null);
 
@@ -78,7 +78,7 @@ namespace NServiceBus.Attachments
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         void AddBytes(Func<Task<byte[]>> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
@@ -86,7 +86,7 @@ namespace NServiceBus.Attachments
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         void AddBytes(string name, Func<Task<byte[]>> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
@@ -94,7 +94,7 @@ namespace NServiceBus.Attachments
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         void AddBytes(Func<byte[]> byteFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
@@ -102,7 +102,7 @@ namespace NServiceBus.Attachments
         /// Save an attachment with the default name of <see cref="string.Empty"/>.
         /// </summary>
         /// <remarks>
-        /// This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         void AddBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null);
     }
