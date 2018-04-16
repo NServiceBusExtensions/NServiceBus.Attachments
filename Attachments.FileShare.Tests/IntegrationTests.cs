@@ -14,7 +14,7 @@ public class IntegrationTests
     public async Task Run()
     {
         resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("AttachmentsTest");
+        var configuration = new EndpointConfiguration("FileShareIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.EnableAttachments(Path.GetFullPath("attachments/IntegrationTests"), TimeToKeep.Default);

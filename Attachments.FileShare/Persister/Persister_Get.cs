@@ -12,7 +12,8 @@ namespace NServiceBus.Attachments.FileShare
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            var dataFile = GetDataFile(messageId, name);
+            var attachmentDirectory = GetAttachmentDirectory(messageId, name);
+            var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
             return FileHelpers.ReadBytes(cancellation, dataFile);
         }
@@ -29,10 +30,12 @@ namespace NServiceBus.Attachments.FileShare
 
         AttachmentStream OpenAttachmentStream(string messageId, string name)
         {
-            var dataFile = GetDataFile(messageId, name);
+            var attachmentDirectory = GetAttachmentDirectory(messageId, name);
+            var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
+            var metadata = ReadMetadata(attachmentDirectory);
             var read = FileHelpers.OpenRead(dataFile);
-            return new AttachmentStream(read, read.Length);
+            return new AttachmentStream(read, read.Length, metadata);
         }
     }
 }

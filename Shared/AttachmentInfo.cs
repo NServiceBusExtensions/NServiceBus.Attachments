@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NServiceBus.Attachments
 #if FileShare
@@ -24,6 +25,24 @@ namespace NServiceBus.Attachments
         /// the attachment expiry. The date after which it can be cleaned-up.
         /// </summary>
         public readonly DateTime Expiry;
+        /// <summary>
+        /// The attachment Metadata.
+        /// </summary>
+        public readonly IReadOnlyDictionary<string, string> Metadata;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="AttachmentInfo"/>.
+        /// </summary>
+        public AttachmentInfo(string messageId, string name, DateTime expiry, IReadOnlyDictionary<string, string> metadata)
+        {
+            Guard.AgainstNullOrEmpty(messageId,nameof(messageId));
+            Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstNull(metadata, nameof(metadata));
+            MessageId = messageId;
+            Name = name;
+            Expiry = expiry;
+            Metadata = metadata;
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="AttachmentInfo"/>.

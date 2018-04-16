@@ -20,7 +20,7 @@ public class IntegrationTests
     public async Task Run()
     {
         resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("IntegrationTestsRun");
+        var configuration = new EndpointConfiguration("SqlIntegrationTestsRun");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var recoverability = configuration.Recoverability();
@@ -37,7 +37,7 @@ public class IntegrationTests
     public async Task RunSql()
     {
         resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("AttachmentsTest");
+        var configuration = new EndpointConfiguration("SqlIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);

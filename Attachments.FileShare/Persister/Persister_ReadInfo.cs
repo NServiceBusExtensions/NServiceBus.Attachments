@@ -34,10 +34,12 @@ namespace NServiceBus.Attachments.FileShare
             {
                 cancellation.ThrowIfCancellationRequested();
                 var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
+                var metadata = ReadMetadata(attachmentDirectory);
                 yield return new AttachmentInfo(
                     messageId: messageId,
                     name: Path.GetFileName(attachmentDirectory),
-                    expiry: ParseExpiry(Path.GetFileNameWithoutExtension(expiryFile)));
+                    expiry: ParseExpiry(Path.GetFileNameWithoutExtension(expiryFile)),
+                    metadata: metadata);
             }
         }
     }

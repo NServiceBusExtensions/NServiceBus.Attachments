@@ -16,21 +16,18 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNull(action, nameof(action));
             var messageDirectory = GetMessageDirectory(messageId);
             ThrowIfDirectoryNotFound(messageDirectory, messageId);
-            foreach (var dataFile in Directory.EnumerateFiles(messageDirectory, "data", SearchOption.AllDirectories))
+            foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
             {
                 cancellation.ThrowIfCancellationRequested();
+                var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile).Name;
-                using (var fileStream = OpenAttachmentStream(dataFile))
+                var read = FileHelpers.OpenRead(dataFile);
+                var metadata = ReadMetadata(attachmentDirectory);
+                using (var fileStream = new AttachmentStream(read, read.Length, metadata))
                 {
                     await action(attachmentName, fileStream).ConfigureAwait(false);
                 }
             }
-        }
-
-        static AttachmentStream OpenAttachmentStream(string dataFile)
-        {
-            var read = FileHelpers.OpenRead(dataFile);
-            return new AttachmentStream(read, read.Length);
         }
 
         /// <summary>
@@ -41,15 +38,16 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(action, nameof(action));
-            var messageDirectory = GetAttachmentDirectory(messageId, name);
-            ThrowIfDirectoryNotFound(messageDirectory, messageId);
-            foreach (var dataFile in Directory.EnumerateFiles(messageDirectory, "data", SearchOption.AllDirectories))
+            var attachmentDirectory = GetAttachmentDirectory(messageId, name);
+            ThrowIfDirectoryNotFound(attachmentDirectory, messageId);
+            cancellation.ThrowIfCancellationRequested();
+            var dataFile = GetDataFile(attachmentDirectory);
+            ThrowIfFileNotFound(dataFile, messageId, name);
+            var read = FileHelpers.OpenRead(dataFile);
+            var metadata = ReadMetadata(attachmentDirectory);
+            using (var fileStream = new AttachmentStream(read, read.Length, metadata))
             {
-                cancellation.ThrowIfCancellationRequested();
-                using (var fileStream = OpenAttachmentStream(dataFile))
-                {
-                    await action(fileStream).ConfigureAwait(false);
-                }
+                await action(fileStream).ConfigureAwait(false);
             }
         }
     }

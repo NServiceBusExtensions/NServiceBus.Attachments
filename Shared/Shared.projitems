@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\IMessageAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\MockMessageAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MetadataSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MockAttachmentHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\GetTimeToKeep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Outgoing\IOutgoingAttachments.cs" />

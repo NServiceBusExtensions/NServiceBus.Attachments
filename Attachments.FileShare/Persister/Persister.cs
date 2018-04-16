@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -38,9 +39,8 @@ namespace NServiceBus.Attachments.FileShare
 
         string dateTimeFormat = "yyyy-MM-ddTHHmm";
 
-        string GetDataFile(string messageId, string name)
+        static string GetDataFile(string attachmentDirectory)
         {
-            var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             return Path.Combine(attachmentDirectory, "data");
         }
 
@@ -72,6 +72,33 @@ namespace NServiceBus.Attachments.FileShare
             }
 
             throw new Exception($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
+        }
+        static IReadOnlyDictionary<string, string> ReadMetadata(string attachmentDirectory)
+        {
+            var metadataFile = GetMetadataFile(attachmentDirectory);
+            if (!File.Exists(metadataFile)) return MetadataSerializer.EmptyMetadata;
+            using (var stream = FileHelpers.OpenRead(metadataFile))
+            {
+                return MetadataSerializer.Deserialize(stream);
+            }
+        }
+
+        static string GetMetadataFile(string attachmentDirectory)
+        {
+            return Path.Combine(attachmentDirectory, "metadata.json");
+        }
+
+        static void WriteMetadata(string attachmentDirectory, IReadOnlyDictionary<string, string> metadata)
+        {
+            if (metadata == null)
+            {
+                return;
+            }
+            var metadataFile = GetMetadataFile(attachmentDirectory);
+            using (var stream = FileHelpers.OpenWrite(metadataFile))
+            {
+                MetadataSerializer.Serialize(stream, metadata);
+            }
         }
     }
 }

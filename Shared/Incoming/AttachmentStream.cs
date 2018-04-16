@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,23 @@ namespace NServiceBus.Attachments
     {
         Stream inner;
         IDisposable[] cleanups;
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="AttachmentStream"/>.
+        /// </summary>
+        /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
+        /// <param name="length">The length of <paramref name="inner"/>.</param>
+        /// <param name="metadata">The attachment metadata.</param>
+        /// <param name="cleanups">Any extra <see cref="IDisposable"/>s to cleanup.</param>
+        public AttachmentStream(Stream inner, long length, IReadOnlyDictionary<string, string> metadata, params IDisposable[] cleanups)
+        {
+            Guard.AgainstNull(inner, nameof(inner));
+            Guard.AgainstNull(metadata, nameof(metadata));
+            Guard.AgainstNull(cleanups, nameof(cleanups));
+            this.inner = inner;
+            this.cleanups = cleanups;
+            Length = length;
+        }
 
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.

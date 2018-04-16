@@ -7,8 +7,9 @@ using ObjectApproval;
 using Xunit;
 using Xunit.Abstractions;
 
-public class PersisterTests: TestBase
+public class PersisterTests : TestBase
 {
+    DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Persister persister;
 
     static PersisterTests()
@@ -31,7 +32,7 @@ public class PersisterTests: TestBase
         {
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
-            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
+            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
             var memoryStream = new MemoryStream();
             await persister.CopyTo("theMessageId", "theName", connection, null, memoryStream);
 
@@ -47,7 +48,7 @@ public class PersisterTests: TestBase
         {
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
-            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
+            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
             var bytes = await persister.GetBytes("theMessageId", "theName", connection, null);
             Assert.Equal(5, bytes[0]);
         }
@@ -60,7 +61,7 @@ public class PersisterTests: TestBase
         {
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
-            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream());
+            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
             var bytes = await persister.GetBytes("themeSsageid", "Thename", connection, null);
             Assert.Equal(5, bytes[0]);
         }
@@ -74,7 +75,7 @@ public class PersisterTests: TestBase
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
             var count = 0;
-            await persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000,1,1,1,1,1), GetStream());
+            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
             await persister.ProcessStream("theMessageId", "theName", connection, null,
                 action: stream =>
                 {
@@ -83,7 +84,7 @@ public class PersisterTests: TestBase
                     Assert.Equal(5, array[0]);
                     return Task.CompletedTask;
                 });
-            Assert.Equal(1,count);
+            Assert.Equal(1, count);
         }
     }
 
@@ -95,9 +96,9 @@ public class PersisterTests: TestBase
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
             var count = 0;
-            await persister.SaveStream(connection, null, "theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(1));
-            await persister.SaveStream(connection, null, "theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1), GetStream(2));
-            await persister.ProcessStreams("theMessageId", connection,null,
+            await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1));
+            await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2));
+            await persister.ProcessStreams("theMessageId", connection, null,
                 action: (name, stream) =>
                 {
                     count++;
@@ -107,6 +108,7 @@ public class PersisterTests: TestBase
                         Assert.Equal(1, array[0]);
                         Assert.Equal("theName1", name);
                     }
+
                     if (count == 2)
                     {
                         Assert.Equal(2, array[0]);
@@ -134,8 +136,8 @@ public class PersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection).Wait();
-            persister.DeleteAllAttachments(connection,null).Wait();
-            persister.SaveStream(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
+            persister.DeleteAllAttachments(connection, null).Wait();
+            persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
         }
     }
@@ -146,8 +148,8 @@ public class PersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection).Wait();
-            persister.DeleteAllAttachments(connection,null).Wait();
-            persister.SaveBytes(connection, null, "theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1), new byte[]{1}).GetAwaiter().GetResult();
+            persister.DeleteAllAttachments(connection, null).Wait();
+            persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}).GetAwaiter().GetResult();
             var attachments = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(attachments);
         }
@@ -160,8 +162,8 @@ public class PersisterTests: TestBase
         {
             Installer.CreateTable(connection).Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveBytes(connection, null, "theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1), new byte[] {1}).GetAwaiter().GetResult();
-            persister.SaveBytes(connection, null, "theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1), new byte[] {1}).GetAwaiter().GetResult();
+            persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}).GetAwaiter().GetResult();
+            persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}).GetAwaiter().GetResult();
             var list = new List<AttachmentInfo>();
             persister.ReadAllMessageInfo(connection, null, "theMessageId",
                 info =>
@@ -179,15 +181,15 @@ public class PersisterTests: TestBase
         using (var connection = Connection.OpenConnection())
         {
             Installer.CreateTable(connection).Wait();
-            persister.DeleteAllAttachments(connection,null).Wait();
-            persister.SaveStream(connection, null, "theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            persister.SaveStream(connection, null, "theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1), GetStream()).GetAwaiter().GetResult();
-            persister.CleanupItemsOlderThan(connection,null, new DateTime(2001, 1, 1, 1, 1, 1)).Wait();
-            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection,null).GetAwaiter().GetResult());
+            persister.DeleteAllAttachments(connection, null).Wait();
+            persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
+            persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream()).GetAwaiter().GetResult();
+            persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1)).Wait();
+            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
         }
     }
 
-    Stream GetStream(byte content=5)
+    Stream GetStream(byte content = 5)
     {
         var stream = new MemoryStream();
         stream.WriteByte(content);

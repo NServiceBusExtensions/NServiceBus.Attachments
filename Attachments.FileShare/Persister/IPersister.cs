@@ -15,13 +15,13 @@ namespace NServiceBus.Attachments.FileShare
         /// Saves <paramref name="stream"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, CancellationToken cancellation = default);
+        Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata = null, CancellationToken cancellation = default);
 
         /// <summary>
         /// Saves <paramref name="bytes"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, CancellationToken cancellation = default);
+        Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string> metadata = null, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.

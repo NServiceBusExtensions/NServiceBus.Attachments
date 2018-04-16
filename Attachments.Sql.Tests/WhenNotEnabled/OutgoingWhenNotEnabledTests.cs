@@ -15,7 +15,7 @@ public class OutgoingWhenNotEnabledTests
     [Fact]
     public void Run()
     {
-        var configuration = new EndpointConfiguration("OutgoingWhenNotEnabledTests");
+        var configuration = new EndpointConfiguration("SqlOutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var endpoint = Endpoint.Start(configuration).Result;

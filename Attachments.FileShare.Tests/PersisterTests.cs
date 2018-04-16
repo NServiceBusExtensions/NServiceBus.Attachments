@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,6 +11,9 @@ using Xunit.Abstractions;
 
 public class PersisterTests : TestBase
 {
+    DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
+    Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
+
     public PersisterTests(ITestOutputHelper output) : base(output)
     {
     }
@@ -27,7 +31,7 @@ public class PersisterTests : TestBase
     public async Task CopyTo()
     {
         var persister = GetPersister();
-        await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream());
+        await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream());
         var memoryStream = new MemoryStream();
         await persister.CopyTo("theMessageId", "theName", memoryStream);
 
@@ -39,7 +43,7 @@ public class PersisterTests : TestBase
     public async Task GetBytes()
     {
         var persister = GetPersister();
-        await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream());
+        await persister.SaveStream("theMessageId", "theName", defaultTestDate,GetStream(), metadata);
         var bytes = await persister.GetBytes("theMessageId", "theName");
         Assert.Equal(5, bytes[0]);
     }
@@ -48,7 +52,7 @@ public class PersisterTests : TestBase
     public async Task CaseInsensitiveRead()
     {
         var persister = GetPersister();
-        await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream());
+        await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream());
         var bytes = await persister.GetBytes("themeSsageid", "Thename");
         Assert.Equal(5, bytes[0]);
     }
@@ -58,7 +62,7 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         var count = 0;
-        await persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream());
+        await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream());
         await persister.ProcessStream("theMessageId", "theName",
             action: stream =>
             {
@@ -75,8 +79,8 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         var count = 0;
-        await persister.SaveStream("theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream(1));
-        await persister.SaveStream("theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream(2));
+        await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(1));
+        await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(2));
         await persister.ProcessStreams("theMessageId",
             action: (name, stream) =>
             {
@@ -112,7 +116,11 @@ public class PersisterTests : TestBase
     public void SaveStream()
     {
         var persister = GetPersister();
-        persister.SaveStream("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
+        persister.SaveStream(messageId: "theMessageId", "theName",
+                expiry: defaultTestDate,
+                stream: GetStream(),
+                metadata: metadata)
+            .GetAwaiter().GetResult();
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 
@@ -120,8 +128,8 @@ public class PersisterTests : TestBase
     public void ReadAllMessageInfo()
     {
         var persister = GetPersister();
-        persister.SaveStream("theMessageId", "theName1", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
-        persister.SaveStream("theMessageId", "theName2", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
+        persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
+        persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
         ObjectApprover.VerifyWithJson(persister.ReadAllMessageInfo("theMessageId"));
     }
 
@@ -129,7 +137,7 @@ public class PersisterTests : TestBase
     public void SaveBytes()
     {
         var persister = GetPersister();
-        persister.SaveBytes("theMessageId", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), new byte[] {1}).GetAwaiter().GetResult();
+        persister.SaveBytes("theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
         var allMetadata = persister.ReadAllInfo().ToList();
 
         ObjectApprover.VerifyWithJson(allMetadata);
@@ -139,8 +147,8 @@ public class PersisterTests : TestBase
     public void CleanupItemsOlderThan()
     {
         var persister = GetPersister();
-        persister.SaveStream("theMessageId1", "theName", new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
-        persister.SaveStream("theMessageId2", "theName", new DateTime(2002, 1, 1, 1, 1, 1, DateTimeKind.Utc), GetStream()).GetAwaiter().GetResult();
+        persister.SaveStream("theMessageId1", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
+        persister.SaveStream("theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream()).GetAwaiter().GetResult();
         persister.CleanupItemsOlderThan(new DateTime(2001, 1, 1, 1, 1, 1));
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
