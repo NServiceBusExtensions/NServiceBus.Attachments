@@ -2,4 +2,4 @@
 using Xunit;
 
 [assembly: UseReporter(typeof(DiffReporter),typeof(AllFailingTestsClipboardReporter))]
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
+[assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly, DisableTestParallelization = true)]

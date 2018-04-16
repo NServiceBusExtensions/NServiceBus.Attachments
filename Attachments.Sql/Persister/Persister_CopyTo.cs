@@ -24,7 +24,7 @@ namespace NServiceBus.Attachments.Sql
                     throw ThrowNotFound(messageId, name);
                 }
 
-                using (var data = reader.GetStream(1))
+                using (var data = reader.GetStream(2))
                 {
                     await data.CopyToAsync(target, 81920, cancellation).ConfigureAwait(false);
                 }

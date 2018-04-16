@@ -23,11 +23,12 @@ namespace NServiceBus.Attachments.Sql
                 while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
                     cancellation.ThrowIfCancellationRequested();
-                    var metadata = new AttachmentInfo(
+                    var info = new AttachmentInfo(
                         messageId: messageId,
                         name: reader.GetString(1),
-                        expiry: reader.GetDateTime(2));
-                    var task = action(metadata);
+                        expiry: reader.GetDateTime(2),
+                        metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
+                    var task = action(info);
                     Guard.ThrowIfNullReturned(null, null, task);
                     await task.ConfigureAwait(false);
                 }
@@ -63,11 +64,12 @@ namespace NServiceBus.Attachments.Sql
                 while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
                     cancellation.ThrowIfCancellationRequested();
-                    var metadata = new AttachmentInfo(
+                    var info = new AttachmentInfo(
                         messageId: reader.GetString(1),
                         name: reader.GetString(2),
-                        expiry: reader.GetDateTime(3));
-                    var task = action(metadata);
+                        expiry: reader.GetDateTime(3),
+                        metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
+                    var task = action(info);
                     Guard.ThrowIfNullReturned(null, null, task);
                     await task.ConfigureAwait(false);
                 }
@@ -81,9 +83,9 @@ namespace NServiceBus.Attachments.Sql
         {
             var list = new ConcurrentBag<AttachmentInfo>();
             await ReadAllInfo(connection, transaction,
-                    metadata =>
+                    info =>
                     {
-                        list.Add(metadata);
+                        list.Add(info);
                         return Task.CompletedTask;
                     }, cancellation)
                 .ConfigureAwait(false);
@@ -103,7 +105,8 @@ select
     Id,
     MessageId,
     Name,
-    Expiry
+    Expiry,
+    Metadata
 from {fullTableName}";
             return command;
         }
@@ -120,7 +123,8 @@ from {fullTableName}";
 select
     Id,
     Name,
-    Expiry
+    Expiry,
+    Metadata
 from {fullTableName}
 where
     MessageIdLower = lower(@MessageId)";

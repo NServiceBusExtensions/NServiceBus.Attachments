@@ -10,6 +10,7 @@ using Xunit.Abstractions;
 public class PersisterTests : TestBase
 {
     DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
+    Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
     Persister persister;
 
     static PersisterTests()
@@ -48,7 +49,7 @@ public class PersisterTests : TestBase
         {
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
-            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
+            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
             var bytes = await persister.GetBytes("theMessageId", "theName", connection, null);
             Assert.Equal(5, bytes[0]);
         }
@@ -75,7 +76,7 @@ public class PersisterTests : TestBase
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
             var count = 0;
-            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
+            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
             await persister.ProcessStream("theMessageId", "theName", connection, null,
                 action: stream =>
                 {
@@ -96,8 +97,8 @@ public class PersisterTests : TestBase
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
             var count = 0;
-            await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1));
-            await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2));
+            await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
+            await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
             await persister.ProcessStreams("theMessageId", connection, null,
                 action: (name, stream) =>
                 {
@@ -137,7 +138,7 @@ public class PersisterTests : TestBase
         {
             Installer.CreateTable(connection).Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
+            persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
         }
     }
@@ -149,7 +150,7 @@ public class PersisterTests : TestBase
         {
             Installer.CreateTable(connection).Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}).GetAwaiter().GetResult();
+            persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
             var attachments = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(attachments);
         }
@@ -162,8 +163,8 @@ public class PersisterTests : TestBase
         {
             Installer.CreateTable(connection).Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}).GetAwaiter().GetResult();
-            persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}).GetAwaiter().GetResult();
+            persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
+            persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
             var list = new List<AttachmentInfo>();
             persister.ReadAllMessageInfo(connection, null, "theMessageId",
                 info =>

@@ -23,9 +23,11 @@ namespace NServiceBus.Attachments.Sql
                     cancellation.ThrowIfCancellationRequested();
                     var name = reader.GetString(0);
                     var length = reader.GetInt64(1);
-                    using (var sqlStream = reader.GetStream(2))
+                    var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
+                    using (var sqlStream = reader.GetStream(3))
                     {
-                        var task = action(name, new AttachmentStream(sqlStream, length));
+                        var attachmentStream = new AttachmentStream(sqlStream, length, metadata);
+                        var task = action(name, attachmentStream);
                         Guard.ThrowIfNullReturned(messageId,null, task);
                         await task.ConfigureAwait(false);
                     }
@@ -51,9 +53,10 @@ namespace NServiceBus.Attachments.Sql
                 }
 
                 var length = reader.GetInt64(0);
-                using (var sqlStream = reader.GetStream(1))
+                var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(1));
+                using (var sqlStream = reader.GetStream(2))
                 {
-                    var task = action(new AttachmentStream(sqlStream, length));
+                    var task = action(new AttachmentStream(sqlStream, length, metadata));
                     Guard.ThrowIfNullReturned(messageId, name, task);
                     await task.ConfigureAwait(false);
                 }

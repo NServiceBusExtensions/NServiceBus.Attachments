@@ -2,6 +2,9 @@
   {
     "MessageId": "theMessageId",
     "Name": "theName",
-    "Expiry": "2000-01-01T01:01:01"
+    "Expiry": "2000-01-01T01:01:01",
+    "Metadata": {
+      "key": "value"
+    }
   }
 ]

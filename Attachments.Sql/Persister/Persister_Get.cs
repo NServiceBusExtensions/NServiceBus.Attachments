@@ -20,7 +20,7 @@ namespace NServiceBus.Attachments.Sql
             {
                 if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
-                    return (byte[]) reader[1];
+                    return (byte[]) reader[2];
                 }
             }
 
@@ -44,8 +44,10 @@ namespace NServiceBus.Attachments.Sql
                 if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
                     var length = reader.GetInt64(0);
-                    var sqlStream = reader.GetStream(1);
-                    return new AttachmentStream(sqlStream, length, command, reader);
+                    var metadataString = reader.GetStringOrNull(1);
+                    var sqlStream = reader.GetStream(2);
+                    var metadata = MetadataSerializer.Deserialize(metadataString);
+                    return new AttachmentStream(sqlStream, length, metadata, command, reader);
                 }
             }
             catch (Exception)
@@ -60,7 +62,6 @@ namespace NServiceBus.Attachments.Sql
             throw ThrowNotFound(messageId, name);
         }
 
-
         SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
         {
             var command = connection.CreateCommand();
@@ -72,6 +73,7 @@ namespace NServiceBus.Attachments.Sql
             command.CommandText = $@"
 select
     datalength(Data),
+    Metadata,
     Data
 from {fullTableName}
 where
@@ -94,6 +96,7 @@ where
 select
     Name,
     datalength(Data),
+    Metadata,
     Data
 from {fullTableName}
 where
