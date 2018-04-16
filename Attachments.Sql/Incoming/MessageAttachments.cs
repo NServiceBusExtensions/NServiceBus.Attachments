@@ -48,13 +48,13 @@ class MessageAttachments : IMessageAttachments
         await persister.ProcessStreams(messageId, connection, null, action, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<byte[]> GetBytes(CancellationToken cancellation = default)
+    public async Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetBytes(messageId, "default", connection, null, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<byte[]> GetBytes(string name, CancellationToken cancellation = default)
+    public async Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetBytes(messageId, name, connection, null, cancellation).ConfigureAwait(false);
@@ -102,13 +102,13 @@ class MessageAttachments : IMessageAttachments
         await persister.ProcessStreams(messageId, connection, null, action, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
+    public async Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetBytes(messageId, "default", connection, null, cancellation).ConfigureAwait(false);
     }
 
-    public async Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public async Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         var connection = await connectionFactory().ConfigureAwait(false);
         return await persister.GetBytes(messageId, name, connection, null, cancellation).ConfigureAwait(false);

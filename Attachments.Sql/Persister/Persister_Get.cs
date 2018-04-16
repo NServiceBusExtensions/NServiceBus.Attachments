@@ -10,7 +10,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        public virtual async Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -20,7 +20,11 @@ namespace NServiceBus.Attachments.Sql
             {
                 if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
-                    return (byte[]) reader[2];
+                    var metadataString = reader.GetStringOrNull(1);
+                    var metadata = MetadataSerializer.Deserialize(metadataString);
+                    var bytes = (byte[]) reader[2];
+
+                    return new AttachmentBytes(bytes, metadata);
                 }
             }
 

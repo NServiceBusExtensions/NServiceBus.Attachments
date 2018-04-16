@@ -80,7 +80,10 @@ namespace NServiceBus.Attachments
         public override bool CanWrite => false;
 
         public override long Length { get; }
-        public IReadOnlyDictionary<string, string> Metadata;
+        /// <summary>
+        /// The attachment metadata.
+        /// </summary>
+        public readonly IReadOnlyDictionary<string, string> Metadata;
         public override int ReadTimeout => inner.ReadTimeout;
 
         public override long Position

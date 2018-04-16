@@ -44,7 +44,7 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", defaultTestDate,GetStream(), metadata);
-        var bytes = await persister.GetBytes("theMessageId", "theName");
+        byte[] bytes = await persister.GetBytes("theMessageId", "theName");
         Assert.Equal(5, bytes[0]);
     }
 
@@ -53,7 +53,7 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream());
-        var bytes = await persister.GetBytes("themeSsageid", "Thename");
+        byte[] bytes = await persister.GetBytes("themeSsageid", "Thename");
         Assert.Equal(5, bytes[0]);
     }
 

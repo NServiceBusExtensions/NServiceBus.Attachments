@@ -48,12 +48,12 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<byte[]> GetBytes(CancellationToken cancellation = default);
+        Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task<byte[]> GetBytes(string name, CancellationToken cancellation = default);
+        Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copy, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.
@@ -86,7 +86,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default);
+        Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
@@ -94,6 +94,6 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default);
+        Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default);
     }
 }

@@ -63,17 +63,17 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.GetBytes(CancellationToken)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytes(CancellationToken cancellation = default)
+        public virtual Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
         {
-            return Task.FromResult(new byte[] { });
+            return Task.FromResult< AttachmentBytes>(null);
         }
 
         /// <summary>
         /// <see cref="IMessageAttachments.GetBytes(string,CancellationToken)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytes(string name, CancellationToken cancellation = default)
+        public virtual Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
         {
-            return Task.FromResult(new byte[] { });
+            return Task.FromResult<AttachmentBytes>(null);
         }
 
         /// <summary>
@@ -119,17 +119,17 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.GetBytesForMessage(string,CancellationToken)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
+        public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
         {
-            return Task.FromResult(new byte[] { });
+            return Task.FromResult<AttachmentBytes>(null);
         }
 
         /// <summary>
         /// <see cref="IMessageAttachments.GetBytesForMessage(string,string,CancellationToken)"/>
         /// </summary>
-        public virtual Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
+        public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
-            return Task.FromResult(new byte[] { });
+            return Task.FromResult<AttachmentBytes>(null);
         }
     }
 }

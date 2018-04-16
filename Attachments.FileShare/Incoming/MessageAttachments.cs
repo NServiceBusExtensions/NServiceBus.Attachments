@@ -40,12 +40,12 @@ class MessageAttachments : IMessageAttachments
         return persister.ProcessStreams(messageId, action, cancellation);
     }
 
-    public Task<byte[]> GetBytes(CancellationToken cancellation = default)
+    public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, "default", cancellation);
     }
 
-    public Task<byte[]> GetBytes(string name, CancellationToken cancellation = default)
+    public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, name, cancellation);
     }
@@ -85,12 +85,12 @@ class MessageAttachments : IMessageAttachments
         return persister.ProcessStreams(messageId, action, cancellation);
     }
 
-    public Task<byte[]> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, "default", cancellation);
     }
 
-    public Task<byte[]> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, name, cancellation);
     }

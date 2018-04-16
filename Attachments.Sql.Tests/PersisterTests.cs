@@ -50,7 +50,7 @@ public class PersisterTests : TestBase
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
-            var bytes = await persister.GetBytes("theMessageId", "theName", connection, null);
+            byte[] bytes = await persister.GetBytes("theMessageId", "theName", connection, null);
             Assert.Equal(5, bytes[0]);
         }
     }
@@ -63,7 +63,7 @@ public class PersisterTests : TestBase
             await Installer.CreateTable(connection);
             await persister.DeleteAllAttachments(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
-            var bytes = await persister.GetBytes("themeSsageid", "Thename", connection, null);
+            byte[] bytes = await persister.GetBytes("themeSsageid", "Thename", connection, null);
             Assert.Equal(5, bytes[0]);
         }
     }

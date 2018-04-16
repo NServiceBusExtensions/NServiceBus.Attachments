@@ -62,7 +62,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        Task<byte[]> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Returns an open stream pointing to an attachment.

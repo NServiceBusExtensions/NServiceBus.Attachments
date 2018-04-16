@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
+using NServiceBus.Attachments.Sql;
 using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
 using Xunit;
@@ -50,10 +51,10 @@ public class TestingTests
 
     public class CustomMockMessageAttachments : MockMessageAttachments
     {
-        public override Task<byte[]> GetBytes(CancellationToken cancellation = default)
+        public override Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
         {
             GetBytesWasCalled = true;
-            return Task.FromResult(new byte[] {5});
+            return Task.FromResult(new AttachmentBytes(new byte[] { 5 }));
         }
 
         public bool GetBytesWasCalled { get; private set; }

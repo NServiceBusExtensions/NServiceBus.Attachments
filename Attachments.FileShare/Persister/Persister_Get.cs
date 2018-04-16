@@ -8,14 +8,16 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        public virtual Task<byte[]> GetBytes(string messageId, string name, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
-            return FileHelpers.ReadBytes(cancellation, dataFile);
+            var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
+            var metadata = ReadMetadata(attachmentDirectory);
+            return new AttachmentBytes(bytes, metadata);
         }
 
         /// <summary>
