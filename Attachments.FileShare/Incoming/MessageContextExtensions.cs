@@ -20,11 +20,11 @@ namespace NServiceBus
                 return attachments;
             }
 
-            if (!contextBag.TryGet<FileShareAttachmentState>(out var state))
+            if (contextBag.TryGet<FileShareAttachmentState>(out var state))
             {
-                throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(FileShareAttachmentsExtensions.EnableAttachments)}().");
+                return new MessageAttachments(context.MessageId, state.Persister);
             }
-            return new MessageAttachments(context.MessageId, state.Persister);
+            throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(FileShareAttachmentsExtensions.EnableAttachments)}().");
         }
     }
 }

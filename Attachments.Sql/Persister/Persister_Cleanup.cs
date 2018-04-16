@@ -25,6 +25,5 @@ namespace NServiceBus.Attachments.Sql
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }
-
     }
 }
