@@ -21,7 +21,7 @@ namespace NServiceBus.Attachments.Sql
                 }
 
                 command.CommandText = $@"delete from {fullTableName} where expiry < @date";
-                command.AddParameter("@date", dateTime);
+                command.AddParameter("date", dateTime);
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }

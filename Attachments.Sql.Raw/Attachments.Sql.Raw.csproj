@@ -24,4 +24,7 @@
   <ItemGroup>
     <EmbeddedResource Include="..\Attachments.Sql\Table.sql" LogicalName="Table.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
+  </ItemGroup>
 </Project>

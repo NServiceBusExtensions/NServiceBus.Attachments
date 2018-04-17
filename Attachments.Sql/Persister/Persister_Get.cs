@@ -45,14 +45,14 @@ namespace NServiceBus.Attachments.Sql
             {
                 command = CreateGetDataCommand(messageId, name, connection, transaction);
                 reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false);
-                if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
+                if (!await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
-                    var length = reader.GetInt64(0);
-                    var metadataString = reader.GetStringOrNull(1);
-                    var sqlStream = reader.GetStream(2);
-                    var metadata = MetadataSerializer.Deserialize(metadataString);
-                    return new AttachmentStream(sqlStream, length, metadata, command, reader);
+                    reader.Dispose();
+                    command.Dispose();
+                    throw ThrowNotFound(messageId, name);
                 }
+
+                return InnerGetStream(reader, command);
             }
             catch (Exception)
             {
@@ -60,10 +60,15 @@ namespace NServiceBus.Attachments.Sql
                 command?.Dispose();
                 throw;
             }
+        }
 
-            reader.Dispose();
-            command.Dispose();
-            throw ThrowNotFound(messageId, name);
+        static AttachmentStream InnerGetStream(SqlDataReader reader, SqlCommand command)
+        {
+            var length = reader.GetInt64(0);
+            var metadataString = reader.GetStringOrNull(1);
+            var sqlStream = reader.GetStream(2);
+            var metadata = MetadataSerializer.Deserialize(metadataString);
+            return new AttachmentStream(sqlStream, length, metadata, command, reader);
         }
 
         SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
