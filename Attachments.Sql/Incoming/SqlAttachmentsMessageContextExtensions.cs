@@ -15,6 +15,7 @@ namespace NServiceBus
         {
             Guard.AgainstNull(context, nameof(context));
             var contextBag = context.Extensions;
+            // check the context for a IMessageAttachments in case a mocked instance is injected for testing
             if (contextBag.TryGet<IMessageAttachments>(out var attachments))
             {
                 return attachments;
