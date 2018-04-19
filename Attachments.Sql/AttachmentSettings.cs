@@ -16,16 +16,8 @@ namespace NServiceBus.Attachments.Sql
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
-            Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
             TimeToKeep = timeToKeep;
             ConnectionFactory = connectionFactory;
-        }
-
-        internal AttachmentSettings(string connection, GetTimeToKeep timeToKeep)
-        {
-            Guard.AgainstNullOrEmpty(connection, nameof(connection));
-            TimeToKeep = timeToKeep;
-            ConnectionFactory = () => OpenConnection(connection);
         }
 
         /// <summary>
@@ -39,20 +31,6 @@ namespace NServiceBus.Attachments.Sql
             Schema = schema;
         }
 
-        async Task<SqlConnection> OpenConnection(string connectionString)
-        {
-            var connection = new SqlConnection(connectionString);
-            try
-            {
-                await connection.OpenAsync().ConfigureAwait(false);
-                return connection;
-            }
-            catch
-            {
-                connection.Dispose();
-                throw;
-            }
-        }
         /// <summary>
         /// Disable the table creation installer.
         /// </summary>

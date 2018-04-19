@@ -40,7 +40,7 @@ namespace NServiceBus
             Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
             Guard.AgainstNullOrEmpty(connection, nameof(connection));
             var settings = configuration.GetSettings();
-            var attachments = new AttachmentSettings(connection, timeToKeep);
+            var attachments = new AttachmentSettings(() => OpenConnection(connection), timeToKeep);
             return SetAttachments(configuration, settings, attachments);
         }
 
@@ -50,6 +50,21 @@ namespace NServiceBus
             configuration.EnableFeature<AttachmentFeature>();
             configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();
             return attachments;
+        }
+
+        static async Task<SqlConnection> OpenConnection(string connectionString)
+        {
+            var connection = new SqlConnection(connectionString);
+            try
+            {
+                await connection.OpenAsync().ConfigureAwait(false);
+                return connection;
+            }
+            catch
+            {
+                connection.Dispose();
+                throw;
+            }
         }
     }
 }
