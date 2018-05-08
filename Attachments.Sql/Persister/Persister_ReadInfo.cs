@@ -95,11 +95,7 @@ namespace NServiceBus.Attachments.Sql
         SqlCommand GetReadInfosCommand(SqlConnection connection, SqlTransaction transaction)
         {
             var command = connection.CreateCommand();
-            if (transaction != null)
-            {
-                command.Transaction = transaction;
-            }
-
+            command.Transaction = transaction;
             command.CommandText = $@"
 select
     Id,
@@ -114,11 +110,7 @@ from {fullTableName}";
         SqlCommand GetReadInfoCommand(SqlConnection connection, SqlTransaction transaction, string messageId)
         {
             var command = connection.CreateCommand();
-            if (transaction != null)
-            {
-                command.Transaction = transaction;
-            }
-
+            command.Transaction = transaction;
             command.CommandText = $@"
 select
     Id,

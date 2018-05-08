@@ -14,12 +14,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())
             {
-                if (transaction != null)
-                {
-                    command.Transaction = transaction;
-                }
-
-                command.CommandText = $@"delete from {fullTableName}";
+                command.Transaction = transaction;
+                command.CommandText = $"delete from {fullTableName}";
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }

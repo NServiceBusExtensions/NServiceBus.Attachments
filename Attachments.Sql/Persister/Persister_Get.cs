@@ -74,11 +74,7 @@ namespace NServiceBus.Attachments.Sql
         SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
         {
             var command = connection.CreateCommand();
-            if (transaction != null)
-            {
-                command.Transaction = transaction;
-            }
-
+            command.Transaction = transaction;
             command.CommandText = $@"
 select
     datalength(Data),
@@ -96,11 +92,7 @@ where
         SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection, SqlTransaction transaction)
         {
             var command = connection.CreateCommand();
-            if (transaction != null)
-            {
-                command.Transaction = transaction;
-            }
-
+            command.Transaction = transaction;
             command.CommandText = $@"
 select
     Name,

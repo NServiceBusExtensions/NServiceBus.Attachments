@@ -15,11 +15,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())
             {
-                if (transaction != null)
-                {
-                    command.Transaction = transaction;
-                }
-
+                command.Transaction = transaction;
                 command.CommandText = $@"delete from {fullTableName} where expiry < @date";
                 command.AddParameter("date", dateTime);
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
