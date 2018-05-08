@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>
-        public static async Task CreateTable(SqlConnection connection, string schema = "dbo", string tableName = "Attachments", CancellationToken cancellation = default )
+        public static async Task CreateTable(SqlConnection connection, string schema = "dbo", string tableName = "MessageAttachments", CancellationToken cancellation = default )
         {
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));

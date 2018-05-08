@@ -12,7 +12,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Instantiate a new instance of <see cref="Persister"/>.
         /// </summary>
-        public Persister(string schema = "dbo", string tableName= "Attachments")
+        public Persister(string schema = "dbo", string tableName= "MessageAttachments")
         {
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));

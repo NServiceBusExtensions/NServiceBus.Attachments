@@ -11,7 +11,7 @@ namespace NServiceBus.Attachments.Sql
     {
         internal Func<Task<SqlConnection>> ConnectionFactory;
         internal string Schema = "dbo";
-        internal string TableName = "Attachments";
+        internal string TableName = "MessageAttachments";
         internal bool InstallerDisabled;
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
