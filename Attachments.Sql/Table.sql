@@ -15,8 +15,8 @@ create table ' + @fullName + '(
     MessageIdLower as lower(MessageId),
     Name nvarchar(50) not null,
     NameLower as lower(Name),
-    Created datetime2 not null default sysutcdatetime(),
-    Expiry datetime2 not null,
+    Created datetime2(0) not null default sysutcdatetime(),
+    Expiry datetime2(0) not null,
     Metadata nvarchar(max),
     Data varbinary(max) not null
 )
