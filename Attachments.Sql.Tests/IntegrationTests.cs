@@ -50,13 +50,13 @@ public class IntegrationTests
         await endpoint.Stop();
     }
 
-    static async Task SendStartMessage(IEndpointInstance endpoint)
+    static Task SendStartMessage(IEndpointInstance endpoint)
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
-        await endpoint.Send(new SendMessage(), sendOptions);
+        return endpoint.Send(new SendMessage(), sendOptions);
     }
 
     static Stream GetStream()
