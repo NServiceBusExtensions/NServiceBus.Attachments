@@ -7,12 +7,12 @@ using NServiceBus.Pipeline;
 class SendRegistration :
     RegisterStep
 {
-    public SendRegistration(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendRegistration(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep, bool useMars)
         : base(
             stepId: $"{AssemblyHelper.Name}Send",
             behavior: typeof(SendBehavior),
             description: "Saves the payload into the shared location",
-            factoryMethod: builder => new SendBehavior(connectionFactory, persister, timeToKeep))
+            factoryMethod: builder => new SendBehavior(connectionFactory, persister, timeToKeep, useMars))
     {
         InsertAfter("MutateOutgoingMessages");
         InsertBefore("ApplyTimeToBeReceived");

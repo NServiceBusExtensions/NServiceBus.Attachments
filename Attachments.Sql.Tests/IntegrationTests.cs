@@ -23,10 +23,23 @@ public class IntegrationTests
         var configuration = new EndpointConfiguration("SqlIntegrationTestsRun");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        var recoverability = configuration.Recoverability();
-        recoverability.Immediate(x => x.NumberOfRetries(0));
-        recoverability.Delayed(x => x.NumberOfRetries(0));
+        configuration.DisableRetries();
         configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+        var endpoint = await Endpoint.Start(configuration);
+        await SendStartMessage(endpoint);
+        resetEvent.WaitOne();
+        await endpoint.Stop();
+    }
+    [Fact]
+    public async Task RunNoMars()
+    {
+        resetEvent = new ManualResetEvent(false);
+        var configuration = new EndpointConfiguration("SqlIntegrationTestsRunNoMars");
+        configuration.UsePersistence<LearningPersistence>();
+        configuration.UseTransport<LearningTransport>();
+         configuration.DisableRetries();
+        var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+        attachments.DisableMars();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
         resetEvent.WaitOne();
@@ -56,6 +69,7 @@ public class IntegrationTests
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
+        attachment.Add("second",GetStream);
         return endpoint.Send(new SendMessage(), sendOptions);
     }
 

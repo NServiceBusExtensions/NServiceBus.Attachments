@@ -17,7 +17,7 @@ public static class Helpers
         }
     }
 
-    public static void ApplySharedPerfConfig(EndpointConfiguration configuration)
+    public static void ApplySharedPerfConfig(this EndpointConfiguration configuration)
     {
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
@@ -27,6 +27,13 @@ public static class Helpers
         configuration.EnableInstallers();
         configuration.DisableFeature<MessageDrivenSubscriptions>();
         configuration.LimitMessageProcessingConcurrencyTo(10);
+    }
+
+    public static void DisableRetries(this EndpointConfiguration configuration)
+    {
+        var recoverability = configuration.Recoverability();
+        recoverability.Immediate(x => x.NumberOfRetries(0));
+        recoverability.Delayed(x => x.NumberOfRetries(0));
     }
 
 
