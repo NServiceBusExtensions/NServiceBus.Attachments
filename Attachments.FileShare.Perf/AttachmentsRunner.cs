@@ -16,7 +16,7 @@ public class AttachmentsRunner
     {
         countdownEvent = new CountdownEvent(iterations);
         var configuration = new EndpointConfiguration("FileShareAttachmentPerfTests");
-        Helpers.ApplySharedPerfConfig(configuration);
+        configuration.ApplySharedPerfConfig();
         var fileShare = Path.GetFullPath("attachments");
         Directory.CreateDirectory(fileShare);
         Helpers.PurgeDirectory(fileShare);

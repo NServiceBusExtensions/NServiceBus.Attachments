@@ -21,7 +21,7 @@ public class TestingTests
             .Single()
             .Options
             .Attachments();
-        var names = attachments.StreamNames;
+        var names = attachments.Names;
         Assert.Single(names);
         Assert.Contains("theName", names);
         Assert.True(attachments.HasPendingAttachments);

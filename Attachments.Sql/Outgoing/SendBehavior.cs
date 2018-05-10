@@ -13,12 +13,14 @@ class SendBehavior :
     Func<Task<SqlConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
+    bool useMars;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep, bool useMars)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
         endpointTimeToKeep = timeToKeep;
+        this.useMars = useMars;
     }
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
@@ -36,8 +38,8 @@ class SendBehavior :
         }
 
         var outgoingAttachments = (OutgoingAttachments)attachments;
-        var streams = outgoingAttachments.Streams;
-        if (!streams.Any())
+        var inner = outgoingAttachments.Inner;
+        if (!inner.Any())
         {
             return;
         }
@@ -51,9 +53,9 @@ class SendBehavior :
                 connection.EnlistTransaction(transaction);
             }
 
-            if (streams.Count == 1)
+            if (inner.Count == 1)
             {
-                var attachment = streams.Single();
+                var attachment = inner.Single();
                 var name = attachment.Key;
                 var outgoing = attachment.Value;
                 await ProcessAttachment(timeToBeReceived, connection, null, context.MessageId, outgoing, name)
@@ -63,7 +65,7 @@ class SendBehavior :
 
             using (var sqlTransaction = connection.BeginTransaction())
             {
-                await ProcessOutgoing(streams, timeToBeReceived, connection, sqlTransaction, context.MessageId)
+                await ProcessOutgoing(inner, timeToBeReceived, connection, sqlTransaction, context.MessageId)
                     .ConfigureAwait(false);
                 sqlTransaction.Commit();
             }
@@ -72,6 +74,17 @@ class SendBehavior :
 
     async Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId)
     {
+        if (useMars)
+        {
+            await Task.WhenAll(
+                attachments.Select(pair =>
+                {
+                    var name = pair.Key;
+                    var outgoing = pair.Value;
+                    return ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoing, name);
+                }));
+            return;
+        }
         foreach (var attachment in attachments)
         {
             var name = attachment.Key;
