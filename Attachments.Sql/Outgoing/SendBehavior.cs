@@ -53,7 +53,10 @@ class SendBehavior :
 
             if (streams.Count == 1)
             {
-                await ProcessOutgoing(streams, timeToBeReceived, connection, null, context.MessageId)
+                var attachment = streams.Single();
+                var name = attachment.Key;
+                var outgoing = attachment.Value;
+                await ProcessAttachment(timeToBeReceived, connection, null, context.MessageId, outgoing, name)
                     .ConfigureAwait(false);
                 return;
             }
