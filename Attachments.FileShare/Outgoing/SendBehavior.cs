@@ -33,15 +33,15 @@ class SendBehavior :
         }
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
-        var inner = outgoingAttachments.Inner;
-        if (!inner.Any())
+        var streams = outgoingAttachments.Streams;
+        if (!streams.Any())
         {
             return Task.CompletedTask;
         }
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        return ProcessOutgoing(inner, timeToBeReceived, context.MessageId);
+        return ProcessOutgoing(streams, timeToBeReceived, context.MessageId);
     }
 
     Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, string messageId)

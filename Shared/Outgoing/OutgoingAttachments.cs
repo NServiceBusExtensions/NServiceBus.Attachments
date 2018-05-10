@@ -15,11 +15,11 @@ using NServiceBus.Attachments;
 
 class OutgoingAttachments : IOutgoingAttachments
 {
-    internal Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
+    internal Dictionary<string, Outgoing> Streams = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
 
-    public bool HasPendingAttachments => Inner.Any();
+    public bool HasPendingAttachments => Streams.Any();
 
-    public IReadOnlyList<string> Names => Inner.Keys.ToList();
+    public IReadOnlyList<string> StreamNames => Streams.Keys.ToList();
 
     public void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null)
         where T : Stream
@@ -32,7 +32,7 @@ class OutgoingAttachments : IOutgoingAttachments
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing
+        Streams.Add(name, new Outgoing
         {
             AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name),
             TimeToKeep = timeToKeep,
@@ -54,7 +54,7 @@ class OutgoingAttachments : IOutgoingAttachments
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing
+        Streams.Add(name, new Outgoing
         {
             StreamFactory = streamFactory.WrapFuncInCheck(name),
             TimeToKeep = timeToKeep,
@@ -66,7 +66,7 @@ class OutgoingAttachments : IOutgoingAttachments
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(stream, nameof(stream));
-        Inner.Add(name, new Outgoing
+        Streams.Add(name, new Outgoing
         {
             StreamInstance = stream,
             TimeToKeep = timeToKeep,
@@ -88,7 +88,7 @@ class OutgoingAttachments : IOutgoingAttachments
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing
+        Streams.Add(name, new Outgoing
         {
             BytesFactory = bytesFactory.WrapFuncInCheck(name),
             TimeToKeep = timeToKeep,
@@ -101,7 +101,7 @@ class OutgoingAttachments : IOutgoingAttachments
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytes, nameof(bytes));
-        Inner.Add(name, new Outgoing
+        Streams.Add(name, new Outgoing
         {
             BytesInstance = bytes,
             TimeToKeep = timeToKeep,
@@ -118,7 +118,7 @@ class OutgoingAttachments : IOutgoingAttachments
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing
+        Streams.Add(name, new Outgoing
         {
             AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name),
             TimeToKeep = timeToKeep,

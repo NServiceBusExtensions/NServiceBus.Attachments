@@ -24,7 +24,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// All attachment names for the current outgoing pipeline.
         /// </summary>
-        IReadOnlyList<string> Names { get; }
+        IReadOnlyList<string> StreamNames { get; }
 
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.

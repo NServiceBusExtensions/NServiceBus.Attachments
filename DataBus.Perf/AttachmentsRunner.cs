@@ -15,7 +15,7 @@ public class AttachmentsRunner
     {
         countdownEvent = new CountdownEvent(iterations);
         var configuration = new EndpointConfiguration("DataBusPerfTests");
-        configuration.ApplySharedPerfConfig();
+        Helpers.ApplySharedPerfConfig(configuration);
         var fileShare = Path.GetFullPath("databus");
         Directory.CreateDirectory(fileShare);
         Helpers.PurgeDirectory(fileShare);
