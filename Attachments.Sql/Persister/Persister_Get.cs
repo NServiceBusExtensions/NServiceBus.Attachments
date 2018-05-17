@@ -16,7 +16,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-            using (var reader = await command.ExecuteReaderAsync(cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
             {
                 if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
                 {
