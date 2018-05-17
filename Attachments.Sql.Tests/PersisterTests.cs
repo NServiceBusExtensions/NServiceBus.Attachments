@@ -15,10 +15,7 @@ public class PersisterTests : TestBase
 
     static PersisterTests()
     {
-        if (!Connection.IsUsingEnvironmentVariable)
-        {
-            SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
-        }
+        DbSetup.Setup();
     }
 
     public PersisterTests(ITestOutputHelper output) : base(output)
