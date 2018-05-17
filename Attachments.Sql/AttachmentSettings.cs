@@ -11,7 +11,7 @@ namespace NServiceBus.Attachments.Sql
     {
         internal Func<Task<SqlConnection>> ConnectionFactory;
         internal string Schema = "[dbo]";
-        internal string TableName = "[MessageAttachments]";
+        internal string Table = "[MessageAttachments]";
         internal bool InstallerDisabled;
         internal bool UseMars = true;
 
@@ -22,28 +22,28 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <summary>
-        /// Use a specific <paramref name="tableName"/> and <paramref name="schema"/> for the attachments table.
+        /// Use a specific <paramref name="table"/> and <paramref name="schema"/> for the attachments table.
         /// </summary>
-        public void UseTableName(string tableName, string schema = "dbo")
+        public void UseTable(string table, string schema = "dbo")
         {
-            UseTableName(tableName, schema, true);
+            UseTable(table, schema, true);
         }
 
         /// <summary>
-        /// Use a specific <paramref name="tableName"/> and <paramref name="schema"/> for the attachments table.
+        /// Use a specific <paramref name="table"/> and <paramref name="schema"/> for the attachments table.
         /// </summary>
-        public void UseTableName(string tableName, string schema, bool sanitize)
+        public void UseTable(string table, string schema, bool sanitize)
         {
-            Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
+            Guard.AgainstNullOrEmpty(table, nameof(table));
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             if (sanitize)
             {
-                TableName = SqlSanitizer.Sanitize(tableName);
+                Table = SqlSanitizer.Sanitize(table);
                 Schema = SqlSanitizer.Sanitize(schema);
             }
             else
             {
-                TableName = tableName;
+                Table = table;
                 Schema = schema;
             }
         }

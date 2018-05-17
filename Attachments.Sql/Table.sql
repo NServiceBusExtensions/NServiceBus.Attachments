@@ -1,4 +1,4 @@
-declare @fullName nvarchar(max) = '[' + @schema + '].[' + @tableName + ']';
+declare @fullName nvarchar(max) = @schema + '.' + @table;
 if not exists (
     select * from sys.objects
     where

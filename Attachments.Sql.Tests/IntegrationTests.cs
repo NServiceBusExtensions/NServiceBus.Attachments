@@ -30,6 +30,7 @@ public class IntegrationTests
         resetEvent.WaitOne();
         await endpoint.Stop();
     }
+
     [Fact]
     public async Task RunNoMars()
     {
