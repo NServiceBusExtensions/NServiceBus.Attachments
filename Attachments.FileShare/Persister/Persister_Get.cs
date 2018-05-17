@@ -15,7 +15,7 @@ namespace NServiceBus.Attachments.FileShare
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
-            var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
+            var bytes = await FileHelpers.ReadBytes(cancellation, dataFile).ConfigureAwait(false);
             var metadata = ReadMetadata(attachmentDirectory);
             return new AttachmentBytes(bytes, metadata);
         }
