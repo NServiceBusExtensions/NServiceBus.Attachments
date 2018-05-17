@@ -26,10 +26,26 @@ namespace NServiceBus.Attachments.Sql
         /// </summary>
         public void UseTableName(string tableName, string schema = "dbo")
         {
+            UseTableName(tableName, schema, true);
+        }
+
+        /// <summary>
+        /// Use a specific <paramref name="tableName"/> and <paramref name="schema"/> for the attachments table.
+        /// </summary>
+        public void UseTableName(string tableName, string schema, bool sanitize)
+        {
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
-            TableName = SqlSanitizer.Sanitize(tableName);
-            Schema = SqlSanitizer.Sanitize(schema);
+            if (sanitize)
+            {
+                TableName = SqlSanitizer.Sanitize(tableName);
+                Schema = SqlSanitizer.Sanitize(schema);
+            }
+            else
+            {
+                TableName = tableName;
+                Schema = schema;
+            }
         }
 
         /// <summary>

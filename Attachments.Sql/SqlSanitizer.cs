@@ -2,8 +2,8 @@
 
 static class SqlSanitizer
 {
-    private static string quoteSuffix = "]";
-    private static string quotePrefix = "[";
+    static string quoteSuffix = "]";
+    static string quotePrefix = "[";
 
     public static string Sanitize(string unquotedIdentifier)
     {
