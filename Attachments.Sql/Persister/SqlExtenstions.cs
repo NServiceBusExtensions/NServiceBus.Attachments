@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 
-static class SqlExtenstions
+static class SqlExtensions
 {
     public static string GetStringOrNull(this SqlDataReader dataReader, int index)
     {

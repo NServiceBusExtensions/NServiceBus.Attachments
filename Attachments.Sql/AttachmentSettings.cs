@@ -10,8 +10,8 @@ namespace NServiceBus.Attachments.Sql
     public partial class AttachmentSettings
     {
         internal Func<Task<SqlConnection>> ConnectionFactory;
-        internal string Schema = "dbo";
-        internal string TableName = "MessageAttachments";
+        internal string Schema = "[dbo]";
+        internal string TableName = "[MessageAttachments]";
         internal bool InstallerDisabled;
         internal bool UseMars = true;
 
@@ -28,8 +28,8 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
-            TableName = tableName;
-            Schema = schema;
+            TableName = SqlSanitizer.Sanitize(tableName);
+            Schema = SqlSanitizer.Sanitize(schema);
         }
 
         /// <summary>

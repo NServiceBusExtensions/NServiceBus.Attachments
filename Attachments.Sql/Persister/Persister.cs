@@ -12,11 +12,17 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Instantiate a new instance of <see cref="Persister"/>.
         /// </summary>
-        public Persister(string schema = "dbo", string tableName= "MessageAttachments")
+        public Persister(string schema = "dbo", string tableName= "MessageAttachments", bool sanitize = true)
         {
             Guard.AgainstNullOrEmpty(schema, nameof(schema));
             Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
-            fullTableName = $"[{schema}].[{tableName}]";
+            if (sanitize)
+            {
+                tableName = SqlSanitizer.Sanitize(tableName);
+                schema = SqlSanitizer.Sanitize(schema);
+            }
+
+            fullTableName = $"{schema}.{tableName}";
         }
 
         static Exception ThrowNotFound(string messageId, string name)
