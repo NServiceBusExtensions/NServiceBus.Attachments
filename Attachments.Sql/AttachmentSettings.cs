@@ -13,7 +13,6 @@ namespace NServiceBus.Attachments.Sql
         internal string Schema = "[dbo]";
         internal string Table = "[MessageAttachments]";
         internal bool InstallerDisabled;
-        internal bool UseMars = true;
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
@@ -46,14 +45,6 @@ namespace NServiceBus.Attachments.Sql
                 Table = table;
                 Schema = schema;
             }
-        }
-
-        /// <summary>
-        /// Disable MARS.
-        /// </summary>
-        public void DisableMars()
-        {
-            UseMars = false;
         }
 
         /// <summary>

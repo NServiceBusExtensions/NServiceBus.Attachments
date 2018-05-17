@@ -31,22 +31,6 @@ public class IntegrationTests
         await endpoint.Stop();
     }
 
-    [Fact]
-    public async Task RunNoMars()
-    {
-        resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("SqlIntegrationTestsRunNoMars");
-        configuration.UsePersistence<LearningPersistence>();
-        configuration.UseTransport<LearningTransport>();
-         configuration.DisableRetries();
-        var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
-        attachments.DisableMars();
-        var endpoint = await Endpoint.Start(configuration);
-        await SendStartMessage(endpoint);
-        resetEvent.WaitOne();
-        await endpoint.Stop();
-    }
-
     [Fact(Skip = "ignore")]
     public async Task RunSql()
     {

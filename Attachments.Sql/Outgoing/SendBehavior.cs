@@ -13,14 +13,12 @@ class SendBehavior :
     Func<Task<SqlConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
-    bool useMars;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep, bool useMars)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
         endpointTimeToKeep = timeToKeep;
-        this.useMars = useMars;
     }
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
@@ -72,26 +70,15 @@ class SendBehavior :
         }
     }
 
-    async Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId)
+    Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId)
     {
-        if (useMars)
-        {
-            await Task.WhenAll(
-                attachments.Select(pair =>
-                {
-                    var name = pair.Key;
-                    var outgoing = pair.Value;
-                    return ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoing, name);
-                }));
-            return;
-        }
-        foreach (var attachment in attachments)
-        {
-            var name = attachment.Key;
-            var outgoing = attachment.Value;
-            await ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoing, name)
-                .ConfigureAwait(false);
-        }
+        return Task.WhenAll(
+            attachments.Select(pair =>
+            {
+                var name = pair.Key;
+                var outgoing = pair.Value;
+                return ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoing, name);
+            }));
     }
 
     async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
