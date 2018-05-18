@@ -10,8 +10,7 @@ namespace NServiceBus.Attachments.Sql
     public partial class AttachmentSettings
     {
         internal Func<Task<SqlConnection>> ConnectionFactory;
-        internal string Schema = "[dbo]";
-        internal string Table = "[MessageAttachments]";
+        internal Table Table = "MessageAttachments";
         internal bool InstallerDisabled;
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
@@ -21,30 +20,12 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <summary>
-        /// Use a specific <paramref name="table"/> and <paramref name="schema"/> for the attachments table.
+        /// Use a specific <paramref name="table"/> for attachments.
         /// </summary>
-        public void UseTable(string table, string schema = "dbo")
+        public void UseTable(Table table)
         {
-            UseTable(table, schema, true);
-        }
-
-        /// <summary>
-        /// Use a specific <paramref name="table"/> and <paramref name="schema"/> for the attachments table.
-        /// </summary>
-        public void UseTable(string table, string schema, bool sanitize)
-        {
-            Guard.AgainstNullOrEmpty(table, nameof(table));
-            Guard.AgainstNullOrEmpty(schema, nameof(schema));
-            if (sanitize)
-            {
-                Table = SqlSanitizer.Sanitize(table);
-                Schema = SqlSanitizer.Sanitize(schema);
-            }
-            else
-            {
-                Table = table;
-                Schema = schema;
-            }
+            Guard.AgainstNull(table, nameof(table));
+            Table = table;
         }
 
         /// <summary>

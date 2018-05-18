@@ -18,7 +18,7 @@ public class DbSetup
 
         using (var sqlConnection = Connection.OpenConnection())
         {
-            Installer.CreateTable(sqlConnection).Wait();
+            Installer.CreateTable(sqlConnection, "MessageAttachments").Wait();
         }
     }
 }

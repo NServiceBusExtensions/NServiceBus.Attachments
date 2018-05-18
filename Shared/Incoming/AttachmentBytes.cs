@@ -6,7 +6,10 @@ namespace NServiceBus.Attachments
     .FileShare
 #endif
 #if Sql
-.Sql
+    .Sql
+#endif
+#if Raw
+    .Raw
 #endif
 {
     /// <summary>

@@ -20,7 +20,7 @@ public class PersisterTests : TestBase
 
     public PersisterTests(ITestOutputHelper output) : base(output)
     {
-        persister = new Persister();
+        persister = new Persister("MessageAttachments");
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            await Installer.CreateTable(connection);
+            await Installer.CreateTable(connection, "MessageAttachments");
             await persister.DeleteAllAttachments(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
             var memoryStream = new MemoryStream();
@@ -44,7 +44,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            await Installer.CreateTable(connection);
+            await Installer.CreateTable(connection, "MessageAttachments");
             await persister.DeleteAllAttachments(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
             byte[] bytes = await persister.GetBytes("theMessageId", "theName", connection, null);
@@ -57,7 +57,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            await Installer.CreateTable(connection);
+            await Installer.CreateTable(connection, "MessageAttachments");
             await persister.DeleteAllAttachments(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
             byte[] bytes = await persister.GetBytes("themeSsageid", "Thename", connection, null);
@@ -70,7 +70,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            await Installer.CreateTable(connection);
+            await Installer.CreateTable(connection, "MessageAttachments");
             await persister.DeleteAllAttachments(connection, null);
             var count = 0;
             await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
@@ -91,7 +91,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            await Installer.CreateTable(connection);
+            await Installer.CreateTable(connection, "MessageAttachments");
             await persister.DeleteAllAttachments(connection, null);
             var count = 0;
             await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
@@ -133,7 +133,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection).Wait();
+            Installer.CreateTable(connection, "MessageAttachments").Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
             persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
             ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
@@ -145,7 +145,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection).Wait();
+            Installer.CreateTable(connection, "MessageAttachments").Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
             persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
             var attachments = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
@@ -158,7 +158,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection).Wait();
+            Installer.CreateTable(connection, "MessageAttachments").Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
             persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
             persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
@@ -178,7 +178,7 @@ public class PersisterTests : TestBase
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection).Wait();
+            Installer.CreateTable(connection, "MessageAttachments").Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
             persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
             persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream()).GetAwaiter().GetResult();

@@ -6,6 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.Sql
+#if Raw
+    .Raw
+#endif
 {
     public partial class Persister
     {
@@ -41,7 +44,7 @@ namespace NServiceBus.Attachments.Sql
             {
                 command.Transaction = transaction;
                 command.CommandText = $@"
-insert into {fullTableName}
+insert into {table}
 (
     MessageId,
     Name,

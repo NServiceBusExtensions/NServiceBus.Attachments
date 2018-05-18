@@ -9,17 +9,15 @@ public class InstallerTests
         DbSetup.Setup();
     }
 
-    [Theory]
-    [InlineData("dbo", "MessageAttachments", true, "dbo.MessageAttachments")]
-    [InlineData("[dbo]", "[MessageAttachments]", false, "dbo.MessageAttachments")]
-    public async Task Run(string schema, string table, bool sanitize, string fullName)
+    [Fact]
+    public async Task Run()
     {
         using (var connection = Connection.OpenConnection())
         {
-            await Installer.CreateTable(connection, schema, table, sanitize);
+            await Installer.CreateTable(connection, "MessageAttachments");
         }
 
-        TableExists(fullName);
+        TableExists("[dbo].[MessageAttachments]");
     }
 
     static void TableExists(string tableName)

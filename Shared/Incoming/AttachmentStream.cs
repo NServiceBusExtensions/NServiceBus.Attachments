@@ -12,6 +12,9 @@ namespace NServiceBus.Attachments
 #if Sql
 .Sql
 #endif
+#if Raw
+    .Raw
+#endif
 {
     /// <summary>
     /// Wraps a <see cref="Stream"/> to provide extra information when reading.

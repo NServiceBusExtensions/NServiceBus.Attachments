@@ -9,6 +9,9 @@ namespace NServiceBus.Attachments
 #elif Sql
     .Sql
 #endif
+#if Raw
+    .Raw
+#endif
 {
     /// <summary>
     /// Converts a dictionary of metadata to/from json.

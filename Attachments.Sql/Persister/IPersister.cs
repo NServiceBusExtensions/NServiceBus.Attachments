@@ -6,6 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.Sql
+#if Raw
+    .Raw
+#endif
 {
     /// <summary>
     /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.

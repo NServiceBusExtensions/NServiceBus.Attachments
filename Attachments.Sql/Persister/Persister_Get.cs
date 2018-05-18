@@ -4,6 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.Sql
+#if Raw
+    .Raw
+#endif
 {
     public partial class Persister
     {
@@ -80,7 +83,7 @@ select
     datalength(Data),
     Metadata,
     Data
-from {fullTableName}
+from {table}
 where
     NameLower = lower(@Name) and
     MessageIdLower = lower(@MessageId)";
@@ -99,7 +102,7 @@ select
     datalength(Data),
     Metadata,
     Data
-from {fullTableName}
+from {table}
 where
     MessageIdLower = lower(@MessageId)";
             command.AddParameter("MessageId", messageId);

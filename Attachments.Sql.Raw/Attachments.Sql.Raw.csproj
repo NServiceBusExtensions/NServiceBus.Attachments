@@ -6,7 +6,7 @@
     <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DefineConstants>$(DefineConstants);Sql</DefineConstants>
+    <DefineConstants>$(DefineConstants);Sql;Raw</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
@@ -15,6 +15,7 @@
     <Compile Include="..\Attachments.Sql\Persister\*.cs" />
     <Compile Include="..\Attachments.Sql\Install\Installer.cs" />
     <Compile Include="..\Attachments.Sql\SqlSanitizer.cs" />
+    <Compile Include="..\Attachments.Sql\Table.cs" />
     <Compile Include="..\Shared\AssemblyHelper.cs" />
     <Compile Include="..\Shared\AttachmentInfo.cs" />
     <Compile Include="..\Shared\MetadataSerializer.cs" />

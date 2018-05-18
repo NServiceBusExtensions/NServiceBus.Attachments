@@ -7,6 +7,9 @@ namespace NServiceBus.Attachments
 #elif Sql
 .Sql
 #endif
+#if Raw
+    .Raw
+#endif
 {
     /// <summary>
     /// Information about an attachment.

@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.FileShare
+#if Raw
+    .Raw
+#endif
 {
     public partial class Persister
     {

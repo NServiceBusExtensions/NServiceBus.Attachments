@@ -4,6 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.Sql
+#if Raw
+    .Raw
+#endif
 {
     public partial class Persister
     {

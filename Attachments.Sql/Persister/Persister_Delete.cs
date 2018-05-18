@@ -3,6 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.Sql
+#if Raw
+    .Raw
+#endif
 {
     public partial class Persister
     {
@@ -15,7 +18,7 @@ namespace NServiceBus.Attachments.Sql
             using (var command = connection.CreateCommand())
             {
                 command.Transaction = transaction;
-                command.CommandText = $"delete from {fullTableName}";
+                command.CommandText = $"delete from {table}";
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }

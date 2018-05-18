@@ -4,6 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.Sql
+#if Raw
+    .Raw
+#endif
 {
     /// <summary>
     /// Used to take control over the storage table creation.
@@ -13,28 +16,14 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>
-        public static Task CreateTable(SqlConnection connection, string schema = "dbo", string table = "MessageAttachments", CancellationToken cancellation = default)
+        public static async Task CreateTable(SqlConnection connection, Table table, CancellationToken cancellation = default)
         {
-            return CreateTable(connection, schema, table, true, cancellation);
-        }
-
-        /// <summary>
-        /// Create the attachments storage table.
-        /// </summary>
-        public static async Task CreateTable(SqlConnection connection, string schema, string table, bool sanitize, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullOrEmpty(schema, nameof(schema));
-            Guard.AgainstNullOrEmpty(table, nameof(table));
-            if (sanitize)
-            {
-                table = SqlSanitizer.Sanitize(table);
-                schema = SqlSanitizer.Sanitize(schema);
-            }
+            Guard.AgainstNull(table, nameof(table));
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = GetTableSql();
-                command.AddParameter("schema", schema);
-                command.AddParameter("table", table);
+                command.AddParameter("schema", table.Schema);
+                command.AddParameter("table", table.TableName);
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }
