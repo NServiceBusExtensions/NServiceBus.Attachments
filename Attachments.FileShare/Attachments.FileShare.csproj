@@ -9,7 +9,7 @@
     <DefineConstants>$(DefineConstants);FileShare</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NServiceBus" Version="7.0.0-rc0002" />
+    <PackageReference Include="NServiceBus" Version="7.0.1" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>

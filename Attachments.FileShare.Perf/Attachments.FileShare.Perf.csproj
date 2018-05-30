@@ -4,7 +4,7 @@
     <TargetFramework>net47</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NServiceBus" Version="7.0.0-rc0002" />
+    <PackageReference Include="NServiceBus" Version="7.0.1" />
     <ProjectReference Include="..\Attachments.FileShare\Attachments.FileShare.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
   </ItemGroup>
