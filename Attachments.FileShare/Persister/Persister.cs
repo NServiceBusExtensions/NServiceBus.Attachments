@@ -76,6 +76,7 @@ namespace NServiceBus.Attachments.FileShare
 
             throw new Exception($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
         }
+
         static IReadOnlyDictionary<string, string> ReadMetadata(string attachmentDirectory)
         {
             var metadataFile = GetMetadataFile(attachmentDirectory);
@@ -97,6 +98,7 @@ namespace NServiceBus.Attachments.FileShare
             {
                 return;
             }
+
             var metadataFile = GetMetadataFile(attachmentDirectory);
             using (var stream = FileHelpers.OpenWrite(metadataFile))
             {

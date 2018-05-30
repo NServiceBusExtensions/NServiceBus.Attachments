@@ -31,6 +31,7 @@ namespace NServiceBus
 
         static IOutgoingAttachments GetAttachments(this ExtendableOptions options)
         {
+            Guard.AgainstNull(options, nameof(options));
             var contextBag = options.GetExtensions();
             if (contextBag.TryGet<IOutgoingAttachments>(out var attachments))
             {
