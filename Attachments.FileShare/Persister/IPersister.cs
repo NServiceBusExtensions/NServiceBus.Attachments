@@ -29,14 +29,12 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        /// <param name="cancellation"></param>
-        /// <returns></returns>
-        IEnumerable<AttachmentInfo> ReadAllInfo(CancellationToken cancellation = default);
+        IEnumerable<AttachmentInfo> ReadAllInfo();
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
         /// </summary>
-        IEnumerable<AttachmentInfo> ReadAllMessageInfo(string messageId, CancellationToken cancellation = default);
+        IEnumerable<AttachmentInfo> ReadAllMessageInfo(string messageId);
 
         /// <summary>
         /// Deletes all attachments.

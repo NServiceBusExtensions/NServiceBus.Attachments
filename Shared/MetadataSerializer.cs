@@ -63,6 +63,7 @@ namespace NServiceBus.Attachments
             var serializer = BuildSerializer();
             return (IReadOnlyDictionary<string, string>) serializer.ReadObject(stream);
         }
+
         /// <summary>
         ///
         /// </summary>
