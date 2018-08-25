@@ -96,8 +96,7 @@ class OutgoingAttachments : IOutgoingAttachments
         });
     }
 
-
-    public void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null)
+    public void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytes, nameof(bytes));

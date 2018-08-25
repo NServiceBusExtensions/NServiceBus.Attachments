@@ -72,7 +72,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, CancellationToken? cancellation = null);
+        void AddBytes(string name, byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
