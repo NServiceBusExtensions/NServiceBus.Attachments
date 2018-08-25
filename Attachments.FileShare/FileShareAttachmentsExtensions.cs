@@ -4,7 +4,7 @@ using NServiceBus.Configuration.AdvancedExtensibility;
 namespace NServiceBus
 {
     /// <summary>
-    /// Extensions to control what messages are audited.
+    /// Extensions to enable and configure attachments.
     /// </summary>
     public static class FileShareAttachmentsExtensions
     {

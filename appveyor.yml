@@ -1,17 +1,11 @@
 image: Visual Studio 2017
 services:
 - mssql2017
-configuration: Release
-platform: Any CPU
-install:
-- cmd: appveyor downloadfile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-before_build:
-- ps: nuget restore
-build:
-  verbosity: minimal
+build_script:
+- cmd: dotnet build --configuration Release
 test_script:
 - cmd: >-
-    %xunit20%\xunit.console Attachments.Sql.Tests\bin\Release\net47\Attachments.Sql.Tests.dll  Attachments.FileShare.Tests\bin\Release\net47\Attachments.FileShare.Tests.dll
+    %xunit20%\xunit.console Attachments.Sql.Tests\bin\Release\net472\Attachments.Sql.Tests.dll Attachments.FileShare.Tests\bin\Release\net472\Attachments.FileShare.Tests.dll
 
 artifacts:
 - path: nugets\**\*.nupkg
