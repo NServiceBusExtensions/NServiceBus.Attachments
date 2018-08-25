@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ public class IntegrationTests
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
+        attachment.Add("withMetadata", GetStream, metadata: new Dictionary<string, string> { { "key", "value" } });
         return endpoint.Send(new SendMessage(), sendOptions);
     }
 
@@ -45,8 +47,10 @@ public class IntegrationTests
 
     class SendHandler : IHandleMessages<SendMessage>
     {
-        public Task Handle(SendMessage message, IMessageHandlerContext context)
+        public async Task Handle(SendMessage message, IMessageHandlerContext context)
         {
+            var withAttachment = await context.Attachments().GetBytes("withMetadata");
+            Assert.Equal("value", withAttachment.Metadata["key"]);
             var replyOptions = new ReplyOptions();
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.Add(() =>
@@ -54,7 +58,7 @@ public class IntegrationTests
                 var incomingAttachment = context.Attachments();
                 return incomingAttachment.GetStream();
             });
-            return context.Reply(new ReplyMessage(), replyOptions);
+            await context.Reply(new ReplyMessage(), replyOptions);
         }
     }
 

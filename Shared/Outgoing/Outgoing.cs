@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace NServiceBus.Attachments
 #if FileShare
@@ -20,5 +21,6 @@ namespace NServiceBus.Attachments
         public byte[] BytesInstance;
         public GetTimeToKeep TimeToKeep;
         public Action Cleanup;
+        public IReadOnlyDictionary<string, string> Metadata;
     }
 }

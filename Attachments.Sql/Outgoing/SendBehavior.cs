@@ -81,11 +81,11 @@ class SendBehavior :
             }));
     }
 
-    async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream)
+    async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)
     {
         using (stream)
         {
-            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream)
+            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata)
                 .ConfigureAwait(false);
         }
     }
@@ -110,40 +110,40 @@ class SendBehavior :
         if (outgoing.AsyncStreamFactory != null)
         {
             var stream = await outgoing.AsyncStreamFactory().ConfigureAwait(false);
-            await ProcessStream(connection, transaction, messageId, name, expiry, stream).ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, stream, outgoing.Metadata).ConfigureAwait(false);
             return;
         }
 
         if (outgoing.StreamFactory != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory()).ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata).ConfigureAwait(false);
             return;
         }
 
         if (outgoing.StreamInstance != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance).ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata).ConfigureAwait(false);
             return;
         }
 
         if (outgoing.AsyncBytesFactory != null)
         {
             var bytes = await outgoing.AsyncBytesFactory().ConfigureAwait(false);
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes)
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, outgoing.Metadata)
                 .ConfigureAwait(false);
             return;
         }
 
         if (outgoing.BytesFactory != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory())
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata)
                 .ConfigureAwait(false);
             return;
         }
 
         if (outgoing.BytesInstance != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance)
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata)
                 .ConfigureAwait(false);
             return;
         }
