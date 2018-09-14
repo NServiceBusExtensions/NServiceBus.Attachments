@@ -21,7 +21,7 @@ namespace NServiceBus
             Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
             var settings = configuration.GetSettings();
             var attachments = new AttachmentSettings(fileShare, timeToKeep);
-            settings.Set<AttachmentSettings>(attachments);
+            settings.Set(attachments);
             configuration.EnableFeature<AttachmentFeature>();
             configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();
             return attachments;

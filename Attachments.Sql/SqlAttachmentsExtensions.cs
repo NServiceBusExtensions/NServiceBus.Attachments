@@ -46,7 +46,7 @@ namespace NServiceBus
 
         static AttachmentSettings SetAttachments(EndpointConfiguration configuration, SettingsHolder settings, AttachmentSettings attachments)
         {
-            settings.Set<AttachmentSettings>(attachments);
+            settings.Set(attachments);
             configuration.EnableFeature<AttachmentFeature>();
             configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();
             return attachments;
