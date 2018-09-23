@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
+using NServiceBus.Features;
 
 class Program
 {
@@ -15,8 +16,12 @@ class Program
 
         var configuration = new EndpointConfiguration("Attachments.Sql.Sample");
         configuration.EnableInstallers();
+        configuration.DisableFeature<TimeoutManager>();
+        configuration.DisableFeature<MessageDrivenSubscriptions>();
         configuration.UsePersistence<LearningPersistence>();
-        configuration.UseTransport<LearningTransport>();
+        var transport = configuration.UseTransport<SqlServerTransport>();
+        transport.ConnectionString(Connection.ConnectionString);
+        transport.Transactions(TransportTransactionMode.None);
         configuration.AuditProcessedMessagesTo("audit");
         configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);

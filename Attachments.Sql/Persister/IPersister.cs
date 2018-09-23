@@ -58,6 +58,11 @@ namespace NServiceBus.Attachments.Sql
         Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Deletes all items.
+        /// </summary>
+        Task PurgeItems(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Copies an attachment to <paramref name="target"/>.
         /// </summary>
         Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target, CancellationToken cancellation = default);

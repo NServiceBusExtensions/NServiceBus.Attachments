@@ -47,6 +47,11 @@ namespace NServiceBus.Attachments.FileShare
         void CleanupItemsOlderThan(DateTime dateTime, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Deletes all items.
+        /// </summary>
+        void PurgeItems(CancellationToken cancellation = default);
+
+        /// <summary>
         /// Copies an attachment to <paramref name="target"/>.
         /// </summary>
         Task CopyTo(string messageId, string name, Stream target, CancellationToken cancellation = default);

@@ -13,8 +13,13 @@ class AttachmentFeature : Feature
         var connectionFactory = settings.ConnectionFactory;
         var pipeline = context.Pipeline;
         var persister = new Persister(settings.Table);
-        pipeline.Register(new ReceiveRegistration(connectionFactory, persister));
-        pipeline.Register(new SendRegistration(connectionFactory, persister, settings.TimeToKeep));
+        pipeline.Register(new ReceiveRegistration(connectionFactory, persister, settings.UseTransportSqlConnectivity));
+        pipeline.Register(new SendRegistration(connectionFactory, persister, settings.TimeToKeep, settings.UseTransportSqlConnectivity));
+        if (context.Settings.PurgeOnStartup())
+        {
+            context.RegisterStartupTask(builder => new PurgeTask(persister, settings.ConnectionFactory));
+        }
+
         if (settings.RunCleanTask)
         {
             context.RegisterStartupTask(builder => CreateCleaner(settings, persister, builder));

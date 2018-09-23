@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using NServiceBus.Transport;
 
 namespace NServiceBus.Attachments.Sql
 {
@@ -12,11 +13,20 @@ namespace NServiceBus.Attachments.Sql
         internal Func<Task<SqlConnection>> ConnectionFactory;
         internal Table Table = "MessageAttachments";
         internal bool InstallerDisabled;
+        internal bool UseTransportSqlConnectivity;
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
             TimeToKeep = timeToKeep;
             ConnectionFactory = connectionFactory;
+        }
+
+        /// <summary>
+        /// Use the ambient <see cref="TransportTransaction"/> to obtain a <see cref="SqlConnection"/> or <see cref="SqlTransaction"/>.
+        /// </summary>
+        public void UseTransportConnectivity()
+        {
+            UseTransportSqlConnectivity = true;
         }
 
         /// <summary>
@@ -26,7 +36,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNull(table, nameof(table));
             Table = table;
-        }
+        } 
 
         /// <summary>
         /// Disable the table creation installer.

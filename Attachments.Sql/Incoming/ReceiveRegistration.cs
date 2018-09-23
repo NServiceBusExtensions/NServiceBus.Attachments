@@ -7,12 +7,12 @@ using NServiceBus.Pipeline;
 class ReceiveRegistration :
     RegisterStep
 {
-    public ReceiveRegistration(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
+    public ReceiveRegistration(Func<Task<SqlConnection>> connectionFactory, IPersister persister, bool useTransportSqlConnectivity)
         : base(
             stepId: $"{AssemblyHelper.Name}Receive",
             behavior: typeof(ReceiveBehavior),
             description: "Copies the shared data back to the logical messages",
-            factoryMethod: builder => new ReceiveBehavior(connectionFactory, persister))
+            factoryMethod: builder => new ReceiveBehavior(connectionFactory, persister, useTransportSqlConnectivity))
     {
     }
 }
