@@ -38,7 +38,7 @@ public class AsyncTimerTests
 
                 Assert.True(exceptionThrown);
                 callbackInvokedAfterError.SetResult(true);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             },
             interval: TimeSpan.Zero,
             errorCallback: e => { exceptionThrown = true; },
