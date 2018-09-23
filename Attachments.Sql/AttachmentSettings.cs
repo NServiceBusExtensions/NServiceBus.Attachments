@@ -36,7 +36,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNull(table, nameof(table));
             Table = table;
-        } 
+        }
 
         /// <summary>
         /// Disable the table creation installer.
