@@ -88,6 +88,14 @@ static class Guard
         };
     }
 
+    public static void ThrowIfNullReturned(object value)
+    {
+        if (value == null)
+        {
+            throw new Exception("Provided delegate returned a null.");
+        }
+    }
+
     public static void ThrowIfNullReturned(string messageId, string attachmentName, object value)
     {
         if (value == null)

@@ -6,15 +6,14 @@ using NServiceBus.Attachments.Sql;
 class SqlAttachmentState : IDisposable
 {
     public IPersister Persister;
-    public SqlConnection Connection;
-    Lazy<Func<Task<SqlConnection>>> lazy;
+    Task<SqlConnection> connectionTask;
+    Lazy<Task<SqlConnection>> lazy;
     public SqlTransaction Transaction;
-    bool ownedConnection;
+    public SqlConnection Connection;
 
     public SqlAttachmentState(SqlConnection connection, IPersister persister)
     {
         Connection = connection;
-        ownedConnection = false;
         Persister = persister;
     }
 
@@ -26,55 +25,39 @@ class SqlAttachmentState : IDisposable
 
     public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
     {
-        ownedConnection = true;
-        lazy = new Lazy<Func<Task<SqlConnection>>>(
+        lazy = new Lazy<Task<SqlConnection>>(
             () =>
             {
-                return async () =>
+                try
                 {
-                    Task<SqlConnection> task;
-                    try
-                    {
-                        task = connectionFactory();
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new Exception("Provided ConnectionFactory threw an exception", exception);
-                    }
+                    connectionTask = connectionFactory();
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception("Provided ConnectionFactory threw an exception", exception);
+                }
 
-                    Guard.ThrowIfNullReturned(null, null, task);
-                    SqlConnection sqlConnection;
-                    try
-                    {
-                        sqlConnection = await task.ConfigureAwait(false);
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new Exception("Provided ConnectionFactory threw an exception", exception);
-                    }
-
-                    Guard.ThrowIfNullReturned(null, null, sqlConnection);
-                    return Connection = sqlConnection;
-                };
+                Guard.ThrowIfNullReturned(connectionTask);
+                return connectionTask;
             });
         Persister = persister;
     }
 
     public Task<SqlConnection> GetConnection()
     {
-        if (Connection != null)
+        if (lazy.IsValueCreated)
         {
-            return Task.FromResult(Connection);
+            return connectionTask;
         }
 
-        return lazy.Value();
+        return lazy.Value;
     }
 
     public void Dispose()
     {
-        if (ownedConnection)
+        if (lazy != null && lazy.IsValueCreated)
         {
-            Connection?.Dispose();
+            connectionTask.Result?.Dispose();
         }
     }
 }
