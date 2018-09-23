@@ -28,5 +28,21 @@ namespace NServiceBus.Attachments.FileShare
                 }
             }
         }
+
+        /// <summary>
+        /// Deletes all items.
+        /// </summary>
+        public virtual void PurgeItems(CancellationToken cancellation = default)
+        {
+            foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))
+            {
+                if (cancellation.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                Directory.GetParent(expiryFile).Delete(true);
+            }
+        }
     }
 }

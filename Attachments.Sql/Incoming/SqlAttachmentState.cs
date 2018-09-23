@@ -5,12 +5,28 @@ using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState : IDisposable
 {
-    public readonly IPersister Persister;
-    SqlConnection connection;
+    public IPersister Persister;
+    public SqlConnection Connection;
     Lazy<Func<Task<SqlConnection>>> lazy;
+    public SqlTransaction Transaction;
+    bool ownedConnection;
+
+    public SqlAttachmentState(SqlConnection connection, IPersister persister)
+    {
+        Connection = connection;
+        ownedConnection = false;
+        Persister = persister;
+    }
+
+    public SqlAttachmentState(SqlTransaction transaction, IPersister persister)
+    {
+        Transaction = transaction;
+        Persister = persister;
+    }
 
     public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
     {
+        ownedConnection = true;
         lazy = new Lazy<Func<Task<SqlConnection>>>(
             () =>
             {
@@ -38,7 +54,7 @@ class SqlAttachmentState : IDisposable
                     }
 
                     Guard.ThrowIfNullReturned(null, null, sqlConnection);
-                    return connection = sqlConnection;
+                    return Connection = sqlConnection;
                 };
             });
         Persister = persister;
@@ -46,9 +62,9 @@ class SqlAttachmentState : IDisposable
 
     public Task<SqlConnection> GetConnection()
     {
-        if (lazy.IsValueCreated)
+        if (Connection != null)
         {
-            return Task.FromResult(connection);
+            return Task.FromResult(Connection);
         }
 
         return lazy.Value();
@@ -56,6 +72,9 @@ class SqlAttachmentState : IDisposable
 
     public void Dispose()
     {
-        connection?.Dispose();
+        if (ownedConnection)
+        {
+            Connection?.Dispose();
+        }
     }
 }

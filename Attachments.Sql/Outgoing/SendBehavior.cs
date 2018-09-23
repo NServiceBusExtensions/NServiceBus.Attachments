@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
+using NServiceBus.Transport;
 
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
@@ -13,12 +14,14 @@ class SendBehavior :
     Func<Task<SqlConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
+    bool useTransportSqlConnectivity;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep, bool useTransportSqlConnectivity)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
         endpointTimeToKeep = timeToKeep;
+        this.useTransportSqlConnectivity = useTransportSqlConnectivity;
     }
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
@@ -37,12 +40,31 @@ class SendBehavior :
 
         var outgoingAttachments = (OutgoingAttachments)attachments;
         var inner = outgoingAttachments.Inner;
-        if (!inner.Any())
+        if (inner.Count == 0)
         {
             return;
         }
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
+
+        if (useTransportSqlConnectivity)
+        {
+            if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
+            {
+                if (transportTransaction.TryGet<SqlTransaction>(out var sqlTransaction))
+                {
+                    await ProcessOutgoing(inner, timeToBeReceived, sqlTransaction.Connection, sqlTransaction, context.MessageId)
+                        .ConfigureAwait(false);
+                    return;
+                }
+                if (transportTransaction.TryGet<SqlConnection>(out var sqlConnection))
+                {
+                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
+                        .ConfigureAwait(false);
+                    return;
+                }
+            }
+        }
 
         using (var connection = await connectionFactory().ConfigureAwait(false))
         {
@@ -72,13 +94,7 @@ class SendBehavior :
 
     Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId)
     {
-        return Task.WhenAll(
-            attachments.Select(pair =>
-            {
-                var name = pair.Key;
-                var outgoing = pair.Value;
-                return ProcessAttachment(timeToBeReceived, connection, transaction, messageId, outgoing, name);
-            }));
+        return Task.WhenAll(attachments.Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, messageId, pair.Value, pair.Key)));
     }
 
     async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)

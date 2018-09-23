@@ -5,6 +5,9 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="NServiceBus.SqlServer" Version="4.1.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
   </ItemGroup>

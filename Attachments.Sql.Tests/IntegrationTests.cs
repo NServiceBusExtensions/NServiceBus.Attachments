@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -17,35 +18,51 @@ public class IntegrationTests
         DbSetup.Setup();
     }
 
-    [Fact]
-    public async Task Run()
-    {
-        resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("SqlIntegrationTestsRun");
-        configuration.UsePersistence<LearningPersistence>();
-        configuration.UseTransport<LearningTransport>();
-        configuration.DisableRetries();
-        configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
-        var endpoint = await Endpoint.Start(configuration);
-        await SendStartMessage(endpoint);
-        resetEvent.WaitOne();
-        await endpoint.Stop();
-    }
-
-    [Fact(Skip = "ignore")]
-    public async Task RunSql()
+    [Theory]
+    [InlineData(false, false, TransportTransactionMode.None)]
+    [InlineData(false, false, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(false, false, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, false, TransportTransactionMode.None)]
+    [InlineData(true, false, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(true, false, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, false, TransportTransactionMode.TransactionScope)]
+    [InlineData(true, true, TransportTransactionMode.None)]
+    [InlineData(true, true, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(true, true, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, true, TransportTransactionMode.TransactionScope)]
+    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, TransportTransactionMode transactionMode)
     {
         resetEvent = new ManualResetEvent(false);
         var configuration = new EndpointConfiguration("SqlIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
-        var transport = configuration.UseTransport<SqlServerTransport>();
-        transport.ConnectionString(Connection.ConnectionString);
+        configuration.EnableInstallers();
+        var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+        if (useSqlTransport)
+        {
+            var transport = configuration.UseTransport<SqlServerTransport>();
+            transport.ConnectionString(Connection.ConnectionString);
+            transport.Transactions(transactionMode);
+            if (useSqlTransportConnection)
+            {
+                attachments.UseTransportConnectivity();
+            }
+        }
+        else
+        {
+            var transport = configuration.UseTransport<LearningTransport>();
+            transport.Transactions(transactionMode);
+        }
+
         configuration.DisableFeature<TimeoutManager>();
+        configuration.PurgeOnStartup(true);
         configuration.DisableFeature<MessageDrivenSubscriptions>();
-        configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
-        resetEvent.WaitOne();
+        if (!resetEvent.WaitOne(TimeSpan.FromSeconds(5)))
+        {
+            throw new Exception("TimedOut");
+        }
+
         await endpoint.Stop();
     }
 
@@ -75,7 +92,7 @@ public class IntegrationTests
         public async Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             var withAttachment = await context.Attachments().GetBytes("withMetadata");
-            Assert.Equal("value",withAttachment.Metadata["key"]);
+            Assert.Equal("value", withAttachment.Metadata["key"]);
             var replyOptions = new ReplyOptions();
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.Add(() =>

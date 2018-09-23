@@ -19,8 +19,22 @@ namespace NServiceBus.Attachments.Sql
             using (var command = connection.CreateCommand())
             {
                 command.Transaction = transaction;
-                command.CommandText = $@"delete from {table} where expiry < @date";
+                command.CommandText = $"delete from {table} where expiry < @date";
                 command.AddParameter("date", dateTime);
+                await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Deletes all items.
+        /// </summary>
+        public virtual async Task PurgeItems(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNull(connection, nameof(connection));
+            using (var command = connection.CreateCommand())
+            {
+                command.Transaction = transaction;
+                command.CommandText = $"delete from {table}";
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }
