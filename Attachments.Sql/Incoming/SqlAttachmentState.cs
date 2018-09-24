@@ -3,11 +3,10 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 
-class SqlAttachmentState : IDisposable
+class SqlAttachmentState
 {
+    Func<Task<SqlConnection>> connectionFactory;
     public IPersister Persister;
-    Task<SqlConnection> connectionTask;
-    Lazy<Task<SqlConnection>> lazy;
     public SqlTransaction Transaction;
     public SqlConnection Connection;
 
@@ -25,39 +24,19 @@ class SqlAttachmentState : IDisposable
 
     public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
     {
-        lazy = new Lazy<Task<SqlConnection>>(
-            () =>
-            {
-                try
-                {
-                    connectionTask = connectionFactory();
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception("Provided ConnectionFactory threw an exception", exception);
-                }
-
-                Guard.ThrowIfNullReturned(connectionTask);
-                return connectionTask;
-            });
+        this.connectionFactory = connectionFactory;
         Persister = persister;
     }
 
     public Task<SqlConnection> GetConnection()
     {
-        if (lazy.IsValueCreated)
+        try
         {
-            return connectionTask;
+            return connectionFactory();
         }
-
-        return lazy.Value;
-    }
-
-    public void Dispose()
-    {
-        if (lazy != null && lazy.IsValueCreated)
+        catch (Exception exception)
         {
-            connectionTask.Result?.Dispose();
+            throw new Exception("Provided ConnectionFactory threw an exception", exception);
         }
     }
 }

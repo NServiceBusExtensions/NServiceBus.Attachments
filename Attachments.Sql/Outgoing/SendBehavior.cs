@@ -60,9 +60,12 @@ class SendBehavior :
                 return;
             }
 
-            var sqlConnection = await state.GetConnection().ConfigureAwait(false);
-            await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
-                .ConfigureAwait(false);
+            using (var sqlConnection = await state.GetConnection().ConfigureAwait(false))
+            {
+                await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
+                    .ConfigureAwait(false);
+            }
+
             return;
         }
 

@@ -19,13 +19,11 @@ class ReceiveBehavior :
         this.useTransportSqlConnectivity = useTransportSqlConnectivity;
     }
 
-    public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
+    public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        using (var state = BuildState(context))
-        {
-            context.Extensions.Set(state);
-            await next().ConfigureAwait(false);
-        }
+        var state = BuildState(context);
+        context.Extensions.Set(state);
+        return next();
     }
 
     SqlAttachmentState BuildState(IInvokeHandlerContext context)
@@ -44,6 +42,7 @@ class ReceiveBehavior :
                     return new SqlAttachmentState(sqlConnection, persister);
                 }
             }
+            throw new Exception($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
         }
 
         return new SqlAttachmentState(connectionBuilder, persister);

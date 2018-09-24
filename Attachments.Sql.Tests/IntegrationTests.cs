@@ -34,10 +34,22 @@ public class IntegrationTests
     public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, TransportTransactionMode transactionMode)
     {
         resetEvent = new ManualResetEvent(false);
-        var configuration = new EndpointConfiguration("SqlIntegrationTests");
+#if(NET472)
+        var endpointName = "SqlIntegrationTestsNetClassic";
+#else
+        var endpointName = "SqlIntegrationTestsNetCore";
+#endif
+        var configuration = new EndpointConfiguration(endpointName);
         configuration.UsePersistence<LearningPersistence>();
         configuration.EnableInstallers();
+        configuration.PurgeOnStartup(true);
         var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+        attachments.DisableCleanupTask();
+#if(NET472)
+        attachments.UseTable("AttachmentsNetClassic");
+#else
+        attachments.UseTable("AttachmentsNetCore");
+#endif
         if (useSqlTransport)
         {
             var transport = configuration.UseTransport<SqlServerTransport>();
@@ -55,11 +67,10 @@ public class IntegrationTests
         }
 
         configuration.DisableFeature<TimeoutManager>();
-        configuration.PurgeOnStartup(true);
         configuration.DisableFeature<MessageDrivenSubscriptions>();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
-        if (!resetEvent.WaitOne(TimeSpan.FromSeconds(5)))
+        if (!resetEvent.WaitOne(TimeSpan.FromSeconds(10)))
         {
             throw new Exception("TimedOut");
         }
@@ -92,13 +103,13 @@ public class IntegrationTests
     {
         public async Task Handle(SendMessage message, IMessageHandlerContext context)
         {
-            var attachment = await context.Attachments().GetStream("withMetadata");
-            Assert.Equal("value", attachment.Metadata["key"]);
-            Assert.NotNull(attachment);
             var replyOptions = new SendOptions();
             replyOptions.RouteToThisEndpoint();
+            var attachment = await context.Attachments().GetBytes("withMetadata");
+            Assert.Equal("value", attachment.Metadata["key"]);
+            Assert.NotNull(attachment);
             var outgoingAttachment = replyOptions.Attachments();
-            outgoingAttachment.Add(attachment);
+            outgoingAttachment.AddBytes(attachment);
 
             using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
             {
