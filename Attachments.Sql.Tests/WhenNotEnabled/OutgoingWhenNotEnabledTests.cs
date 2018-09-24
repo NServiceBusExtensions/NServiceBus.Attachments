@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+#if(NET472)
 using ApprovalTests;
+#endif
 using NServiceBus;
 using Xunit;
 
@@ -21,7 +23,10 @@ public class OutgoingWhenNotEnabledTests
         var endpoint = Endpoint.Start(configuration).Result;
 
         var exception = Assert.Throws<AggregateException>(() => SendStartMessageWithAttachment(endpoint).Wait());
+        Assert.NotNull(exception);
+#if(NET472)
         Approvals.Verify(exception.InnerException.Message);
+#endif
         endpoint.Stop().Wait();
     }
 

@@ -1,17 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'netcoreapp2.1'">
+    <Compile Remove="TestHelpers\ApprovalTestConfig.cs" />
+    <Compile Remove="TestHelpers\CustomContractResolver.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'net472'">
+    <PackageReference Include="ObjectApproval" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NServiceBus" Version="7.1.4" />
     <PackageReference Include="NServiceBus.SqlServer" Version="4.1.0" />
     <PackageReference Include="NServiceBus.Testing" Version="7.0.0" />
-    <PackageReference Include="ObjectApproval" Version="2.2.0" />
     <PackageReference Include="Xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />

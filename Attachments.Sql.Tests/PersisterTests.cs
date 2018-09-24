@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
+#if(NET472)
 using ObjectApproval;
+#endif
 using Xunit;
 using Xunit.Abstractions;
 
@@ -136,7 +138,11 @@ public class PersisterTests : TestBase
             Installer.CreateTable(connection, "MessageAttachments").Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
             persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
+            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
+            Assert.NotNull(result);
+#if(NET472)
+            ObjectApprover.VerifyWithJson(result);
+#endif
         }
     }
 
@@ -148,8 +154,11 @@ public class PersisterTests : TestBase
             Installer.CreateTable(connection, "MessageAttachments").Wait();
             persister.DeleteAllAttachments(connection, null).Wait();
             persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
-            var attachments = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(attachments);
+            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
+            Assert.NotNull(result);
+#if(NET472)
+            ObjectApprover.VerifyWithJson(result);
+#endif
         }
     }
 
@@ -169,7 +178,10 @@ public class PersisterTests : TestBase
                     list.Add(info);
                     return Task.CompletedTask;
                 }).GetAwaiter().GetResult();
+            Assert.NotNull(list);
+#if(NET472)
             ObjectApprover.VerifyWithJson(list);
+#endif
         }
     }
 
@@ -183,7 +195,11 @@ public class PersisterTests : TestBase
             persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
             persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream()).GetAwaiter().GetResult();
             persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1)).Wait();
-            ObjectApprover.VerifyWithJson(persister.ReadAllInfo(connection, null).GetAwaiter().GetResult());
+            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
+            Assert.NotNull(result);
+#if(NET472)
+            ObjectApprover.VerifyWithJson(result);
+#endif
         }
     }
 
