@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState : IDisposable
 {
-    public IPersister Persister;
     Task<SqlConnection> connectionTask;
     Lazy<Task<SqlConnection>> lazy;
     public SqlTransaction Transaction;
     public SqlConnection Connection;
 
-    public SqlAttachmentState(SqlConnection connection, IPersister persister)
+    public SqlAttachmentState(SqlConnection connection)
     {
         Connection = connection;
-        Persister = persister;
     }
 
-    public SqlAttachmentState(SqlTransaction transaction, IPersister persister)
+    public SqlAttachmentState(SqlTransaction transaction)
     {
         Transaction = transaction;
-        Persister = persister;
     }
 
-    public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory)
     {
         lazy = new Lazy<Task<SqlConnection>>(
             () =>
@@ -40,7 +36,6 @@ class SqlAttachmentState : IDisposable
                 Guard.ThrowIfNullReturned(connectionTask);
                 return connectionTask;
             });
-        Persister = persister;
     }
 
     public Task<SqlConnection> GetConnection()

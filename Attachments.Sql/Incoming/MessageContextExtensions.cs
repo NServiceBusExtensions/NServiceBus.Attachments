@@ -21,17 +21,19 @@ namespace NServiceBus
                 return attachments;
             }
 
+            var persister = context.GetPersister();
+
             if (contextBag.TryGet<SqlAttachmentState>(out var state))
             {
                 if (state.Transaction != null)
                 {
-                    return new MessageAttachmentsFromTransaction(state.Transaction, context.MessageId, state.Persister);
+                    return new MessageAttachmentsFromTransaction(state.Transaction, context.MessageId, persister);
                 }
                 if (state.Connection != null)
                 {
-                    return new MessageAttachmentsFromConnection(state.Connection, context.MessageId, state.Persister);
+                    return new MessageAttachmentsFromConnection(state.Connection, context.MessageId, persister);
                 }
-                return new MessageAttachmentsFromFactory(state.GetConnection, context.MessageId, state.Persister);
+                return new MessageAttachmentsFromFactory(state.GetConnection, context.MessageId, persister);
             }
             throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(SqlAttachmentsExtensions.EnableAttachments)}().");
         }

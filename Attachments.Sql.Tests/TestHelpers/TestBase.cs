@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-#if(NET472)
+﻿#if(NET472)
+using Newtonsoft.Json;
 using ObjectApproval;
 #endif
 using Xunit.Abstractions;
