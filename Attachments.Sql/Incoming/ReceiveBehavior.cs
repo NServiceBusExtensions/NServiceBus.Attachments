@@ -32,6 +32,7 @@ class ReceiveBehavior :
         {
             if (context.Extensions.TryGet<TransportTransaction>(out var transaction))
             {
+                //todo: add transacrion scope case
                 if (transaction.TryGet<SqlTransaction>(out var sqlTransaction))
                 {
                     return new SqlAttachmentState(sqlTransaction, persister);
