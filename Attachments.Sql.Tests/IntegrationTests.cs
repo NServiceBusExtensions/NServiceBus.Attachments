@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -98,6 +99,13 @@ public class IntegrationTests
             replyOptions.RouteToThisEndpoint();
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.Add(attachment);
+
+            using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
+            {
+                await sqlConnection.OpenAsync();
+                Console.WriteLine(sqlConnection.ServerVersion);
+            }
+
             await context.Send(new ReplyMessage(), replyOptions);
         }
     }
@@ -106,15 +114,16 @@ public class IntegrationTests
     {
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
-            using (var memoryStream = new MemoryStream())
+            var incomingAttachment = context.Attachments();
+
+            using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
             {
-                var incomingAttachment = context.Attachments();
-                await incomingAttachment.CopyTo(memoryStream);
-                memoryStream.Position = 0;
-                var buffer = memoryStream.GetBuffer();
-                Debug.WriteLine(buffer);
+                await sqlConnection.OpenAsync();
+                Console.WriteLine(sqlConnection.ServerVersion);
             }
 
+            var buffer = incomingAttachment.GetBytes();
+            Debug.WriteLine(buffer);
             resetEvent.Set();
         }
     }
