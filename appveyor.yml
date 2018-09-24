@@ -3,9 +3,5 @@ services:
 - mssql2017
 build_script:
 - cmd: dotnet build --configuration Release
-test_script:
-- cmd: >-
-    %xunit20%\xunit.console Attachments.Sql.Tests\bin\Release\net472\Attachments.Sql.Tests.dll Attachments.FileShare.Tests\bin\Release\net472\Attachments.FileShare.Tests.dll
-
 artifacts:
 - path: nugets\**\*.nupkg
