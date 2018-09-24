@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
-using NServiceBus.Transport;
 
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
@@ -14,14 +13,12 @@ class SendBehavior :
     Func<Task<SqlConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
-    bool useTransportSqlConnectivity;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep, bool useTransportSqlConnectivity)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
         endpointTimeToKeep = timeToKeep;
-        this.useTransportSqlConnectivity = useTransportSqlConnectivity;
     }
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
