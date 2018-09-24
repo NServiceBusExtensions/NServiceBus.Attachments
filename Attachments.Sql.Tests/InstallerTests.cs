@@ -12,11 +12,7 @@ public class InstallerTests
     [Fact]
     public async Task Run()
     {
-        using (var connection = Connection.OpenConnection())
-        {
-            await Installer.CreateTable(connection, "MessageAttachments");
-        }
-
+        await Installer.CreateTable(Connection.ConnectionString, "MessageAttachments");
         TableExists("[dbo].[MessageAttachments]");
     }
 
