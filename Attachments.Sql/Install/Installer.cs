@@ -16,6 +16,14 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>
+        public static Task CreateTable(string connection, CancellationToken cancellation = default)
+        {
+            return CreateTable(connection, "MessageAttachments", cancellation);
+        }
+
+        /// <summary>
+        /// Create the attachments storage table.
+        /// </summary>
         public static async Task CreateTable(string connection, Table table, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(connection, nameof(connection));
@@ -24,6 +32,14 @@ namespace NServiceBus.Attachments.Sql
                 await sqlConnection.OpenAsync(cancellation).ConfigureAwait(false);
                 await CreateTable(sqlConnection, table, cancellation).ConfigureAwait(false);
             }
+        }
+
+        /// <summary>
+        /// Create the attachments storage table.
+        /// </summary>
+        public static Task CreateTable(SqlConnection connection, CancellationToken cancellation = default)
+        {
+            return CreateTable(connection, "MessageAttachments", cancellation);
         }
 
         /// <summary>
