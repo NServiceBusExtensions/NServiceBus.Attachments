@@ -24,7 +24,6 @@ class ReceiveBehavior :
         using (var state = BuildState(context))
         {
             context.Extensions.Set(state);
-            context.SetPersister(persister);
             await next().ConfigureAwait(false);
         }
     }
@@ -37,16 +36,16 @@ class ReceiveBehavior :
             {
                 if (transaction.TryGet<SqlTransaction>(out var sqlTransaction))
                 {
-                    return new SqlAttachmentState(sqlTransaction);
+                    return new SqlAttachmentState(sqlTransaction, persister);
                 }
 
                 if (transaction.TryGet<SqlConnection>(out var sqlConnection))
                 {
-                    return new SqlAttachmentState(sqlConnection);
+                    return new SqlAttachmentState(sqlConnection, persister);
                 }
             }
         }
 
-        return new SqlAttachmentState(connectionBuilder);
+        return new SqlAttachmentState(connectionBuilder, persister);
     }
 }
