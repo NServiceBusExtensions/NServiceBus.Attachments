@@ -91,16 +91,14 @@ public class IntegrationTests
     {
         public async Task Handle(SendMessage message, IMessageHandlerContext context)
         {
-            var withAttachment = await context.Attachments().GetBytes("withMetadata");
-            Assert.Equal("value", withAttachment.Metadata["key"]);
-            var replyOptions = new ReplyOptions();
+            var attachment = await context.Attachments().GetStream("withMetadata");
+            Assert.Equal("value", attachment.Metadata["key"]);
+            Assert.NotNull(attachment);
+            var replyOptions = new SendOptions();
+            replyOptions.RouteToThisEndpoint();
             var outgoingAttachment = replyOptions.Attachments();
-            outgoingAttachment.Add(() =>
-            {
-                var incomingAttachment = context.Attachments();
-                return incomingAttachment.GetStream();
-            });
-            await context.Reply(new ReplyMessage(), replyOptions);
+            outgoingAttachment.Add(attachment);
+            await context.Send(new ReplyMessage(), replyOptions);
         }
     }
 

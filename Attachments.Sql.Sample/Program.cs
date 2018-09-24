@@ -16,14 +16,16 @@ class Program
 
         var configuration = new EndpointConfiguration("Attachments.Sql.Sample");
         configuration.EnableInstallers();
+        configuration.PurgeOnStartup(true);
         configuration.DisableFeature<TimeoutManager>();
         configuration.DisableFeature<MessageDrivenSubscriptions>();
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);
-        transport.Transactions(TransportTransactionMode.None);
-        configuration.AuditProcessedMessagesTo("audit");
-        configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+      //  transport.Transactions(TransportTransactionMode.None);
+     //   configuration.AuditProcessedMessagesTo("audit");
+        var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+        attachments .UseTransportConnectivity();
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");
@@ -48,6 +50,6 @@ class Program
                 return Task.FromResult<Stream>(stream);
             });
 
-        await endpoint.Send(new MyMessage(), sendOptions);
+        await endpoint.Send(new SendMessage(), sendOptions);
     }
 }

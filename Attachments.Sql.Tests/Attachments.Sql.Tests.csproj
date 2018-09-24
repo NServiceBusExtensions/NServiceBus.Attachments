@@ -14,8 +14,6 @@
     <PackageReference Include="ObjectApproval" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NServiceBus" Version="7.1.4" />
     <PackageReference Include="NServiceBus.SqlServer" Version="4.1.0" />

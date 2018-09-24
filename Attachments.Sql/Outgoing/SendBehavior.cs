@@ -38,7 +38,7 @@ class SendBehavior :
             return;
         }
 
-        var outgoingAttachments = (OutgoingAttachments)attachments;
+        var outgoingAttachments = (OutgoingAttachments) attachments;
         var inner = outgoingAttachments.Inner;
         if (inner.Count == 0)
         {
@@ -47,23 +47,26 @@ class SendBehavior :
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        if (useTransportSqlConnectivity)
+        if (context.Extensions.TryGet<SqlAttachmentState>(out var state))
         {
-            if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
+            if (state.Transaction != null)
             {
-                if (transportTransaction.TryGet<SqlTransaction>(out var sqlTransaction))
-                {
-                    await ProcessOutgoing(inner, timeToBeReceived, sqlTransaction.Connection, sqlTransaction, context.MessageId)
-                        .ConfigureAwait(false);
-                    return;
-                }
-                if (transportTransaction.TryGet<SqlConnection>(out var sqlConnection))
-                {
-                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
-                        .ConfigureAwait(false);
-                    return;
-                }
+                await ProcessOutgoing(inner, timeToBeReceived, state.Transaction.Connection, state.Transaction, context.MessageId)
+                    .ConfigureAwait(false);
+                return;
             }
+
+            if (state.Connection != null)
+            {
+                await ProcessOutgoing(inner, timeToBeReceived, state.Connection, null, context.MessageId)
+                    .ConfigureAwait(false);
+                return;
+            }
+
+            var sqlConnection = await state.GetConnection().ConfigureAwait(false);
+            await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
+                .ConfigureAwait(false);
+            return;
         }
 
         using (var connection = await connectionFactory().ConfigureAwait(false))

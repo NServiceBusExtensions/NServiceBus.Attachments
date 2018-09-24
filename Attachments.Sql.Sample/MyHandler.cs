@@ -1,22 +1,27 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
 
 class MyHandler :
-    IHandleMessages<MyMessage>
+    IHandleMessages<SendMessage>,
+    IHandleMessages<ReplyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(SendMessage message, IMessageHandlerContext context)
     {
-        Console.WriteLine("Hello from MyHandler.");
-        using (var memoryStream = new MemoryStream())
-        {
-            var incomingAttachments = context.Attachments();
-            await incomingAttachments.CopyTo("foo", memoryStream);
-            memoryStream.Position = 0;
-            var buffer = memoryStream.GetBuffer();
-            Debug.WriteLine(buffer);
-        }
+        Console.WriteLine("Hello from MyHandler. SendMessage");
+        var incomingAttachments = context.Attachments();
+        var attachment = await incomingAttachments.GetStream("foo");
+        var sendOptions = new SendOptions();
+        sendOptions.RouteToThisEndpoint();
+        var outgoingAttachments = sendOptions.Attachments();
+        outgoingAttachments.Add("bar", attachment);
+        await context.Send(new ReplyMessage(), sendOptions);
+    }
+
+    public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
+    {
+        var incomingAttachments = context.Attachments();
+        var attachment = await incomingAttachments.GetBytes("bar");
+        Console.WriteLine($"Hello from MyHandler. ReplyMessage. bytes: {attachment.Bytes.Length}");
     }
 }
