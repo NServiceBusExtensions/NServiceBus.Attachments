@@ -13,7 +13,7 @@ class AttachmentFeature : Feature
         var connectionFactory = settings.ConnectionFactory;
         var pipeline = context.Pipeline;
         var persister = new Persister(settings.Table);
-        pipeline.Register(new ReceiveRegistration(connectionFactory, persister, settings.UseTransportSqlConnectivity));
+        pipeline.Register(new ReceiveRegistration(connectionFactory, persister, settings.UseTransport, settings.UseSynchronizedStorage));
         pipeline.Register(new SendRegistration(connectionFactory, persister, settings.TimeToKeep));
         if (context.Settings.PurgeOnStartup())
         {

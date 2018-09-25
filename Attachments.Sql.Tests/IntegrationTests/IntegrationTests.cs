@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -20,31 +21,60 @@ public class IntegrationTests
     {
         DbSetup.Setup();
     }
+    public class TestDataGenerator : IEnumerable<object[]>
+    {
+        List<TransportTransactionMode> transactionModes = new List<TransportTransactionMode>
+        {
+            TransportTransactionMode.None,
+            TransportTransactionMode.ReceiveOnly,
+            TransportTransactionMode.SendsAtomicWithReceive,
+            TransportTransactionMode.TransactionScope,
+        };
+        List<bool> useSqlPersistenceList = new List<bool>
+        {
+            true,false
+        };
+        List<bool> useSqlTransportList = new List<bool>
+        {
+            true,false
+        };
+        List<bool> useSqlTransportConnectionList = new List<bool>
+        {
+            true,false
+        };
 
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            foreach (var useSqlPersistence in useSqlPersistenceList)
+            {
+                foreach (var useSqlTransportConnection in useSqlTransportConnectionList)
+                {
+                    foreach (var useSqlTransport in useSqlTransportList)
+                    {
+                        foreach (var mode in transactionModes)
+                        {
+                            if (!useSqlTransport && mode == TransportTransactionMode.TransactionScope)
+                            {
+                                continue;
+                            }
+
+                            yield return new object[]
+                            {
+                                useSqlTransport,
+                                useSqlTransportConnection,
+                                useSqlPersistence,
+                                mode
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
     [Theory]
-    [InlineData(false, false,true, TransportTransactionMode.None)]
-    [InlineData(false, false, true, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(false, false, true, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, false, true, TransportTransactionMode.None)]
-    [InlineData(true, false, true, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(true, false, true, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, false, true, TransportTransactionMode.TransactionScope)]
-    [InlineData(true, true, true, TransportTransactionMode.None)]
-    [InlineData(true, true, true, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(true, true, true, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, true, true, TransportTransactionMode.TransactionScope)]
-
-    [InlineData(false, false,false, TransportTransactionMode.None)]
-    [InlineData(false, false, false, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(false, false, false, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, false, false, TransportTransactionMode.None)]
-    [InlineData(true, false, false, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(true, false, false, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, false, false, TransportTransactionMode.TransactionScope)]
-    [InlineData(true, true, false, TransportTransactionMode.None)]
-    [InlineData(true, true, false, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(true, true, false, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, true, false, TransportTransactionMode.TransactionScope)]
+    [ClassData(typeof(TestDataGenerator))]
 
     public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection,bool useSqlPersistence, TransportTransactionMode transactionMode)
     {
@@ -101,11 +131,11 @@ public class IntegrationTests
         configuration.DisableFeature<MessageDrivenSubscriptions>();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
-        if (!HandlerEvent.WaitOne(TimeSpan.FromSeconds(10)))
+        if (!HandlerEvent.WaitOne(TimeSpan.FromSeconds(3)))
         {
             throw new Exception("TimedOut");
         }
-        if (!SagaEvent.WaitOne(TimeSpan.FromSeconds(10)))
+        if (!SagaEvent.WaitOne(TimeSpan.FromSeconds(3)))
         {
             throw new Exception("TimedOut");
         }
@@ -113,7 +143,7 @@ public class IntegrationTests
         await endpoint.Stop();
     }
 
-    private static Task RunSqlScripts(string endpointName, Func<DbConnection> connectionBuilder)
+    static Task RunSqlScripts(string endpointName, Func<DbConnection> connectionBuilder)
     {
         var baseDir = AppDomain.CurrentDomain.BaseDirectory;
         var scriptDir = Path.Combine(baseDir, "NServiceBus.Persistence.Sql", "MsSqlServer");

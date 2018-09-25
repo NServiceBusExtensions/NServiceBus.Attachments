@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Transactions;
 using NServiceBus.Attachments.Sql;
@@ -11,13 +13,15 @@ class ReceiveBehavior :
 {
     Func<Task<SqlConnection>> connectionBuilder;
     IPersister persister;
-    bool useTransportSqlConnectivity;
+    bool useTransport;
+    bool useSynchronizedStorage;
 
-    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransportSqlConnectivity)
+    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;
-        this.useTransportSqlConnectivity = useTransportSqlConnectivity;
+        this.useTransport = useTransport;
+        this.useSynchronizedStorage = useSynchronizedStorage;
     }
 
     public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
@@ -29,7 +33,17 @@ class ReceiveBehavior :
 
     SqlAttachmentState BuildState(IInvokeHandlerContext context)
     {
-        if (useTransportSqlConnectivity)
+        if (useSynchronizedStorage)
+        {
+            var session = context.SynchronizedStorageSession;
+            if (session != null)
+            {
+                var propertyInfo = session.GetType().GetProperty("Connection",BindingFlags.NonPublic|BindingFlags.Instance);
+                var value = propertyInfo.GetValue(session);
+                Debug.WriteLine(session);
+            }
+        }
+        if (useTransport)
         {
             if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
             {
