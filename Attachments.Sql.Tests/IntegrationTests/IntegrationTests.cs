@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,8 @@ using Xunit;
 
 public class IntegrationTests
 {
-    static ManualResetEvent resetEvent;
+    internal static ManualResetEvent HandlerEvent;
+    internal static ManualResetEvent SagaEvent;
 
     static IntegrationTests()
     {
@@ -33,7 +33,8 @@ public class IntegrationTests
     [InlineData(true, true, TransportTransactionMode.TransactionScope)]
     public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, TransportTransactionMode transactionMode)
     {
-        resetEvent = new ManualResetEvent(false);
+        HandlerEvent = new ManualResetEvent(false);
+        SagaEvent = new ManualResetEvent(false);
 #if(NET472)
         var endpointName = "SqlIntegrationTestsNetClassic";
 #else
@@ -70,7 +71,11 @@ public class IntegrationTests
         configuration.DisableFeature<MessageDrivenSubscriptions>();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
-        if (!resetEvent.WaitOne(TimeSpan.FromSeconds(10)))
+        if (!HandlerEvent.WaitOne(TimeSpan.FromSeconds(10)))
+        {
+            throw new Exception("TimedOut");
+        }
+        if (!SagaEvent.WaitOne(TimeSpan.FromSeconds(10)))
         {
             throw new Exception("TimedOut");
         }
@@ -78,7 +83,7 @@ public class IntegrationTests
         await endpoint.Stop();
     }
 
-    static void PerformNestedConnection()
+    internal static void PerformNestedConnection()
     {
         using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
         {
@@ -106,46 +111,5 @@ public class IntegrationTests
         streamWriter.Flush();
         stream.Position = 0;
         return stream;
-    }
-
-    class SendHandler : IHandleMessages<SendMessage>
-    {
-        public async Task Handle(SendMessage message, IMessageHandlerContext context)
-        {
-            var replyOptions = new SendOptions();
-            replyOptions.RouteToThisEndpoint();
-            var attachment = await context.Attachments().GetBytes("withMetadata");
-            Assert.Equal("value", attachment.Metadata["key"]);
-            Assert.NotNull(attachment);
-            var outgoingAttachment = replyOptions.Attachments();
-            outgoingAttachment.AddBytes(attachment);
-
-            PerformNestedConnection();
-
-            await context.Send(new ReplyMessage(), replyOptions);
-        }
-    }
-
-    class ReplyHandler : IHandleMessages<ReplyMessage>
-    {
-        public Task Handle(ReplyMessage message, IMessageHandlerContext context)
-        {
-            var incomingAttachment = context.Attachments();
-
-            PerformNestedConnection();
-
-            var buffer = incomingAttachment.GetBytes();
-            Debug.WriteLine(buffer);
-            resetEvent.Set();
-            return Task.CompletedTask;
-        }
-    }
-
-    class SendMessage : IMessage
-    {
-    }
-
-    class ReplyMessage : IMessage
-    {
     }
 }
