@@ -71,7 +71,7 @@ namespace NServiceBus.Attachments.Sql
             var metadataString = reader.GetStringOrNull(1);
             var sqlStream = reader.GetStream(2);
             var metadata = MetadataSerializer.Deserialize(metadataString);
-            return new AttachmentStream(sqlStream, length, metadata, command, reader);
+            return new AttachmentStream(sqlStream, length, metadata, command, reader, command.Connection);
         }
 
         SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)

@@ -48,21 +48,36 @@ class SendBehavior :
         {
             if (state.Transaction != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.Transaction.Connection, state.Transaction, context.MessageId)
-                    .ConfigureAwait(false);
+                using (var sqlConnection = await state.GetConnection().ConfigureAwait(false))
+                {
+                    sqlConnection.EnlistTransaction(state.Transaction);
+                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
+                        .ConfigureAwait(false);
+                }
+
                 return;
             }
 
-            if (state.Connection != null)
+            if (state.SqlTransaction != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.Connection, null, context.MessageId)
+                await ProcessOutgoing(inner, timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, context.MessageId)
                     .ConfigureAwait(false);
                 return;
             }
 
-            var sqlConnection = await state.GetConnection().ConfigureAwait(false);
-            await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
-                .ConfigureAwait(false);
+            if (state.SqlConnection != null)
+            {
+                await ProcessOutgoing(inner, timeToBeReceived, state.SqlConnection, null, context.MessageId)
+                    .ConfigureAwait(false);
+                return;
+            }
+
+            using (var sqlConnection = await state.GetConnection().ConfigureAwait(false))
+            {
+                await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
+                    .ConfigureAwait(false);
+            }
+
             return;
         }
 

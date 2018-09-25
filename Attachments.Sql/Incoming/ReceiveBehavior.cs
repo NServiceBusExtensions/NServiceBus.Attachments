@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Transactions;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 using NServiceBus.Transport;
@@ -19,31 +20,35 @@ class ReceiveBehavior :
         this.useTransportSqlConnectivity = useTransportSqlConnectivity;
     }
 
-    public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
+    public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        using (var state = BuildState(context))
-        {
-            context.Extensions.Set(state);
-            await next().ConfigureAwait(false);
-        }
+        var state = BuildState(context);
+        context.Extensions.Set(state);
+        return next();
     }
 
     SqlAttachmentState BuildState(IInvokeHandlerContext context)
     {
         if (useTransportSqlConnectivity)
         {
-            if (context.Extensions.TryGet<TransportTransaction>(out var transaction))
+            if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
             {
-                if (transaction.TryGet<SqlTransaction>(out var sqlTransaction))
+                if (transportTransaction.TryGet<Transaction>(out var transaction))
+                {
+                    return new SqlAttachmentState(transaction, connectionBuilder, persister);
+                }
+
+                if (transportTransaction.TryGet<SqlTransaction>(out var sqlTransaction))
                 {
                     return new SqlAttachmentState(sqlTransaction, persister);
                 }
 
-                if (transaction.TryGet<SqlConnection>(out var sqlConnection))
+                if (transportTransaction.TryGet<SqlConnection>(out var sqlConnection))
                 {
                     return new SqlAttachmentState(sqlConnection, persister);
                 }
             }
+            throw new Exception($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
         }
 
         return new SqlAttachmentState(connectionBuilder, persister);
