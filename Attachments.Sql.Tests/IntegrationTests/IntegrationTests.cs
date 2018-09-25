@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
+using NServiceBus.Persistence.Sql;
 using Xunit;
 
 public class IntegrationTests
@@ -20,18 +22,31 @@ public class IntegrationTests
     }
 
     [Theory]
-    [InlineData(false, false, TransportTransactionMode.None)]
-    [InlineData(false, false, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(false, false, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, false, TransportTransactionMode.None)]
-    [InlineData(true, false, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(true, false, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, false, TransportTransactionMode.TransactionScope)]
-    [InlineData(true, true, TransportTransactionMode.None)]
-    [InlineData(true, true, TransportTransactionMode.ReceiveOnly)]
-    [InlineData(true, true, TransportTransactionMode.SendsAtomicWithReceive)]
-    [InlineData(true, true, TransportTransactionMode.TransactionScope)]
-    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, TransportTransactionMode transactionMode)
+    [InlineData(false, false,true, TransportTransactionMode.None)]
+    [InlineData(false, false, true, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(false, false, true, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, false, true, TransportTransactionMode.None)]
+    [InlineData(true, false, true, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(true, false, true, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, false, true, TransportTransactionMode.TransactionScope)]
+    [InlineData(true, true, true, TransportTransactionMode.None)]
+    [InlineData(true, true, true, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(true, true, true, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, true, true, TransportTransactionMode.TransactionScope)]
+
+    [InlineData(false, false,false, TransportTransactionMode.None)]
+    [InlineData(false, false, false, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(false, false, false, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, false, false, TransportTransactionMode.None)]
+    [InlineData(true, false, false, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(true, false, false, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, false, false, TransportTransactionMode.TransactionScope)]
+    [InlineData(true, true, false, TransportTransactionMode.None)]
+    [InlineData(true, true, false, TransportTransactionMode.ReceiveOnly)]
+    [InlineData(true, true, false, TransportTransactionMode.SendsAtomicWithReceive)]
+    [InlineData(true, true, false, TransportTransactionMode.TransactionScope)]
+
+    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection,bool useSqlPersistence, TransportTransactionMode transactionMode)
     {
         HandlerEvent = new ManualResetEvent(false);
         SagaEvent = new ManualResetEvent(false);
@@ -41,7 +56,22 @@ public class IntegrationTests
         var endpointName = "SqlIntegrationTestsNetCore";
 #endif
         var configuration = new EndpointConfiguration(endpointName);
-        configuration.UsePersistence<LearningPersistence>();
+        if (useSqlPersistence)
+        {
+            var persistence = configuration.UsePersistence<SqlPersistence>();
+            Func<DbConnection> connectionBuilder = () => new SqlConnection(Connection.ConnectionString);
+            await  RunSqlScripts(endpointName, connectionBuilder);
+            persistence.SqlDialect<SqlDialect.MsSqlServer>();
+            persistence.DisableInstaller();
+            persistence.ConnectionBuilder(connectionBuilder);
+            var subscriptions = persistence.SubscriptionSettings();
+            subscriptions.CacheFor(TimeSpan.FromMinutes(1));
+        }
+        else
+        {
+            configuration.UsePersistence<LearningPersistence>();
+        }
+
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
@@ -81,6 +111,22 @@ public class IntegrationTests
         }
 
         await endpoint.Stop();
+    }
+
+    private static Task RunSqlScripts(string endpointName, Func<DbConnection> connectionBuilder)
+    {
+        var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        var scriptDir = Path.Combine(baseDir, "NServiceBus.Persistence.Sql", "MsSqlServer");
+
+        return ScriptRunner.Install(
+                sqlDialect: new SqlDialect.MsSqlServer(),
+                tablePrefix: endpointName+"_",
+                connectionBuilder: connectionBuilder,
+                scriptDirectory: scriptDir,
+                shouldInstallOutbox: false,
+                shouldInstallSagas: true,
+                shouldInstallSubscriptions: false,
+                shouldInstallTimeouts: false);
     }
 
     internal static void PerformNestedConnection()
