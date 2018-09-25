@@ -78,6 +78,15 @@ public class IntegrationTests
         await endpoint.Stop();
     }
 
+    static void PerformNestedConnection()
+    {
+        using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
+        {
+            sqlConnection.Open();
+            Console.WriteLine(sqlConnection.ServerVersion);
+        }
+    }
+
     static Task SendStartMessage(IEndpointInstance endpoint)
     {
         var sendOptions = new SendOptions();
@@ -111,11 +120,7 @@ public class IntegrationTests
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.AddBytes(attachment);
 
-            using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
-            {
-                await sqlConnection.OpenAsync();
-                Console.WriteLine(sqlConnection.ServerVersion);
-            }
+            PerformNestedConnection();
 
             await context.Send(new ReplyMessage(), replyOptions);
         }
@@ -123,19 +128,16 @@ public class IntegrationTests
 
     class ReplyHandler : IHandleMessages<ReplyMessage>
     {
-        public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
+        public Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
             var incomingAttachment = context.Attachments();
 
-            using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
-            {
-                await sqlConnection.OpenAsync();
-                Console.WriteLine(sqlConnection.ServerVersion);
-            }
+            PerformNestedConnection();
 
             var buffer = incomingAttachment.GetBytes();
             Debug.WriteLine(buffer);
             resetEvent.Set();
+            return Task.CompletedTask;
         }
     }
 
