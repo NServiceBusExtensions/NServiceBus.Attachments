@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Transactions;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 using NServiceBus.Transport;
@@ -30,15 +31,19 @@ class ReceiveBehavior :
     {
         if (useTransportSqlConnectivity)
         {
-            if (context.Extensions.TryGet<TransportTransaction>(out var transaction))
+            if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
             {
-                //todo: add transacrion scope case
-                if (transaction.TryGet<SqlTransaction>(out var sqlTransaction))
+                if (transportTransaction.TryGet<Transaction>(out var transaction))
+                {
+                    return new SqlAttachmentState(transaction, connectionBuilder, persister);
+                }
+
+                if (transportTransaction.TryGet<SqlTransaction>(out var sqlTransaction))
                 {
                     return new SqlAttachmentState(sqlTransaction, persister);
                 }
 
-                if (transaction.TryGet<SqlConnection>(out var sqlConnection))
+                if (transportTransaction.TryGet<SqlConnection>(out var sqlConnection))
                 {
                     return new SqlAttachmentState(sqlConnection, persister);
                 }

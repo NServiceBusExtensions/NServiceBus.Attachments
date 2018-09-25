@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Transactions;
 using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState
 {
     Func<Task<SqlConnection>> connectionFactory;
     public IPersister Persister;
-    public SqlTransaction Transaction;
-    public SqlConnection Connection;
+    public Transaction Transaction;
+    public SqlTransaction SqlTransaction;
+    public SqlConnection SqlConnection;
 
-    public SqlAttachmentState(SqlConnection connection, IPersister persister)
+    public SqlAttachmentState(SqlConnection sqlConnection, IPersister persister)
     {
-        Connection = connection;
+        SqlConnection = sqlConnection;
         Persister = persister;
     }
 
-    public SqlAttachmentState(SqlTransaction transaction, IPersister persister)
+    public SqlAttachmentState(SqlTransaction sqlTransaction, IPersister persister)
     {
+        SqlTransaction = sqlTransaction;
+        Persister = persister;
+    }
+
+    public SqlAttachmentState(Transaction transaction,Func<Task<SqlConnection>> connectionFactory, IPersister persister)
+    {
+        this.connectionFactory = connectionFactory;
         Transaction = transaction;
         Persister = persister;
     }
