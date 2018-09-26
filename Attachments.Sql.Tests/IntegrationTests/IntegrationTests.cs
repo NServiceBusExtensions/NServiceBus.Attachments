@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,10 +17,16 @@ public class IntegrationTests
 {
     internal static ManualResetEvent HandlerEvent;
     internal static ManualResetEvent SagaEvent;
+    private static bool shouldPerformNestedConnection;
 
     static IntegrationTests()
     {
         DbSetup.Setup();
+    }
+
+    public IntegrationTests()
+    {
+        shouldPerformNestedConnection = true;
     }
     public class TestDataGenerator : IEnumerable<object[]>
     {
@@ -32,15 +39,23 @@ public class IntegrationTests
         };
         List<bool> useSqlPersistenceList = new List<bool>
         {
-            true,false
+            true,
+            false
         };
         List<bool> useSqlTransportList = new List<bool>
         {
-            true,false
+            true,
+            false
+        };
+        List<bool> useStorageSessionList = new List<bool>
+        {
+            true,
+            false
         };
         List<bool> useSqlTransportConnectionList = new List<bool>
         {
-            true,false
+            true,
+            false
         };
 
         public IEnumerator<object[]> GetEnumerator()
@@ -49,22 +64,26 @@ public class IntegrationTests
             {
                 foreach (var useSqlTransportConnection in useSqlTransportConnectionList)
                 {
-                    foreach (var useSqlTransport in useSqlTransportList)
+                    foreach (var useStorageSession in useStorageSessionList)
                     {
-                        foreach (var mode in transactionModes)
+                        foreach (var useSqlTransport in useSqlTransportList)
                         {
-                            if (!useSqlTransport && mode == TransportTransactionMode.TransactionScope)
+                            foreach (var mode in transactionModes)
                             {
-                                continue;
-                            }
+                                if (!useSqlTransport && mode == TransportTransactionMode.TransactionScope)
+                                {
+                                    continue;
+                                }
 
-                            yield return new object[]
-                            {
-                                useSqlTransport,
-                                useSqlTransportConnection,
-                                useSqlPersistence,
-                                mode
-                            };
+                                yield return new object[]
+                                {
+                                    useSqlTransport,
+                                    useSqlTransportConnection,
+                                    useSqlPersistence,
+                                    useStorageSession,
+                                    mode
+                                };
+                            }
                         }
                     }
                 }
@@ -73,11 +92,38 @@ public class IntegrationTests
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
+
+    //[Fact]
+    //public Task AdHoc()
+    //{
+    //    return RunSql(
+    //        useSqlTransport: true,
+    //        useSqlTransportConnection: false,
+    //        useSqlPersistence: true,
+    //        useStorageSession: false,
+    //        transactionMode: TransportTransactionMode.TransactionScope);
+    //}
+
     [Theory]
     [ClassData(typeof(TestDataGenerator))]
-
-    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection,bool useSqlPersistence, TransportTransactionMode transactionMode)
+    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection,bool useSqlPersistence, bool useStorageSession, TransportTransactionMode transactionMode)
     {
+        #if(NETCOREAPP)
+
+        // sql persistence connection spans the handler. so a nested connection will cause DTC
+        if (useSqlTransport && useSqlPersistence && !useStorageSession && transactionMode== TransportTransactionMode.TransactionScope)
+        {
+            // this scenario is not supported. since useStorageSession=false means attachments
+            // will open a nested connection rather than use reuse the storage session connection
+            //TODO: should detect this a runtime and throw  an better exception
+            return;
+        }
+        if (useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
+        {
+            // so a nested connection will cause DTC
+            shouldPerformNestedConnection = false;
+        }
+        #endif
         HandlerEvent = new ManualResetEvent(false);
         SagaEvent = new ManualResetEvent(false);
 #if(NET472)
@@ -86,6 +132,11 @@ public class IntegrationTests
         var endpointName = "SqlIntegrationTestsNetCore";
 #endif
         var configuration = new EndpointConfiguration(endpointName);
+        var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+        if (useStorageSession)
+        {
+            attachments.UseSynchronizedStorageSessionConnectivity();
+        }
         if (useSqlPersistence)
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
@@ -104,7 +155,6 @@ public class IntegrationTests
 
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
-        var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         attachments.DisableCleanupTask();
 #if(NET472)
         attachments.UseTable("AttachmentsNetClassic");
@@ -116,6 +166,7 @@ public class IntegrationTests
             var transport = configuration.UseTransport<SqlServerTransport>();
             transport.ConnectionString(Connection.ConnectionString);
             transport.Transactions(transactionMode);
+            //TODO: move out of parent if
             if (useSqlTransportConnection)
             {
                 attachments.UseTransportConnectivity();
@@ -131,11 +182,17 @@ public class IntegrationTests
         configuration.DisableFeature<MessageDrivenSubscriptions>();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
-        if (!HandlerEvent.WaitOne(TimeSpan.FromSeconds(3)))
+
+        var timeout = TimeSpan.FromSeconds(5);
+        if (Debugger.IsAttached)
+        {
+            timeout = TimeSpan.FromSeconds(30);
+        }
+        if (!HandlerEvent.WaitOne(timeout))
         {
             throw new Exception("TimedOut");
         }
-        if (!SagaEvent.WaitOne(TimeSpan.FromSeconds(3)))
+        if (!SagaEvent.WaitOne(timeout))
         {
             throw new Exception("TimedOut");
         }
@@ -161,10 +218,13 @@ public class IntegrationTests
 
     internal static void PerformNestedConnection()
     {
-        using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
+        if (shouldPerformNestedConnection)
         {
-            sqlConnection.Open();
-            Console.WriteLine(sqlConnection.ServerVersion);
+            using (var sqlConnection = new SqlConnection(Connection.ConnectionString))
+            {
+                sqlConnection.Open();
+                Console.WriteLine(sqlConnection.ServerVersion);
+            }
         }
     }
 
