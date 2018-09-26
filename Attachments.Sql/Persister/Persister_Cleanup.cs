@@ -34,7 +34,18 @@ namespace NServiceBus.Attachments.Sql
             using (var command = connection.CreateCommand())
             {
                 command.Transaction = transaction;
-                command.CommandText = $"delete from {table}";
+                command.CommandText = $@"
+if exists (
+    select * from sys.objects
+    where
+        object_id = object_id('{table}')
+        and type in ('U')
+)
+begin
+
+delete from {table}
+
+end";
                 await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
             }
         }

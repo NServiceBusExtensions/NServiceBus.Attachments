@@ -22,8 +22,6 @@ class Program
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);
-      //  transport.Transactions(TransportTransactionMode.None);
-     //   configuration.AuditProcessedMessagesTo("audit");
         var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         attachments .UseTransportConnectivity();
         var endpoint = await Endpoint.Start(configuration);
