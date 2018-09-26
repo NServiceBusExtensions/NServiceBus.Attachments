@@ -4,15 +4,19 @@ using NServiceBus;
 
 class ReplyHandler : IHandleMessages<ReplyMessage>
 {
-    public Task Handle(ReplyMessage message, IMessageHandlerContext context)
+    public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
     {
         var incomingAttachment = context.Attachments();
 
         IntegrationTests.PerformNestedConnection();
 
-        var buffer = incomingAttachment.GetBytes();
+        var buffer = await incomingAttachment.GetBytes();
         Debug.WriteLine(buffer);
+        using (var stream = await incomingAttachment.GetStream())
+        {
+            Debug.WriteLine(stream);
+        }
+
         IntegrationTests.HandlerEvent.Set();
-        return Task.CompletedTask;
     }
 }
