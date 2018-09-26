@@ -28,16 +28,16 @@ public class IntegrationTests
         shouldPerformNestedConnection = true;
     }
 
-    //[Fact]
-    //public Task AdHoc()
-    //{
-    //    return RunSql(
-    //        useSqlTransport: true,
-    //        useSqlTransportConnection: false,
-    //        useSqlPersistence: true,
-    //        useStorageSession: false,
-    //        transactionMode: TransportTransactionMode.TransactionScope);
-    //}
+    [Fact]
+    public Task AdHoc()
+    {
+        return RunSql(
+            useSqlTransport: false,
+            useSqlTransportConnection: false,
+            useSqlPersistence: false,
+            useStorageSession: true,
+            transactionMode: TransportTransactionMode.None);
+    }
 
     [Theory]
     [ClassData(typeof(TestDataGenerator))]
@@ -96,16 +96,15 @@ public class IntegrationTests
 #else
         attachments.UseTable("AttachmentsNetCore");
 #endif
+        if (useSqlTransportConnection)
+        {
+            attachments.UseTransportConnectivity();
+        }
         if (useSqlTransport)
         {
             var transport = configuration.UseTransport<SqlServerTransport>();
             transport.ConnectionString(Connection.ConnectionString);
             transport.Transactions(transactionMode);
-            //TODO: move out of parent if
-            if (useSqlTransportConnection)
-            {
-                attachments.UseTransportConnectivity();
-            }
         }
         else
         {

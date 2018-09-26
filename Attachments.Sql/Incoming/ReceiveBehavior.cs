@@ -67,7 +67,10 @@ class ReceiveBehavior :
                     return new SqlAttachmentState(sqlConnection, persister);
                 }
             }
-            throw new Exception($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
+            else
+            {
+                throw new Exception($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
+            }
         }
 
         return new SqlAttachmentState(connectionBuilder, persister);
