@@ -12,6 +12,11 @@ class ReplyHandler : IHandleMessages<ReplyMessage>
 
         var buffer = incomingAttachment.GetBytes();
         Debug.WriteLine(buffer);
+        using (var stream = incomingAttachment.GetStream())
+        {
+            Debug.WriteLine(stream);
+        }
+
         IntegrationTests.HandlerEvent.Set();
         return Task.CompletedTask;
     }

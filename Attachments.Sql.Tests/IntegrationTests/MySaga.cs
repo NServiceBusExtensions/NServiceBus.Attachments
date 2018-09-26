@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using NServiceBus;
 
@@ -14,6 +15,11 @@ class MySaga :
 
     public Task Handle(SendMessage message, IMessageHandlerContext context)
     {
+        var incomingAttachment = context.Attachments();
+        using (var stream = incomingAttachment.GetStream())
+        {
+            Debug.WriteLine(stream);
+        }
         IntegrationTests.SagaEvent.Set();
         return Task.CompletedTask;
     }
