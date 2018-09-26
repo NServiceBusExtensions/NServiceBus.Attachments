@@ -8,7 +8,7 @@ class ReplyHandler : IHandleMessages<ReplyMessage>
     {
         var incomingAttachment = context.Attachments();
 
-        IntegrationTests. PerformNestedConnection();
+        IntegrationTests.PerformNestedConnection();
 
         var buffer = incomingAttachment.GetBytes();
         Debug.WriteLine(buffer);
