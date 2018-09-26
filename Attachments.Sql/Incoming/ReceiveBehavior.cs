@@ -11,13 +11,17 @@ class ReceiveBehavior :
 {
     Func<Task<SqlConnection>> connectionBuilder;
     IPersister persister;
-    bool useTransportSqlConnectivity;
+    bool useTransport;
+    bool useSynchronizedStorage;
+    StorageAccessor storageAccessor;
 
-    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransportSqlConnectivity)
+    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;
-        this.useTransportSqlConnectivity = useTransportSqlConnectivity;
+        this.useTransport = useTransport;
+        this.useSynchronizedStorage = useSynchronizedStorage;
+        storageAccessor = new StorageAccessor();
     }
 
     public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
@@ -29,7 +33,22 @@ class ReceiveBehavior :
 
     SqlAttachmentState BuildState(IInvokeHandlerContext context)
     {
-        if (useTransportSqlConnectivity)
+        if (useSynchronizedStorage)
+        {
+            var session = context.SynchronizedStorageSession;
+            if (session != null)
+            {
+                if (storageAccessor.TryGetTransaction(session, out var transaction))
+                {
+                    return new SqlAttachmentState(transaction, persister);
+                }
+                if (storageAccessor.TryGetConnection(session, out var connection))
+                {
+                    return new SqlAttachmentState(connection, persister);
+                }
+            }
+        }
+        if (useTransport)
         {
             if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
             {
@@ -48,7 +67,10 @@ class ReceiveBehavior :
                     return new SqlAttachmentState(sqlConnection, persister);
                 }
             }
-            throw new Exception($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
+            else
+            {
+                throw new Exception($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
+            }
         }
 
         return new SqlAttachmentState(connectionBuilder, persister);

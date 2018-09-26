@@ -83,6 +83,7 @@ class SendBehavior :
 
         using (var connection = await connectionFactory().ConfigureAwait(false))
         {
+            //TODO: should this be done ?
             if (context.TryReadTransaction(out var transaction))
             {
                 connection.EnlistTransaction(transaction);

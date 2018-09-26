@@ -13,7 +13,8 @@ namespace NServiceBus.Attachments.Sql
         internal Func<Task<SqlConnection>> ConnectionFactory;
         internal Table Table = "MessageAttachments";
         internal bool InstallerDisabled;
-        internal bool UseTransportSqlConnectivity;
+        internal bool UseTransport;
+        internal bool UseSynchronizedStorage;
 
         internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
@@ -26,7 +27,15 @@ namespace NServiceBus.Attachments.Sql
         /// </summary>
         public void UseTransportConnectivity()
         {
-            UseTransportSqlConnectivity = true;
+            UseTransport = true;
+        }
+
+        /// <summary>
+        /// Use the ambient <see cref="IMessageHandlerContext.SynchronizedStorageSession"/> to obtain a <see cref="SqlConnection"/> or <see cref="SqlTransaction"/>.
+        /// </summary>
+        public void UseSynchronizedStorageSessionConnectivity()
+        {
+            UseSynchronizedStorage = true;
         }
 
         /// <summary>
