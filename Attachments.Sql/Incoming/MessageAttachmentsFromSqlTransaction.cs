@@ -55,12 +55,12 @@ class MessageAttachmentsFromSqlTransaction : IMessageAttachments
 
     public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, "default", transaction.Connection, transaction, cancellation);
+        return persister.GetStream(messageId, "default", transaction.Connection, transaction, false, cancellation);
     }
 
     public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, name, transaction.Connection, transaction, cancellation);
+        return persister.GetStream(messageId, name, transaction.Connection, transaction, false, cancellation);
     }
 
     public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
@@ -100,11 +100,11 @@ class MessageAttachmentsFromSqlTransaction : IMessageAttachments
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, "default", transaction.Connection, transaction, cancellation);
+        return persister.GetStream(messageId, "default", transaction.Connection, transaction, false, cancellation);
     }
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, name, transaction.Connection, transaction, cancellation);
+        return persister.GetStream(messageId, name, transaction.Connection, transaction, false, cancellation);
     }
 }

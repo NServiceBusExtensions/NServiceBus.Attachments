@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,18 +34,18 @@ public class IntegrationTests
             useSqlTransport: false,
             useSqlTransportConnection: false,
             useSqlPersistence: false,
-            useStorageSession: true,
-            transactionMode: TransportTransactionMode.None);
+            useStorageSession: false,
+            transactionMode: TransportTransactionMode.SendsAtomicWithReceive);
     }
 
     [Theory]
     [ClassData(typeof(TestDataGenerator))]
-    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection,bool useSqlPersistence, bool useStorageSession, TransportTransactionMode transactionMode)
+    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, bool useSqlPersistence, bool useStorageSession, TransportTransactionMode transactionMode)
     {
-        #if(NETCOREAPP)
+#if(NETCOREAPP)
 
         // sql persistence connection spans the handler. so a nested connection will cause DTC
-        if (useSqlTransport && useSqlPersistence && !useStorageSession && transactionMode== TransportTransactionMode.TransactionScope)
+        if (useSqlTransport && useSqlPersistence && !useStorageSession && transactionMode == TransportTransactionMode.TransactionScope)
         {
             // this scenario is not supported. since useStorageSession=false means attachments
             // will open a nested connection rather than use reuse the storage session connection
@@ -58,7 +57,8 @@ public class IntegrationTests
             // so a nested connection will cause DTC
             shouldPerformNestedConnection = false;
         }
-        #endif
+
+#endif
         HandlerEvent = new ManualResetEvent(false);
         SagaEvent = new ManualResetEvent(false);
 #if(NET472)
@@ -72,11 +72,12 @@ public class IntegrationTests
         {
             attachments.UseSynchronizedStorageSessionConnectivity();
         }
+
         if (useSqlPersistence)
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
             Func<DbConnection> connectionBuilder = () => new SqlConnection(Connection.ConnectionString);
-            await  RunSqlScripts(endpointName, connectionBuilder);
+            await RunSqlScripts(endpointName, connectionBuilder);
             persistence.SqlDialect<SqlDialect.MsSqlServer>();
             persistence.DisableInstaller();
             persistence.ConnectionBuilder(connectionBuilder);
@@ -100,6 +101,7 @@ public class IntegrationTests
         {
             attachments.UseTransportConnectivity();
         }
+
         if (useSqlTransport)
         {
             var transport = configuration.UseTransport<SqlServerTransport>();
@@ -117,15 +119,13 @@ public class IntegrationTests
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
 
-        var timeout = TimeSpan.FromSeconds(5);
-        if (Debugger.IsAttached)
-        {
-            timeout = TimeSpan.FromSeconds(30);
-        }
+        var timeout = TimeSpan.FromSeconds(4);
+        timeout = TimeSpan.FromSeconds(30);
         if (!HandlerEvent.WaitOne(timeout))
         {
             throw new Exception("TimedOut");
         }
+
         if (!SagaEvent.WaitOne(timeout))
         {
             throw new Exception("TimedOut");
@@ -140,14 +140,14 @@ public class IntegrationTests
         var scriptDir = Path.Combine(baseDir, "NServiceBus.Persistence.Sql", "MsSqlServer");
 
         return ScriptRunner.Install(
-                sqlDialect: new SqlDialect.MsSqlServer(),
-                tablePrefix: endpointName+"_",
-                connectionBuilder: connectionBuilder,
-                scriptDirectory: scriptDir,
-                shouldInstallOutbox: false,
-                shouldInstallSagas: true,
-                shouldInstallSubscriptions: false,
-                shouldInstallTimeouts: false);
+            sqlDialect: new SqlDialect.MsSqlServer(),
+            tablePrefix: endpointName + "_",
+            connectionBuilder: connectionBuilder,
+            scriptDirectory: scriptDir,
+            shouldInstallOutbox: false,
+            shouldInstallSagas: true,
+            shouldInstallSubscriptions: false,
+            shouldInstallTimeouts: false);
     }
 
     internal static void PerformNestedConnection()

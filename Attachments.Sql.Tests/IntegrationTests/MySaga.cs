@@ -13,15 +13,14 @@ class MySaga :
             .ToSaga(saga => saga.MyId);
     }
 
-    public Task Handle(SendMessage message, IMessageHandlerContext context)
+    public async Task Handle(SendMessage message, IMessageHandlerContext context)
     {
         var incomingAttachment = context.Attachments();
-        using (var stream = incomingAttachment.GetStream())
+        using (var stream = await incomingAttachment.GetStream())
         {
             Debug.WriteLine(stream);
         }
         IntegrationTests.SagaEvent.Set();
-        return Task.CompletedTask;
     }
 
     public class SagaData :

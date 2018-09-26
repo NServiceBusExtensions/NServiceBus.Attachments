@@ -75,7 +75,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation);
+        Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction,  bool disposeConnectionOnStreamDispose, CancellationToken cancellation);
 
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
