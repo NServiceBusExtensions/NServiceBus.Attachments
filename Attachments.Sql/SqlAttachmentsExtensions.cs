@@ -8,7 +8,7 @@ using NServiceBus.Settings;
 namespace NServiceBus
 {
     /// <summary>
-    /// Extensions to configure SQL attachments.
+    /// Extensions to enable and configure attachments.
     /// </summary>
     public static class SqlAttachmentsExtensions
     {
