@@ -8,7 +8,7 @@ using NServiceBus.Settings;
 namespace NServiceBus
 {
     /// <summary>
-    /// Extensions to control what messages are audited.
+    /// Extensions to configure SQL attachments.
     /// </summary>
     public static class SqlAttachmentsExtensions
     {
