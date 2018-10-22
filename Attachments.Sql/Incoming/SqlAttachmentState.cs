@@ -24,7 +24,7 @@ class SqlAttachmentState
         Persister = persister;
     }
 
-    public SqlAttachmentState(Transaction transaction,Func<Task<SqlConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Transaction transaction, Func<Task<SqlConnection>> connectionFactory, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         Transaction = transaction;

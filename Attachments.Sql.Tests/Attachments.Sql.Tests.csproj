@@ -11,16 +11,12 @@
     <Compile Remove="TestHelpers\CustomContractResolver.cs" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework) == 'net472'">
-    <PackageReference Include="ObjectApproval" Version="2.2.0" />
+    <PackageReference Include="ObjectApproval" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NServiceBus" Version="7.1.4" />
-    <PackageReference Include="NServiceBus.Persistence.Sql" Version="4.2.0" />
-    <PackageReference Include="NServiceBus.Persistence.Sql.MsBuild" Version="4.2.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="NServiceBus.Persistence.Sql" Version="4.3.0" />
     <PackageReference Include="NServiceBus.SqlServer" Version="4.1.0" />
     <PackageReference Include="NServiceBus.Testing" Version="7.0.0" />
     <PackageReference Include="Xunit" Version="2.4.0" />
