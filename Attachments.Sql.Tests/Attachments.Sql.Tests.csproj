@@ -6,14 +6,8 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'netcoreapp2.1'">
-    <Compile Remove="TestHelpers\ApprovalTestConfig.cs" />
-    <Compile Remove="TestHelpers\CustomContractResolver.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'net472'">
-    <PackageReference Include="ObjectApproval" Version="2.3.0" />
-  </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ObjectApproval" Version="2.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NServiceBus" Version="7.1.4" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="4.3.0" />
