@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.FileShare</AssemblyName>
     <PackageName>NServiceBus.Attachments.FileShare</PackageName>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DefineConstants>$(DefineConstants);FileShare</DefineConstants>
