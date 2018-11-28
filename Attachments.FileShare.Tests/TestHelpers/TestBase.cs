@@ -6,12 +6,14 @@ public class TestBase
 {
     static TestBase()
     {
-        var jsonSerializer = ObjectApprover.JsonSerializer;
-        jsonSerializer.DefaultValueHandling = DefaultValueHandling.Ignore;
-        jsonSerializer.ContractResolver = new CustomContractResolver();
-        var converters = jsonSerializer.Converters;
-        converters.Add(new GuidConverter());
-        converters.Add(new StringConverter());
+        SerializerBuilder.ExtraSettings = settings =>
+        {
+            settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+            settings.ContractResolver = new CustomContractResolver();
+            var converters = settings.Converters;
+            converters.Add(new GuidConverter());
+            converters.Add(new StringConverter());
+        };
     }
 
     public TestBase(ITestOutputHelper output)

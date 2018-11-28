@@ -1,21 +1,19 @@
-﻿#if(NET472)
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using ObjectApproval;
-#endif
 using Xunit.Abstractions;
 
 public class TestBase
 {
     static TestBase()
     {
-#if(NET472)
-        var jsonSerializer = ObjectApprover.JsonSerializer;
-        jsonSerializer.DefaultValueHandling = DefaultValueHandling.Ignore;
-        jsonSerializer.ContractResolver = new CustomContractResolver();
-        var converters = jsonSerializer.Converters;
-        converters.Add(new GuidConverter());
-        converters.Add(new StringConverter());
-#endif
+        SerializerBuilder.ExtraSettings = settings =>
+        {
+            settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+            settings.ContractResolver = new CustomContractResolver();
+            var converters = settings.Converters;
+            converters.Add(new GuidConverter());
+            converters.Add(new StringConverter());
+        };
     }
 
     public TestBase(ITestOutputHelper output)

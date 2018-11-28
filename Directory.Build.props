@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <Version>1.7.2</Version>
-    <AssemblyVersion>1.0</AssemblyVersion>
+    <Version>1.8.0</Version>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>latest</LangVersion>
     <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
@@ -17,5 +16,8 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <NoWarn>NU5125</NoWarn>
   </PropertyGroup>
 </Project>

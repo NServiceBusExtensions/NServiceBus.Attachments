@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-#if(NET472)
 using ApprovalTests;
-#endif
 using NServiceBus;
 using Xunit;
 
@@ -29,9 +27,7 @@ public class IncomingWhenNotEnabledTests
         resetEvent.WaitOne();
         endpoint.Stop().Wait();
 
-#if(NET472)
         Approvals.Verify(exception.Message);
-#endif
     }
 
     class Handler : IHandleMessages<SendMessage>

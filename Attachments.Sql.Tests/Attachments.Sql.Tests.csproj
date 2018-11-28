@@ -5,11 +5,12 @@
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <!--TODO: remove when sql persistence is updated to new json-->
+    <NoWarn>NU1608</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="ObjectApproval" Version="3.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NServiceBus" Version="7.1.4" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="4.3.0" />
     <PackageReference Include="NServiceBus.SqlServer" Version="4.1.0" />
