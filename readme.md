@@ -1,4 +1,4 @@
-<img src="https://raw.github.com/NServiceBusExtensions/NServiceBus.Attachments/master/src/icon.png" height="23px"> Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
+<img src="https://raw.github.com/NServiceBusExtensions/NServiceBus.Attachments/master/src/icon.png" height="25px"> Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
 
 <!--- StartOpenCollectiveBackers -->
 
