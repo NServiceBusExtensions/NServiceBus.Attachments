@@ -66,6 +66,20 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
+    public async Task LongName()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            var name = new string('a',255);
+            await persister.SaveStream(connection, null, "theMessageId", name, defaultTestDate, GetStream());
+            byte[] bytes = await persister.GetBytes("theMessageId", name, connection, null);
+            Assert.Equal(5, bytes[0]);
+        }
+    }
+
+    [Fact]
     public async Task ProcessStream()
     {
         using (var connection = Connection.OpenConnection())
