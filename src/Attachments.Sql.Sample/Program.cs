@@ -22,8 +22,9 @@ class Program
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);
+        transport.Transactions(TransportTransactionMode.SendsAtomicWithReceive);
         var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
-        attachments .UseTransportConnectivity();
+        attachments.UseTransportConnectivity();
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);
         Console.WriteLine("Press any key to stop program");
