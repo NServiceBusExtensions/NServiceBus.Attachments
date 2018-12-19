@@ -21,6 +21,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(stream, nameof(stream));
             return Save(connection, transaction, messageId, name, expiry, stream,metadata, cancellation);
         }
@@ -34,6 +35,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(bytes, nameof(bytes));
             return Save(connection, transaction, messageId, name, expiry, bytes, metadata, cancellation);
         }

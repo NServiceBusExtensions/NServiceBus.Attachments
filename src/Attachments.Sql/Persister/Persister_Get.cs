@@ -17,6 +17,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
             using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
@@ -41,6 +42,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
             SqlCommand command = null;
             SqlDataReader reader = null;

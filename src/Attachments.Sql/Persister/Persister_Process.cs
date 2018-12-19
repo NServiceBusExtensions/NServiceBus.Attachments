@@ -45,6 +45,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
             using (var command = CreateGetDataCommand(messageId, name, connection, transaction))

@@ -21,6 +21,15 @@ static class Guard
         }
     }
 
+
+    public static void AgainstLongAttachmentName(string value)
+    {
+        if (value.Length > 255)
+        {
+            throw new ArgumentException($"Attachment Name too long. Max length is 255 characters. Value: {value}");
+        }
+    }
+
     public static Func<T> WrapFuncInCheck<T>(this Func<T> func, string name)
     {
         return () => func.EvaluateAndCheck(name);
