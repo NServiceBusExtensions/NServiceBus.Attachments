@@ -4,8 +4,7 @@
     <Version>1.9.0</Version>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>latest</LangVersion>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright $([System.DateTime]::UtcNow.ToString(yyyy)). All rights reserved</Copyright>
     <PackageTags>NServiceBus, Attachments, DataBus</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/NServiceBusExtensions/NServiceBus.Attachments/master/src/icon.png</PackageIconUrl>
@@ -18,7 +17,5 @@
     <DebugSymbols>true</DebugSymbols>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <!--TODO: remove when license url moves to license node-->
-    <NoWarn>NU5125</NoWarn>
   </PropertyGroup>
 </Project>
