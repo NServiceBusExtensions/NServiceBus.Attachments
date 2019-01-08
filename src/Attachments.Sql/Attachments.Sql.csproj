@@ -4,8 +4,8 @@
     <AssemblyName>NServiceBus.Attachments.Sql</AssemblyName>
     <PackageName>NServiceBus.Attachments.Sql</PackageName>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile Condition="'$(Configuration)'=='Release'">true</GenerateDocumentationFile>
     <PackageProjectUrl>https://docs.particular.net/nuget/$(PackageId)</PackageProjectUrl>
     <DefineConstants>$(DefineConstants);Sql</DefineConstants>
   </PropertyGroup>

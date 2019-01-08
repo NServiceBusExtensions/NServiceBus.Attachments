@@ -4,8 +4,8 @@
     <AssemblyName>NServiceBus.Attachments.FileShare</AssemblyName>
     <PackageName>NServiceBus.Attachments.FileShare</PackageName>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile Condition="'$(Configuration)'=='Release'">true</GenerateDocumentationFile>
     <DefineConstants>$(DefineConstants);FileShare</DefineConstants>
     <PackageProjectUrl>https://docs.particular.net/nuget/$(PackageId)</PackageProjectUrl>
   </PropertyGroup>

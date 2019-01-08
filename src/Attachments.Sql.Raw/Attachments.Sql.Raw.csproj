@@ -4,8 +4,8 @@
     <AssemblyName>NServiceBus.Attachments.Sql.Raw</AssemblyName>
     <PackageName>NServiceBus.Attachments.Sql.Raw</PackageName>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile Condition="'$(Configuration)'=='Release'">true</GenerateDocumentationFile>
     <DefineConstants>$(DefineConstants);Sql;Raw</DefineConstants>
     <PackageProjectUrl>https://docs.particular.net/nuget/$(PackageId)</PackageProjectUrl>
   </PropertyGroup>
