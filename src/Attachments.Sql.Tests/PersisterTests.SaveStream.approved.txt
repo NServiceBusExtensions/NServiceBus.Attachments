@@ -1,10 +1,10 @@
 ﻿[
   {
-    "MessageId": "theMessageId",
-    "Name": "theName",
-    "Expiry": "DateTime 1",
-    "Metadata": {
-      "key": "value"
+    MessageId: 'theMessageId',
+    Name: 'theName',
+    Expiry: 'DateTime 1',
+    Metadata: {
+      key: 'value'
     }
   }
 ]
