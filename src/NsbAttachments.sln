@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28621.142
 MinimumVisualStudioVersion = 15.0.26430.12
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.Sql", "Attachments.Sql\Attachments.Sql.csproj", "{8D87D482-BC30-49F6-946C-73DD62FC4EC0}"
 EndProject
@@ -26,10 +26,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.Sql.Sample", "Attachments.Sql.Sample\Attachments.Sql.Sample.csproj", "{74F3ADF2-0A6D-4FFC-B6F0-290DB5B3E468}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{52D4A9CA-AA16-4979-9FFB-D4CC8DDE551B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.FileShare.Perf", "Attachments.FileShare.Perf\Attachments.FileShare.Perf.csproj", "{046A54CD-F259-4C2D-804D-37A114EC827E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBus.Perf", "DataBus.Perf\DataBus.Perf.csproj", "{0FD2E764-0947-4A20-B4C2-9915366962F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachments.FileShare.Raw", "Attachments.FileShare.Raw\Attachments.FileShare.Raw.csproj", "{538B002E-80BB-416A-B435-679A2B8C85D7}"
 EndProject
@@ -76,14 +72,6 @@ Global
 		{74F3ADF2-0A6D-4FFC-B6F0-290DB5B3E468}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74F3ADF2-0A6D-4FFC-B6F0-290DB5B3E468}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74F3ADF2-0A6D-4FFC-B6F0-290DB5B3E468}.Release|Any CPU.Build.0 = Release|Any CPU
-		{046A54CD-F259-4C2D-804D-37A114EC827E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{046A54CD-F259-4C2D-804D-37A114EC827E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{046A54CD-F259-4C2D-804D-37A114EC827E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{046A54CD-F259-4C2D-804D-37A114EC827E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FD2E764-0947-4A20-B4C2-9915366962F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FD2E764-0947-4A20-B4C2-9915366962F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FD2E764-0947-4A20-B4C2-9915366962F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FD2E764-0947-4A20-B4C2-9915366962F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{538B002E-80BB-416A-B435-679A2B8C85D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{538B002E-80BB-416A-B435-679A2B8C85D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538B002E-80BB-416A-B435-679A2B8C85D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
