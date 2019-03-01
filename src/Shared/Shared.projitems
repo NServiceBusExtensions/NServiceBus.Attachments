@@ -19,6 +19,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\AttachmentBytes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\AttachmentStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\IMessageAttachments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Incoming\MockAttachment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Incoming\MockAttachmentExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Incoming\StubMessageAttachments_Adding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Incoming\StubMessageAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\MockMessageAttachments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleTo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MetadataSerializer.cs" />
