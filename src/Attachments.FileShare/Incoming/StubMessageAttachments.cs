@@ -13,7 +13,7 @@
         /// <summary>
         /// <see cref="IMessageAttachments.GetStream(string)"/>
         /// </summary>
-        public virtual AttachmentStream GetStream(string name )
+        public virtual AttachmentStream GetStream(string name)
         {
             var attachment = GetCurrentMessageAttachment(name);
             return attachment.ToAttachmentStream();
