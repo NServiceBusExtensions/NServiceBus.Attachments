@@ -19,10 +19,10 @@ class NeedToInstallSomething : INeedToInstallSomething
             return;
         }
 
-        using (var connection = await settings.ConnectionFactory().ConfigureAwait(false))
+        using (var connection = await settings.ConnectionFactory())
         {
             await Installer.CreateTable(connection, settings.Table)
-                .ConfigureAwait(false);
+                ;
         }
     }
 }

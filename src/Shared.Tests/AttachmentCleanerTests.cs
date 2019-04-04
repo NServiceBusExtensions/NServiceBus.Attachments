@@ -13,7 +13,7 @@ public class AttachmentCleanerTests
         var cleaner = new TestableCleaner(token => Task.CompletedTask,
             (m, e) => criticalActionTriggered = true,  TimeSpan.Zero, timer);
 
-        await cleaner.Start().ConfigureAwait(false);
+        await cleaner.Start();
 
         for (var i = 0; i < 9; i++)
         {
@@ -40,13 +40,13 @@ public class AttachmentCleanerTests
         var cleaner = new TestableCleaner(token => Task.CompletedTask,
             (m, e) => criticalActionTriggered = true, TimeSpan.Zero, timer);
 
-        await cleaner.Start().ConfigureAwait(false);
+        await cleaner.Start();
 
         for (var i = 0; i < 100; i++)
         {
             if (i % 9 == 0) //Succeed every 9th attempt
             {
-                await timer.Tick(DateTime.UtcNow, CancellationToken.None).ConfigureAwait(false);
+                await timer.Tick(DateTime.UtcNow, CancellationToken.None);
             }
             else
             {

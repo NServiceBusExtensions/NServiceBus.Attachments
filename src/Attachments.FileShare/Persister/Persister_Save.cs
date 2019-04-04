@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments.FileShare
 
             using (var fileStream = FileHelpers.OpenWrite(dataFile))
             {
-                await action(fileStream).ConfigureAwait(false);
+                await action(fileStream);
             }
         }
     }

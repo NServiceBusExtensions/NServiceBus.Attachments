@@ -63,7 +63,7 @@ namespace NServiceBus.Attachments
                 using (var attachmentStream = pair.Value.ToAttachmentStream())
                 {
                     await action(pair.Key, attachmentStream)
-                        .ConfigureAwait(false);
+                        ;
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace NServiceBus.Attachments
             using (var attachmentStream = attachment.ToAttachmentStream())
             {
                 await action(attachmentStream)
-                    .ConfigureAwait(false);
+                    ;
             }
         }
 
@@ -139,7 +139,7 @@ namespace NServiceBus.Attachments
                 using (var attachmentStream = attachment.ToAttachmentStream())
                 {
                     await action(pair.Key,attachmentStream)
-                        .ConfigureAwait(false);
+                        ;
                 }
             }
         }

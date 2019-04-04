@@ -23,8 +23,8 @@ class SendBehavior :
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
     {
-        await ProcessStreams(context).ConfigureAwait(false);
-        await next().ConfigureAwait(false);
+        await ProcessStreams(context);
+        await next();
     }
 
     async Task ProcessStreams(IOutgoingLogicalMessageContext context)
@@ -48,11 +48,11 @@ class SendBehavior :
         {
             if (state.Transaction != null)
             {
-                using (var sqlConnection = await state.GetConnection().ConfigureAwait(false))
+                using (var sqlConnection = await state.GetConnection())
                 {
                     sqlConnection.EnlistTransaction(state.Transaction);
                     await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
-                        .ConfigureAwait(false);
+                        ;
                 }
 
                 return;
@@ -61,27 +61,27 @@ class SendBehavior :
             if (state.SqlTransaction != null)
             {
                 await ProcessOutgoing(inner, timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, context.MessageId)
-                    .ConfigureAwait(false);
+                    ;
                 return;
             }
 
             if (state.SqlConnection != null)
             {
                 await ProcessOutgoing(inner, timeToBeReceived, state.SqlConnection, null, context.MessageId)
-                    .ConfigureAwait(false);
+                    ;
                 return;
             }
 
-            using (var sqlConnection = await state.GetConnection().ConfigureAwait(false))
+            using (var sqlConnection = await state.GetConnection())
             {
                 await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
-                    .ConfigureAwait(false);
+                    ;
             }
 
             return;
         }
 
-        using (var connection = await connectionFactory().ConfigureAwait(false))
+        using (var connection = await connectionFactory())
         {
             //TODO: should this be done ?
             if (context.TryReadTransaction(out var transaction))
@@ -95,14 +95,14 @@ class SendBehavior :
                 var name = attachment.Key;
                 var outgoing = attachment.Value;
                 await ProcessAttachment(timeToBeReceived, connection, null, context.MessageId, outgoing, name)
-                    .ConfigureAwait(false);
+                    ;
                 return;
             }
 
             using (var sqlTransaction = connection.BeginTransaction())
             {
                 await ProcessOutgoing(inner, timeToBeReceived, connection, sqlTransaction, context.MessageId)
-                    .ConfigureAwait(false);
+                    ;
                 sqlTransaction.Commit();
             }
         }
@@ -118,7 +118,7 @@ class SendBehavior :
         using (stream)
         {
             await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata)
-                .ConfigureAwait(false);
+                ;
         }
     }
 
@@ -129,7 +129,7 @@ class SendBehavior :
         var expiry = DateTime.UtcNow.Add(timeToKeep);
         try
         {
-            await Process(connection, transaction, messageId, outgoing, name, expiry).ConfigureAwait(false);
+            await Process(connection, transaction, messageId, outgoing, name, expiry);
         }
         finally
         {
@@ -141,42 +141,42 @@ class SendBehavior :
     {
         if (outgoing.AsyncStreamFactory != null)
         {
-            var stream = await outgoing.AsyncStreamFactory().ConfigureAwait(false);
-            await ProcessStream(connection, transaction, messageId, name, expiry, stream, outgoing.Metadata).ConfigureAwait(false);
+            var stream = await outgoing.AsyncStreamFactory();
+            await ProcessStream(connection, transaction, messageId, name, expiry, stream, outgoing.Metadata);
             return;
         }
 
         if (outgoing.StreamFactory != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata).ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata);
             return;
         }
 
         if (outgoing.StreamInstance != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata).ConfigureAwait(false);
+            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata);
             return;
         }
 
         if (outgoing.AsyncBytesFactory != null)
         {
-            var bytes = await outgoing.AsyncBytesFactory().ConfigureAwait(false);
+            var bytes = await outgoing.AsyncBytesFactory();
             await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, outgoing.Metadata)
-                .ConfigureAwait(false);
+                ;
             return;
         }
 
         if (outgoing.BytesFactory != null)
         {
             await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata)
-                .ConfigureAwait(false);
+                ;
             return;
         }
 
         if (outgoing.BytesInstance != null)
         {
             await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata)
-                .ConfigureAwait(false);
+                ;
             return;
         }
         throw new Exception("No matching way to handle outgoing.");

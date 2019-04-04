@@ -19,9 +19,9 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
             using (var command = CreateGetDatasCommand(messageId, connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation))
             {
-                while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
+                while (await reader.ReadAsync(cancellation))
                 {
                     cancellation.ThrowIfCancellationRequested();
                     var name = reader.GetString(0);
@@ -32,7 +32,7 @@ namespace NServiceBus.Attachments.Sql
                     {
                         var task = action(name, attachmentStream);
                         Guard.ThrowIfNullReturned(messageId, null, task);
-                        await task.ConfigureAwait(false);
+                        await task;
                     }
                 }
             }
@@ -49,9 +49,9 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
             using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation))
             {
-                if (!await reader.ReadAsync(cancellation).ConfigureAwait(false))
+                if (!await reader.ReadAsync(cancellation))
                 {
                     throw ThrowNotFound(messageId, name);
                 }
@@ -63,7 +63,7 @@ namespace NServiceBus.Attachments.Sql
                 {
                     var task = action(attachmentStream);
                     Guard.ThrowIfNullReturned(messageId, name, task);
-                    await task.ConfigureAwait(false);
+                    await task;
                 }
             }
         }

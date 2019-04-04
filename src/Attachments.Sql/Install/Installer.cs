@@ -29,8 +29,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(connection, nameof(connection));
             using (var sqlConnection = new SqlConnection(connection))
             {
-                await sqlConnection.OpenAsync(cancellation).ConfigureAwait(false);
-                await CreateTable(sqlConnection, table, cancellation).ConfigureAwait(false);
+                await sqlConnection.OpenAsync(cancellation);
+                await CreateTable(sqlConnection, table, cancellation);
             }
         }
 
@@ -54,7 +54,7 @@ namespace NServiceBus.Attachments.Sql
                 command.CommandText = GetTableSql();
                 command.AddParameter("schema", table.Schema);
                 command.AddParameter("table", table.TableName);
-                await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync(cancellation);
             }
         }
 

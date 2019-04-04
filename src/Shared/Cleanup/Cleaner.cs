@@ -21,7 +21,7 @@ class Cleaner : FeatureStartupTask
         timer.Start(
             callback: async (utcTime, token) =>
             {
-                await cleanup(token).ConfigureAwait(false);
+                await cleanup(token);
                 cleanupFailures = 0;
             },
             interval: frequencyToRunCleanup,

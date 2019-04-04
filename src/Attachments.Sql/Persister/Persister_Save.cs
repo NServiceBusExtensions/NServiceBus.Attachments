@@ -69,7 +69,7 @@ values
                 command.AddParameter("Metadata", MetadataSerializer.Serialize(metadata));
 
                 // Send the data to the server asynchronously
-                await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync(cancellation);
             }
         }
     }

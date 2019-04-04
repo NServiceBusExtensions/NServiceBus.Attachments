@@ -20,8 +20,8 @@ class SendBehavior :
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
     {
-        await ProcessStreams(context).ConfigureAwait(false);
-        await next().ConfigureAwait(false);
+        await ProcessStreams(context);
+        await next();
     }
 
     Task ProcessStreams(IOutgoingLogicalMessageContext context)
@@ -60,7 +60,7 @@ class SendBehavior :
         using (stream)
         {
             await persister.SaveStream(messageId, name, expiry, stream, metadata)
-                .ConfigureAwait(false);
+                ;
         }
     }
 
@@ -71,7 +71,7 @@ class SendBehavior :
         var expiry = DateTime.UtcNow.Add(timeToKeep);
         try
         {
-            await Process(messageId, outgoing, name, expiry).ConfigureAwait(false);
+            await Process(messageId, outgoing, name, expiry);
         }
         finally
         {
@@ -83,42 +83,42 @@ class SendBehavior :
     {
         if (outgoing.AsyncStreamFactory != null)
         {
-            var stream = await outgoing.AsyncStreamFactory().ConfigureAwait(false);
-            await ProcessStream(messageId, name, expiry, stream, outgoing.Metadata).ConfigureAwait(false);
+            var stream = await outgoing.AsyncStreamFactory();
+            await ProcessStream(messageId, name, expiry, stream, outgoing.Metadata);
             return;
         }
 
         if (outgoing.StreamFactory != null)
         {
-            await ProcessStream(messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata).ConfigureAwait(false);
+            await ProcessStream(messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata);
             return;
         }
 
         if (outgoing.StreamInstance != null)
         {
-            await ProcessStream(messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata).ConfigureAwait(false);
+            await ProcessStream(messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata);
             return;
         }
 
         if (outgoing.AsyncBytesFactory != null)
         {
-            var bytes = await outgoing.AsyncBytesFactory().ConfigureAwait(false);
+            var bytes = await outgoing.AsyncBytesFactory();
             await persister.SaveBytes(messageId, name, expiry, bytes, outgoing.Metadata)
-                .ConfigureAwait(false);
+                ;
             return;
         }
 
         if (outgoing.BytesFactory != null)
         {
             await persister.SaveBytes(messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata)
-                .ConfigureAwait(false);
+                ;
             return;
         }
 
         if (outgoing.BytesInstance != null)
         {
             await persister.SaveBytes(messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata)
-                .ConfigureAwait(false);
+                ;
             return;
         }
         throw new Exception("No matching way to handle outgoing.");

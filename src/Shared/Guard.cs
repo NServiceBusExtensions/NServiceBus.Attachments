@@ -78,7 +78,7 @@ static class Guard
         {
             var task = func.EvaluateAndCheck(attachmentName);
             ThrowIfNullReturned(null, attachmentName, task);
-            var value = await task.ConfigureAwait(false);
+            var value = await task;
             ThrowIfNullReturned(null, attachmentName, value);
             return value;
         };
@@ -91,7 +91,7 @@ static class Guard
         {
             var task = func.EvaluateAndCheck(attachmentName);
             ThrowIfNullReturned(null, attachmentName, task);
-            var value = await task.ConfigureAwait(false);
+            var value = await task;
             ThrowIfNullReturned(null,attachmentName, value);
             return value;
         };

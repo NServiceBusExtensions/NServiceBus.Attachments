@@ -20,9 +20,9 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation))
             {
-                if (await reader.ReadAsync(cancellation).ConfigureAwait(false))
+                if (await reader.ReadAsync(cancellation))
                 {
                     var metadataString = reader.GetStringOrNull(1);
                     var metadata = MetadataSerializer.Deserialize(metadataString);
@@ -50,8 +50,8 @@ namespace NServiceBus.Attachments.Sql
             {
 
                 command = CreateGetDataCommand(messageId, name, connection, transaction);
-                reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false);
-                if (!await reader.ReadAsync(cancellation).ConfigureAwait(false))
+                reader = await command.ExecuteSequentialReader(cancellation);
+                if (!await reader.ReadAsync(cancellation))
                 {
                     reader.Dispose();
                     command.Dispose();

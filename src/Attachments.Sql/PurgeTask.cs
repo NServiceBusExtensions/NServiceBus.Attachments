@@ -20,7 +20,7 @@ class PurgeTask: FeatureStartupTask
     {
         using (var connection = await connectionFactory())
         {
-            await persister.PurgeItems(connection, null, CancellationToken.None).ConfigureAwait(false);
+            await persister.PurgeItems(connection, null, CancellationToken.None);
         }
     }
 

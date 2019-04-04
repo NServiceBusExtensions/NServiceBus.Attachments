@@ -19,7 +19,7 @@ namespace NServiceBus.Attachments.Sql
             {
                 command.Transaction = transaction;
                 command.CommandText = $"delete from {table}";
-                await command.ExecuteNonQueryAsync(cancellation).ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync(cancellation);
             }
         }
     }

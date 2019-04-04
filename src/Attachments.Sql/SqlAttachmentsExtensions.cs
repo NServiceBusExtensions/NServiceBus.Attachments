@@ -57,7 +57,7 @@ namespace NServiceBus
             var connection = new SqlConnection(connectionString);
             try
             {
-                await connection.OpenAsync().ConfigureAwait(false);
+                await connection.OpenAsync();
                 return connection;
             }
             catch

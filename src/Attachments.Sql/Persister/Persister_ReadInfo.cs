@@ -21,9 +21,9 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
             using (var command = GetReadInfoCommand(connection, transaction, messageId))
-            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation))
             {
-                while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
+                while (await reader.ReadAsync(cancellation))
                 {
                     cancellation.ThrowIfCancellationRequested();
                     var info = new AttachmentInfo(
@@ -33,7 +33,7 @@ namespace NServiceBus.Attachments.Sql
                         metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
                     var task = action(info);
                     Guard.ThrowIfNullReturned(null, null, task);
-                    await task.ConfigureAwait(false);
+                    await task;
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace NServiceBus.Attachments.Sql
                         list.Add(metadata);
                         return Task.CompletedTask;
                     }, cancellation)
-                .ConfigureAwait(false);
+                ;
             return list;
         }
 
@@ -62,9 +62,9 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
             using (var command = GetReadInfosCommand(connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation).ConfigureAwait(false))
+            using (var reader = await command.ExecuteSequentialReader(cancellation))
             {
-                while (await reader.ReadAsync(cancellation).ConfigureAwait(false))
+                while (await reader.ReadAsync(cancellation))
                 {
                     cancellation.ThrowIfCancellationRequested();
                     var info = new AttachmentInfo(
@@ -74,7 +74,7 @@ namespace NServiceBus.Attachments.Sql
                         metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
                     var task = action(info);
                     Guard.ThrowIfNullReturned(null, null, task);
-                    await task.ConfigureAwait(false);
+                    await task;
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace NServiceBus.Attachments.Sql
                         list.Add(info);
                         return Task.CompletedTask;
                     }, cancellation)
-                .ConfigureAwait(false);
+                ;
             return list;
         }
 
