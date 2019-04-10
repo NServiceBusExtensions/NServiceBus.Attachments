@@ -8,8 +8,9 @@ using NServiceBus.Attachments.FileShare;
 using NServiceBus.Attachments.FileShare.Testing;
 using NServiceBus.Testing;
 using Xunit;
+using Xunit.Abstractions;
 
-public class TestingTests
+public class TestingTests:TestBase
 {
     [Fact]
     public async Task OutgoingAttachments()
@@ -71,6 +72,10 @@ public class TestingTests
     }
 
     public class AMessage
+    {
+    }
+
+    public TestingTests(ITestOutputHelper output) : base(output)
     {
     }
 }

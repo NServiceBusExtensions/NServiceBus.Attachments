@@ -2,7 +2,8 @@
 using ObjectApproval;
 using Xunit.Abstractions;
 
-public class TestBase
+public class TestBase:
+    XunitLoggingBase
 {
     static TestBase()
     {
@@ -16,10 +17,8 @@ public class TestBase
         };
     }
 
-    public TestBase(ITestOutputHelper output)
+    public TestBase(ITestOutputHelper output) :
+        base(output)
     {
-        Output = output;
     }
-
-    protected readonly ITestOutputHelper Output;
 }

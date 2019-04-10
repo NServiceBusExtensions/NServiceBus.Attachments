@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using ApprovalTests;
 using NServiceBus;
 using Xunit;
+using Xunit.Abstractions;
 
-public class OutgoingWhenNotEnabledTests
+public class OutgoingWhenNotEnabledTests :
+    TestBase
 {
+
     [Fact]
     public void Run()
     {
@@ -40,6 +43,11 @@ public class OutgoingWhenNotEnabledTests
     }
 
     class SendMessage : IMessage
+    {
+    }
+
+    public OutgoingWhenNotEnabledTests(ITestOutputHelper output) :
+        base(output)
     {
     }
 }

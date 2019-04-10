@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using ApprovalTests;
 using NServiceBus;
 using Xunit;
+using Xunit.Abstractions;
 
-public class IncomingWhenNotEnabledTests
+public class IncomingWhenNotEnabledTests :
+    TestBase
 {
     static ManualResetEvent resetEvent;
     static Exception exception;
@@ -52,6 +54,11 @@ public class IncomingWhenNotEnabledTests
     }
 
     class SendMessage : IMessage
+    {
+    }
+
+    public IncomingWhenNotEnabledTests(ITestOutputHelper output) :
+        base(output)
     {
     }
 }
