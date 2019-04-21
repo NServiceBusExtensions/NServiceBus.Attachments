@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.FileShare;
 using Xunit;
+using Xunit.Abstractions;
 
-public class IntegrationTests
+public class IntegrationTests :
+    XunitLoggingBase
 {
     static ManualResetEvent resetEvent;
 
@@ -84,6 +86,11 @@ public class IntegrationTests
     }
 
     class ReplyMessage : IMessage
+    {
+    }
+
+    public IntegrationTests(ITestOutputHelper output) : 
+        base(output)
     {
     }
 }

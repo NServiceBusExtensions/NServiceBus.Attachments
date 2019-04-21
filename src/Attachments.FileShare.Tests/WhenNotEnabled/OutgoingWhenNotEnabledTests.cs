@@ -9,7 +9,6 @@ using Xunit.Abstractions;
 public class OutgoingWhenNotEnabledTests :
     TestBase
 {
-
     [Fact]
     public void Run()
     {

@@ -10,21 +10,18 @@ using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
 using NServiceBus.Persistence.Sql;
 using Xunit;
+using Xunit.Abstractions;
 
-public class IntegrationTests
+public class IntegrationTests :
+    XunitLoggingBase
 {
     internal static ManualResetEvent HandlerEvent;
     internal static ManualResetEvent SagaEvent;
-    private static bool shouldPerformNestedConnection;
+    bool shouldPerformNestedConnection=true;
 
     static IntegrationTests()
     {
         DbSetup.Setup();
-    }
-
-    public IntegrationTests()
-    {
-        shouldPerformNestedConnection = true;
     }
 
     [Fact]
@@ -180,5 +177,10 @@ public class IntegrationTests
         streamWriter.Flush();
         stream.Position = 0;
         return stream;
+    }
+
+    public IntegrationTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }
