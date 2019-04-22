@@ -69,7 +69,11 @@ public class IntegrationTests :
         {
             attachments.UseSynchronizedStorageSessionConnectivity();
         }
-
+        configuration.RegisterComponents(
+            registration: configureComponents =>
+            {
+                configureComponents.RegisterSingleton(this);
+            });
         if (useSqlPersistence)
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
