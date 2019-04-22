@@ -2,8 +2,16 @@
 using NServiceBus;
 using Xunit;
 
-class SendHandler : IHandleMessages<SendMessage>
+class SendHandler :
+    IHandleMessages<SendMessage>
 {
+    IntegrationTests integrationTests;
+
+    public SendHandler(IntegrationTests integrationTests)
+    {
+        this.integrationTests = integrationTests;
+    }
+
     public async Task Handle(SendMessage message, IMessageHandlerContext context)
     {
         var replyOptions = new SendOptions();
@@ -14,7 +22,7 @@ class SendHandler : IHandleMessages<SendMessage>
         var outgoingAttachment = replyOptions.Attachments();
         outgoingAttachment.AddBytes(attachment);
 
-        IntegrationTests.PerformNestedConnection();
+        integrationTests.PerformNestedConnection();
 
         await context.Send(new ReplyMessage(), replyOptions);
     }

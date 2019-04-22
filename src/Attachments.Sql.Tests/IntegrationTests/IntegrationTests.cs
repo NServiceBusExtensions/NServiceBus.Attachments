@@ -146,7 +146,7 @@ public class IntegrationTests :
             shouldInstallTimeouts: false);
     }
 
-    internal static void PerformNestedConnection()
+    internal void PerformNestedConnection()
     {
         if (shouldPerformNestedConnection)
         {

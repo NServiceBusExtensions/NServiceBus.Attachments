@@ -2,13 +2,21 @@
 using System.Threading.Tasks;
 using NServiceBus;
 
-class ReplyHandler : IHandleMessages<ReplyMessage>
+class ReplyHandler :
+    IHandleMessages<ReplyMessage>
 {
+    IntegrationTests integrationTests;
+
+    public ReplyHandler(IntegrationTests integrationTests)
+    {
+        this.integrationTests = integrationTests;
+    }
+
     public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
     {
         var incomingAttachment = context.Attachments();
 
-        IntegrationTests.PerformNestedConnection();
+        integrationTests.PerformNestedConnection();
 
         var buffer = await incomingAttachment.GetBytes();
         Debug.WriteLine(buffer);
