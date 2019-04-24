@@ -120,6 +120,7 @@ public class IntegrationTests :
         }
 
         await endpoint.Stop();
+        base.Dispose();
     }
 
     static Task RunSqlScripts(string endpointName, Func<DbConnection> connectionBuilder)
@@ -178,10 +179,5 @@ public class IntegrationTests :
 
     public override void Dispose()
     {
-    }
-
-    ~IntegrationTests()
-    {
-        base.Dispose();
     }
 }
