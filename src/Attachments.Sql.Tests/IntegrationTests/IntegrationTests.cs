@@ -39,8 +39,6 @@ public class IntegrationTests :
     [ClassData(typeof(TestDataGenerator))]
     public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, bool useSqlPersistence, bool useStorageSession, TransportTransactionMode transactionMode)
     {
-#if(NETCOREAPP)
-
         // sql persistence connection spans the handler. so a nested connection will cause DTC
         if (useSqlTransport && useSqlPersistence && !useStorageSession && transactionMode == TransportTransactionMode.TransactionScope)
         {
@@ -54,15 +52,9 @@ public class IntegrationTests :
             // so a nested connection will cause DTC
             shouldPerformNestedConnection = false;
         }
-
-#endif
         HandlerEvent = new ManualResetEvent(false);
         SagaEvent = new ManualResetEvent(false);
-#if(NET472)
-        var endpointName = "SqlIntegrationTestsNetClassic";
-#else
-        var endpointName = "SqlIntegrationTestsNetCore";
-#endif
+        var endpointName = "SqlIntegrationTests";
         var configuration = new EndpointConfiguration(endpointName);
         var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
         if (useStorageSession)
@@ -93,11 +85,7 @@ public class IntegrationTests :
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         attachments.DisableCleanupTask();
-#if(NET472)
-        attachments.UseTable("AttachmentsNetClassic");
-#else
-        attachments.UseTable("AttachmentsNetCore");
-#endif
+        attachments.UseTable("Attachments");
         if (useSqlTransportConnection)
         {
             attachments.UseTransportConnectivity();
@@ -186,5 +174,14 @@ public class IntegrationTests :
     public IntegrationTests(ITestOutputHelper output) :
         base(output)
     {
+    }
+
+    public override void Dispose()
+    {
+    }
+
+    ~IntegrationTests()
+    {
+        base.Dispose();
     }
 }
