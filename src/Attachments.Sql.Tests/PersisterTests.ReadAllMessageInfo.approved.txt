@@ -2,7 +2,7 @@
   {
     MessageId: 'theMessageId',
     Name: 'theName1',
-    Expiry: 'DateTime 1',
+    Expiry: DateTime_1,
     Metadata: {
       key: 'value'
     }
@@ -10,7 +10,7 @@
   {
     MessageId: 'theMessageId',
     Name: 'theName2',
-    Expiry: 'DateTime 1',
+    Expiry: DateTime_1,
     Metadata: {
       key: 'value'
     }
