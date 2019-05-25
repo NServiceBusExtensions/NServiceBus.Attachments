@@ -33,7 +33,7 @@ Thanks to all the backing developers! Support this project by [becoming a patron
 https://docs.particular.net/nuget/NServiceBus.Attachments.Sql
 
 
-### The NuGet package [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.Sql.svg?style=flat)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
+### The NuGet package [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.Sql.svg)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
 
 https://nuget.org/packages/NServiceBus.Attachments.Sql/
 
@@ -48,7 +48,7 @@ https://nuget.org/packages/NServiceBus.Attachments.Sql/
 https://docs.particular.net/nuget/NServiceBus.Attachments.FileShare
 
 
-### The NuGet package [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.FileShare.svg?style=flat)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
+### The NuGet package [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.FileShare.svg)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
 
 https://nuget.org/packages/NServiceBus.Attachments.FileShare/
 
