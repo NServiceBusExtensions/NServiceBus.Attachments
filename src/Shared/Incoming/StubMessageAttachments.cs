@@ -62,8 +62,7 @@ namespace NServiceBus.Attachments
             {
                 using (var attachmentStream = pair.Value.ToAttachmentStream())
                 {
-                    await action(pair.Key, attachmentStream)
-                        ;
+                    await action(pair.Key, attachmentStream);
                 }
             }
         }
@@ -115,8 +114,7 @@ namespace NServiceBus.Attachments
             var attachment = GetAttachmentForMessage(messageId, name);
             using (var attachmentStream = attachment.ToAttachmentStream())
             {
-                await action(attachmentStream)
-                    ;
+                await action(attachmentStream);
             }
         }
 
@@ -138,8 +136,7 @@ namespace NServiceBus.Attachments
                 var attachment = pair.Value;
                 using (var attachmentStream = attachment.ToAttachmentStream())
                 {
-                    await action(pair.Key,attachmentStream)
-                        ;
+                    await action(pair.Key, attachmentStream);
                 }
             }
         }
@@ -157,7 +154,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
-            var attachment = GetAttachmentForMessage(messageId,name);
+            var attachment = GetAttachmentForMessage(messageId, name);
             return Task.FromResult(attachment.ToAttachmentBytes());
         }
 

@@ -59,8 +59,7 @@ class SendBehavior :
     {
         using (stream)
         {
-            await persister.SaveStream(messageId, name, expiry, stream, metadata)
-                ;
+            await persister.SaveStream(messageId, name, expiry, stream, metadata);
         }
     }
 
@@ -103,22 +102,19 @@ class SendBehavior :
         if (outgoing.AsyncBytesFactory != null)
         {
             var bytes = await outgoing.AsyncBytesFactory();
-            await persister.SaveBytes(messageId, name, expiry, bytes, outgoing.Metadata)
-                ;
+            await persister.SaveBytes(messageId, name, expiry, bytes, outgoing.Metadata);
             return;
         }
 
         if (outgoing.BytesFactory != null)
         {
-            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata)
-                ;
+            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata);
             return;
         }
 
         if (outgoing.BytesInstance != null)
         {
-            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata)
-                ;
+            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata);
             return;
         }
         throw new Exception("No matching way to handle outgoing.");

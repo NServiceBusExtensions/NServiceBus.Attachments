@@ -49,8 +49,7 @@ namespace NServiceBus.Attachments.Sql
                     {
                         list.Add(metadata);
                         return Task.CompletedTask;
-                    }, cancellation)
-                ;
+                    }, cancellation);
             return list;
         }
 
@@ -90,8 +89,7 @@ namespace NServiceBus.Attachments.Sql
                     {
                         list.Add(info);
                         return Task.CompletedTask;
-                    }, cancellation)
-                ;
+                    }, cancellation);
             return list;
         }
 

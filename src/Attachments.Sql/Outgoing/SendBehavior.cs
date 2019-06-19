@@ -51,8 +51,7 @@ class SendBehavior :
                 using (var sqlConnection = await state.GetConnection())
                 {
                     sqlConnection.EnlistTransaction(state.Transaction);
-                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
-                        ;
+                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId);
                 }
 
                 return;
@@ -60,22 +59,19 @@ class SendBehavior :
 
             if (state.SqlTransaction != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, context.MessageId)
-                    ;
+                await ProcessOutgoing(inner, timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, context.MessageId);
                 return;
             }
 
             if (state.SqlConnection != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.SqlConnection, null, context.MessageId)
-                    ;
+                await ProcessOutgoing(inner, timeToBeReceived, state.SqlConnection, null, context.MessageId);
                 return;
             }
 
             using (var sqlConnection = await state.GetConnection())
             {
-                await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId)
-                    ;
+                await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId);
             }
 
             return;
@@ -94,8 +90,7 @@ class SendBehavior :
                 var attachment = inner.Single();
                 var name = attachment.Key;
                 var outgoing = attachment.Value;
-                await ProcessAttachment(timeToBeReceived, connection, null, context.MessageId, outgoing, name)
-                    ;
+                await ProcessAttachment(timeToBeReceived, connection, null, context.MessageId, outgoing, name);
                 return;
             }
 

@@ -21,8 +21,7 @@ class NeedToInstallSomething : INeedToInstallSomething
 
         using (var connection = await settings.ConnectionFactory())
         {
-            await Installer.CreateTable(connection, settings.Table)
-                ;
+            await Installer.CreateTable(connection, settings.Table);
         }
     }
 }
