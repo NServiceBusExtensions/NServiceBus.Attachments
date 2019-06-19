@@ -11,7 +11,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class TestingTests :
-    TestBase
+    XunitLoggingBase
 {
     [Fact]
     public async Task OutgoingAttachments()

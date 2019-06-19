@@ -7,7 +7,8 @@ using ObjectApproval;
 using Xunit;
 using Xunit.Abstractions;
 
-public class PersisterTests : TestBase
+public class PersisterTests :
+    XunitLoggingBase
 {
     DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
@@ -18,7 +19,8 @@ public class PersisterTests : TestBase
         DbSetup.Setup();
     }
 
-    public PersisterTests(ITestOutputHelper output) : base(output)
+    public PersisterTests(ITestOutputHelper output) :
+        base(output)
     {
         persister = new Persister("MessageAttachments");
     }

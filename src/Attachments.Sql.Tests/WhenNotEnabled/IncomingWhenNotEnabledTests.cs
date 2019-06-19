@@ -7,7 +7,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class IncomingWhenNotEnabledTests :
-    TestBase
+    XunitLoggingBase
 {
     static ManualResetEvent resetEvent;
     static Exception exception;
