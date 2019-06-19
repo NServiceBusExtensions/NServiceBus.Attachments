@@ -96,8 +96,7 @@ class SendBehavior :
 
             using (var sqlTransaction = connection.BeginTransaction())
             {
-                await ProcessOutgoing(inner, timeToBeReceived, connection, sqlTransaction, context.MessageId)
-                    ;
+                await ProcessOutgoing(inner, timeToBeReceived, connection, sqlTransaction, context.MessageId);
                 sqlTransaction.Commit();
             }
         }
@@ -112,8 +111,7 @@ class SendBehavior :
     {
         using (stream)
         {
-            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata)
-                ;
+            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata);
         }
     }
 
@@ -156,22 +154,19 @@ class SendBehavior :
         if (outgoing.AsyncBytesFactory != null)
         {
             var bytes = await outgoing.AsyncBytesFactory();
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, outgoing.Metadata)
-                ;
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, outgoing.Metadata);
             return;
         }
 
         if (outgoing.BytesFactory != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata)
-                ;
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata);
             return;
         }
 
         if (outgoing.BytesInstance != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata)
-                ;
+            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata);
             return;
         }
         throw new Exception("No matching way to handle outgoing.");
