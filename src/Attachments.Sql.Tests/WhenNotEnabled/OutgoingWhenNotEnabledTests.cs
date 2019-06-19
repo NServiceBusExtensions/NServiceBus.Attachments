@@ -15,26 +15,26 @@ public class OutgoingWhenNotEnabledTests :
     }
 
     [Fact]
-    public void Run()
+    public async Task Run()
     {
         var configuration = new EndpointConfiguration("SqlOutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        var endpoint = Endpoint.Start(configuration).Result;
+        var endpoint = await Endpoint.Start(configuration);
 
-        var exception = Assert.Throws<AggregateException>(() => SendStartMessageWithAttachment(endpoint).Wait());
+        var exception = await Assert.ThrowsAsync<AggregateException>(() => SendStartMessageWithAttachment(endpoint));
         Assert.NotNull(exception);
         Approvals.Verify(exception.InnerException.Message);
-        endpoint.Stop().Wait();
+        await endpoint.Stop();
     }
 
-    static async Task SendStartMessageWithAttachment(IEndpointInstance endpoint)
+    static Task SendStartMessageWithAttachment(IEndpointInstance endpoint)
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
-        await endpoint.Send(new SendMessage(), sendOptions);
+        return endpoint.Send(new SendMessage(), sendOptions);
     }
 
     static Stream GetStream()

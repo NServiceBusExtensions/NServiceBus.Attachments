@@ -143,79 +143,78 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
-    public void SaveStream()
+    public async Task SaveStream()
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection, "MessageAttachments").Wait();
-            persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
-            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
+            var result = await persister.ReadAllInfo(connection, null);
+            ObjectApprover.VerifyWithJson(result);
+        }
+    }
+
+    [Fact]
+    public async Task SaveBytes()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
+            var result = await  persister.ReadAllInfo(connection, null);
             Assert.NotNull(result);
             ObjectApprover.VerifyWithJson(result);
         }
     }
 
     [Fact]
-    public void SaveBytes()
+    public async Task Duplicate()
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection, "MessageAttachments").Wait();
-            persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
-            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
-            Assert.NotNull(result);
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveBytes(connection, null, "theSourceMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
+            await persister.Duplicate("theSourceMessageId", "theName", connection, null, "theTargetMessageId");
+            var result = await persister.ReadAllInfo(connection, null);
             ObjectApprover.VerifyWithJson(result);
         }
     }
 
     [Fact]
-    public void Duplicate()
+    public async Task ReadAllMessageInfo()
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection, "MessageAttachments").Wait();
-            persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveBytes(connection, null, "theSourceMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
-            persister.Duplicate("theSourceMessageId","theName", connection, null,"theTargetMessageId").GetAwaiter().GetResult();
-            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
-            ObjectApprover.VerifyWithJson(result);
-        }
-    }
-
-    [Fact]
-    public void ReadAllMessageInfo()
-    {
-        using (var connection = Connection.OpenConnection())
-        {
-            Installer.CreateTable(connection, "MessageAttachments").Wait();
-            persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
-            persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
+            await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
             var list = new List<AttachmentInfo>();
-            persister.ReadAllMessageInfo(connection, null, "theMessageId",
+            await persister.ReadAllMessageInfo(connection, null, "theMessageId",
                 info =>
                 {
                     list.Add(info);
                     return Task.CompletedTask;
-                }).GetAwaiter().GetResult();
+                });
             Assert.NotNull(list);
             ObjectApprover.VerifyWithJson(list);
         }
     }
 
     [Fact]
-    public void CleanupItemsOlderThan()
+    public async Task CleanupItemsOlderThan()
     {
         using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(connection, "MessageAttachments").Wait();
-            persister.DeleteAllAttachments(connection, null).Wait();
-            persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
-            persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream()).GetAwaiter().GetResult();
-            persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1)).Wait();
-            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream());
+            await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
+            await persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1));
+            var result = await persister.ReadAllInfo(connection, null);
             Assert.NotNull(result);
             ObjectApprover.VerifyWithJson(result);
         }

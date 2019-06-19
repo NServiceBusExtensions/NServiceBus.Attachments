@@ -13,16 +13,16 @@ public class IncomingWhenNotEnabledTests :
     static Exception exception;
 
     [Fact]
-    public void Run()
+    public async Task Run()
     {
         resetEvent = new ManualResetEvent(false);
         var configuration = new EndpointConfiguration("FileShareIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        var endpoint = Endpoint.Start(configuration).Result;
-        endpoint.SendLocal(new SendMessage()).Wait();
+        var endpoint = await Endpoint.Start(configuration);
+        await endpoint.SendLocal(new SendMessage());
         resetEvent.WaitOne();
-        endpoint.Stop().Wait();
+        await endpoint.Stop();
 
         Approvals.Verify(exception.Message);
     }
