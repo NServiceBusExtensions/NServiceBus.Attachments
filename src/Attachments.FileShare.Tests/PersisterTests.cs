@@ -144,8 +144,19 @@ public class PersisterTests : TestBase
     public async Task Duplicate()
     {
         var persister = GetPersister();
-        await persister.SaveStream("theSourceMessageId", "theName", defaultTestDate, GetStream(), metadata);
-        await persister.Duplicate("theSourceMessageId", "theName","theTargetMessageId");
+        await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
+        await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
+        await persister.Duplicate("theSourceMessageId", "theName1","theTargetMessageId");
+        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+    }
+
+    [Fact]
+    public async Task DuplicateAll()
+    {
+        var persister = GetPersister();
+        await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
+        await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
+        await persister.Duplicate("theSourceMessageId","theTargetMessageId");
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 

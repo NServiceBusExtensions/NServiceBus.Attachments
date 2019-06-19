@@ -89,7 +89,7 @@ public class IntegrationTests :
     {
     }
 
-    public IntegrationTests(ITestOutputHelper output) : 
+    public IntegrationTests(ITestOutputHelper output) :
         base(output)
     {
     }

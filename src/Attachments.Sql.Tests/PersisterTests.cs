@@ -172,14 +172,30 @@ public class PersisterTests :
     }
 
     [Fact]
+    public async Task DuplicateAll()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
+            await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
+            await persister.Duplicate("theSourceMessageId", connection, null, "theTargetMessageId");
+            var result = await persister.ReadAllInfo(connection, null);
+            ObjectApprover.VerifyWithJson(result);
+        }
+    }
+
+    [Fact]
     public async Task Duplicate()
     {
         using (var connection = Connection.OpenConnection())
         {
             await Installer.CreateTable(connection, "MessageAttachments");
             await persister.DeleteAllAttachments(connection, null);
-            await persister.SaveBytes(connection, null, "theSourceMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
-            await persister.Duplicate("theSourceMessageId", "theName", connection, null, "theTargetMessageId");
+            await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
+            await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
+            await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId");
             var result = await persister.ReadAllInfo(connection, null);
             ObjectApprover.VerifyWithJson(result);
         }

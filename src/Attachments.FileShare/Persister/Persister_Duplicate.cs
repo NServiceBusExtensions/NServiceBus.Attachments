@@ -11,6 +11,19 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Copies an attachment to a different message.
         /// </summary>
+        public virtual Task Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
+            Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
+            var sourceDirectory = GetMessageDirectory(sourceMessageId);
+            var targetDirectory = GetMessageDirectory(targetMessageId);
+            FileHelpers.Copy(sourceDirectory, targetDirectory);
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Copies attachment to a different message.
+        /// </summary>
         public virtual Task Duplicate(string sourceMessageId, string name, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
