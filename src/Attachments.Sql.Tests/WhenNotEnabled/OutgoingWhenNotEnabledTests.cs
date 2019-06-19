@@ -22,9 +22,9 @@ public class OutgoingWhenNotEnabledTests :
         configuration.UseTransport<LearningTransport>();
         var endpoint = await Endpoint.Start(configuration);
 
-        var exception = await Assert.ThrowsAsync<AggregateException>(() => SendStartMessageWithAttachment(endpoint));
+        var exception = await Assert.ThrowsAsync<Exception>(() => SendStartMessageWithAttachment(endpoint));
         Assert.NotNull(exception);
-        Approvals.Verify(exception.InnerException.Message);
+        Approvals.Verify(exception.Message);
         await endpoint.Stop();
     }
 

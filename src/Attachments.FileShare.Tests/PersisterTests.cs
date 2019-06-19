@@ -112,23 +112,23 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
-    public void SaveStream()
+    public async Task SaveStream()
     {
         var persister = GetPersister();
-        persister.SaveStream(messageId: "theMessageId", "theName",
-                expiry: defaultTestDate,
-                stream: GetStream(),
-                metadata: metadata)
-            .GetAwaiter().GetResult();
+        await persister.SaveStream(
+            messageId: "theMessageId", "theName",
+            expiry: defaultTestDate,
+            stream: GetStream(),
+            metadata: metadata);
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 
     [Fact]
-    public void ReadAllMessageInfo()
+    public async Task ReadAllMessageInfo()
     {
         var persister = GetPersister();
-        persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
-        persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata).GetAwaiter().GetResult();
+        await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata);
+        await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         ObjectApprover.VerifyWithJson(persister.ReadAllMessageInfo("theMessageId"));
     }
 
@@ -150,11 +150,11 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
-    public void CleanupItemsOlderThan()
+    public async Task CleanupItemsOlderThan()
     {
         var persister = GetPersister();
-        persister.SaveStream("theMessageId1", "theName", defaultTestDate, GetStream()).GetAwaiter().GetResult();
-        persister.SaveStream("theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream()).GetAwaiter().GetResult();
+        await persister.SaveStream("theMessageId1", "theName", defaultTestDate, GetStream());
+        await persister.SaveStream("theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
         persister.CleanupItemsOlderThan(new DateTime(2001, 1, 1, 1, 1, 1));
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
