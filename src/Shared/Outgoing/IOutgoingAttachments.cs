@@ -104,5 +104,10 @@ namespace NServiceBus.Attachments
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         void AddBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null);
+
+        /// <summary>
+        /// Duplicates the incoming attachments to the current outgoing pipeline.
+        /// </summary>
+        void DuplicateIncoming();
     }
 }

@@ -37,7 +37,8 @@ class SendBehavior :
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
         var inner = outgoingAttachments.Inner;
-        if (inner.Count == 0)
+        var duplicateIncoming = outgoingAttachments.DuplicateIncomingAttachments;
+        if (inner.Count == 0 && !duplicateIncoming)
         {
             return;
         }
@@ -83,15 +84,6 @@ class SendBehavior :
             if (context.TryReadTransaction(out var transaction))
             {
                 connection.EnlistTransaction(transaction);
-            }
-
-            if (inner.Count == 1)
-            {
-                var attachment = inner.Single();
-                var name = attachment.Key;
-                var outgoing = attachment.Value;
-                await ProcessAttachment(timeToBeReceived, connection, null, context.MessageId, outgoing, name);
-                return;
             }
 
             using (var sqlTransaction = connection.BeginTransaction())
