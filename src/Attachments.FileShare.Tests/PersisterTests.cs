@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
@@ -134,13 +133,20 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
-    public void SaveBytes()
+    public async Task SaveBytes()
     {
         var persister = GetPersister();
-        persister.SaveBytes("theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
-        var allMetadata = persister.ReadAllInfo().ToList();
+        await persister.SaveBytes("theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
+        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+    }
 
-        ObjectApprover.VerifyWithJson(allMetadata);
+    [Fact]
+    public async Task Duplicate()
+    {
+        var persister = GetPersister();
+        await persister.SaveStream("theSourceMessageId", "theName", defaultTestDate, GetStream(), metadata);
+        await persister.Duplicate("theSourceMessageId", "theName","theTargetMessageId");
+        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 
     [Fact]

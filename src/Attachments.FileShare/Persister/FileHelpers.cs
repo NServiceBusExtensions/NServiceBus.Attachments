@@ -44,6 +44,29 @@ static class FileHelpers
         }
     }
 
+    public static void Copy(string sourceDirectory, string targetDirectory)
+    {
+        CopyAll(new DirectoryInfo(sourceDirectory), new DirectoryInfo(targetDirectory));
+    }
+
+    public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
+    {
+        Directory.CreateDirectory(target.FullName);
+
+        // Copy each file into the new directory.
+        foreach (var file in source.GetFiles())
+        {
+            file.CopyTo(Path.Combine(target.FullName, file.Name), true);
+        }
+
+        // Copy each subdirectory using recursion.
+        foreach (var directory in source.GetDirectories())
+        {
+            var nextTargetSubDir = target.CreateSubdirectory(directory.Name);
+            CopyAll(directory, nextTargetSubDir);
+        }
+    }
+
     public static async Task<byte[]> ReadBytes(CancellationToken cancellation, string dataFile)
     {
         using (var fileStream = OpenRead(dataFile))

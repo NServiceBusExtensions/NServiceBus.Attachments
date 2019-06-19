@@ -171,6 +171,20 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
+    public void Duplicate()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            Installer.CreateTable(connection, "MessageAttachments").Wait();
+            persister.DeleteAllAttachments(connection, null).Wait();
+            persister.SaveBytes(connection, null, "theSourceMessageId", "theName", defaultTestDate, new byte[] {1}, metadata).GetAwaiter().GetResult();
+            persister.Duplicate("theSourceMessageId","theName", connection, null,"theTargetMessageId").GetAwaiter().GetResult();
+            var result = persister.ReadAllInfo(connection, null).GetAwaiter().GetResult();
+            ObjectApprover.VerifyWithJson(result);
+        }
+    }
+
+    [Fact]
     public void ReadAllMessageInfo()
     {
         using (var connection = Connection.OpenConnection())

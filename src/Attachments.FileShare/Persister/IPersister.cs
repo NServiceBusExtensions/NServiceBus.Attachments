@@ -57,6 +57,11 @@ namespace NServiceBus.Attachments.FileShare
         Task CopyTo(string messageId, string name, Stream target, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Copies an attachment to a different message.
+        /// </summary>
+        Task Duplicate(string sourceMessageId, string name, string targetMessageId, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
         Task<AttachmentBytes> GetBytes(string messageId, string name, CancellationToken cancellation = default);

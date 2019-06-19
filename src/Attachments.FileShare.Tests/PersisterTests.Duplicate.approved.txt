@@ -1,0 +1,18 @@
+﻿[
+  {
+    MessageId: 'theSourceMessageId',
+    Name: 'theName',
+    Expiry: DateTime_1,
+    Metadata: {
+      key: 'value'
+    }
+  },
+  {
+    MessageId: 'theTargetMessageId',
+    Name: 'theName',
+    Expiry: DateTime_1,
+    Metadata: {
+      key: 'value'
+    }
+  }
+]
