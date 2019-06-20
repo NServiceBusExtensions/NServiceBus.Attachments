@@ -14,9 +14,10 @@ using NServiceBus.Attachments;
 
 class OutgoingAttachments : IOutgoingAttachments
 {
-    internal Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
 
-    public bool HasPendingAttachments => Inner.Any();
+    public bool HasPendingAttachments => Inner.Any() || DuplicateIncomingAttachments;
+    public bool DuplicateIncomingAttachments;
 
     public IReadOnlyList<string> Names => Inner.Keys.ToList();
 
@@ -84,6 +85,11 @@ class OutgoingAttachments : IOutgoingAttachments
     public void AddBytes(byte[] bytes, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
     {
         AddBytes("default", bytes, timeToKeep, cleanup, metadata);
+    }
+
+    public void DuplicateIncoming()
+    {
+        DuplicateIncomingAttachments = true;
     }
 
     public void AddBytes(string name, Func<byte[]> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)

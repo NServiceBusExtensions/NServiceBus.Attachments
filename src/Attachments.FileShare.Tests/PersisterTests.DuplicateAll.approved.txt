@@ -1,6 +1,6 @@
 ﻿[
   {
-    MessageId: 'theTargetMessageId',
+    MessageId: 'theSourceMessageId',
     Name: 'theName1',
     Expiry: DateTime_1,
     Metadata: {
@@ -16,8 +16,16 @@
     }
   },
   {
-    MessageId: 'theSourceMessageId',
+    MessageId: 'theTargetMessageId',
     Name: 'theName1',
+    Expiry: DateTime_1,
+    Metadata: {
+      key: 'value'
+    }
+  },
+  {
+    MessageId: 'theTargetMessageId',
+    Name: 'theName2',
     Expiry: DateTime_1,
     Metadata: {
       key: 'value'

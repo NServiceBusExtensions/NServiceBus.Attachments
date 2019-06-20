@@ -10,7 +10,21 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <summary>
-        /// Copies an attachment to a different message.
+        /// Copies attachments to a different message.
+        /// </summary>
+        public virtual async Task Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
+            Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
+            Guard.AgainstNull(connection, nameof(connection));
+            using (var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction))
+            {
+                await command.ExecuteNonQueryAsync(cancellation);
+            }
+        }
+
+        /// <summary>
+        /// Copies an attachments to a different message.
         /// </summary>
         public virtual async Task Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
         {
@@ -23,6 +37,34 @@ namespace NServiceBus.Attachments.Sql
             {
                 await command.ExecuteNonQueryAsync(cancellation);
             }
+        }
+
+        SqlCommand CreateGetDuplicateCommand(string sourceMessageId, string targetMessageId, SqlConnection connection, SqlTransaction transaction)
+        {
+            var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = $@"
+insert into {table}
+(
+    MessageId,
+    Name,
+    Expiry,
+    Data,
+    Metadata
+)
+select
+    @TargetMessageId,
+    Name,
+    Expiry,
+    Data,
+    Metadata
+from {table}
+where
+    MessageIdLower = lower(@SourceMessageId);
+";
+            command.AddParameter("SourceMessageId", sourceMessageId);
+            command.AddParameter("TargetMessageId", targetMessageId);
+            return command;
         }
 
         SqlCommand CreateGetDuplicateCommand(string sourceMessageId, string name,string targetMessageId, SqlConnection connection, SqlTransaction transaction)
@@ -45,7 +87,9 @@ select
     Data,
     Metadata
 from {table}
-where MessageId = @SourceMessageId
+where
+    NameLower = lower(@Name) and
+    MessageIdLower = lower(@SourceMessageId);
 ";
             command.AddParameter("Name", name);
             command.AddParameter("SourceMessageId", sourceMessageId);

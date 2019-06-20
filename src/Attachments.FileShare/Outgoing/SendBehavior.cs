@@ -34,25 +34,32 @@ class SendBehavior :
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
         var inner = outgoingAttachments.Inner;
-        if (!inner.Any())
+        var duplicateIncoming = outgoingAttachments.DuplicateIncomingAttachments;
+        if (inner.Count == 0 && !duplicateIncoming)
         {
             return Task.CompletedTask;
         }
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        return ProcessOutgoing(inner, timeToBeReceived, context.MessageId);
-    }
-
-    Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, string messageId)
-    {
-        return Task.WhenAll(
-            attachments.Select(pair =>
+        var tasks = inner
+            .Select(pair =>
             {
                 var name = pair.Key;
                 var outgoing = pair.Value;
-                return ProcessAttachment(timeToBeReceived, messageId, outgoing, name);
-            }));
+                return ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
+            })
+            .ToList();
+        if (duplicateIncoming)
+        {
+            if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
+            {
+                throw new Exception("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
+            }
+
+            tasks.Add(persister.Duplicate(incomingMessage.MessageId, context.MessageId));
+        }
+        return Task.WhenAll(tasks);
     }
 
     async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)

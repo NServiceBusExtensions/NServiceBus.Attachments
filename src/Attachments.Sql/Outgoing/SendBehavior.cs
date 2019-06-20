@@ -37,7 +37,8 @@ class SendBehavior :
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
         var inner = outgoingAttachments.Inner;
-        if (inner.Count == 0)
+        var duplicateIncoming = outgoingAttachments.DuplicateIncomingAttachments;
+        if (inner.Count == 0 && !duplicateIncoming)
         {
             return;
         }
@@ -51,7 +52,7 @@ class SendBehavior :
                 using (var sqlConnection = await state.GetConnection())
                 {
                     sqlConnection.EnlistTransaction(state.Transaction);
-                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId);
+                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, duplicateIncoming, context);
                 }
 
                 return;
@@ -59,19 +60,19 @@ class SendBehavior :
 
             if (state.SqlTransaction != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, context.MessageId);
+                await ProcessOutgoing(inner, timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, duplicateIncoming, context);
                 return;
             }
 
             if (state.SqlConnection != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.SqlConnection, null, context.MessageId);
+                await ProcessOutgoing(inner, timeToBeReceived, state.SqlConnection, null, duplicateIncoming, context);
                 return;
             }
 
             using (var sqlConnection = await state.GetConnection())
             {
-                await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, context.MessageId);
+                await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, duplicateIncoming, context);
             }
 
             return;
@@ -85,26 +86,28 @@ class SendBehavior :
                 connection.EnlistTransaction(transaction);
             }
 
-            if (inner.Count == 1)
-            {
-                var attachment = inner.Single();
-                var name = attachment.Key;
-                var outgoing = attachment.Value;
-                await ProcessAttachment(timeToBeReceived, connection, null, context.MessageId, outgoing, name);
-                return;
-            }
-
             using (var sqlTransaction = connection.BeginTransaction())
             {
-                await ProcessOutgoing(inner, timeToBeReceived, connection, sqlTransaction, context.MessageId);
+                await ProcessOutgoing(inner, timeToBeReceived, connection, sqlTransaction, duplicateIncoming, context);
                 sqlTransaction.Commit();
             }
         }
     }
 
-    Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId)
+    Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, bool duplicateIncoming, IOutgoingLogicalMessageContext context)
     {
-        return Task.WhenAll(attachments.Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, messageId, pair.Value, pair.Key)));
+        var tasks = attachments.Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, pair.Value, pair.Key))
+            .ToList();
+        if (duplicateIncoming)
+        {
+            if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
+            {
+                throw new Exception("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
+            }
+
+            tasks.Add(persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId));
+        }
+        return Task.WhenAll(tasks);
     }
 
     async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)
