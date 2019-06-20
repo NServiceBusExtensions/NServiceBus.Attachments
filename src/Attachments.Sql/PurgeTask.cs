@@ -16,6 +16,7 @@ class PurgeTask: FeatureStartupTask
         this.persister = persister;
         this.connectionFactory = connectionFactory;
     }
+
     protected override async Task OnStart(IMessageSession session)
     {
         using (var connection = await connectionFactory())
