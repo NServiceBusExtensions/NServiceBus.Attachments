@@ -23,11 +23,17 @@ namespace NServiceBus.Attachments
     {
         string messageId;
 
+        /// <summary>
+        ///Instantiate a new instance of <see cref="StubMessageAttachments"/>.
+        /// </summary>
         public StubMessageAttachments()
         {
             messageId = Guid.NewGuid().ToString();
         }
 
+        /// <summary>
+        ///Instantiate a new instance of <see cref="StubMessageAttachments"/>.
+        /// </summary>
         public StubMessageAttachments(string messageId)
         {
             this.messageId = messageId;
