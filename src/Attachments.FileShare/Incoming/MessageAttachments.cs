@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
@@ -39,6 +41,11 @@ class MessageAttachments :
     public Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStreams(messageId, action, cancellation);
+    }
+
+    public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+    {
+        return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(persister.ReadAllMessageInfo(messageId).ToList());
     }
 
     public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)

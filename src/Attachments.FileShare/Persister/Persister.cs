@@ -81,7 +81,10 @@ namespace NServiceBus.Attachments.FileShare
         static IReadOnlyDictionary<string, string> ReadMetadata(string attachmentDirectory)
         {
             var metadataFile = GetMetadataFile(attachmentDirectory);
-            if (!File.Exists(metadataFile)) return MetadataSerializer.EmptyMetadata;
+            if (!File.Exists(metadataFile))
+            {
+                return MetadataSerializer.EmptyMetadata;
+            }
             using (var stream = FileHelpers.OpenRead(metadataFile))
             {
                 return MetadataSerializer.Deserialize(stream);

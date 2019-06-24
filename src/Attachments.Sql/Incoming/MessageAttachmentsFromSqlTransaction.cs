@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
@@ -107,5 +108,10 @@ class MessageAttachmentsFromSqlTransaction :
     public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         return persister.GetStream(messageId, name, transaction.Connection, transaction, false, cancellation);
+    }
+
+    public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+    {
+        return persister.ReadAllMessageInfo(transaction.Connection, transaction, messageId, cancellation);
     }
 }

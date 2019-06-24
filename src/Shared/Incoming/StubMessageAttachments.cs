@@ -21,6 +21,18 @@ namespace NServiceBus.Attachments
     public partial class StubMessageAttachments :
         IMessageAttachments
     {
+        string messageId;
+
+        public StubMessageAttachments()
+        {
+            messageId = Guid.NewGuid().ToString();
+        }
+
+        public StubMessageAttachments(string messageId)
+        {
+            this.messageId = messageId;
+        }
+
         /// <summary>
         /// <see cref="IMessageAttachments.CopyTo(string,Stream,CancellationToken)"/>
         /// </summary>
@@ -148,6 +160,20 @@ namespace NServiceBus.Attachments
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
         {
             return GetBytesForMessage(messageId, "default", cancellation);
+        }
+
+        /// <summary>
+        /// Read all attachment metadata for the current message.
+        /// </summary>
+        public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+        {
+            var list = new List<AttachmentInfo>();
+            foreach (var attachment in currentAttachments)
+            {
+                list.Add(new AttachmentInfo(messageId, attachment.Key, attachment.Value.Expiry, attachment.Value.Metadata));
+            }
+
+            return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(list);
         }
 
         /// <summary>

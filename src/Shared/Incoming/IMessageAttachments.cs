@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,6 +42,11 @@ namespace NServiceBus.Attachments
         /// Process with the delegate <paramref name="action"/>, all attachments for the current message.
         /// </summary>
         Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Read all attachment metadata for the current message.
+        /// </summary>
+        Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the current message, the attachment with the default name of <see cref="string.Empty"/>.

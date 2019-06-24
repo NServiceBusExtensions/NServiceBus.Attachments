@@ -52,7 +52,8 @@ namespace NServiceBus.Attachments
                 new MockAttachment
                 {
                     Bytes = bytes,
-                    Metadata = BuildMetadata(metadata)
+                    Metadata = BuildMetadata(metadata),
+                    Expiry = DateTime.UtcNow.AddDays(10)
                 });
         }
 
@@ -80,7 +81,8 @@ namespace NServiceBus.Attachments
                 new MockAttachment
                 {
                     Bytes = bytes,
-                    Metadata = BuildMetadata(metadata)
+                    Metadata = BuildMetadata(metadata),
+                    Expiry = DateTime.UtcNow.AddDays(10)
                 });
         }
 

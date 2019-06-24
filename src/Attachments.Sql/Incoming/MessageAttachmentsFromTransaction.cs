@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
@@ -164,5 +165,11 @@ class MessageAttachmentsFromTransaction :
     {
         var connection = await GetConnection();
         return await persister.GetStream(messageId, name, connection, null, true, cancellation);
+    }
+
+    public async Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+    {
+        var connection = await GetConnection();
+        return await persister.ReadAllMessageInfo(connection, null, messageId, cancellation);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,11 +63,19 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
+        /// Read all attachment metadata for the current message.
+        /// </summary>
+        public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+        {
+            return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(new List<AttachmentInfo>());
+        }
+
+        /// <summary>
         /// <see cref="IMessageAttachments.GetBytes(CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
         {
-            return Task.FromResult< AttachmentBytes>(null);
+            return Task.FromResult<AttachmentBytes>(null);
         }
 
         /// <summary>
