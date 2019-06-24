@@ -24,7 +24,7 @@ namespace NServiceBus.Attachments
         string messageId;
 
         /// <summary>
-        ///Instantiate a new instance of <see cref="StubMessageAttachments"/>.
+        /// Instantiate a new instance of <see cref="StubMessageAttachments"/>.
         /// </summary>
         public StubMessageAttachments()
         {
@@ -32,10 +32,11 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        ///Instantiate a new instance of <see cref="StubMessageAttachments"/>.
+        /// Instantiate a new instance of <see cref="StubMessageAttachments"/>.
         /// </summary>
         public StubMessageAttachments(string messageId)
         {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             this.messageId = messageId;
         }
 
