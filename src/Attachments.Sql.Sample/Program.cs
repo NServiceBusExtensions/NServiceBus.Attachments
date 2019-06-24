@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
@@ -37,18 +36,7 @@ class Program
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var attachments = sendOptions.Attachments();
-        attachments.Add(
-            name: "foo",
-            streamFactory: () =>
-            {
-                var stream = new MemoryStream();
-                var streamWriter = new StreamWriter(stream);
-                streamWriter.Write("content");
-                streamWriter.Flush();
-                stream.Position = 0;
-                return Task.FromResult<Stream>(stream);
-            });
-
+        attachments.AddString(name: "foo", value: "content");
         await endpoint.Send(new SendMessage(), sendOptions);
     }
 }

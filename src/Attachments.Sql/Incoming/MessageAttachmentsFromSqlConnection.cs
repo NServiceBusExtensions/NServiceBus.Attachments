@@ -55,6 +55,16 @@ class MessageAttachmentsFromSqlConnection :
         return persister.GetBytes(messageId, name, connection, null, cancellation);
     }
 
+    public Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, "default", connection, null, cancellation);
+    }
+
+    public Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, name, connection, null, cancellation);
+    }
+
     public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
         return persister.GetStream(messageId, "default", connection, null, false, cancellation);
@@ -90,14 +100,24 @@ class MessageAttachmentsFromSqlConnection :
         return persister.ProcessStreams(messageId, connection, null, action, cancellation);
     }
 
-    public async Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
     {
-        return await persister.GetBytes(messageId, "default", connection, null, cancellation);
+        return persister.GetBytes(messageId, "default", connection, null, cancellation);
     }
 
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, name, connection, null, cancellation);
+    }
+
+    public Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, "default", connection, null, cancellation);
+    }
+
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, name, connection, null, cancellation);
     }
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)

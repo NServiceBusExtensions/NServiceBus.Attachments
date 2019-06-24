@@ -19,6 +19,7 @@ namespace NServiceBus.Attachments
         public Func<Task<byte[]>> AsyncBytesFactory;
         public Func<byte[]> BytesFactory;
         public byte[] BytesInstance;
+        public string StringInstance;
         public GetTimeToKeep TimeToKeep;
         public Action Cleanup;
         public IReadOnlyDictionary<string, string> Metadata;

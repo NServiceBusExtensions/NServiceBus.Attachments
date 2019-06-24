@@ -87,6 +87,22 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
+        /// <see cref="IMessageAttachments.GetString(CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetString(CancellationToken cancellation = default)
+        {
+            return Task.FromResult<AttachmentString>(null);
+        }
+
+        /// <summary>
+        /// <see cref="IMessageAttachments.GetString(string,CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+        {
+            return Task.FromResult<AttachmentString>(null);
+        }
+
+        /// <summary>
         /// <see cref="IMessageAttachments.CopyToForMessage(string,string,Stream,CancellationToken)"/>
         /// </summary>
         public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
@@ -140,6 +156,22 @@ namespace NServiceBus.Attachments
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
             return Task.FromResult<AttachmentBytes>(null);
+        }
+
+        /// <summary>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string,CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+        {
+            return Task.FromResult<AttachmentString>(null);
+        }
+
+        /// <summary>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string,string,CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+        {
+            return Task.FromResult<AttachmentString>(null);
         }
     }
 }

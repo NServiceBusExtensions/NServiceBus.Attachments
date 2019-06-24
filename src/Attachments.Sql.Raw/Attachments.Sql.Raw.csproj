@@ -24,6 +24,7 @@
     <Compile Include="..\Shared\AttachmentInfo.cs" />
     <Compile Include="..\Shared\MetadataSerializer.cs" />
     <Compile Include="..\Shared\Incoming\AttachmentStream.cs" />
+    <Compile Include="..\Shared\Incoming\AttachmentString.cs" />
     <Compile Include="..\Shared\Incoming\AttachmentBytes.cs" />
     <Compile Include="..\Shared\Guard.cs" />
   </ItemGroup>

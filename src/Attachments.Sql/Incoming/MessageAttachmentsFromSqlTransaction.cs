@@ -55,6 +55,16 @@ class MessageAttachmentsFromSqlTransaction :
         return persister.GetBytes(messageId, name, transaction.Connection, transaction, cancellation);
     }
 
+    public Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, "default", transaction.Connection, transaction, cancellation);
+    }
+
+    public Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, name, transaction.Connection, transaction, cancellation);
+    }
+
     public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
         return persister.GetStream(messageId, "default", transaction.Connection, transaction, false, cancellation);
@@ -98,6 +108,16 @@ class MessageAttachmentsFromSqlTransaction :
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, name, transaction.Connection, transaction, cancellation);
+    }
+
+    public Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, "default", transaction.Connection, transaction, cancellation);
+    }
+
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, name, transaction.Connection, transaction, cancellation);
     }
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)

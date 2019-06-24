@@ -172,6 +172,20 @@ public class PersisterTests :
     }
 
     [Fact]
+    public async Task SaveString()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", metadata);
+            var result = await persister.ReadAllInfo(connection, null);
+            Assert.NotNull(result);
+            ObjectApprover.VerifyWithJson(result);
+        }
+    }
+
+    [Fact]
     public async Task DuplicateAll()
     {
         using (var connection = Connection.OpenConnection())

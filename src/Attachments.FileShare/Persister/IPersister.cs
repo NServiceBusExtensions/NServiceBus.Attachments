@@ -27,6 +27,12 @@ namespace NServiceBus.Attachments.FileShare
         Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Saves <paramref name="value"/> as an attachment.
+        /// </summary>
+        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        Task SaveString(string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
         IEnumerable<AttachmentInfo> ReadAllInfo();
@@ -75,6 +81,11 @@ namespace NServiceBus.Attachments.FileShare
         /// Reads a byte array for an attachment.
         /// </summary>
         Task<AttachmentBytes> GetBytes(string messageId, string name, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads a string for an attachment.
+        /// </summary>
+        Task<AttachmentString> GetString(string messageId, string name, CancellationToken cancellation = default);
 
         /// <summary>
         /// Returns an open stream pointing to an attachment.

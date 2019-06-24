@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ static class FileHelpers
 {
     static FileOptions fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
     static int bufferSize = 1024 * 64;
-    public static Stream OpenWrite(string path)
+    public static FileStream OpenWrite(string path)
     {
         return new FileStream(
             path: path,
@@ -15,6 +16,11 @@ static class FileHelpers
             share: FileShare.None,
             bufferSize: bufferSize,
             options: fileOptions);
+    }
+
+    public static StreamWriter BuildLeaveOpenWriter(this Stream input)
+    {
+        return new StreamWriter(input, Encoding.UTF8, 1024, leaveOpen: true);
     }
 
     public static void PurgeDirectory(string directory)

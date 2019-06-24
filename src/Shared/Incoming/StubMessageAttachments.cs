@@ -88,6 +88,23 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
+        /// <see cref="IMessageAttachments.GetString(CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetString(CancellationToken cancellation = default)
+        {
+            return GetString("default", cancellation);
+        }
+
+        /// <summary>
+        /// <see cref="IMessageAttachments.GetString(string,CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+        {
+            var attachment = GetCurrentMessageAttachment(name);
+            return Task.FromResult(attachment.ToAttachmentString());
+        }
+
+        /// <summary>
         /// <see cref="IMessageAttachments.GetBytes(CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
@@ -170,6 +187,14 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string,CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+        {
+            return GetStringForMessage(messageId, "default", cancellation);
+        }
+
+        /// <summary>
         /// Read all attachment metadata for the current message.
         /// </summary>
         public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
@@ -190,6 +215,15 @@ namespace NServiceBus.Attachments
         {
             var attachment = GetAttachmentForMessage(messageId, name);
             return Task.FromResult(attachment.ToAttachmentBytes());
+        }
+
+        /// <summary>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string,string,CancellationToken)"/>
+        /// </summary>
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+        {
+            var attachment = GetAttachmentForMessage(messageId, name);
+            return Task.FromResult(attachment.ToAttachmentString());
         }
 
         void CopyCurrentMessageAttachmentToStream(string name, Stream target)

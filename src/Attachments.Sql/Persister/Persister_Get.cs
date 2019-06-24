@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +11,30 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
+        /// <summary>
+        /// Reads a string for an attachment.
+        /// </summary>
+        public virtual async Task<AttachmentString> GetString(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstLongAttachmentName(name);
+            Guard.AgainstNull(connection, nameof(connection));
+            using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
+            using (var reader = await command.ExecuteSequentialReader(cancellation))
+            {
+                if (await reader.ReadAsync(cancellation))
+                {
+                    var metadataString = reader.GetStringOrNull(1);
+                    var metadata = MetadataSerializer.Deserialize(metadataString);
+                    //TODO: read string directly
+                    var bytes = (byte[]) reader[2];
+                    return new AttachmentString(Encoding.UTF8.GetString(bytes), metadata);
+                }
+            }
+
+            throw ThrowNotFound(messageId, name);
+        }
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>

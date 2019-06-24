@@ -10,18 +10,18 @@ class MyHandler :
     {
         Console.WriteLine("Hello from MyHandler. SendMessage");
         var incomingAttachments = context.Attachments();
-        var attachment = await incomingAttachments.GetStream("foo");
+        var attachment = await incomingAttachments.GetString("foo");
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var outgoingAttachments = sendOptions.Attachments();
-        outgoingAttachments.Add("bar", attachment);
+        outgoingAttachments.AddString("bar", attachment);
         await context.Send(new ReplyMessage(), sendOptions);
     }
 
     public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
     {
         var incomingAttachments = context.Attachments();
-        var attachment = await incomingAttachments.GetBytes("bar");
-        Console.WriteLine($"Hello from MyHandler. ReplyMessage. bytes: {attachment.Bytes.Length}");
+        var attachment = await incomingAttachments.GetString("bar");
+        Console.WriteLine($"Hello from MyHandler. ReplyMessage. {attachment.Value}");
     }
 }

@@ -129,6 +129,19 @@ class OutgoingAttachments :
         });
     }
 
+    public void AddString(string name, string value, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+    {
+        Guard.AgainstNull(name, nameof(name));
+        Guard.AgainstNull(value, nameof(value));
+        Inner.Add(name, new Outgoing
+        {
+            StringInstance = value,
+            TimeToKeep = timeToKeep,
+            Cleanup = cleanup.WrapCleanupInCheck(name),
+            Metadata = metadata
+        });
+    }
+
     public void AddBytes(Func<Task<byte[]>> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
     {
         AddBytes("default", bytesFactory, timeToKeep, cleanup, metadata);

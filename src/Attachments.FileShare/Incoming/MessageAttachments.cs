@@ -48,6 +48,16 @@ class MessageAttachments :
         return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(persister.ReadAllMessageInfo(messageId).ToList());
     }
 
+    public Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, "default", cancellation);
+    }
+
+    public Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, name, cancellation);
+    }
+
     public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, "default", cancellation);
@@ -101,6 +111,16 @@ class MessageAttachments :
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         return persister.GetBytes(messageId, name, cancellation);
+    }
+
+    public Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, "default", cancellation);
+    }
+
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    {
+        return persister.GetString(messageId, name, cancellation);
     }
 
     public AttachmentStream GetStreamForMessage(string messageId)

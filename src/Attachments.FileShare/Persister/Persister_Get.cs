@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.FileShare
@@ -21,6 +22,21 @@ namespace NServiceBus.Attachments.FileShare
             var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
             var metadata = ReadMetadata(attachmentDirectory);
             return new AttachmentBytes(bytes, metadata);
+        }
+
+        /// <summary>
+        /// Reads a string for an attachment.
+        /// </summary>
+        public virtual Task<AttachmentString> GetString(string messageId, string name, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNullOrEmpty(name, nameof(name));
+            var attachmentDirectory = GetAttachmentDirectory(messageId, name);
+            var dataFile = GetDataFile(attachmentDirectory);
+            ThrowIfFileNotFound(dataFile, messageId, name);
+            var metadata = ReadMetadata(attachmentDirectory);
+            var attachmentString = new AttachmentString(File.ReadAllText(dataFile), metadata);
+            return Task.FromResult(attachmentString);
         }
 
         /// <summary>

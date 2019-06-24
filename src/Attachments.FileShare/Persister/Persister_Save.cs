@@ -35,7 +35,25 @@ namespace NServiceBus.Attachments.FileShare
             return Save(messageId, name, expiry, metadata, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation));
         }
 
-        async Task Save(string messageId, string name, DateTime expiry, IReadOnlyDictionary<string, string> metadata, Func<Stream, Task> action)
+        /// <summary>
+        /// Saves <paramref name="value"/> as an attachment.
+        /// </summary>
+        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        public virtual Task SaveString(string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string> metadata=null, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstNull(value, nameof(value));
+            return Save(messageId, name, expiry, metadata, async fileStream =>
+            {
+                using (var writer = fileStream.BuildLeaveOpenWriter())
+                {
+                    await writer.WriteLineAsync(value);
+                }
+            });
+        }
+
+        async Task Save(string messageId, string name, DateTime expiry, IReadOnlyDictionary<string, string> metadata, Func<FileStream, Task> action)
         {
             if (name == null)
             {

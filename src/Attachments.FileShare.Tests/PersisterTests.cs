@@ -141,6 +141,14 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
+    public async Task SaveString()
+    {
+        var persister = GetPersister();
+        await persister.SaveString("theMessageId", "theName", defaultTestDate, "foo", metadata);
+        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+    }
+
+    [Fact]
     public async Task DuplicateWithRename()
     {
         var persister = GetPersister();

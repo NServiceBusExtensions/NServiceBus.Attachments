@@ -87,6 +87,22 @@ class MessageAttachmentsFromTransaction :
         }
     }
 
+    public async Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    {
+        using (var connection = await GetConnection())
+        {
+            return await persister.GetString(messageId, "default", connection, null, cancellation);
+        }
+    }
+
+    public async Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    {
+        using (var connection = await GetConnection())
+        {
+            return await persister.GetString(messageId, name, connection, null, cancellation);
+        }
+    }
+
     public async Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
         var connection = await GetConnection();
@@ -152,6 +168,21 @@ class MessageAttachmentsFromTransaction :
         using (var connection = await GetConnection())
         {
             return await persister.GetBytes(messageId, name, connection, null, cancellation);
+        }
+    }
+    public async Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    {
+        using (var connection = await GetConnection())
+        {
+            return await persister.GetString(messageId, "default", connection, null, cancellation);
+        }
+    }
+
+    public async Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    {
+        using (var connection = await GetConnection())
+        {
+            return await persister.GetString(messageId, name, connection, null, cancellation);
         }
     }
 

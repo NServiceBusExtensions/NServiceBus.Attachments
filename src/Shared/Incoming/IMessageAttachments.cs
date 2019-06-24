@@ -62,6 +62,19 @@ namespace NServiceBus.Attachments
         Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Get a <see cref="string"/>, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
+        /// </summary>
+        /// <remarks>
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// </remarks>
+        Task<AttachmentString> GetString(CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Get a <see cref="string"/> array, for the current message, the attachment of <paramref name="name"/>.
+        /// </summary>
+        Task<AttachmentString> GetString(string name, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Copy, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.
         /// </summary>
         Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default);
@@ -101,5 +114,21 @@ namespace NServiceBus.Attachments
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
         Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Get a <see cref="string"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
+        /// </summary>
+        /// <remarks>
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// </remarks>
+        Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Get a <see cref="string"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
+        /// </summary>
+        /// <remarks>
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// </remarks>
+        Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(stream, nameof(stream));
-            return Save(connection, transaction, messageId, name, expiry, stream,metadata, cancellation);
+            return Save(connection, transaction, messageId, name, expiry, stream, metadata, cancellation);
         }
 
         /// <summary>
@@ -38,6 +39,20 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(bytes, nameof(bytes));
             return Save(connection, transaction, messageId, name, expiry, bytes, metadata, cancellation);
+        }
+
+        /// <summary>
+        /// Saves <paramref name="value"/> as an attachment.
+        /// </summary>
+        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        public virtual Task SaveString(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string> metadata = null, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNull(connection, nameof(connection));
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNullOrEmpty(name, nameof(name));
+            Guard.AgainstNull(value, nameof(value));
+            Guard.AgainstLongAttachmentName(name);
+            return Save(connection, transaction, messageId, name, expiry, Encoding.UTF8.GetBytes(value), metadata, cancellation);
         }
 
         async Task Save(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string> metadata = null, CancellationToken cancellation = default)
@@ -65,8 +80,8 @@ values
                 command.AddParameter("MessageId", messageId);
                 command.AddParameter("Name", name);
                 command.AddParameter("Expiry", expiry);
-                command.AddBinary("Data", stream);
                 command.AddParameter("Metadata", MetadataSerializer.Serialize(metadata));
+                command.AddBinary("Data", stream);
 
                 // Send the data to the server asynchronously
                 await command.ExecuteNonQueryAsync(cancellation);

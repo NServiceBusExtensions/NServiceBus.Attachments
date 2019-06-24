@@ -131,6 +131,13 @@ class SendBehavior :
             await persister.SaveBytes(messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata);
             return;
         }
+
+        if (outgoing.StringInstance != null)
+        {
+            await persister.SaveString(messageId, name, expiry, outgoing.StringInstance, outgoing.Metadata);
+            return;
+        }
+
         throw new Exception("No matching way to handle outgoing.");
     }
 }
