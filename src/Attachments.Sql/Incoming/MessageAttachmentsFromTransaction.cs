@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.Transactions;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromTransaction : IMessageAttachments
+class MessageAttachmentsFromTransaction :
+    IMessageAttachments
 {
     Transaction transaction;
     Func<Task<SqlConnection>> connectionFactory;

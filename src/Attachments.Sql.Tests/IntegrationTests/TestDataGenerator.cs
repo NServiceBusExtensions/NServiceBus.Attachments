@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using NServiceBus;
 
-public class TestDataGenerator : IEnumerable<object[]>
+public class TestDataGenerator :
+    IEnumerable<object[]>
 {
     List<TransportTransactionMode> transactionModes = new List<TransportTransactionMode>
     {

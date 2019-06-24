@@ -18,7 +18,8 @@ namespace NServiceBus.Attachments
     /// All members are stubbed out.
     /// </summary>
     /// <seealso cref="MockAttachmentHelper.InjectAttachmentsInstance"/>
-    public partial class StubMessageAttachments : IMessageAttachments
+    public partial class StubMessageAttachments :
+        IMessageAttachments
     {
         /// <summary>
         /// <see cref="IMessageAttachments.CopyTo(string,Stream,CancellationToken)"/>

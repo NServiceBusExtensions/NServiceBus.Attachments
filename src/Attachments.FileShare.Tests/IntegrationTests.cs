@@ -47,7 +47,8 @@ public class IntegrationTests :
         return stream;
     }
 
-    class SendHandler : IHandleMessages<SendMessage>
+    class SendHandler :
+        IHandleMessages<SendMessage>
     {
         public async Task Handle(SendMessage message, IMessageHandlerContext context)
         {
@@ -64,7 +65,8 @@ public class IntegrationTests :
         }
     }
 
-    class ReplyHandler : IHandleMessages<ReplyMessage>
+    class ReplyHandler :
+        IHandleMessages<ReplyMessage>
     {
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
@@ -81,11 +83,13 @@ public class IntegrationTests :
         }
     }
 
-    class SendMessage : IMessage
+    class SendMessage : 
+        IMessage
     {
     }
 
-    class ReplyMessage : IMessage
+    class ReplyMessage :
+        IMessage
     {
     }
 

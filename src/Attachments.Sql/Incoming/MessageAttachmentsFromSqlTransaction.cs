@@ -5,7 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromSqlTransaction : IMessageAttachments
+class MessageAttachmentsFromSqlTransaction :
+    IMessageAttachments
 {
     SqlTransaction transaction;
     string messageId;

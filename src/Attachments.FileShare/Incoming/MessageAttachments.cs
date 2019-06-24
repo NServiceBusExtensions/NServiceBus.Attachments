@@ -4,7 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
 
-class MessageAttachments : IMessageAttachments
+class MessageAttachments :
+    IMessageAttachments
 {
     string messageId;
     IPersister persister;

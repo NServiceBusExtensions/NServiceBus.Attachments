@@ -32,7 +32,8 @@ public class IncomingWhenNotEnabledTests :
         Approvals.Verify(exception.Message);
     }
 
-    class Handler : IHandleMessages<SendMessage>
+    class Handler :
+        IHandleMessages<SendMessage>
     {
         public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
@@ -53,7 +54,8 @@ public class IncomingWhenNotEnabledTests :
         }
     }
 
-    class SendMessage : IMessage
+    class SendMessage :
+        IMessage
     {
     }
 

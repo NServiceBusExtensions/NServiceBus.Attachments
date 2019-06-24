@@ -70,7 +70,8 @@ public class AttachmentCleanerTests
         }
     }
 
-    class FakeTimer : IAsyncTimer
+    class FakeTimer :
+        IAsyncTimer
     {
         public Task Tick(DateTime utcTime, CancellationToken token)
         {

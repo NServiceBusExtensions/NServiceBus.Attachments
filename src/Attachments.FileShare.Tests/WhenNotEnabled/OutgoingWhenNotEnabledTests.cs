@@ -41,7 +41,8 @@ public class OutgoingWhenNotEnabledTests :
         return stream;
     }
 
-    class SendMessage : IMessage
+    class SendMessage :
+        IMessage
     {
     }
 

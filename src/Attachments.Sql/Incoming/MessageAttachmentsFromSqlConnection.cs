@@ -5,7 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromSqlConnection : IMessageAttachments
+class MessageAttachmentsFromSqlConnection :
+    IMessageAttachments
 {
     SqlConnection connection;
     string messageId;

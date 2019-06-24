@@ -8,7 +8,8 @@ namespace NServiceBus.Attachments.Sql
     /// <summary>
     /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
     /// </summary>
-    public partial class Persister : IPersister
+    public partial class Persister :
+        IPersister
     {
         Table table;
 

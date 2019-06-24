@@ -29,7 +29,8 @@ public class TestingTests :
         Assert.True(attachments.HasPendingAttachments);
     }
 
-    public class OutgoingAttachmentsHandler : IHandleMessages<AMessage>
+    public class OutgoingAttachmentsHandler :
+        IHandleMessages<AMessage>
     {
         public Task Handle(AMessage message, IMessageHandlerContext context)
         {
@@ -62,7 +63,8 @@ public class TestingTests :
         public bool GetBytesWasCalled { get; private set; }
     }
 
-    public class IncomingAttachmentHandler : IHandleMessages<AMessage>
+    public class IncomingAttachmentHandler :
+        IHandleMessages<AMessage>
     {
         public async Task Handle(AMessage message, IMessageHandlerContext context)
         {

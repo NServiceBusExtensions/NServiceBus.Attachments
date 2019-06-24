@@ -12,7 +12,8 @@ using NServiceBus.Attachments.Sql;
 using NServiceBus.Attachments;
 #endif
 
-class OutgoingAttachments : IOutgoingAttachments
+class OutgoingAttachments :
+    IOutgoingAttachments
 {
     public Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
 

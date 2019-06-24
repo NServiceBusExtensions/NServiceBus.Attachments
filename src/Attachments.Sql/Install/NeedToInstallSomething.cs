@@ -3,7 +3,8 @@ using NServiceBus.Attachments.Sql;
 using NServiceBus.Installation;
 using NServiceBus.Settings;
 
-class NeedToInstallSomething : INeedToInstallSomething
+class NeedToInstallSomething :
+    INeedToInstallSomething
 {
     AttachmentSettings settings;
 
