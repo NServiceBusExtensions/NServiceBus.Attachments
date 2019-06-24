@@ -73,6 +73,11 @@ namespace NServiceBus.Attachments.Sql
         Task Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Copies an attachment to a different message.
+        /// </summary>
+        Task Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction transaction, string targetMessageId, string targetName, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Copies all attachments to a different message.
         /// </summary>
         Task Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default);

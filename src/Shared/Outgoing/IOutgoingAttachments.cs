@@ -109,5 +109,10 @@ namespace NServiceBus.Attachments
         /// Duplicates the incoming attachments to the current outgoing pipeline.
         /// </summary>
         void DuplicateIncoming();
+
+        /// <summary>
+        /// Duplicates the incoming attachments to the current outgoing pipeline.
+        /// </summary>
+        void DuplicateIncoming(string fromName, string toName);
     }
 }

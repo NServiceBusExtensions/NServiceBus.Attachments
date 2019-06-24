@@ -141,12 +141,21 @@ public class PersisterTests : TestBase
     }
 
     [Fact]
+    public async Task DuplicateWithRename()
+    {
+        var persister = GetPersister();
+        await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
+        await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId", "theName2");
+        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+    }
+
+    [Fact]
     public async Task Duplicate()
     {
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        await persister.Duplicate("theSourceMessageId", "theName1","theTargetMessageId");
+        await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId");
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 
@@ -156,7 +165,7 @@ public class PersisterTests : TestBase
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        await persister.Duplicate("theSourceMessageId","theTargetMessageId");
+        await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 

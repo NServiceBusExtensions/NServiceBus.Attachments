@@ -62,6 +62,11 @@ namespace NServiceBus.Attachments.FileShare
         Task Duplicate(string sourceMessageId, string name, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Copies an attachment to a different message.
+        /// </summary>
+        Task Duplicate(string sourceMessageId, string name, string targetMessageId, string targetName, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Copies attachments to a different message.
         /// </summary>
         Task Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default);

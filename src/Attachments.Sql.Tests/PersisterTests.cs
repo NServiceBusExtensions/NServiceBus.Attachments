@@ -202,6 +202,20 @@ public class PersisterTests :
     }
 
     [Fact]
+    public async Task DuplicateWithRename()
+    {
+        using (var connection = Connection.OpenConnection())
+        {
+            await Installer.CreateTable(connection, "MessageAttachments");
+            await persister.DeleteAllAttachments(connection, null);
+            await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
+            await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId","theName2");
+            var result = await persister.ReadAllInfo(connection, null);
+            ObjectApprover.VerifyWithJson(result);
+        }
+    }
+
+    [Fact]
     public async Task ReadAllMessageInfo()
     {
         using (var connection = Connection.OpenConnection())

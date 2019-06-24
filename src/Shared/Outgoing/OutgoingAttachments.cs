@@ -16,8 +16,12 @@ class OutgoingAttachments :
     IOutgoingAttachments
 {
     public Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
+    public List<(string from, string to)> Duplicates = new List<(string from, string to)>();
 
-    public bool HasPendingAttachments => Inner.Any() || DuplicateIncomingAttachments;
+    public bool HasPendingAttachments => Inner.Any() ||
+                                         DuplicateIncomingAttachments ||
+                                         Duplicates.Any();
+
     public bool DuplicateIncomingAttachments;
 
     public IReadOnlyList<string> Names => Inner.Keys.ToList();
@@ -91,6 +95,12 @@ class OutgoingAttachments :
     public void DuplicateIncoming()
     {
         DuplicateIncomingAttachments = true;
+    }
+
+    public void DuplicateIncoming(string incomingName, string outgoingName=null)
+    {
+        Guard.AgainstNull(incomingName, nameof(incomingName));
+        Duplicates.Add((incomingName, outgoingName));
     }
 
     public void AddBytes(string name, Func<byte[]> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)

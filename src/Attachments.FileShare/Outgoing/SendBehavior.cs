@@ -35,7 +35,7 @@ class SendBehavior :
         var outgoingAttachments = (OutgoingAttachments) attachments;
         var inner = outgoingAttachments.Inner;
         var duplicateIncoming = outgoingAttachments.DuplicateIncomingAttachments;
-        if (inner.Count == 0 && !duplicateIncoming)
+        if (!outgoingAttachments.HasPendingAttachments)
         {
             return Task.CompletedTask;
         }
@@ -52,12 +52,19 @@ class SendBehavior :
             .ToList();
         if (duplicateIncoming)
         {
-            if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
-            {
-                throw new Exception("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
-            }
+            tasks.Add(persister.Duplicate(context.IncomingMessageId(), context.MessageId));
+        }
 
-            tasks.Add(persister.Duplicate(incomingMessage.MessageId, context.MessageId));
+        foreach (var duplicate in outgoingAttachments.Duplicates)
+        {
+            if (duplicate.to == null)
+            {
+                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.from, context.MessageId));
+            }
+            else
+            {
+                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.from, context.MessageId, duplicate.to));
+            }
         }
         return Task.WhenAll(tasks);
     }

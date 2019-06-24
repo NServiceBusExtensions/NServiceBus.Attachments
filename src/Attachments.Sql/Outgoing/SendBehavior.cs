@@ -36,9 +36,7 @@ class SendBehavior :
         }
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
-        var inner = outgoingAttachments.Inner;
-        var duplicateIncoming = outgoingAttachments.DuplicateIncomingAttachments;
-        if (inner.Count == 0 && !duplicateIncoming)
+        if (!outgoingAttachments.HasPendingAttachments)
         {
             return;
         }
@@ -52,7 +50,7 @@ class SendBehavior :
                 using (var sqlConnection = await state.GetConnection())
                 {
                     sqlConnection.EnlistTransaction(state.Transaction);
-                    await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, duplicateIncoming, context);
+                    await ProcessOutgoing(timeToBeReceived, sqlConnection, null, context, outgoingAttachments);
                 }
 
                 return;
@@ -60,19 +58,19 @@ class SendBehavior :
 
             if (state.SqlTransaction != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, duplicateIncoming, context);
+                await ProcessOutgoing(timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, context, outgoingAttachments);
                 return;
             }
 
             if (state.SqlConnection != null)
             {
-                await ProcessOutgoing(inner, timeToBeReceived, state.SqlConnection, null, duplicateIncoming, context);
+                await ProcessOutgoing(timeToBeReceived, state.SqlConnection, null, context, outgoingAttachments);
                 return;
             }
 
             using (var sqlConnection = await state.GetConnection())
             {
-                await ProcessOutgoing(inner, timeToBeReceived, sqlConnection, null, duplicateIncoming, context);
+                await ProcessOutgoing(timeToBeReceived, sqlConnection, null, context, outgoingAttachments);
             }
 
             return;
@@ -88,17 +86,18 @@ class SendBehavior :
 
             using (var sqlTransaction = connection.BeginTransaction())
             {
-                await ProcessOutgoing(inner, timeToBeReceived, connection, sqlTransaction, duplicateIncoming, context);
+                await ProcessOutgoing(timeToBeReceived, connection, sqlTransaction, context, outgoingAttachments);
                 sqlTransaction.Commit();
             }
         }
     }
 
-    Task ProcessOutgoing(Dictionary<string, Outgoing> attachments, TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, bool duplicateIncoming, IOutgoingLogicalMessageContext context)
+    Task ProcessOutgoing(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
-        var tasks = attachments.Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, pair.Value, pair.Key))
+        var tasks = outgoingAttachments.Inner
+            .Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, pair.Value, pair.Key))
             .ToList();
-        if (duplicateIncoming)
+        if (outgoingAttachments.DuplicateIncomingAttachments)
         {
             if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
             {
@@ -107,6 +106,19 @@ class SendBehavior :
 
             tasks.Add(persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId));
         }
+
+        foreach (var duplicate in outgoingAttachments.Duplicates)
+        {
+            if (duplicate.to == null)
+            {
+                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.from, connection, transaction, context.MessageId));
+            }
+            else
+            {
+                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.from, connection, transaction, context.MessageId, duplicate.to));
+            }
+        }
+
         return Task.WhenAll(tasks);
     }
 
