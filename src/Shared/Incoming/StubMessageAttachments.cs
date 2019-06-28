@@ -41,7 +41,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.CopyTo(string,Stream,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.CopyTo(string, Stream, CancellationToken)"/>
         /// </summary>
         public virtual Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
         {
@@ -58,7 +58,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(string,Func{AttachmentStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(string, Func{AttachmentStream, Task}, CancellationToken)"/>
         /// </summary>
         public virtual Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
@@ -66,7 +66,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(Func{AttachmentStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStream(Func{AttachmentStream, Task}, CancellationToken)"/>
         /// </summary>
         public virtual Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
@@ -96,7 +96,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetString(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetString(string ,CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
         {
@@ -113,7 +113,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetBytes(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetBytes(string, CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
         {
@@ -122,7 +122,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.CopyToForMessage(string,string,Stream,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.CopyToForMessage(string, string, Stream, CancellationToken)"/>
         /// </summary>
         public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
         {
@@ -136,7 +136,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.CopyToForMessage(string,Stream,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.CopyToForMessage(string, Stream, CancellationToken)"/>
         /// </summary>
         public virtual Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
         {
@@ -144,7 +144,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{AttachmentStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string, string, Func{AttachmentStream, Task}, CancellationToken)"/>
         /// </summary>
         public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
@@ -156,7 +156,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{AttachmentStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string, Func{AttachmentStream, Task}, CancellationToken)"/>
         /// </summary>
         public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
@@ -164,7 +164,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, AttachmentStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string, Func{string, AttachmentStream, Task}, CancellationToken)"/>
         /// </summary>
         public virtual async Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
@@ -179,7 +179,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetBytesForMessage(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetBytesForMessage(string, CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
         {
@@ -187,7 +187,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStringForMessage(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string, CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
         {
@@ -209,7 +209,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetBytesForMessage(string,string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetBytesForMessage(string, string, CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
@@ -218,7 +218,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStringForMessage(string,string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string, string, CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
