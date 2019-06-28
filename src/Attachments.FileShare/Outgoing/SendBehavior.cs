@@ -57,13 +57,13 @@ class SendBehavior :
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
-            if (duplicate.to == null)
+            if (duplicate.To == null)
             {
-                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.from, context.MessageId));
+                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId));
             }
             else
             {
-                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.from, context.MessageId, duplicate.to));
+                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To));
             }
         }
         return Task.WhenAll(tasks);
