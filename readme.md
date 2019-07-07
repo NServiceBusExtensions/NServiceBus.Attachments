@@ -37,8 +37,6 @@ https://docs.particular.net/nuget/NServiceBus.Attachments.Sql
 
 https://nuget.org/packages/NServiceBus.Attachments.Sql/
 
-    PM> Install-Package NServiceBus.Attachments.Sql
-
 
 ## FileShare
 
@@ -52,9 +50,7 @@ https://docs.particular.net/nuget/NServiceBus.Attachments.FileShare
 
 https://nuget.org/packages/NServiceBus.Attachments.FileShare/
 
-    PM> Install-Package NServiceBus.Attachments.FileShare
-
 
 ## Icon
 
-<a href="http://thenounproject.com/term/gecko/258949/" target="_blank">Gecko</a> designed by Alex Podolsky from <a href="http://thenounproject.com/" target="_blank">The Noun Project</a>
+[Gecko](http://thenounproject.com/term/gecko/258949/) designed by Alex Podolsky from [The Noun Project](http://thenounproject.com/).
