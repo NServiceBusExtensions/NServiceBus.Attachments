@@ -87,6 +87,14 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
+        void AddString(string value, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null);
+
+        /// <summary>
+        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// </summary>
+        /// <remarks>
+        /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+        /// </remarks>
         void AddBytes(Func<Task<byte[]>> bytesFactory, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null);
 
         /// <summary>

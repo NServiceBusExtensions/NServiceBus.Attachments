@@ -129,6 +129,11 @@ class OutgoingAttachments :
         });
     }
 
+    public void AddString(string value, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+    {
+        AddString("default", value, timeToKeep, cleanup, metadata);
+    }
+
     public void AddString(string name, string value, GetTimeToKeep timeToKeep = null, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
     {
         Guard.AgainstNull(name, nameof(name));
