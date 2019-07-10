@@ -13,19 +13,14 @@ namespace NServiceBus.Attachments
 {
     class Outgoing
     {
-        [NonSerialized]
         public Func<Task<Stream>> AsyncStreamFactory;
-        [NonSerialized]
         public Func<Stream> StreamFactory;
         public Stream StreamInstance;
-        [NonSerialized]
         public Func<Task<byte[]>> AsyncBytesFactory;
-        [NonSerialized]
         public Func<byte[]> BytesFactory;
         public byte[] BytesInstance;
         public string StringInstance;
         public GetTimeToKeep TimeToKeep;
-        [NonSerialized]
         public Action Cleanup;
         public IReadOnlyDictionary<string, string> Metadata;
     }
