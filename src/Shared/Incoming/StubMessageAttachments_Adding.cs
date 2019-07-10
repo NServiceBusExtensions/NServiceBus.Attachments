@@ -86,7 +86,7 @@ namespace NServiceBus.Attachments
                 });
         }
 
-        IReadOnlyDictionary<string, string> BuildMetadata(IDictionary<string, string> metadata)
+        static IReadOnlyDictionary<string, string> BuildMetadata(IDictionary<string, string> metadata)
         {
             if (metadata == null)
             {

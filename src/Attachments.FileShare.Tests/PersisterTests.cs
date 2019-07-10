@@ -187,7 +187,7 @@ public class PersisterTests : TestBase
         ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
     }
 
-    Stream GetStream(byte content = 5)
+    static Stream GetStream(byte content = 5)
     {
         var stream = new MemoryStream();
         stream.WriteByte(content);
