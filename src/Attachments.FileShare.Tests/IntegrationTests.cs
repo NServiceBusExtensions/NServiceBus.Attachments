@@ -83,7 +83,7 @@ public class IntegrationTests :
         }
     }
 
-    class SendMessage : 
+    class SendMessage :
         IMessage
     {
     }
