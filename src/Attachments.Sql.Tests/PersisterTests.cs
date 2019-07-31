@@ -153,7 +153,7 @@ public class PersisterTests :
             await persister.DeleteAllAttachments(connection, null);
             await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
             var result = await persister.ReadAllInfo(connection, null);
-            ObjectApprover.VerifyWithJson(result);
+            ObjectApprover.Verify(result);
         }
     }
 
@@ -167,7 +167,7 @@ public class PersisterTests :
             await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
             var result = await  persister.ReadAllInfo(connection, null);
             Assert.NotNull(result);
-            ObjectApprover.VerifyWithJson(result);
+            ObjectApprover.Verify(result);
         }
     }
 
@@ -181,7 +181,7 @@ public class PersisterTests :
             await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", metadata);
             var result = await persister.ReadAllInfo(connection, null);
             Assert.NotNull(result);
-            ObjectApprover.VerifyWithJson(result);
+            ObjectApprover.Verify(result);
         }
     }
 
@@ -196,7 +196,7 @@ public class PersisterTests :
             await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
             await persister.Duplicate("theSourceMessageId", connection, null, "theTargetMessageId");
             var result = await persister.ReadAllInfo(connection, null);
-            ObjectApprover.VerifyWithJson(result);
+            ObjectApprover.Verify(result);
         }
     }
 
@@ -211,7 +211,7 @@ public class PersisterTests :
             await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
             await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId");
             var result = await persister.ReadAllInfo(connection, null);
-            ObjectApprover.VerifyWithJson(result);
+            ObjectApprover.Verify(result);
         }
     }
 
@@ -225,7 +225,7 @@ public class PersisterTests :
             await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
             await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId","theName2");
             var result = await persister.ReadAllInfo(connection, null);
-            ObjectApprover.VerifyWithJson(result);
+            ObjectApprover.Verify(result);
         }
     }
 
@@ -246,7 +246,7 @@ public class PersisterTests :
                     return Task.CompletedTask;
                 });
             Assert.NotNull(list);
-            ObjectApprover.VerifyWithJson(list);
+            ObjectApprover.Verify(list);
         }
     }
 
@@ -262,7 +262,7 @@ public class PersisterTests :
             await persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1));
             var result = await persister.ReadAllInfo(connection, null);
             Assert.NotNull(result);
-            ObjectApprover.VerifyWithJson(result);
+            ObjectApprover.Verify(result);
         }
     }
 

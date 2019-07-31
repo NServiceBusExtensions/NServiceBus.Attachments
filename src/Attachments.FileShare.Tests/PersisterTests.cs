@@ -120,7 +120,7 @@ public class PersisterTests : TestBase
             expiry: defaultTestDate,
             stream: GetStream(),
             metadata: metadata);
-        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+        ObjectApprover.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -129,7 +129,7 @@ public class PersisterTests : TestBase
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        ObjectApprover.VerifyWithJson(persister.ReadAllMessageInfo("theMessageId"));
+        ObjectApprover.Verify(persister.ReadAllMessageInfo("theMessageId"));
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         await persister.SaveBytes("theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
-        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+        ObjectApprover.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -145,7 +145,7 @@ public class PersisterTests : TestBase
     {
         var persister = GetPersister();
         await persister.SaveString("theMessageId", "theName", defaultTestDate, "foo", metadata);
-        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+        ObjectApprover.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -154,7 +154,7 @@ public class PersisterTests : TestBase
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId", "theName2");
-        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+        ObjectApprover.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -164,7 +164,7 @@ public class PersisterTests : TestBase
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId");
-        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+        ObjectApprover.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -174,7 +174,7 @@ public class PersisterTests : TestBase
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
-        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+        ObjectApprover.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -184,7 +184,7 @@ public class PersisterTests : TestBase
         await persister.SaveStream("theMessageId1", "theName", defaultTestDate, GetStream());
         await persister.SaveStream("theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
         persister.CleanupItemsOlderThan(new DateTime(2001, 1, 1, 1, 1, 1));
-        ObjectApprover.VerifyWithJson(persister.ReadAllInfo());
+        ObjectApprover.Verify(persister.ReadAllInfo());
     }
 
     static Stream GetStream(byte content = 5)
