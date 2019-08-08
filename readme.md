@@ -1,4 +1,4 @@
-<img src="https://raw.github.com/NServiceBusExtensions/NServiceBus.Attachments/master/src/icon.png" height="25px"> Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
+<img src="/src/icon.png" height="25px"> Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
 
 <!--- StartOpenCollectiveBackers -->
 
@@ -33,9 +33,9 @@ Thanks to all the backing developers! Support this project by [becoming a patron
 https://docs.particular.net/nuget/NServiceBus.Attachments.Sql
 
 
-### The NuGet package [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.Sql.svg)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
+### NuGet package
 
-https://nuget.org/packages/NServiceBus.Attachments.Sql/
+https://nuget.org/packages/NServiceBus.Attachments.Sql/ [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.Sql.svg)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
 
 
 ## FileShare
@@ -46,11 +46,11 @@ https://nuget.org/packages/NServiceBus.Attachments.Sql/
 https://docs.particular.net/nuget/NServiceBus.Attachments.FileShare
 
 
-### The NuGet package [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.FileShare.svg)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
+### NuGet package
 
-https://nuget.org/packages/NServiceBus.Attachments.FileShare/
+https://nuget.org/packages/NServiceBus.Attachments.FileShare/ [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.FileShare.svg)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
 
 
 ## Icon
 
-[Gecko](http://thenounproject.com/term/gecko/258949/) designed by Alex Podolsky from [The Noun Project](http://thenounproject.com/).
+[Gecko](https://thenounproject.com/term/gecko/258949/) designed by [Alex Podolsky](https://thenounproject.com/alphatoster/) from [The Noun Project](https://thenounproject.com/).

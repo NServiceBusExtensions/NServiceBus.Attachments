@@ -15,7 +15,7 @@
     <PackageReference Include="Fody" Version="5.1.1" PrivateAssets="All" />
     <PackageReference Include="NServiceBus" Version="7.1.10" />
     <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.8" PrivateAssets="All" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.9" PrivateAssets="All" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>
