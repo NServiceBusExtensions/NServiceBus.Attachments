@@ -2,9 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <Optimize>false</Optimize>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="4.0.0" />
@@ -18,5 +15,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <ProjectReference Include="..\Attachments.FileShare\Attachments.FileShare.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.8" PrivateAssets="All" />
   </ItemGroup>
 </Project>

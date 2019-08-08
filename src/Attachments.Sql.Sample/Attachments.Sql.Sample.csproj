@@ -6,9 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NServiceBus.SqlServer" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.8" PrivateAssets="All" />
   </ItemGroup>
 </Project>
