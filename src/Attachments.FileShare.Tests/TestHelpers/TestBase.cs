@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using ObjectApproval;
 using Xunit.Abstractions;
+using ObjectApproval;
 
 public class TestBase:
     XunitLoggingBase
