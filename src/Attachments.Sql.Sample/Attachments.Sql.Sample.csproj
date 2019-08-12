@@ -8,6 +8,6 @@
     <PackageReference Include="NServiceBus.SqlServer" Version="4.3.0" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.11" PrivateAssets="All" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.13" PrivateAssets="All" />
   </ItemGroup>
 </Project>
