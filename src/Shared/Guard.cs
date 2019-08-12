@@ -13,6 +13,18 @@ static class Guard
         }
     }
 
+    public static void AgainstEmpty(string value, string argumentName)
+    {
+        if (value == null)
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new ArgumentNullException(argumentName);
+        }
+    }
+
     public static void AgainstNullOrEmpty(string value, string argumentName)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -20,7 +32,6 @@ static class Guard
             throw new ArgumentNullException(argumentName);
         }
     }
-
 
     public static void AgainstLongAttachmentName(string value)
     {
