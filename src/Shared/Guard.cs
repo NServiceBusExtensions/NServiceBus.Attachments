@@ -13,6 +13,15 @@ static class Guard
         }
     }
 
+    public static void FileExists(string path, string argumentName)
+    {
+        AgainstNullOrEmpty(path, argumentName);
+        if (!File.Exists(path))
+        {
+            throw new ArgumentException($"File does not exist: {path}", argumentName);
+        }
+    }
+
     public static void AgainstEmpty(string value, string argumentName)
     {
         if (value == null)
