@@ -25,12 +25,12 @@ class Program
         await endpoint.Stop();
     }
 
-    static async Task SendMessage(IEndpointInstance endpoint)
+    static Task SendMessage(IEndpointInstance endpoint)
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var attachments = sendOptions.Attachments();
         attachments.AddString(name: "foo", value: "content");
-        await endpoint.Send(new MyMessage(), sendOptions);
+        return endpoint.Send(new MyMessage(), sendOptions);
     }
 }
