@@ -7,7 +7,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class OutgoingWhenNotEnabledTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     static OutgoingWhenNotEnabledTests()
     {

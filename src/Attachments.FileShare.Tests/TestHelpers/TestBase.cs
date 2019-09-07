@@ -3,7 +3,7 @@ using Xunit.Abstractions;
 using ObjectApproval;
 
 public class TestBase:
-    XunitLoggingBase
+    XunitApprovalBase
 {
     static TestBase()
     {

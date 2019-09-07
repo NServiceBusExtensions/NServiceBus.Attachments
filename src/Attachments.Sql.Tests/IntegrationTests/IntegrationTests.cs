@@ -13,7 +13,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class IntegrationTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     internal static ManualResetEvent HandlerEvent;
     internal static ManualResetEvent SagaEvent;

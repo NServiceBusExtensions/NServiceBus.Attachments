@@ -7,7 +7,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class PersisterTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
