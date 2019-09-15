@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 using Xunit.Abstractions;
 using ObjectApproval;
 
-public class TestBase:
+public abstract class TestBase :
     XunitApprovalBase
 {
     static TestBase()
@@ -17,8 +18,8 @@ public class TestBase:
         };
     }
 
-    public TestBase(ITestOutputHelper output) :
-        base(output)
+    protected TestBase(ITestOutputHelper output, [CallerFilePath] string sourceFilePath = "") :
+        base(output, sourceFilePath)
     {
     }
 }

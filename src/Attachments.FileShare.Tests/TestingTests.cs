@@ -10,7 +10,8 @@ using NServiceBus.Testing;
 using Xunit;
 using Xunit.Abstractions;
 
-public class TestingTests:TestBase
+public class TestingTests :
+    TestBase
 {
     [Fact]
     public async Task OutgoingAttachments()
@@ -35,7 +36,7 @@ public class TestingTests:TestBase
         {
             var options = new SendOptions();
             var attachments = options.Attachments();
-            attachments.Add("theName",() => File.OpenRead(""));
+            attachments.Add("theName", () => File.OpenRead(""));
             return context.Send(new AMessage(), options);
         }
     }
@@ -56,7 +57,7 @@ public class TestingTests:TestBase
         public override Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
         {
             GetBytesWasCalled = true;
-            return Task.FromResult(new AttachmentBytes(new byte[] { 5 }));
+            return Task.FromResult(new AttachmentBytes(new byte[] {5}));
         }
 
         public bool GetBytesWasCalled { get; private set; }
