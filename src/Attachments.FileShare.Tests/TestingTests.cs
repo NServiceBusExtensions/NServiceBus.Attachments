@@ -78,7 +78,8 @@ public class TestingTests :
     {
     }
 
-    public TestingTests(ITestOutputHelper output) : base(output)
+    public TestingTests(ITestOutputHelper output) :
+        base(output)
     {
     }
 }
