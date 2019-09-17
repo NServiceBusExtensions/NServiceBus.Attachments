@@ -68,9 +68,9 @@ class SendBehavior :
                 return;
             }
 
-            using (var sqlConnection = await state.GetConnection())
+            using (var connection = await state.GetConnection())
             {
-                await ProcessOutgoing(timeToBeReceived, sqlConnection, null, context, outgoingAttachments);
+                await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
             }
 
             return;

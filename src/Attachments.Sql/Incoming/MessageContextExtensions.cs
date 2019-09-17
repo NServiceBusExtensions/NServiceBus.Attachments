@@ -29,11 +29,11 @@ namespace NServiceBus
                 }
                 if (state.DbTransaction != null)
                 {
-                    return new MessageAttachmentsFromSqlTransaction(state.DbTransaction, context.MessageId, state.Persister);
+                    return new MessageAttachmentsFromDbTransaction(state.DbTransaction, context.MessageId, state.Persister);
                 }
                 if (state.DbConnection != null)
                 {
-                    return new MessageAttachmentsFromSqlConnection(state.DbConnection, context.MessageId, state.Persister);
+                    return new MessageAttachmentsFromDbConnection(state.DbConnection, context.MessageId, state.Persister);
                 }
                 return new MessageAttachmentsFromSqlFactory(state.GetConnection, context.MessageId, state.Persister);
             }

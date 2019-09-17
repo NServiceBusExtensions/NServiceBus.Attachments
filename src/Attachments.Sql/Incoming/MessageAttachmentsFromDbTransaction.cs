@@ -6,14 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromSqlTransaction :
+class MessageAttachmentsFromDbTransaction :
     IMessageAttachments
 {
     DbTransaction transaction;
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromSqlTransaction(DbTransaction transaction, string messageId, IPersister persister)
+    public MessageAttachmentsFromDbTransaction(DbTransaction transaction, string messageId, IPersister persister)
     {
         this.transaction = transaction;
         this.messageId = messageId;
