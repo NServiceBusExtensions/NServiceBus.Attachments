@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
 static class SqlExtensions
 {
-    public static string GetStringOrNull(this SqlDataReader dataReader, int index)
+    public static string GetStringOrNull(this IDataReader dataReader, int index)
     {
         if (dataReader.IsDBNull(index))
         {
@@ -16,7 +16,7 @@ static class SqlExtensions
         return dataReader.GetString(index);
     }
 
-    public static void AddParameter(this IDbCommand command, string name, string value)
+    public static void AddParameter(this DbCommand command, string name, string value)
     {
         var parameter = command.CreateParameter();
         parameter.DbType = DbType.String;
@@ -33,7 +33,7 @@ static class SqlExtensions
         command.Parameters.Add(parameter);
     }
 
-    public static void AddBinary(this IDbCommand command, string name, object value)
+    public static void AddBinary(this DbCommand command, string name, object value)
     {
         var parameter = command.CreateParameter();
         parameter.ParameterName = name;
@@ -42,14 +42,18 @@ static class SqlExtensions
         command.Parameters.Add(parameter);
     }
 
-    public static void AddParameter(this SqlCommand command, string name, DateTime value)
+    public static void AddParameter(this DbCommand command, string name, DateTime value)
     {
-        command.Parameters.Add(name, SqlDbType.DateTime2).Value = value;
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = name;
+        parameter.DbType = DbType.DateTime2;
+        parameter.Value = value;
+        command.Parameters.Add(parameter);
     }
 
     // The reader needs to be executed with SequentialAccess to enable network streaming
     // Otherwise ReadAsync will buffer the entire BLOB in memory which can cause scalability issues or OutOfMemoryExceptions
-    public static Task<SqlDataReader> ExecuteSequentialReader(this SqlCommand command, CancellationToken cancellation = default)
+    public static Task<DbDataReader> ExecuteSequentialReader(this DbCommand command, CancellationToken cancellation = default)
     {
         return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellation);
     }

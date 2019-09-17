@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Deletes attachments older than <paramref name="dateTime"/>.
         /// </summary>
-        public virtual async Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime, CancellationToken cancellation = default)
+        public virtual async Task CleanupItemsOlderThan(DbConnection connection, DbTransaction transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())
@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Deletes all items.
         /// </summary>
-        public virtual async Task PurgeItems(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task PurgeItems(DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())
