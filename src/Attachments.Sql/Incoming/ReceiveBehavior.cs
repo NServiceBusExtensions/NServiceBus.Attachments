@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Transactions;
 using NServiceBus.Attachments.Sql;
@@ -58,12 +57,12 @@ class ReceiveBehavior :
                     return new SqlAttachmentState(transaction, connectionBuilder, persister);
                 }
 
-                if (transportTransaction.TryGet<SqlTransaction>(out var sqlTransaction))
+                if (transportTransaction.TryGet<DbTransaction>(out var sqlTransaction))
                 {
                     return new SqlAttachmentState(sqlTransaction, persister);
                 }
 
-                if (transportTransaction.TryGet<SqlConnection>(out var sqlConnection))
+                if (transportTransaction.TryGet<DbConnection>(out var sqlConnection))
                 {
                     return new SqlAttachmentState(sqlConnection, persister);
                 }
