@@ -16,9 +16,9 @@ public class DbSetup
             SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
         }
 
-        using (var sqlConnection = Connection.OpenConnection())
+        using (var connection = Connection.OpenConnection())
         {
-            Installer.CreateTable(sqlConnection, "MessageAttachments").Wait();
+            Installer.CreateTable(connection, "MessageAttachments").Wait();
         }
     }
 }

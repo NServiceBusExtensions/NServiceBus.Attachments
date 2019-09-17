@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,21 +29,21 @@ public static class Connection
 
     public static bool IsUsingEnvironmentVariable;
 
-    public static SqlConnection OpenConnection()
+    public static DbConnection OpenConnection()
     {
         var connection = new SqlConnection(ConnectionString);
         connection.Open();
         return connection;
     }
 
-    public static async Task<SqlConnection> OpenAsyncConnection(CancellationToken cancellation)
+    public static async Task<DbConnection> OpenAsyncConnection(CancellationToken cancellation)
     {
         var connection = new SqlConnection(ConnectionString);
         await connection.OpenAsync(cancellation);
         return connection;
     }
 
-    public static SqlConnection NewConnection()
+    public static DbConnection NewConnection()
     {
         return new SqlConnection(ConnectionString);
     }

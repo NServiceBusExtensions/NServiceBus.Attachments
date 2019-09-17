@@ -47,24 +47,24 @@ class SendBehavior :
         {
             if (state.Transaction != null)
             {
-                using (var sqlConnection = await state.GetConnection())
+                using (var connection = await state.GetConnection())
                 {
-                    sqlConnection.EnlistTransaction(state.Transaction);
-                    await ProcessOutgoing(timeToBeReceived, sqlConnection, null, context, outgoingAttachments);
+                    connection.EnlistTransaction(state.Transaction);
+                    await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
                 }
 
                 return;
             }
 
-            if (state.SqlTransaction != null)
+            if (state.DbTransaction != null)
             {
-                await ProcessOutgoing(timeToBeReceived, state.SqlTransaction.Connection, state.SqlTransaction, context, outgoingAttachments);
+                await ProcessOutgoing(timeToBeReceived, state.DbTransaction.Connection, state.DbTransaction, context, outgoingAttachments);
                 return;
             }
 
-            if (state.SqlConnection != null)
+            if (state.DbConnection != null)
             {
-                await ProcessOutgoing(timeToBeReceived, state.SqlConnection, null, context, outgoingAttachments);
+                await ProcessOutgoing(timeToBeReceived, state.DbConnection, null, context, outgoingAttachments);
                 return;
             }
 

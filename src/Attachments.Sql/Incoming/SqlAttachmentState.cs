@@ -9,18 +9,18 @@ class SqlAttachmentState
     Func<Task<DbConnection>> connectionFactory;
     public IPersister Persister;
     public Transaction Transaction;
-    public DbTransaction SqlTransaction;
-    public DbConnection SqlConnection;
+    public DbTransaction DbTransaction;
+    public DbConnection DbConnection;
 
-    public SqlAttachmentState(DbConnection sqlConnection, IPersister persister)
+    public SqlAttachmentState(DbConnection connection, IPersister persister)
     {
-        SqlConnection = sqlConnection;
+        DbConnection = connection;
         Persister = persister;
     }
 
-    public SqlAttachmentState(DbTransaction sqlTransaction, IPersister persister)
+    public SqlAttachmentState(DbTransaction transaction, IPersister persister)
     {
-        SqlTransaction = sqlTransaction;
+        DbTransaction = transaction;
         Persister = persister;
     }
 

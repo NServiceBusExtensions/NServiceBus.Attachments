@@ -1,4 +1,4 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Common;
 using System.Reflection;
 using NServiceBus.Persistence;
 
@@ -9,7 +9,7 @@ class StorageAccessor
     bool? hasTransactionProperty;
     PropertyInfo transactionProperty;
 
-    public bool TryGetConnection(SynchronizedStorageSession storageSession, out SqlConnection connection)
+    public bool TryGetConnection(SynchronizedStorageSession storageSession, out DbConnection connection)
     {
         if (!hasConnectionProperty.HasValue)
         {
@@ -23,11 +23,11 @@ class StorageAccessor
             return false;
         }
 
-        connection = (SqlConnection) connectionProperty.GetValue(storageSession);
+        connection = (DbConnection) connectionProperty.GetValue(storageSession);
         return connection != null;
     }
 
-    public bool TryGetTransaction(SynchronizedStorageSession storageSession, out SqlTransaction transaction)
+    public bool TryGetTransaction(SynchronizedStorageSession storageSession, out DbTransaction transaction)
     {
         if (!hasTransactionProperty.HasValue)
         {
@@ -41,7 +41,7 @@ class StorageAccessor
             return false;
         }
 
-        transaction = (SqlTransaction) transactionProperty.GetValue(storageSession);
+        transaction = (DbTransaction) transactionProperty.GetValue(storageSession);
         return transaction != null;
     }
 
