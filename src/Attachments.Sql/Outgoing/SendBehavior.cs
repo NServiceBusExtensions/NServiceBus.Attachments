@@ -84,10 +84,10 @@ class SendBehavior :
                 connection.EnlistTransaction(transaction);
             }
 
-            using (var sqlTransaction = connection.BeginTransaction())
+            using (var dbTransaction = connection.BeginTransaction())
             {
-                await ProcessOutgoing(timeToBeReceived, connection, sqlTransaction, context, outgoingAttachments);
-                sqlTransaction.Commit();
+                await ProcessOutgoing(timeToBeReceived, connection, dbTransaction, context, outgoingAttachments);
+                dbTransaction.Commit();
             }
         }
     }
