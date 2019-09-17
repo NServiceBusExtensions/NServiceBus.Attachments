@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -9,13 +10,13 @@ using NServiceBus.Transport;
 class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
-    Func<Task<SqlConnection>> connectionBuilder;
+    Func<Task<DbConnection>> connectionBuilder;
     IPersister persister;
     bool useTransport;
     bool useSynchronizedStorage;
     StorageAccessor storageAccessor;
 
-    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
+    public ReceiveBehavior(Func<Task<DbConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;

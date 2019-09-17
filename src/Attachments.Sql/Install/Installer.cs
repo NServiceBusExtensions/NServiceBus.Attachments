@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Common;
+using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>
-        public static Task CreateTable(SqlConnection connection, CancellationToken cancellation = default)
+        public static Task CreateTable(DbConnection connection, CancellationToken cancellation = default)
         {
             return CreateTable(connection, "MessageAttachments", cancellation);
         }
@@ -45,7 +46,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>
-        public static async Task CreateTable(SqlConnection connection, Table table, CancellationToken cancellation = default)
+        public static async Task CreateTable(DbConnection connection, Table table, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(table, nameof(table));

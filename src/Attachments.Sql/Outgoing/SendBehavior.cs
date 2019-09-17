@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,11 +10,11 @@ using NServiceBus.Pipeline;
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<Task<SqlConnection>> connectionFactory;
+    Func<Task<DbConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Task<DbConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
@@ -92,7 +92,7 @@ class SendBehavior :
         }
     }
 
-    Task ProcessOutgoing(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
+    Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
         var tasks = outgoingAttachments.Inner
             .Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, pair.Value, pair.Key))
@@ -122,7 +122,7 @@ class SendBehavior :
         return Task.WhenAll(tasks);
     }
 
-    async Task ProcessStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)
+    async Task ProcessStream(DbConnection connection, DbTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)
     {
         using (stream)
         {
@@ -130,7 +130,7 @@ class SendBehavior :
         }
     }
 
-    async Task ProcessAttachment(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction transaction, string messageId, Outgoing outgoing, string name)
+    async Task ProcessAttachment(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction transaction, string messageId, Outgoing outgoing, string name)
     {
         var outgoingStreamTimeToKeep = outgoing.TimeToKeep ?? endpointTimeToKeep;
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
@@ -145,7 +145,7 @@ class SendBehavior :
         }
     }
 
-    async Task Process(SqlConnection connection, SqlTransaction transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
+    async Task Process(DbConnection connection, DbTransaction transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
     {
         if (outgoing.AsyncStreamFactory != null)
         {

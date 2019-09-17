@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
@@ -9,9 +9,9 @@ using NServiceBus.Features;
 class PurgeTask: FeatureStartupTask
 {
     IPersister persister;
-    Func<Task<SqlConnection>> connectionFactory;
+    Func<Task<DbConnection>> connectionFactory;
 
-    public PurgeTask(IPersister persister, Func<Task<SqlConnection>> connectionFactory)
+    public PurgeTask(IPersister persister, Func<Task<DbConnection>> connectionFactory)
     {
         this.persister = persister;
         this.connectionFactory = connectionFactory;

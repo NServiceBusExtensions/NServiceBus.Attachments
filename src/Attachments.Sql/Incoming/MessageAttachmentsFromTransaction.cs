@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +11,11 @@ class MessageAttachmentsFromTransaction :
     IMessageAttachments
 {
     Transaction transaction;
-    Func<Task<SqlConnection>> connectionFactory;
+    Func<Task<DbConnection>> connectionFactory;
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromTransaction(Transaction transaction, Func<Task<SqlConnection>> connectionFactory, string messageId, IPersister persister)
+    public MessageAttachmentsFromTransaction(Transaction transaction, Func<Task<DbConnection>> connectionFactory, string messageId, IPersister persister)
     {
         this.transaction = transaction;
         this.connectionFactory = connectionFactory;
@@ -31,7 +31,7 @@ class MessageAttachmentsFromTransaction :
         }
     }
 
-    private async Task<SqlConnection> GetConnection()
+    private async Task<DbConnection> GetConnection()
     {
         var connection = await connectionFactory();
         connection.EnlistTransaction(transaction);
