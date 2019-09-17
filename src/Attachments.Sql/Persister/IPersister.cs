@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,98 +19,98 @@ namespace NServiceBus.Attachments.Sql
         /// Saves <paramref name="stream"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveStream(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
+        Task SaveStream(DbConnection connection, DbTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Saves <paramref name="bytes"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveBytes(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
+        Task SaveBytes(DbConnection connection, DbTransaction transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Saves <paramref name="value"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveString(SqlConnection connection, SqlTransaction transaction, string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
+        Task SaveString(DbConnection connection, DbTransaction transaction, string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string> metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
         /// </summary>
-        Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
+        Task ReadAllMessageInfo(DbConnection connection, DbTransaction transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
         /// </summary>
-        Task<IReadOnlyCollection<AttachmentInfo>> ReadAllMessageInfo(SqlConnection connection, SqlTransaction transaction, string messageId, CancellationToken cancellation = default);
+        Task<IReadOnlyCollection<AttachmentInfo>> ReadAllMessageInfo(DbConnection connection, DbTransaction transaction, string messageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        Task ReadAllInfo(SqlConnection connection, SqlTransaction transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
+        Task ReadAllInfo(DbConnection connection, DbTransaction transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes all attachments.
         /// </summary>
-        Task DeleteAllAttachments(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task DeleteAllAttachments(DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes attachments older than <paramref name="dateTime"/>.
         /// </summary>
-        Task CleanupItemsOlderThan(SqlConnection connection, SqlTransaction transaction, DateTime dateTime, CancellationToken cancellation = default);
+        Task CleanupItemsOlderThan(DbConnection connection, DbTransaction transaction, DateTime dateTime, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes all items.
         /// </summary>
-        Task PurgeItems(SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task PurgeItems(DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copies an attachment to <paramref name="target"/>.
         /// </summary>
-        Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target, CancellationToken cancellation = default);
+        Task CopyTo(string messageId, string name, DbConnection connection, DbTransaction transaction, Stream target, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copies an attachment to a different message.
         /// </summary>
-        Task Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default);
+        Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction transaction, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copies an attachment to a different message.
         /// </summary>
-        Task Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction transaction, string targetMessageId, string targetName, CancellationToken cancellation = default);
+        Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction transaction, string targetMessageId, string targetName, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copies all attachments to a different message.
         /// </summary>
-        Task Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default);
+        Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction transaction, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads a string for an attachment.
         /// </summary>
-        Task<AttachmentString> GetString(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default);
+        Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction,  bool disposeConnectionOnStreamDispose, CancellationToken cancellation);
+        Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction transaction,  bool disposeConnectionOnStreamDispose, CancellationToken cancellation);
 
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
         /// </summary>
-        Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction transaction, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreams(string messageId, DbConnection connection, DbTransaction transaction, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Processes an attachment by passing it to <paramref name="action"/>.
         /// </summary>
-        Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStream(string messageId, string name, DbConnection connection, DbTransaction transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
     }
 }

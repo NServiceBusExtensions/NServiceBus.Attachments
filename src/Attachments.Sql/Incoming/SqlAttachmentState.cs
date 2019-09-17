@@ -1,43 +1,43 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Threading.Tasks;
 using System.Transactions;
 using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState
 {
-    Func<Task<SqlConnection>> connectionFactory;
+    Func<Task<DbConnection>> connectionFactory;
     public IPersister Persister;
     public Transaction Transaction;
-    public SqlTransaction SqlTransaction;
-    public SqlConnection SqlConnection;
+    public DbTransaction DbTransaction;
+    public DbConnection DbConnection;
 
-    public SqlAttachmentState(SqlConnection sqlConnection, IPersister persister)
+    public SqlAttachmentState(DbConnection connection, IPersister persister)
     {
-        SqlConnection = sqlConnection;
+        DbConnection = connection;
         Persister = persister;
     }
 
-    public SqlAttachmentState(SqlTransaction sqlTransaction, IPersister persister)
+    public SqlAttachmentState(DbTransaction transaction, IPersister persister)
     {
-        SqlTransaction = sqlTransaction;
+        DbTransaction = transaction;
         Persister = persister;
     }
 
-    public SqlAttachmentState(Transaction transaction, Func<Task<SqlConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Transaction transaction, Func<Task<DbConnection>> connectionFactory, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         Transaction = transaction;
         Persister = persister;
     }
 
-    public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Func<Task<DbConnection>> connectionFactory, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         Persister = persister;
     }
 
-    public Task<SqlConnection> GetConnection()
+    public Task<DbConnection> GetConnection()
     {
         try
         {

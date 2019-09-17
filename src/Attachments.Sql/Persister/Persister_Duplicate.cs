@@ -1,4 +1,4 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +12,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies attachments to a different message.
         /// </summary>
-        public virtual async Task Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
+        public virtual async Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -26,7 +26,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies an attachments to a different message.
         /// </summary>
-        public virtual async Task Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction transaction, string targetMessageId, string targetName, CancellationToken cancellation = default)
+        public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction transaction, string targetMessageId, string targetName, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -43,7 +43,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies an attachments to a different message.
         /// </summary>
-        public virtual async Task Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
+        public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        SqlCommand CreateGetDuplicateCommand(string sourceMessageId, string targetMessageId, SqlConnection connection, SqlTransaction transaction)
+        DbCommand CreateGetDuplicateCommand(string sourceMessageId, string targetMessageId, DbConnection connection, DbTransaction transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -84,7 +84,7 @@ where
             return command;
         }
 
-        SqlCommand CreateGetDuplicateCommandWithRename(string sourceMessageId, string name, string targetMessageId, string targetName, SqlConnection connection, SqlTransaction transaction)
+        DbCommand CreateGetDuplicateCommandWithRename(string sourceMessageId, string name, string targetMessageId, string targetName, DbConnection connection, DbTransaction transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -115,7 +115,7 @@ where
             return command;
         }
 
-        SqlCommand CreateGetDuplicateCommand(string sourceMessageId, string name, string targetMessageId, SqlConnection connection, SqlTransaction transaction)
+        DbCommand CreateGetDuplicateCommand(string sourceMessageId, string name, string targetMessageId, DbConnection connection, DbTransaction transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;

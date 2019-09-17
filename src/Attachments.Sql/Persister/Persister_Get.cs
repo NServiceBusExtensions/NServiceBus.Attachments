@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads a string for an attachment.
         /// </summary>
-        public virtual async Task<AttachmentString> GetString(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -38,7 +38,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -63,14 +63,14 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        public virtual async Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation)
+        public virtual async Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            SqlCommand command = null;
-            SqlDataReader reader = null;
+            DbCommand command = null;
+            DbDataReader reader = null;
             try
             {
 
@@ -93,7 +93,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        static AttachmentStream InnerGetStream(SqlDataReader reader, SqlCommand command, bool disposeConnection)
+        static AttachmentStream InnerGetStream(DbDataReader reader, DbCommand command, bool disposeConnection)
         {
             var length = reader.GetInt64(0);
             var metadataString = reader.GetStringOrNull(1);
@@ -106,7 +106,7 @@ namespace NServiceBus.Attachments.Sql
             return new AttachmentStream(sqlStream, length, metadata, command, reader);
         }
 
-        SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction transaction)
+        DbCommand CreateGetDataCommand(string messageId, string name, DbConnection connection, DbTransaction transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -124,7 +124,7 @@ where
             return command;
         }
 
-        SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection, SqlTransaction transaction)
+        DbCommand CreateGetDatasCommand(string messageId, DbConnection connection, DbTransaction transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;

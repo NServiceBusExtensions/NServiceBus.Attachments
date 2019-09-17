@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
@@ -7,7 +7,7 @@ using NServiceBus.Pipeline;
 class SendRegistration :
     RegisterStep
 {
-    public SendRegistration(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendRegistration(Func<Task<DbConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
         : base(
             stepId: $"{AssemblyHelper.Name}Send",
             behavior: typeof(SendBehavior),

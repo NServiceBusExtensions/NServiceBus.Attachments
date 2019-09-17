@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
@@ -17,7 +18,7 @@ namespace NServiceBus
         /// </summary>
         public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
-            Func<Task<SqlConnection>> connectionFactory,
+            Func<Task<DbConnection>> connectionFactory,
             GetTimeToKeep timeToKeep)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
@@ -52,7 +53,7 @@ namespace NServiceBus
             return attachments;
         }
 
-        static async Task<SqlConnection> OpenConnection(string connectionString)
+        static async Task<DbConnection> OpenConnection(string connectionString)
         {
             var connection = new SqlConnection(connectionString);
             try

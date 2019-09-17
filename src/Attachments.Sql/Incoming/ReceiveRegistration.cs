@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
@@ -7,7 +7,7 @@ using NServiceBus.Pipeline;
 class ReceiveRegistration :
     RegisterStep
 {
-    public ReceiveRegistration(Func<Task<SqlConnection>> connectionFactory,
+    public ReceiveRegistration(Func<Task<DbConnection>> connectionFactory,
         IPersister persister,
         bool useTransport, bool useSynchronizedStorage)
         : base(

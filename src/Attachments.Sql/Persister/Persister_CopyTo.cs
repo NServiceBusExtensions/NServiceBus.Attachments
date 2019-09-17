@@ -1,4 +1,4 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Common;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies an attachment to <paramref name="target"/>.
         /// </summary>
-        public virtual async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction transaction, Stream target, CancellationToken cancellation = default)
+        public virtual async Task CopyTo(string messageId, string name, DbConnection connection, DbTransaction transaction, Stream target, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));

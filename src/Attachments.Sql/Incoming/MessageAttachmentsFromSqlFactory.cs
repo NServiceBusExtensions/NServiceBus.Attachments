@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,11 +9,11 @@ using NServiceBus.Attachments.Sql;
 class MessageAttachmentsFromSqlFactory :
     IMessageAttachments
 {
-    Func<Task<SqlConnection>> connectionFactory;
+    Func<Task<DbConnection>> connectionFactory;
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromSqlFactory(Func<Task<SqlConnection>> connectionFactory, string messageId, IPersister persister)
+    public MessageAttachmentsFromSqlFactory(Func<Task<DbConnection>> connectionFactory, string messageId, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         this.messageId = messageId;
