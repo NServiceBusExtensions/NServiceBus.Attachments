@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
@@ -14,27 +13,6 @@ namespace NServiceBus.Attachments.Sql
     /// </summary>
     public static class Installer
     {
-        /// <summary>
-        /// Create the attachments storage table.
-        /// </summary>
-        public static Task CreateTable(string connection, CancellationToken cancellation = default)
-        {
-            return CreateTable(connection, "MessageAttachments", cancellation);
-        }
-
-        /// <summary>
-        /// Create the attachments storage table.
-        /// </summary>
-        public static async Task CreateTable(string connection, Table table, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullOrEmpty(connection, nameof(connection));
-            using (var sqlConnection = new SqlConnection(connection))
-            {
-                await sqlConnection.OpenAsync(cancellation);
-                await CreateTable(sqlConnection, table, cancellation);
-            }
-        }
-
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>

@@ -56,7 +56,7 @@ public class IntegrationTests :
         SagaEvent = new ManualResetEvent(false);
         var endpointName = "SqlIntegrationTests";
         var configuration = new EndpointConfiguration(endpointName);
-        var attachments = configuration.EnableAttachments(Connection.ConnectionString, TimeToKeep.Default);
+        var attachments = configuration.EnableAttachments(() => Connection.OpenAsyncConnection(), TimeToKeep.Default);
         if (useStorageSession)
         {
             attachments.UseSynchronizedStorageSessionConnectivity();
