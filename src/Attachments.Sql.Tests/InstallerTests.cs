@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Data.Common;
+using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using Xunit;
 
@@ -12,13 +13,15 @@ public class InstallerTests
     [Fact]
     public async Task Run()
     {
-        await Installer.CreateTable(Connection.ConnectionString, "MessageAttachments");
-        TableExists("[dbo].[MessageAttachments]");
+        using (var connection = await Connection.OpenAsyncConnection())
+        {
+            await Installer.CreateTable(connection, "MessageAttachments");
+            TableExists("[dbo].[MessageAttachments]", connection);
+        }
     }
 
-    static void TableExists(string tableName)
+    static void TableExists(string tableName, DbConnection connection)
     {
-        using (var connection = Connection.OpenConnection())
         using (var command = connection.CreateCommand())
         {
             command.CommandText = $@"
