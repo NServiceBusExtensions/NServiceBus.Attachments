@@ -57,12 +57,12 @@ class ReceiveBehavior :
                     return new SqlAttachmentState(transaction, connectionBuilder, persister);
                 }
 
-                if (transportTransaction.TryGet<DbTransaction>(out var dbTransaction))
+                if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out DbTransaction dbTransaction))
                 {
                     return new SqlAttachmentState(dbTransaction, persister);
                 }
 
-                if (transportTransaction.TryGet<DbConnection>(out var connection))
+                if (transportTransaction.TryGet("System.Data.SqlClient.SqlConnection", out DbConnection connection))
                 {
                     return new SqlAttachmentState(connection, persister);
                 }
