@@ -96,7 +96,7 @@ namespace NServiceBus.Attachments.FileShare
             return Path.Combine(attachmentDirectory, "metadata.json");
         }
 
-        static void WriteMetadata(string attachmentDirectory, IReadOnlyDictionary<string, string> metadata)
+        static void WriteMetadata(string attachmentDirectory, IReadOnlyDictionary<string, string>? metadata)
         {
             if (metadata == null)
             {

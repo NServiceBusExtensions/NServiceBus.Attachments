@@ -21,12 +21,12 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// An empty <see cref="IReadOnlyDictionary{TKey,TValue}"/>
         /// </summary>
-        public readonly static IReadOnlyDictionary<string, string> EmptyMetadata= new Dictionary<string, string>();
+        public readonly static IReadOnlyDictionary<string, string> EmptyMetadata = new Dictionary<string, string>();
 
         /// <summary>
         /// Serialize <paramref name="instance"/> to json.
         /// </summary>
-        public static string Serialize(IReadOnlyDictionary<string, string> instance)
+        public static string Serialize(IReadOnlyDictionary<string, string>? instance)
         {
             if (instance == null)
             {

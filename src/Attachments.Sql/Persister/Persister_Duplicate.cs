@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        DbCommand CreateGetDuplicateCommand(string sourceMessageId, string targetMessageId, DbConnection connection, DbTransaction transaction)
+        DbCommand CreateGetDuplicateCommand(string sourceMessageId, string targetMessageId, DbConnection connection, DbTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -115,7 +115,7 @@ where
             return command;
         }
 
-        DbCommand CreateGetDuplicateCommand(string sourceMessageId, string name, string targetMessageId, DbConnection connection, DbTransaction transaction)
+        DbCommand CreateGetDuplicateCommand(string sourceMessageId, string name, string targetMessageId, DbConnection connection, DbTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;

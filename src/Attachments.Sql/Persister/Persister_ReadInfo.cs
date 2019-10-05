@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        public virtual async Task ReadAllInfo(DbConnection connection, DbTransaction transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ReadAllInfo(DbConnection connection, DbTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
@@ -93,7 +93,7 @@ namespace NServiceBus.Attachments.Sql
             return list;
         }
 
-        DbCommand GetReadInfosCommand(DbConnection connection, DbTransaction transaction)
+        DbCommand GetReadInfosCommand(DbConnection connection, DbTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -108,7 +108,7 @@ from {table}";
             return command;
         }
 
-        DbCommand GetReadInfoCommand(DbConnection connection, DbTransaction transaction, string messageId)
+        DbCommand GetReadInfoCommand(DbConnection connection, DbTransaction? transaction, string messageId)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;

@@ -125,7 +125,7 @@ static class Guard
         }
     }
 
-    public static void ThrowIfNullReturned(string messageId, string attachmentName, object value)
+    public static void ThrowIfNullReturned(string? messageId, string? attachmentName, object value)
     {
         if (value == null)
         {

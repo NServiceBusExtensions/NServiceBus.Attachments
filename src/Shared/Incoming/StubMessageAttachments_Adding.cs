@@ -27,7 +27,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Adds a attachment that can then be used in a test.
         /// </summary>
-        public void AddAttachment(string name, string payload, IDictionary<string, string> metadata = null)
+        public void AddAttachment(string name, string payload, IDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNull(payload, nameof(payload));
             AddAttachment(name, Encoding.UTF8.GetBytes(payload), metadata);
@@ -36,7 +36,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Adds a attachment that can then be used in a test.
         /// </summary>
-        public void AddAttachment(byte[] bytes, IDictionary<string, string> metadata = null)
+        public void AddAttachment(byte[] bytes, IDictionary<string, string>? metadata = null)
         {
             AddAttachment("default", bytes, metadata);
         }
@@ -44,7 +44,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Adds a attachment that can then be used in a test.
         /// </summary>
-        public void AddAttachment(string name, byte[] bytes, IDictionary<string, string> metadata=null)
+        public void AddAttachment(string name, byte[] bytes, IDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(bytes, nameof(bytes));
@@ -60,7 +60,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Adds a attachment that can then be used in a test.
         /// </summary>
-        public void AddAttachmentForMessage(string messageId, byte[] bytes, IDictionary<string, string> metadata = null)
+        public void AddAttachmentForMessage(string messageId, byte[] bytes, IDictionary<string, string>? metadata = null)
         {
             AddAttachmentForMessage(messageId, "default", bytes, metadata);
         }
@@ -68,7 +68,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Adds a attachment that can then be used in a test.
         /// </summary>
-        public void AddAttachmentForMessage(string messageId, string name, byte[] bytes, IDictionary<string, string> metadata = null)
+        public void AddAttachmentForMessage(string messageId, string name, byte[] bytes, IDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(bytes, nameof(bytes));
@@ -86,7 +86,7 @@ namespace NServiceBus.Attachments
                 });
         }
 
-        static IReadOnlyDictionary<string, string> BuildMetadata(IDictionary<string, string> metadata)
+        static IReadOnlyDictionary<string, string> BuildMetadata(IDictionary<string, string>? metadata)
         {
             if (metadata == null)
             {

@@ -15,7 +15,7 @@ namespace NServiceBus.Attachments.FileShare
         /// Saves <paramref name="stream"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata = null, CancellationToken cancellation = default)
+        public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -27,7 +27,7 @@ namespace NServiceBus.Attachments.FileShare
         /// Saves <paramref name="bytes"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string> metadata=null, CancellationToken cancellation = default)
+        public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -39,7 +39,7 @@ namespace NServiceBus.Attachments.FileShare
         /// Saves <paramref name="value"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        public virtual Task SaveString(string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string> metadata=null, CancellationToken cancellation = default)
+        public virtual Task SaveString(string messageId, string? name, DateTime expiry, string value, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -53,7 +53,7 @@ namespace NServiceBus.Attachments.FileShare
             });
         }
 
-        async Task Save(string messageId, string name, DateTime expiry, IReadOnlyDictionary<string, string> metadata, Func<FileStream, Task> action)
+        async Task Save(string messageId, string? name, DateTime expiry, IReadOnlyDictionary<string, string>? metadata, Func<FileStream, Task> action)
         {
             if (name == null)
             {
@@ -70,7 +70,7 @@ namespace NServiceBus.Attachments.FileShare
             using (File.Create(expiryFile))
             {
             }
-            WriteMetadata(attachmentDirectory,metadata);
+            WriteMetadata(attachmentDirectory, metadata);
 
             using (var fileStream = FileHelpers.OpenWrite(dataFile))
             {

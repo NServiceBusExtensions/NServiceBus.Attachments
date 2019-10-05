@@ -69,7 +69,7 @@ class SendBehavior :
         return Task.WhenAll(tasks);
     }
 
-    async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)
+    async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
         using (stream)
         {

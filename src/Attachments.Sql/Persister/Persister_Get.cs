@@ -106,7 +106,7 @@ namespace NServiceBus.Attachments.Sql
             return new AttachmentStream(sqlStream, length, metadata, command, reader);
         }
 
-        DbCommand CreateGetDataCommand(string messageId, string name, DbConnection connection, DbTransaction transaction)
+        DbCommand CreateGetDataCommand(string messageId, string name, DbConnection connection, DbTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
