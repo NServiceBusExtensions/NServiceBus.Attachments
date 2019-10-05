@@ -38,7 +38,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
-        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -124,7 +124,7 @@ where
             return command;
         }
 
-        DbCommand CreateGetDatasCommand(string messageId, DbConnection connection, DbTransaction transaction)
+        DbCommand CreateGetDatasCommand(string messageId, DbConnection connection, DbTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;

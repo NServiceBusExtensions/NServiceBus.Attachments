@@ -12,7 +12,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Deletes all attachments.
         /// </summary>
-        public virtual async Task DeleteAllAttachments(DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task DeleteAllAttachments(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())

@@ -12,7 +12,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies attachments to a different message.
         /// </summary>
-        public virtual async Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
+        public virtual async Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -43,7 +43,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies an attachments to a different message.
         /// </summary>
-        public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction transaction, string targetMessageId, CancellationToken cancellation = default)
+        public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));

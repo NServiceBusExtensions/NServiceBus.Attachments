@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 static class Guard
 {
     // ReSharper disable UnusedParameter.Global
-    public static void AgainstNull(object value, string argumentName)
+    public static void AgainstNull(object? value, string argumentName)
     {
         if (value == null)
         {
@@ -13,7 +13,7 @@ static class Guard
         }
     }
 
-    public static void FileExists(string path, string argumentName)
+    public static void FileExists(string? path, string argumentName)
     {
         AgainstNullOrEmpty(path, argumentName);
         if (!File.Exists(path))
@@ -22,7 +22,7 @@ static class Guard
         }
     }
 
-    public static void AgainstEmpty(string value, string argumentName)
+    public static void AgainstEmpty(string? value, string argumentName)
     {
         if (value == null)
         {
@@ -34,7 +34,7 @@ static class Guard
         }
     }
 
-    public static void AgainstNullOrEmpty(string value, string argumentName)
+    public static void AgainstNullOrEmpty(string? value, string argumentName)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -72,7 +72,7 @@ static class Guard
         return value;
     }
 
-    public static Action WrapCleanupInCheck(this Action cleanup, string attachmentName)
+    public static Action? WrapCleanupInCheck(this Action? cleanup, string attachmentName)
     {
         if (cleanup == null)
         {

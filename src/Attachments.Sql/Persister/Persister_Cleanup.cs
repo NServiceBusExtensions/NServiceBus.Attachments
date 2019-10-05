@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Deletes attachments older than <paramref name="dateTime"/>.
         /// </summary>
-        public virtual async Task CleanupItemsOlderThan(DbConnection connection, DbTransaction transaction, DateTime dateTime, CancellationToken cancellation = default)
+        public virtual async Task CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())
