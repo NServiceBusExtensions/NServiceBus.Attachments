@@ -13,6 +13,10 @@ namespace NServiceBus.Attachments
 {
     class Outgoing
     {
+        public Outgoing(IReadOnlyDictionary<string, string> metadata)
+        {
+            Metadata = metadata;
+        }
         public Func<Task<Stream>> AsyncStreamFactory;
         public Func<Stream> StreamFactory;
         public Stream StreamInstance;
@@ -22,6 +26,6 @@ namespace NServiceBus.Attachments
         public string StringInstance;
         public GetTimeToKeep TimeToKeep;
         public Action Cleanup;
-        public IReadOnlyDictionary<string, string> Metadata;
+        public readonly IReadOnlyDictionary<string, string> Metadata;
     }
 }

@@ -38,12 +38,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing
+        Inner.Add(name, new Outgoing(metadata)
         {
             AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup.WrapCleanupInCheck(name),
-            Metadata = metadata
         });
     }
 
@@ -61,12 +60,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing
+        Inner.Add(name, new Outgoing(metadata)
         {
             StreamFactory = streamFactory.WrapFuncInCheck(name),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup.WrapCleanupInCheck(name),
-            Metadata = metadata
         });
     }
 
@@ -74,12 +72,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(stream, nameof(stream));
-        Inner.Add(name, new Outgoing
+        Inner.Add(name, new Outgoing(metadata)
         {
             StreamInstance = stream,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup.WrapCleanupInCheck(name),
-            Metadata = metadata
         });
     }
 
@@ -108,12 +105,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing
+        Inner.Add(name, new Outgoing(metadata)
         {
             BytesFactory = bytesFactory.WrapFuncInCheck(name),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup.WrapCleanupInCheck(name),
-            Metadata = metadata
         });
     }
 
@@ -121,12 +117,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytes, nameof(bytes));
-        Inner.Add(name, new Outgoing
+        Inner.Add(name, new Outgoing(metadata)
         {
             BytesInstance = bytes,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup.WrapCleanupInCheck(name),
-            Metadata = metadata
         });
     }
 
@@ -139,12 +134,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(value, nameof(value));
-        Inner.Add(name, new Outgoing
+        Inner.Add(name, new Outgoing(metadata)
         {
             StringInstance = value,
             TimeToKeep = timeToKeep,
             Cleanup = cleanup.WrapCleanupInCheck(name),
-            Metadata = metadata
         });
     }
 
@@ -157,12 +151,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing
+        Inner.Add(name, new Outgoing(metadata)
         {
             AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name),
             TimeToKeep = timeToKeep,
             Cleanup = cleanup.WrapCleanupInCheck(name),
-            Metadata = metadata
         });
     }
 }
