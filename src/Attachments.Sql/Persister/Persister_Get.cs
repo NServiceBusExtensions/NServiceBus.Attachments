@@ -69,11 +69,10 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            DbCommand command = null;
-            DbDataReader reader = null;
+            DbCommand? command = null;
+            DbDataReader? reader = null;
             try
             {
-
                 command = CreateGetDataCommand(messageId, name, connection, transaction);
                 reader = await command.ExecuteSequentialReader(cancellation);
                 if (!await reader.ReadAsync(cancellation))

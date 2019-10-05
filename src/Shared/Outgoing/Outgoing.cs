@@ -20,13 +20,13 @@ namespace NServiceBus.Attachments
             Cleanup = cleanup;
         }
 
-        public Func<Task<Stream>> AsyncStreamFactory;
-        public Func<Stream> StreamFactory;
-        public Stream StreamInstance;
-        public Func<Task<byte[]>> AsyncBytesFactory;
-        public Func<byte[]> BytesFactory;
-        public byte[] BytesInstance;
-        public string StringInstance;
+        public Func<Task<Stream>>? AsyncStreamFactory;
+        public Func<Stream>? StreamFactory;
+        public Stream? StreamInstance;
+        public Func<Task<byte[]>>? AsyncBytesFactory;
+        public Func<byte[]>? BytesFactory;
+        public byte[]? BytesInstance;
+        public string? StringInstance;
         public readonly GetTimeToKeep? TimeToKeep;
         public readonly Action? Cleanup;
         public readonly IReadOnlyDictionary<string, string>? Metadata;

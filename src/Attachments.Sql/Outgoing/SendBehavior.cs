@@ -92,7 +92,7 @@ class SendBehavior :
         }
     }
 
-    Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
+    Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
         var tasks = outgoingAttachments.Inner
             .Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, pair.Value, pair.Key))
@@ -122,7 +122,7 @@ class SendBehavior :
         return Task.WhenAll(tasks);
     }
 
-    async Task ProcessStream(DbConnection connection, DbTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string> metadata)
+    async Task ProcessStream(DbConnection connection, DbTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
         using (stream)
         {
@@ -130,7 +130,7 @@ class SendBehavior :
         }
     }
 
-    async Task ProcessAttachment(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction transaction, string messageId, Outgoing outgoing, string name)
+    async Task ProcessAttachment(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name)
     {
         var outgoingStreamTimeToKeep = outgoing.TimeToKeep ?? endpointTimeToKeep;
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);

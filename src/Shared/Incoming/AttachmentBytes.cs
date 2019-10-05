@@ -25,14 +25,14 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// The attachment metadata.
         /// </summary>
-        public readonly IReadOnlyDictionary<string, string> Metadata;
+        public readonly IReadOnlyDictionary<string, string>? Metadata;
 
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
         /// </summary>
         /// <param name="bytes">The <see cref="byte"/>s to wrap.</param>
         /// <param name="metadata">The attachment metadata.</param>
-        public AttachmentBytes(byte[] bytes, IReadOnlyDictionary<string, string> metadata = null)
+        public AttachmentBytes(byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNull(bytes, nameof(bytes));
             if (metadata == null)

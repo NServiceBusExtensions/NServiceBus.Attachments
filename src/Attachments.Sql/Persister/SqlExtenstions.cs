@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 static class SqlExtensions
 {
-    public static string GetStringOrNull(this IDataReader dataReader, int index)
+    public static string? GetStringOrNull(this IDataReader dataReader, int index)
     {
         if (dataReader.IsDBNull(index))
         {

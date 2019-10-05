@@ -19,7 +19,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Adds a attachment that can then be used in a test.
         /// </summary>
-        public void AddAttachment(string payload, IDictionary<string, string> metadata = null)
+        public void AddAttachment(string payload, IDictionary<string, string>? metadata = null)
         {
             AddAttachment("default", payload, metadata);
         }

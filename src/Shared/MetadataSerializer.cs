@@ -26,7 +26,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Serialize <paramref name="instance"/> to json.
         /// </summary>
-        public static string Serialize(IReadOnlyDictionary<string, string>? instance)
+        public static string? Serialize(IReadOnlyDictionary<string, string>? instance)
         {
             if (instance == null)
             {
@@ -43,7 +43,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Deserialize <paramref name="json"/> to a <see cref="IReadOnlyDictionary{TKey,TValue}"/>.
         /// </summary>
-        public static IReadOnlyDictionary<string, string> Deserialize(string json)
+        public static IReadOnlyDictionary<string, string> Deserialize(string? json)
         {
             if (json == null)
             {

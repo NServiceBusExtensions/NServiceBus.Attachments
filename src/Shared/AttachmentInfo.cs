@@ -31,7 +31,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// The attachment Metadata.
         /// </summary>
-        public readonly IReadOnlyDictionary<string, string> Metadata;
+        public readonly IReadOnlyDictionary<string, string>? Metadata;
 
         /// <summary>
         /// Initializes a new instance of <see cref="AttachmentInfo"/>.
