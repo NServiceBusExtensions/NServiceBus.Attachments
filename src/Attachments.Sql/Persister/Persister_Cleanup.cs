@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Deletes all items.
         /// </summary>
-        public virtual async Task PurgeItems(DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using (var command = connection.CreateCommand())

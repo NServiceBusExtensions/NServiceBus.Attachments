@@ -14,7 +14,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads a string for an attachment.
         /// </summary>
-        public virtual async Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction transaction, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -63,7 +63,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Returns an open stream pointing to an attachment.
         /// </summary>
-        public virtual async Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation)
+        public virtual async Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction? transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));

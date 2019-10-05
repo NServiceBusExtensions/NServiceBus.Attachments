@@ -16,7 +16,7 @@ static class SqlExtensions
         return dataReader.GetString(index);
     }
 
-    public static void AddParameter(this DbCommand command, string name, string value)
+    public static void AddParameter(this DbCommand command, string name, string? value)
     {
         var parameter = command.CreateParameter();
         parameter.DbType = DbType.String;

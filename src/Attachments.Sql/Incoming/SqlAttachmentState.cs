@@ -6,11 +6,11 @@ using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState
 {
-    Func<Task<DbConnection>> connectionFactory;
+    Func<Task<DbConnection>>? connectionFactory;
     public IPersister Persister;
-    public Transaction Transaction;
-    public DbTransaction DbTransaction;
-    public DbConnection DbConnection;
+    public Transaction? Transaction;
+    public DbTransaction? DbTransaction;
+    public DbConnection? DbConnection;
 
     public SqlAttachmentState(DbConnection connection, IPersister persister)
     {
@@ -41,7 +41,7 @@ class SqlAttachmentState
     {
         try
         {
-            return connectionFactory();
+            return connectionFactory!();
         }
         catch (Exception exception)
         {

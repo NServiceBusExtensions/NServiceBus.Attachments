@@ -122,7 +122,7 @@ class SendBehavior :
         return Task.WhenAll(tasks);
     }
 
-    async Task ProcessStream(DbConnection connection, DbTransaction transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
+    async Task ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
         using (stream)
         {
@@ -145,7 +145,7 @@ class SendBehavior :
         }
     }
 
-    async Task Process(DbConnection connection, DbTransaction transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
+    async Task Process(DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
     {
         if (outgoing.AsyncStreamFactory != null)
         {

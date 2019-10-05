@@ -41,7 +41,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
         /// </summary>
-        public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllMessageInfo(DbConnection connection, DbTransaction transaction, string messageId, CancellationToken cancellation = default)
+        public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, CancellationToken cancellation = default)
         {
             var list = new ConcurrentBag<AttachmentInfo>();
             await ReadAllMessageInfo(connection, transaction, messageId,

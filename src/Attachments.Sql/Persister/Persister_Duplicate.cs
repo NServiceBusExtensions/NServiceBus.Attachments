@@ -26,7 +26,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies an attachments to a different message.
         /// </summary>
-        public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction transaction, string targetMessageId, string targetName, CancellationToken cancellation = default)
+        public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, string targetName, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -84,7 +84,7 @@ where
             return command;
         }
 
-        DbCommand CreateGetDuplicateCommandWithRename(string sourceMessageId, string name, string targetMessageId, string targetName, DbConnection connection, DbTransaction transaction)
+        DbCommand CreateGetDuplicateCommandWithRename(string sourceMessageId, string name, string targetMessageId, string targetName, DbConnection connection, DbTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
