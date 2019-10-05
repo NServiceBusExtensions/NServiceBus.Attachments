@@ -8,15 +8,18 @@ namespace NServiceBus.Attachments
     .FileShare
 #endif
 #if Sql
-.Sql
+    .Sql
 #endif
 {
     class Outgoing
     {
-        public Outgoing(IReadOnlyDictionary<string, string>? metadata)
+        public Outgoing(IReadOnlyDictionary<string, string>? metadata, GetTimeToKeep? timeToKeep, Action? cleanup)
         {
             Metadata = metadata;
+            TimeToKeep = timeToKeep;
+            Cleanup = cleanup;
         }
+
         public Func<Task<Stream>> AsyncStreamFactory;
         public Func<Stream> StreamFactory;
         public Stream StreamInstance;
@@ -24,8 +27,8 @@ namespace NServiceBus.Attachments
         public Func<byte[]> BytesFactory;
         public byte[] BytesInstance;
         public string StringInstance;
-        public GetTimeToKeep TimeToKeep;
-        public Action Cleanup;
+        public readonly GetTimeToKeep? TimeToKeep;
+        public readonly Action? Cleanup;
         public readonly IReadOnlyDictionary<string, string>? Metadata;
     }
 }

@@ -15,8 +15,7 @@ using NServiceBus.Attachments;
 class OutgoingAttachments :
     IOutgoingAttachments
 {
-    [NonSerialized]
-    public Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
+    [NonSerialized] public Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
     public List<Duplicate> Duplicates = new List<Duplicate>();
 
     public bool HasPendingAttachments => Inner.Any() ||
@@ -38,11 +37,9 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing(metadata)
+        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
         {
-            AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name),
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup.WrapCleanupInCheck(name),
+            AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name)
         });
     }
 
@@ -60,11 +57,9 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing(metadata)
+        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
         {
             StreamFactory = streamFactory.WrapFuncInCheck(name),
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup.WrapCleanupInCheck(name),
         });
     }
 
@@ -72,11 +67,9 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(stream, nameof(stream));
-        Inner.Add(name, new Outgoing(metadata)
+        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
         {
-            StreamInstance = stream,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup.WrapCleanupInCheck(name),
+            StreamInstance = stream
         });
     }
 
@@ -105,11 +98,9 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing(metadata)
+        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
         {
-            BytesFactory = bytesFactory.WrapFuncInCheck(name),
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup.WrapCleanupInCheck(name),
+            BytesFactory = bytesFactory.WrapFuncInCheck(name)
         });
     }
 
@@ -117,11 +108,9 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytes, nameof(bytes));
-        Inner.Add(name, new Outgoing(metadata)
+        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
         {
             BytesInstance = bytes,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup.WrapCleanupInCheck(name),
         });
     }
 
@@ -134,11 +123,9 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(value, nameof(value));
-        Inner.Add(name, new Outgoing(metadata)
+        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
         {
             StringInstance = value,
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup.WrapCleanupInCheck(name),
         });
     }
 
@@ -151,11 +138,9 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing(metadata)
+        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
         {
-            AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name),
-            TimeToKeep = timeToKeep,
-            Cleanup = cleanup.WrapCleanupInCheck(name),
+            AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name)
         });
     }
 }
