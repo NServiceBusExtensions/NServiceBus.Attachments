@@ -6,7 +6,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageProjectUrl>https://docs.particular.net/nuget/$(PackageId)</PackageProjectUrl>
     <DefineConstants>$(DefineConstants);Sql</DefineConstants>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Table.sql" LogicalName="Table.sql" />

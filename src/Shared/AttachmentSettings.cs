@@ -12,7 +12,10 @@ namespace NServiceBus.Attachments
     public partial class AttachmentSettings
     {
         internal bool RunCleanTask = true;
+        // Non-nullable field is uninitialized. Consider declaring as nullable.
+#pragma warning disable CS8618
         internal readonly GetTimeToKeep TimeToKeep;
+#pragma warning restore CS8618
 
         /// <summary>
         /// Disable the attachment cleanup task.
