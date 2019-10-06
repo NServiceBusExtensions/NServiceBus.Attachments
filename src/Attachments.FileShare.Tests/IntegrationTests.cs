@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 public class IntegrationTests :
     XunitApprovalBase
 {
-    static ManualResetEvent resetEvent;
+    static ManualResetEvent resetEvent = null!;
 
     [Fact]
     public async Task Run()

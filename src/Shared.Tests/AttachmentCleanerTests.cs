@@ -94,7 +94,7 @@ public class AttachmentCleanerTests
             return Task.CompletedTask;
         }
 
-        Func<DateTime, CancellationToken, Task> callback;
-        Action<Exception> errorCallback;
+        Func<DateTime, CancellationToken, Task> callback = null!;
+        Action<Exception> errorCallback = null!;
     }
 }

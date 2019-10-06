@@ -15,9 +15,9 @@ using Xunit.Abstractions;
 public class IntegrationTests :
     XunitApprovalBase
 {
-    internal static ManualResetEvent HandlerEvent;
-    internal static ManualResetEvent SagaEvent;
-    bool shouldPerformNestedConnection=true;
+    internal static ManualResetEvent HandlerEvent = null!;
+    internal static ManualResetEvent SagaEvent = null!;
+    bool shouldPerformNestedConnection = true;
 
     static IntegrationTests()
     {

@@ -12,7 +12,7 @@ namespace NServiceBus.Attachments
     public partial class AttachmentSettings
     {
         internal bool RunCleanTask = true;
-        internal GetTimeToKeep TimeToKeep;
+        internal readonly GetTimeToKeep TimeToKeep;
 
         /// <summary>
         /// Disable the attachment cleanup task.

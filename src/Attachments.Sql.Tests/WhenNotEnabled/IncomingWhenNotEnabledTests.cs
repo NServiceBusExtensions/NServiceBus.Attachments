@@ -9,8 +9,8 @@ using Xunit.Abstractions;
 public class IncomingWhenNotEnabledTests :
     XunitApprovalBase
 {
-    static ManualResetEvent resetEvent;
-    static Exception exception;
+    static ManualResetEvent resetEvent = null!;
+    static Exception exception = null!;
 
     static IncomingWhenNotEnabledTests()
     {

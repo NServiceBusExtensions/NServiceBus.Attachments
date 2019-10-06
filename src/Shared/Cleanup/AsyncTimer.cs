@@ -2,7 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-class AsyncTimer: IAsyncTimer
+class AsyncTimer :
+    IAsyncTimer
 {
     public void Start(Func<DateTime, CancellationToken, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, CancellationToken, Task> delayStrategy)
     {
@@ -44,6 +45,6 @@ class AsyncTimer: IAsyncTimer
         return task ?? Task.CompletedTask;
     }
 
-    Task task;
-    CancellationTokenSource tokenSource;
+    Task? task;
+    CancellationTokenSource? tokenSource;
 }
