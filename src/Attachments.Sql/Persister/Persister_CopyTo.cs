@@ -20,19 +20,15 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(target, nameof(target));
-            using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation))
+            using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
+            if (!await reader.ReadAsync(cancellation))
             {
-                if (!await reader.ReadAsync(cancellation))
-                {
-                    throw ThrowNotFound(messageId, name);
-                }
-
-                using (var data = reader.GetStream(2))
-                {
-                    await data.CopyToAsync(target, 81920, cancellation);
-                }
+                throw ThrowNotFound(messageId, name);
             }
+
+            using var data = reader.GetStream(2);
+            await data.CopyToAsync(target, 81920, cancellation);
         }
     }
 }

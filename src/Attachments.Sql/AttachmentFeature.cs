@@ -30,10 +30,8 @@ class AttachmentFeature : Feature
     {
         return new Cleaner(async token =>
             {
-                using (var connection = await settings.ConnectionFactory())
-                {
-                    await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
-                }
+                using var connection = await settings.ConnectionFactory();
+                await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
             },
             criticalError: builder.Build<CriticalError>().Raise,
             frequencyToRunCleanup: TimeSpan.FromHours(1),

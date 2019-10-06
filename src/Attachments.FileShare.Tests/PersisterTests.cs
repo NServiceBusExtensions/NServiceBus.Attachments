@@ -105,11 +105,9 @@ public class PersisterTests :
 
     static byte[] ToBytes(Stream stream)
     {
-        using (var memoryStream = new MemoryStream())
-        {
-            stream.CopyTo(memoryStream);
-            return memoryStream.ToArray();
-        }
+        using var memoryStream = new MemoryStream();
+        stream.CopyTo(memoryStream);
+        return memoryStream.ToArray();
     }
 
     [Fact]

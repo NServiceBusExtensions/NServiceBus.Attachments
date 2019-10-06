@@ -143,11 +143,9 @@ public class IntegrationTests :
     {
         if (shouldPerformNestedConnection)
         {
-            using (var connection = new SqlConnection(Connection.ConnectionString))
-            {
-                connection.Open();
-                Console.WriteLine(connection.ServerVersion);
-            }
+            using var connection = new SqlConnection(Connection.ConnectionString);
+            connection.Open();
+            Console.WriteLine(connection.ServerVersion);
         }
     }
 

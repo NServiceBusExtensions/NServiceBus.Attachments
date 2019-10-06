@@ -16,13 +16,11 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
-            using (var command = connection.CreateCommand())
-            {
-                command.Transaction = transaction;
-                command.CommandText = $"delete from {table} where expiry < @date";
-                command.AddParameter("date", dateTime);
-                await command.ExecuteNonQueryAsync(cancellation);
-            }
+            using var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = $"delete from {table} where expiry < @date";
+            command.AddParameter("date", dateTime);
+            await command.ExecuteNonQueryAsync(cancellation);
         }
 
         /// <summary>
@@ -31,10 +29,9 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
-            using (var command = connection.CreateCommand())
-            {
-                command.Transaction = transaction;
-                command.CommandText = $@"
+            using var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = $@"
 if exists (
     select * from sys.objects
     where
@@ -46,8 +43,7 @@ begin
 delete from {table}
 
 end";
-                await command.ExecuteNonQueryAsync(cancellation);
-            }
+            await command.ExecuteNonQueryAsync(cancellation);
         }
     }
 }

@@ -147,7 +147,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
         {
-            return Task.FromResult<AttachmentBytes>(AttachmentBytes.Empty);
+            return Task.FromResult(AttachmentBytes.Empty);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
-            return Task.FromResult<AttachmentBytes>(AttachmentBytes.Empty);
+            return Task.FromResult(AttachmentBytes.Empty);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public virtual Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
         {
-            return Task.FromResult<AttachmentString>(AttachmentString.Empty);
+            return Task.FromResult(AttachmentString.Empty);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
-            return Task.FromResult<AttachmentString>(AttachmentString.Empty);
+            return Task.FromResult(AttachmentString.Empty);
         }
     }
 }

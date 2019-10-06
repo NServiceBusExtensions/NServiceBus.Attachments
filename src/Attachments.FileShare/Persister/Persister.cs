@@ -85,10 +85,9 @@ namespace NServiceBus.Attachments.FileShare
             {
                 return MetadataSerializer.EmptyMetadata;
             }
-            using (var stream = FileHelpers.OpenRead(metadataFile))
-            {
-                return MetadataSerializer.Deserialize(stream);
-            }
+
+            using var stream = FileHelpers.OpenRead(metadataFile);
+            return MetadataSerializer.Deserialize(stream);
         }
 
         static string GetMetadataFile(string attachmentDirectory)
@@ -104,10 +103,8 @@ namespace NServiceBus.Attachments.FileShare
             }
 
             var metadataFile = GetMetadataFile(attachmentDirectory);
-            using (var stream = FileHelpers.OpenWrite(metadataFile))
-            {
-                MetadataSerializer.Serialize(stream, metadata);
-            }
+            using var stream = FileHelpers.OpenWrite(metadataFile);
+            MetadataSerializer.Serialize(stream, metadata);
         }
     }
 }

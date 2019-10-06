@@ -20,9 +20,7 @@ class NeedToInstallSomething :
             return;
         }
 
-        using (var connection = await settings.ConnectionFactory())
-        {
-            await Installer.CreateTable(connection, settings.Table);
-        }
+        using var connection = await settings.ConnectionFactory();
+        await Installer.CreateTable(connection, settings.Table);
     }
 }

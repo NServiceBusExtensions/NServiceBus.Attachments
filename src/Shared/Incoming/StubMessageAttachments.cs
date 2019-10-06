@@ -80,10 +80,8 @@ namespace NServiceBus.Attachments
         {
             foreach (var pair in currentAttachments)
             {
-                using (var attachmentStream = pair.Value.ToAttachmentStream())
-                {
-                    await action(pair.Key, attachmentStream);
-                }
+                using var attachmentStream = pair.Value.ToAttachmentStream();
+                await action(pair.Key, attachmentStream);
             }
         }
 
@@ -149,10 +147,8 @@ namespace NServiceBus.Attachments
         public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
-            using (var attachmentStream = attachment.ToAttachmentStream())
-            {
-                await action(attachmentStream);
-            }
+            using var attachmentStream = attachment.ToAttachmentStream();
+            await action(attachmentStream);
         }
 
         /// <summary>
@@ -171,10 +167,8 @@ namespace NServiceBus.Attachments
             foreach (var pair in GetAttachmentsForMessage(messageId))
             {
                 var attachment = pair.Value;
-                using (var attachmentStream = attachment.ToAttachmentStream())
-                {
-                    await action(pair.Key, attachmentStream);
-                }
+                using var attachmentStream = attachment.ToAttachmentStream();
+                await action(pair.Key, attachmentStream);
             }
         }
 
@@ -230,10 +224,8 @@ namespace NServiceBus.Attachments
         {
             var bytes = GetCurrentMessageBytes(name);
 
-            using (var writer = BuildWriter(target))
-            {
-                writer.Write(bytes);
-            }
+            using var writer = BuildWriter(target);
+            writer.Write(bytes);
         }
 
         byte[] GetCurrentMessageBytes(string name)
@@ -285,10 +277,8 @@ namespace NServiceBus.Attachments
         Task InnerProcessStream(string name, Func<AttachmentStream, Task> action)
         {
             var attachment = GetCurrentMessageAttachment(name);
-            using (var attachmentStream = attachment.ToAttachmentStream())
-            {
-                return action(attachmentStream);
-            }
+            using var attachmentStream = attachment.ToAttachmentStream();
+            return action(attachmentStream);
         }
     }
 }

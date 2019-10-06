@@ -20,21 +20,19 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
-            using (var command = GetReadInfoCommand(connection, transaction, messageId))
-            using (var reader = await command.ExecuteSequentialReader(cancellation))
+            using var command = GetReadInfoCommand(connection, transaction, messageId);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
             {
-                while (await reader.ReadAsync(cancellation))
-                {
-                    cancellation.ThrowIfCancellationRequested();
-                    var info = new AttachmentInfo(
-                        messageId: messageId,
-                        name: reader.GetString(1),
-                        expiry: reader.GetDateTime(2),
-                        metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
-                    var task = action(info);
-                    Guard.ThrowIfNullReturned(null, null, task);
-                    await task;
-                }
+                cancellation.ThrowIfCancellationRequested();
+                var info = new AttachmentInfo(
+                    messageId: messageId,
+                    name: reader.GetString(1),
+                    expiry: reader.GetDateTime(2),
+                    metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
+                var task = action(info);
+                Guard.ThrowIfNullReturned(null, null, task);
+                await task;
             }
         }
 
@@ -60,21 +58,19 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
-            using (var command = GetReadInfosCommand(connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation))
+            using var command = GetReadInfosCommand(connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
             {
-                while (await reader.ReadAsync(cancellation))
-                {
-                    cancellation.ThrowIfCancellationRequested();
-                    var info = new AttachmentInfo(
-                        messageId: reader.GetString(1),
-                        name: reader.GetString(2),
-                        expiry: reader.GetDateTime(3),
-                        metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
-                    var task = action(info);
-                    Guard.ThrowIfNullReturned(null, null, task);
-                    await task;
-                }
+                cancellation.ThrowIfCancellationRequested();
+                var info = new AttachmentInfo(
+                    messageId: reader.GetString(1),
+                    name: reader.GetString(2),
+                    expiry: reader.GetDateTime(3),
+                    metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
+                var task = action(info);
+                Guard.ThrowIfNullReturned(null, null, task);
+                await task;
             }
         }
 

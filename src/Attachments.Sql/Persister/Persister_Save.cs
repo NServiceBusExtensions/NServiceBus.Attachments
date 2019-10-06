@@ -57,10 +57,9 @@ namespace NServiceBus.Attachments.Sql
 
         async Task Save(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
-            using (var command = connection.CreateCommand())
-            {
-                command.Transaction = transaction;
-                command.CommandText = $@"
+            using var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = $@"
 insert into {table}
 (
     MessageId,
@@ -77,15 +76,14 @@ values
     @Data,
     @Metadata
 )";
-                command.AddParameter("MessageId", messageId);
-                command.AddParameter("Name", name);
-                command.AddParameter("Expiry", expiry);
-                command.AddParameter("Metadata", MetadataSerializer.Serialize(metadata));
-                command.AddBinary("Data", stream);
+            command.AddParameter("MessageId", messageId);
+            command.AddParameter("Name", name);
+            command.AddParameter("Expiry", expiry);
+            command.AddParameter("Metadata", MetadataSerializer.Serialize(metadata));
+            command.AddBinary("Data", stream);
 
-                // Send the data to the server asynchronously
-                await command.ExecuteNonQueryAsync(cancellation);
-            }
+            // Send the data to the server asynchronously
+            await command.ExecuteNonQueryAsync(cancellation);
         }
     }
 }

@@ -33,11 +33,9 @@ namespace NServiceBus.Attachments
                 return null;
             }
             var serializer = BuildSerializer();
-            using (var stream = new MemoryStream())
-            {
-                serializer.WriteObject(stream, instance);
-                return Encoding.UTF8.GetString(stream.ToArray());
-            }
+            using var stream = new MemoryStream();
+            serializer.WriteObject(stream, instance);
+            return Encoding.UTF8.GetString(stream.ToArray());
         }
 
         /// <summary>
@@ -49,10 +47,9 @@ namespace NServiceBus.Attachments
             {
                 return EmptyMetadata;
             }
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-            {
-                return Deserialize(stream);
-            }
+
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
+            return Deserialize(stream);
         }
 
         /// <summary>

@@ -46,10 +46,8 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNull(value, nameof(value));
             return Save(messageId, name, expiry, metadata, async fileStream =>
             {
-                using (var writer = fileStream.BuildLeaveOpenWriter())
-                {
-                    await writer.WriteLineAsync(value);
-                }
+                using var writer = fileStream.BuildLeaveOpenWriter();
+                await writer.WriteLineAsync(value);
             });
         }
 
@@ -72,10 +70,8 @@ namespace NServiceBus.Attachments.FileShare
             }
             WriteMetadata(attachmentDirectory, metadata);
 
-            using (var fileStream = FileHelpers.OpenWrite(dataFile))
-            {
-                await action(fileStream);
-            }
+            using var fileStream = FileHelpers.OpenWrite(dataFile);
+            await action(fileStream);
         }
     }
 }

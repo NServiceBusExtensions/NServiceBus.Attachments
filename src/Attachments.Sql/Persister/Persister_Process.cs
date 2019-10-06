@@ -18,23 +18,19 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
-            using (var command = CreateGetDatasCommand(messageId, connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation))
+            using var command = CreateGetDatasCommand(messageId, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
             {
-                while (await reader.ReadAsync(cancellation))
-                {
-                    cancellation.ThrowIfCancellationRequested();
-                    var name = reader.GetString(0);
-                    var length = reader.GetInt64(1);
-                    var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
-                    using (var sqlStream = reader.GetStream(3))
-                    using (var attachmentStream = new AttachmentStream(sqlStream, length, metadata))
-                    {
-                        var task = action(name, attachmentStream);
-                        Guard.ThrowIfNullReturned(messageId, null, task);
-                        await task;
-                    }
-                }
+                cancellation.ThrowIfCancellationRequested();
+                var name = reader.GetString(0);
+                var length = reader.GetInt64(1);
+                var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
+                using var sqlStream = reader.GetStream(3);
+                using var attachmentStream = new AttachmentStream(sqlStream, length, metadata);
+                var task = action(name, attachmentStream);
+                Guard.ThrowIfNullReturned(messageId, null, task);
+                await task;
             }
         }
 
@@ -48,24 +44,20 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
-            using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
-            using (var reader = await command.ExecuteSequentialReader(cancellation))
+            using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
+            if (!await reader.ReadAsync(cancellation))
             {
-                if (!await reader.ReadAsync(cancellation))
-                {
-                    throw ThrowNotFound(messageId, name);
-                }
-
-                var length = reader.GetInt64(0);
-                var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(1));
-                using (var sqlStream = reader.GetStream(2))
-                using (var attachmentStream = new AttachmentStream(sqlStream, length, metadata))
-                {
-                    var task = action(attachmentStream);
-                    Guard.ThrowIfNullReturned(messageId, name, task);
-                    await task;
-                }
+                throw ThrowNotFound(messageId, name);
             }
+
+            var length = reader.GetInt64(0);
+            var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(1));
+            using var sqlStream = reader.GetStream(2);
+            using var attachmentStream = new AttachmentStream(sqlStream, length, metadata);
+            var task = action(attachmentStream);
+            Guard.ThrowIfNullReturned(messageId, name, task);
+            await task;
         }
     }
 }

@@ -26,10 +26,8 @@ namespace NServiceBus.Attachments.FileShare
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 var read = FileHelpers.OpenRead(dataFile);
                 var metadata = ReadMetadata(attachmentDirectory);
-                using (var fileStream = new AttachmentStream(read, read.Length, metadata))
-                {
-                    await action(attachmentName, fileStream);
-                }
+                using var fileStream = new AttachmentStream(read, read.Length, metadata);
+                await action(attachmentName, fileStream);
             }
         }
 
@@ -48,10 +46,8 @@ namespace NServiceBus.Attachments.FileShare
             ThrowIfFileNotFound(dataFile, messageId, name);
             var read = FileHelpers.OpenRead(dataFile);
             var metadata = ReadMetadata(attachmentDirectory);
-            using (var fileStream = new AttachmentStream(read, read.Length, metadata))
-            {
-                await action(fileStream);
-            }
+            using var fileStream = new AttachmentStream(read, read.Length, metadata);
+            await action(fileStream);
         }
     }
 }

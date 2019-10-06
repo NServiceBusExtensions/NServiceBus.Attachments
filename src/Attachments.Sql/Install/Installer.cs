@@ -28,13 +28,11 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(table, nameof(table));
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = GetTableSql();
-                command.AddParameter("schema", table.Schema);
-                command.AddParameter("table", table.TableName);
-                await command.ExecuteNonQueryAsync(cancellation);
-            }
+            using var command = connection.CreateCommand();
+            command.CommandText = GetTableSql();
+            command.AddParameter("schema", table.Schema);
+            command.AddParameter("table", table.TableName);
+            await command.ExecuteNonQueryAsync(cancellation);
         }
 
         /// <summary>
@@ -42,11 +40,9 @@ namespace NServiceBus.Attachments.Sql
         /// </summary>
         public static string GetTableSql()
         {
-            using (var stream = AssemblyHelper.Current.GetManifestResourceStream("Table.sql"))
-            using (var streamReader = new StreamReader(stream))
-            {
-                return streamReader.ReadToEnd();
-            }
+            using var stream = AssemblyHelper.Current.GetManifestResourceStream("Table.sql");
+            using var streamReader = new StreamReader(stream);
+            return streamReader.ReadToEnd();
         }
     }
 }
