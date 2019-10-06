@@ -7,7 +7,7 @@
         /// </summary>
         public virtual AttachmentStream GetStream()
         {
-            return null;
+            return AttachmentStream.Empty();
         }
 
         /// <summary>
@@ -15,7 +15,7 @@
         /// </summary>
         public virtual AttachmentStream GetStream(string name )
         {
-            return null;
+            return AttachmentStream.Empty();
         }
 
         /// <summary>
@@ -23,7 +23,7 @@
         /// </summary>
         public virtual AttachmentStream GetStreamForMessage(string messageId)
         {
-            return null;
+            return AttachmentStream.Empty();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@
         /// </summary>
         public virtual AttachmentStream GetStreamForMessage(string messageId, string name)
         {
-            return null;
+            return AttachmentStream.Empty();
         }
     }
 }

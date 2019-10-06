@@ -7,16 +7,18 @@ using NServiceBus.Attachments.FileShare;
 using Xunit;
 using Xunit.Abstractions;
 
-public class PersisterTests : TestBase
+public class PersisterTests :
+    TestBase
 {
     DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
 
-    public PersisterTests(ITestOutputHelper output) : base(output)
+    public PersisterTests(ITestOutputHelper output) :
+        base(output)
     {
     }
 
-    static Persister GetPersister([CallerMemberName] string path = null)
+    static Persister GetPersister([CallerMemberName] string? path = null)
     {
         var fileShare = Path.GetFullPath($"attachments/{path}");
         var persister = new Persister(fileShare);

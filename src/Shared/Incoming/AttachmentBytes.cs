@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System;
 using System.Collections.Generic;
 
 namespace NServiceBus.Attachments
@@ -17,6 +18,11 @@ namespace NServiceBus.Attachments
     /// </summary>
     public class AttachmentBytes
     {
+        /// <summary>
+        /// An empty <see cref="AttachmentBytes"/> that contains a <see cref="Array.Empty{T}"/> of <see cref="byte"/>s.
+        /// </summary>
+        public static AttachmentBytes Empty = new AttachmentBytes(Array.Empty<byte>());
+
         /// <summary>
         /// The attachment bytes.
         /// </summary>

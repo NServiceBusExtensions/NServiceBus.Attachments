@@ -4,7 +4,7 @@ using NServiceBus.Transport;
 
 static class SqlTransportHelper
 {
-    public static bool TryReadTransaction(this IOutgoingLogicalMessageContext context, out Transaction transaction)
+    public static bool TryReadTransaction(this IOutgoingLogicalMessageContext context, out Transaction? transaction)
     {
         if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
         {

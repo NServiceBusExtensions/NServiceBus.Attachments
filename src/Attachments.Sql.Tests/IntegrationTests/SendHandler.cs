@@ -17,7 +17,7 @@ class SendHandler :
         var replyOptions = new SendOptions();
         replyOptions.RouteToThisEndpoint();
         var attachment = await context.Attachments().GetBytes("withMetadata");
-        Assert.Equal("value", attachment.Metadata["key"]);
+        Assert.Equal("value", attachment.Metadata!["key"]);
         Assert.NotNull(attachment);
         var outgoingAttachment = replyOptions.Attachments();
         outgoingAttachment.AddBytes(attachment);

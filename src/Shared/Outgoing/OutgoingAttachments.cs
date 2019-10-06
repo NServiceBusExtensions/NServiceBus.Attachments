@@ -91,7 +91,11 @@ class OutgoingAttachments :
     public void DuplicateIncoming(string incomingName, string? outgoingName = null)
     {
         Guard.AgainstNull(incomingName, nameof(incomingName));
-        Duplicates.Add(new Duplicate {From = incomingName, To = outgoingName});
+        Duplicates.Add(new Duplicate
+        (
+            from: incomingName,
+            to: outgoingName
+        ));
     }
 
     public void AddBytes(string name, Func<byte[]> bytesFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)

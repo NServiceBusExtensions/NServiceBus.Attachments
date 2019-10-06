@@ -10,7 +10,7 @@ namespace NServiceBus.Attachments.Sql.Testing
         /// </summary>
         public virtual Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
         {
-            return Task.FromResult<AttachmentStream>(null);
+            return Task.FromResult(AttachmentStream.Empty());
         }
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace NServiceBus.Attachments.Sql.Testing
         /// </summary>
         public virtual Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default )
         {
-            return Task.FromResult<AttachmentStream>(null);
+            return Task.FromResult(AttachmentStream.Empty());
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace NServiceBus.Attachments.Sql.Testing
         /// </summary>
         public virtual Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
         {
-            return Task.FromResult<AttachmentStream>(null);
+            return Task.FromResult(AttachmentStream.Empty());
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace NServiceBus.Attachments.Sql.Testing
         /// </summary>
         public virtual Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
-            return Task.FromResult<AttachmentStream>(null);
+            return Task.FromResult(AttachmentStream.Empty());
         }
     }
 }

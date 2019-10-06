@@ -15,7 +15,7 @@ class Cleaner : FeatureStartupTask
         this.criticalError = criticalError;
     }
 
-    protected override Task OnStart(IMessageSession session)
+    protected override Task OnStart(IMessageSession? session)
     {
         var cleanupFailures = 0;
         timer.Start(
@@ -39,7 +39,7 @@ class Cleaner : FeatureStartupTask
         return Task.CompletedTask;
     }
 
-    protected override Task OnStop(IMessageSession session)
+    protected override Task OnStop(IMessageSession? session)
     {
         return timer.Stop();
     }

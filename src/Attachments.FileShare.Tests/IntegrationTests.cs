@@ -53,7 +53,7 @@ public class IntegrationTests :
         public async Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             var withAttachment = await context.Attachments().GetBytes("withMetadata");
-            Assert.Equal("value", withAttachment.Metadata["key"]);
+            Assert.Equal("value", withAttachment.Metadata!["key"]);
             var replyOptions = new ReplyOptions();
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.Add(() =>

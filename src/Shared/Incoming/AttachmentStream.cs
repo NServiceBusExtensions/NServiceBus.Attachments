@@ -21,6 +21,16 @@ namespace NServiceBus.Attachments
     /// </summary>
     public class AttachmentStream : Stream
     {
+        static Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
+
+        /// <summary>
+        /// An empty <see cref="AttachmentStream"/> that contains a <see cref="Array.Empty{T}"/> of <see cref="byte"/>s.
+        /// </summary>
+        public static AttachmentStream Empty()
+        {
+            return new AttachmentStream(new MemoryStream(), 0, emptyDictionary);
+        }
+
         Stream inner;
         IDisposable[] cleanups;
 

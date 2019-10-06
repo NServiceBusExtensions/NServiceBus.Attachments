@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System;
 using System.Collections.Generic;
 
 namespace NServiceBus.Attachments
@@ -18,6 +19,11 @@ namespace NServiceBus.Attachments
     public class AttachmentString
     {
         /// <summary>
+        /// An empty <see cref="AttachmentString"/> that contains a <see cref="string.Empty"/>.
+        /// </summary>
+        public static AttachmentString Empty = new AttachmentString(string.Empty);
+
+        /// <summary>
         /// The attachment bytes.
         /// </summary>
         public readonly string Value;
@@ -32,7 +38,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         /// <param name="value">The <see cref="string"/>s to wrap.</param>
         /// <param name="metadata">The attachment metadata.</param>
-        public AttachmentString(string value, IReadOnlyDictionary<string, string> metadata = null)
+        public AttachmentString(string value, IReadOnlyDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNull(value, nameof(value));
             if (metadata == null)

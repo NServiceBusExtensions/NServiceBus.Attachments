@@ -24,7 +24,7 @@ namespace NServiceBus.Attachments
         public static Task CopyToDirectory(
             this IMessageAttachments attachments,
             string directory,
-            string nameForDefault = default,
+            string? nameForDefault = default,
             CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(directory, nameof(directory));

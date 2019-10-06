@@ -22,7 +22,7 @@ namespace NServiceBus.Attachments
         public static void AddFile(
             this IOutgoingAttachments attachments,
             string file,
-            string name = default)
+            string? name = default)
         {
             Guard.FileExists(file, nameof(file));
             Guard.AgainstEmpty(name, nameof(name));
