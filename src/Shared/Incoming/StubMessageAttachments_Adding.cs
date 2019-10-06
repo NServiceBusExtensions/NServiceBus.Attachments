@@ -50,11 +50,11 @@ namespace NServiceBus.Attachments
             Guard.AgainstNull(bytes, nameof(bytes));
             currentAttachments.Add(name,
                 new MockAttachment
-                {
-                    Bytes = bytes,
-                    Metadata = BuildMetadata(metadata),
-                    Expiry = DateTime.UtcNow.AddDays(10)
-                });
+                (
+                    bytes: bytes,
+                    metadata: BuildMetadata(metadata),
+                    expiry: DateTime.UtcNow.AddDays(10)
+                ));
         }
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace NServiceBus.Attachments
 
             attachmentsForMessage.Add(name,
                 new MockAttachment
-                {
-                    Bytes = bytes,
-                    Metadata = BuildMetadata(metadata),
-                    Expiry = DateTime.UtcNow.AddDays(10)
-                });
+                (
+                    bytes: bytes,
+                    metadata: BuildMetadata(metadata),
+                    expiry: DateTime.UtcNow.AddDays(10)
+                ));
         }
 
         static IReadOnlyDictionary<string, string> BuildMetadata(IDictionary<string, string>? metadata)
