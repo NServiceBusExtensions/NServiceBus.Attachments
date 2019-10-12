@@ -47,6 +47,13 @@ public class IntegrationTests :
             //TODO: should detect this a runtime and throw  an better exception
             return;
         }
+        if (useSqlTransport && !useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
+        {
+            // this scenario is not supported by netcore
+            // will cause a "This platform does not support distributed transactions."
+            //TODO: should detect this a runtime and throw  an better exception
+            return;
+        }
         if (useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
         {
             // so a nested connection will cause DTC
