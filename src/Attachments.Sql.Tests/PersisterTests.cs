@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using Xunit;
@@ -89,6 +90,37 @@ public class PersisterTests :
                 return Task.CompletedTask;
             });
         Assert.Equal(1, count);
+    }
+    [Fact]
+    public async Task ProcessStreamMultiple()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var count = 0;
+        var saves = new List<Task>();
+        for (var i = 0; i < 10; i++)
+        {
+            saves.Add(persister.SaveStream(connection, null, "theMessageId", $"theName{i}", defaultTestDate, GetStream(), metadata));
+        }
+
+        await Task.WhenAll(saves);
+        
+        var reads = new List<Task>();
+        for (var i = 0; i < 10; i++)
+        {
+            reads.Add(persister.ProcessStream("theMessageId", $"theName{i}", connection, null,
+                action: stream =>
+                {
+                    Interlocked.Increment(ref count);
+                    var array = ToBytes(stream);
+                    Assert.Equal(5, array[0]);
+                    return Task.CompletedTask;
+                }));
+        }
+        
+        await Task.WhenAll(reads);
+        Assert.Equal(10, count);
     }
 
     [Fact]
