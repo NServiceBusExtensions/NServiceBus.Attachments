@@ -76,7 +76,8 @@ public class IntegrationTests :
         if (useSqlPersistence)
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
-            Func<DbConnection> connectionBuilder = () => new SqlConnection(Connection.ConnectionString);
+
+            static DbConnection connectionBuilder() => new SqlConnection(Connection.ConnectionString);
             await RunSqlScripts(endpointName, connectionBuilder);
             persistence.SqlDialect<SqlDialect.MsSqlServer>();
             persistence.DisableInstaller();
