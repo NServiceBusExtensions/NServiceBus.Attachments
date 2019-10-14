@@ -20,7 +20,8 @@ namespace NServiceBus.Attachments
     /// <summary>
     /// Wraps a <see cref="Stream"/> to provide extra information when reading.
     /// </summary>
-    public class AttachmentStream : Stream
+    public class AttachmentStream :
+        Stream
     {
         static Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
 
@@ -73,7 +74,7 @@ namespace NServiceBus.Attachments
             return inner.ReadAsync(buffer, offset, count, cancellation);
         }
 
-        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = new CancellationToken())
+        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
             return inner.ReadAsync(buffer, cancellationToken);
         }
@@ -192,7 +193,7 @@ namespace NServiceBus.Attachments
             throw new NotImplementedException();
         }
 
-        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = new CancellationToken())
+        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
