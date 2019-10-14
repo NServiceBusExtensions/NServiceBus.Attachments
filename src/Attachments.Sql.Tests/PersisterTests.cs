@@ -28,7 +28,7 @@ public class PersisterTests :
     [Fact]
     public async Task CopyTo()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
@@ -42,7 +42,7 @@ public class PersisterTests :
     [Fact]
     public async Task GetBytes()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
@@ -53,7 +53,7 @@ public class PersisterTests :
     [Fact]
     public async Task CaseInsensitiveRead()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
@@ -64,7 +64,7 @@ public class PersisterTests :
     [Fact]
     public async Task LongName()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var name = new string('a',255);
@@ -76,7 +76,7 @@ public class PersisterTests :
     [Fact]
     public async Task ProcessStream()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var count = 0;
@@ -105,7 +105,7 @@ public class PersisterTests :
         }
 
         await Task.WhenAll(saves);
-        
+
         var reads = new List<Task>();
         for (var i = 0; i < 10; i++)
         {
@@ -118,7 +118,7 @@ public class PersisterTests :
                     return Task.CompletedTask;
                 }));
         }
-        
+
         await Task.WhenAll(reads);
         Assert.Equal(10, count);
     }
@@ -126,7 +126,7 @@ public class PersisterTests :
     [Fact]
     public async Task ProcessStreams()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var count = 0;
@@ -164,7 +164,7 @@ public class PersisterTests :
     [Fact]
     public async Task SaveStream()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
@@ -175,7 +175,7 @@ public class PersisterTests :
     [Fact]
     public async Task SaveBytes()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
@@ -187,7 +187,7 @@ public class PersisterTests :
     [Fact]
     public async Task SaveString()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", metadata);
@@ -199,7 +199,7 @@ public class PersisterTests :
     [Fact]
     public async Task DuplicateAll()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
@@ -212,7 +212,7 @@ public class PersisterTests :
     [Fact]
     public async Task Duplicate()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
@@ -225,7 +225,7 @@ public class PersisterTests :
     [Fact]
     public async Task DuplicateWithRename()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
@@ -237,7 +237,7 @@ public class PersisterTests :
     [Fact]
     public async Task ReadAllMessageInfo()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
@@ -256,7 +256,7 @@ public class PersisterTests :
     [Fact]
     public async Task CleanupItemsOlderThan()
     {
-        using var connection = Connection.OpenConnection();
+        await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream());
