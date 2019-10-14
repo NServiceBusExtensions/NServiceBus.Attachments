@@ -34,7 +34,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <summary>
-        /// Reads a byte array for an attachment.
+        /// Reads an <see cref="AttachmentBytes"/> for an attachment.
         /// </summary>
         public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <summary>
-        /// Returns an open stream pointing to an attachment.
+        /// Reads an <see cref="AttachmentStream"/> for an attachment.
         /// </summary>
         public virtual async Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction? transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation)
         {

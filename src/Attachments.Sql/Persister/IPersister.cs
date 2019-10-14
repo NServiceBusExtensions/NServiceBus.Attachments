@@ -94,12 +94,12 @@ namespace NServiceBus.Attachments.Sql
         Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Reads a string for an attachment.
+        /// Reads an <see cref="AttachmentString"/> for an attachment.
         /// </summary>
         Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Returns an open stream pointing to an attachment.
+        /// Reads an <see cref="AttachmentStream"/> for an attachment.
         /// </summary>
         Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction? transaction,  bool disposeConnectionOnStreamDispose, CancellationToken cancellation);
 
