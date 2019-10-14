@@ -95,7 +95,7 @@ namespace NServiceBus.Attachments
         Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Process with the delegate <paramref name="action"/>, all attachments for the for the message with <paramref name="messageId"/>.
+        /// Process with the delegate <paramref name="action"/>, all attachments for the message with <paramref name="messageId"/>.
         /// </summary>
         Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
