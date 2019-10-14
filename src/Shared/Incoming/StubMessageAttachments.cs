@@ -125,11 +125,8 @@ namespace NServiceBus.Attachments
         public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
-            using (var writer = BuildWriter(target))
-            {
-                writer.Write(attachment.Bytes);
-            }
-
+            using var writer = BuildWriter(target);
+            writer.Write(attachment.Bytes);
             return Task.CompletedTask;
         }
 

@@ -20,21 +20,19 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            await using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
+            await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            if (await reader.ReadAsync(cancellation))
             {
-                await using var reader = await command.ExecuteSequentialReader(cancellation);
-                if (await reader.ReadAsync(cancellation))
-                {
-                    var metadataString = reader.GetStringOrNull(1);
-                    var metadata = MetadataSerializer.Deserialize(metadataString);
-                    //TODO: read string directly
-                    var bytes = (byte[]) reader[2];
-                    return new AttachmentString(Encoding.UTF8.GetString(bytes), metadata);
-                }
+                var metadataString = reader.GetStringOrNull(1);
+                var metadata = MetadataSerializer.Deserialize(metadataString);
+                //TODO: read string directly
+                var bytes = (byte[]) reader[2];
+                return new AttachmentString(Encoding.UTF8.GetString(bytes), metadata);
             }
-
             throw ThrowNotFound(messageId, name);
         }
+
         /// <summary>
         /// Reads a byte array for an attachment.
         /// </summary>
@@ -44,19 +42,16 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            await using (var command = CreateGetDataCommand(messageId, name, connection, transaction))
+            await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            if (await reader.ReadAsync(cancellation))
             {
-                await using var reader = await command.ExecuteSequentialReader(cancellation);
-                if (await reader.ReadAsync(cancellation))
-                {
-                    var metadataString = reader.GetStringOrNull(1);
-                    var metadata = MetadataSerializer.Deserialize(metadataString);
-                    var bytes = (byte[]) reader[2];
+                var metadataString = reader.GetStringOrNull(1);
+                var metadata = MetadataSerializer.Deserialize(metadataString);
+                var bytes = (byte[]) reader[2];
 
-                    return new AttachmentBytes(bytes, metadata);
-                }
+                return new AttachmentBytes(bytes, metadata);
             }
-
             throw ThrowNotFound(messageId, name);
         }
 

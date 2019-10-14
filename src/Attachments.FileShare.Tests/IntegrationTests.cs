@@ -70,15 +70,12 @@ public class IntegrationTests :
     {
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
-            await using (var memoryStream = new MemoryStream())
-            {
-                var incomingAttachment = context.Attachments();
-                await incomingAttachment.CopyTo(memoryStream);
-                memoryStream.Position = 0;
-                var buffer = memoryStream.GetBuffer();
-                Debug.WriteLine(buffer);
-            }
-
+            await using var memoryStream = new MemoryStream();
+            var incomingAttachment = context.Attachments();
+            await incomingAttachment.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+            var buffer = memoryStream.GetBuffer();
+            Debug.WriteLine(buffer);
             resetEvent.Set();
         }
     }

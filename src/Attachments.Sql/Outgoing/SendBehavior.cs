@@ -47,12 +47,9 @@ class SendBehavior :
         {
             if (state.Transaction != null)
             {
-                await using (var connection = await state.GetConnection())
-                {
-                    connection.EnlistTransaction(state.Transaction);
-                    await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
-                }
-
+                await using var connectionFromState = await state.GetConnection();
+                connectionFromState.EnlistTransaction(state.Transaction);
+                await ProcessOutgoing(timeToBeReceived, connectionFromState, null, context, outgoingAttachments);
                 return;
             }
 
@@ -68,26 +65,21 @@ class SendBehavior :
                 return;
             }
 
-            await using (var connection = await state.GetConnection())
-            {
-                await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
-            }
-
+            await using var connection = await state.GetConnection();
+            await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
             return;
         }
 
-        await using (var connection = await connectionFactory())
+        await using var connectionFromFactory = await connectionFactory();
+        //TODO: should this be done ?
+        if (context.TryReadTransaction(out var transaction))
         {
-            //TODO: should this be done ?
-            if (context.TryReadTransaction(out var transaction))
-            {
-                connection.EnlistTransaction(transaction);
-            }
-
-            await using var dbTransaction = connection.BeginTransaction();
-            await ProcessOutgoing(timeToBeReceived, connection, dbTransaction, context, outgoingAttachments);
-            dbTransaction.Commit();
+            connectionFromFactory.EnlistTransaction(transaction);
         }
+
+        await using var dbTransaction = connectionFromFactory.BeginTransaction();
+        await ProcessOutgoing(timeToBeReceived, connectionFromFactory, dbTransaction, context, outgoingAttachments);
+        dbTransaction.Commit();
     }
 
     Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
