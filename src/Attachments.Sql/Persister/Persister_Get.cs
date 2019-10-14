@@ -77,8 +77,8 @@ namespace NServiceBus.Attachments.Sql
                 reader = await command.ExecuteSequentialReader(cancellation);
                 if (!await reader.ReadAsync(cancellation))
                 {
-                    reader.Dispose();
-                    command.Dispose();
+                    await reader.DisposeAsync();
+                    await command.DisposeAsync();
                     throw ThrowNotFound(messageId, name);
                 }
 
@@ -86,8 +86,14 @@ namespace NServiceBus.Attachments.Sql
             }
             catch (Exception)
             {
-                reader?.Dispose();
-                command?.Dispose();
+                if (reader != null)
+                {
+                    await reader.DisposeAsync();
+                }
+                if (command != null)
+                {
+                    await command.DisposeAsync();
+                }
                 throw;
             }
         }

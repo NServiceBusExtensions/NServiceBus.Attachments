@@ -24,10 +24,9 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.CopyTo(string,Stream,CancellationToken)"/>
         /// </summary>
-        public virtual Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
+        public virtual async Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
         {
-            target.Dispose();
-            return Task.CompletedTask;
+            await target.DisposeAsync();
         }
 
         /// <summary>
