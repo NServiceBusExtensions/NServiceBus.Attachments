@@ -35,8 +35,8 @@ namespace NServiceBus.Attachments.FileShare
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = ReadMetadata(attachmentDirectory);
-            var attachmentString = new AttachmentString(name, File.ReadAllText(dataFile), metadata);
-            return Task.FromResult(attachmentString);
+            var attachment = new AttachmentString(name, File.ReadAllText(dataFile), metadata);
+            return Task.FromResult(attachment);
         }
 
         /// <summary>
