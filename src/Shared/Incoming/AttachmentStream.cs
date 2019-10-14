@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,7 +33,7 @@ namespace NServiceBus.Attachments
         }
 
         Stream inner;
-        IDisposable[] cleanups;
+        IAsyncDisposable[] cleanups;
 
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -40,8 +41,8 @@ namespace NServiceBus.Attachments
         /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
         /// <param name="length">The length of <paramref name="inner"/>.</param>
         /// <param name="metadata">The attachment metadata.</param>
-        /// <param name="cleanups">Any extra <see cref="IDisposable"/>s to cleanup.</param>
-        public AttachmentStream(Stream inner, long length, IReadOnlyDictionary<string, string> metadata, params IDisposable[] cleanups)
+        /// <param name="cleanups">Any extra <see cref="IAsyncDisposable"/>s to cleanup.</param>
+        public AttachmentStream(Stream inner, long length, IReadOnlyDictionary<string, string> metadata, params IAsyncDisposable[] cleanups)
         {
             Guard.AgainstNull(inner, nameof(inner));
             Guard.AgainstNull(metadata, nameof(metadata));
@@ -70,6 +71,16 @@ namespace NServiceBus.Attachments
         public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellation)
         {
             return inner.ReadAsync(buffer, offset, count, cancellation);
+        }
+
+        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return inner.ReadAsync(buffer, cancellationToken);
+        }
+
+        public override int Read(Span<byte> buffer)
+        {
+            return inner.Read(buffer);
         }
 
         public override int ReadByte()
@@ -121,16 +132,18 @@ namespace NServiceBus.Attachments
             return inner.CopyToAsync(destination, bufferSize, cancellation);
         }
 
-        protected override void Dispose(bool disposing)
+        public override void CopyTo(Stream destination, int bufferSize)
         {
-            base.Dispose(disposing);
-            inner.Dispose();
+            inner.CopyTo(destination, bufferSize);
+        }
+
+        public override async ValueTask DisposeAsync()
+        {
+            await base.DisposeAsync();
+            await inner.DisposeAsync();
             if (cleanups != null)
             {
-                foreach (var cleanup in cleanups)
-                {
-                    cleanup.Dispose();
-                }
+                await Task.WhenAll(cleanups.Select(async x => await x.DisposeAsync()));
             }
         }
 
@@ -169,7 +182,17 @@ namespace NServiceBus.Attachments
             throw new NotImplementedException();
         }
 
+        public override void Write(ReadOnlySpan<byte> buffer)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = new CancellationToken())
         {
             throw new NotImplementedException();
         }
