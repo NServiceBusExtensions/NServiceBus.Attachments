@@ -46,9 +46,13 @@ namespace NServiceBus.Attachments
             {
                 metadata = MetadataSerializer.EmptyMetadata;
             }
+
+            Name = name;
             Value = value;
             Metadata = metadata;
         }
+
+        public string Name { get; set; }
 
         public static implicit operator string(AttachmentString d)
         {
