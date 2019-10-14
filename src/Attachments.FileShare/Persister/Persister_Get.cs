@@ -10,7 +10,7 @@ namespace NServiceBus.Attachments.FileShare
     public partial class Persister
     {
         /// <summary>
-        /// Reads a byte array for an attachment.
+        /// Reads an <see cref="AttachmentBytes"/> for an attachment.
         /// </summary>
         public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, CancellationToken cancellation = default)
         {
@@ -25,7 +25,7 @@ namespace NServiceBus.Attachments.FileShare
         }
 
         /// <summary>
-        /// Reads a string for an attachment.
+        /// Reads an <see cref="AttachmentString"/> for an attachment.
         /// </summary>
         public virtual Task<AttachmentString> GetString(string messageId, string name, CancellationToken cancellation = default)
         {
@@ -40,7 +40,7 @@ namespace NServiceBus.Attachments.FileShare
         }
 
         /// <summary>
-        /// Returns an open stream pointing to an attachment.
+        /// Reads an <see cref="AttachmentStream"/> an attachment.
         /// </summary>
         public virtual AttachmentStream GetStream(string messageId, string name)
         {

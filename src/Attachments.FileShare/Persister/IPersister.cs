@@ -78,17 +78,17 @@ namespace NServiceBus.Attachments.FileShare
         Task Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Reads a byte array for an attachment.
+        /// Reads an <see cref="AttachmentBytes"/> for an attachment.
         /// </summary>
         Task<AttachmentBytes> GetBytes(string messageId, string name, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Reads a string for an attachment.
+        /// Reads an <see cref="AttachmentString"/> for an attachment.
         /// </summary>
         Task<AttachmentString> GetString(string messageId, string name, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Returns an open stream pointing to an attachment.
+        /// Reads an <see cref="AttachmentStream"/> an attachment.
         /// </summary>
         AttachmentStream GetStream(string messageId, string name);
 
