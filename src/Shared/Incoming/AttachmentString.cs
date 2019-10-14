@@ -15,7 +15,8 @@ namespace NServiceBus.Attachments
     /// <summary>
     /// Wraps a <see cref="string"/> to provide extra information when reading.
     /// </summary>
-    public class AttachmentString
+    public class AttachmentString :
+        IAttachment
     {
         /// <summary>
         /// An empty <see cref="AttachmentString"/> that contains a "default" name and <see cref="string.Empty"/> contents.
@@ -25,12 +26,14 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// The attachment value.
         /// </summary>
-        public readonly string Value;
+        public string Value { get; }
 
         /// <summary>
         /// The attachment metadata.
         /// </summary>
-        public readonly IReadOnlyDictionary<string, string> Metadata;
+        public IReadOnlyDictionary<string, string> Metadata { get; }
+
+        public string Name { get; }
 
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -52,7 +55,6 @@ namespace NServiceBus.Attachments
             Metadata = metadata;
         }
 
-        public string Name { get; }
 
         public static implicit operator string(AttachmentString d)
         {

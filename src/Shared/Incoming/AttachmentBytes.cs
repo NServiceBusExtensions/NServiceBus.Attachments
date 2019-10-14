@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace NServiceBus.Attachments
@@ -16,7 +15,8 @@ namespace NServiceBus.Attachments
     /// <summary>
     /// Wraps a <see cref="byte"/> array to provide extra information when reading.
     /// </summary>
-    public class AttachmentBytes
+    public class AttachmentBytes :
+        IAttachment
     {
         /// <summary>
         /// An empty <see cref="AttachmentBytes"/> that contains a "default" name a <see cref="Array.Empty{T}"/> of <see cref="byte"/>s as contents.
@@ -26,12 +26,12 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// The attachment bytes.
         /// </summary>
-        public readonly byte[] Bytes;
+        public byte[] Bytes { get; }
 
         /// <summary>
         /// The attachment metadata.
         /// </summary>
-        public readonly IReadOnlyDictionary<string, string>? Metadata;
+        public IReadOnlyDictionary<string, string> Metadata { get; }
 
         public string Name { get; }
 

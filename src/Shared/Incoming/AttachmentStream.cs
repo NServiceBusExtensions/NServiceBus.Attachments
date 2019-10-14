@@ -21,7 +21,8 @@ namespace NServiceBus.Attachments
     /// Wraps a <see cref="Stream"/> to provide extra information when reading.
     /// </summary>
     public class AttachmentStream :
-        Stream
+        Stream,
+        IAttachment
     {
         static Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
 
@@ -112,7 +113,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// The attachment metadata.
         /// </summary>
-        public readonly IReadOnlyDictionary<string, string> Metadata;
+        public IReadOnlyDictionary<string, string> Metadata { get; }
         public override int ReadTimeout => inner.ReadTimeout;
 
         public override long Position
