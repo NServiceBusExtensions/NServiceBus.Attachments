@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.Sql</AssemblyName>
     <PackageName>NServiceBus.Attachments.Sql</PackageName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageProjectUrl>https://docs.particular.net/nuget/$(PackageId)</PackageProjectUrl>
     <DefineConstants>$(DefineConstants);Sql</DefineConstants>
   </PropertyGroup>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.FileShare.Raw</AssemblyName>
     <PackageName>NServiceBus.Attachments.FileShare.Raw</PackageName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <DefineConstants>$(DefineConstants);FileShare;Raw</DefineConstants>
     <PackageProjectUrl>https://docs.particular.net/nuget/$(PackageId)</PackageProjectUrl>
   </PropertyGroup>
