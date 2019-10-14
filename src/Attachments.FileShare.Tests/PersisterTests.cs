@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
 using Xunit;
@@ -102,6 +103,61 @@ public class PersisterTests :
             });
         Assert.Equal(2, count);
     }
+
+
+    [Fact]
+    public async Task GetMultipleStreams()
+    {
+        var persister = GetPersister();
+        var count = 0;
+        await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
+        await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
+        await foreach (var attachment in persister.GetStreams("theMessageId"))
+        {
+            var array = ToBytes(attachment);
+            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(array[0] == 1 || array[0] == 2);
+            Interlocked.Increment(ref count);
+        }
+
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
+    public async Task GetMultipleBytes()
+    {
+        var persister = GetPersister();
+        var count = 0;
+        await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
+        await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
+        await foreach (var attachment in persister.GetBytes("theMessageId"))
+        {
+            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(attachment.Bytes[0] == 1 || attachment.Bytes[0] == 2);
+            Interlocked.Increment(ref count);
+        }
+
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
+    public async Task GetMultipleStrings()
+    {
+        var persister = GetPersister();
+        var count = 0;
+        await persister.SaveString("theMessageId", "theName1", defaultTestDate, "a", metadata);
+        await persister.SaveString("theMessageId", "theName2", defaultTestDate, "b", metadata);
+        await foreach (var attachment in persister.GetStrings("theMessageId"))
+        {
+            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(attachment.Value == "a" || attachment.Value == "b", attachment.Value);
+            Interlocked.Increment(ref count);
+        }
+
+        Assert.Equal(2, count);
+    }
+
+
 
     static byte[] ToBytes(Stream stream)
     {

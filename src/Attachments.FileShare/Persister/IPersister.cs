@@ -101,5 +101,21 @@ namespace NServiceBus.Attachments.FileShare
         /// Processes an attachment by passing it to <paramref name="action"/>.
         /// </summary>
         Task ProcessStream(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentBytes"/>s for an attachment.
+        /// </summary>
+        IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentString"/>s for an attachment.
+        /// </summary>
+        IAsyncEnumerable<AttachmentString> GetStrings(string messageId, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentStream"/>s to an attachment.
+        /// </summary>
+        IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, CancellationToken cancellation = default);
+
     }
 }
