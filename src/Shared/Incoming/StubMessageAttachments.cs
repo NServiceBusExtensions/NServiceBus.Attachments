@@ -40,42 +40,32 @@ namespace NServiceBus.Attachments
             this.messageId = messageId;
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.CopyTo(string, Stream, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
         {
             CopyCurrentMessageAttachmentToStream(name, target);
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.CopyTo(Stream,CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task CopyTo(Stream target, CancellationToken cancellation = default)
         {
             return CopyTo("default", target, cancellation);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(string, Func{AttachmentStream, Task}, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return InnerProcessStream(name, action);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStream(Func{AttachmentStream, Task}, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return ProcessStream("default", action, cancellation);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreams"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             foreach (var pair in currentAttachments)
@@ -85,43 +75,33 @@ namespace NServiceBus.Attachments
             }
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetString(CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentString> GetString(CancellationToken cancellation = default)
         {
             return GetString("default", cancellation);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetString(string ,CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
         {
             var attachment = GetCurrentMessageAttachment(name);
             return Task.FromResult(attachment.ToAttachmentString());
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetBytes(CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
         {
             return GetBytes("default", cancellation);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetBytes(string, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
         {
             var attachment = GetCurrentMessageAttachment(name);
             return Task.FromResult(attachment.ToAttachmentBytes());
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.CopyToForMessage(string, string, Stream, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
@@ -130,17 +110,13 @@ namespace NServiceBus.Attachments
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.CopyToForMessage(string, Stream, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
         {
             return CopyToForMessage(messageId, "default", target, cancellation);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string, string, Func{AttachmentStream, Task}, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
@@ -148,17 +124,13 @@ namespace NServiceBus.Attachments
             await action(attachmentStream);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamForMessage(string, Func{AttachmentStream, Task}, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return ProcessStreamForMessage("default", messageId, action, cancellation);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string, Func{AttachmentStream, Task}, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             foreach (var pair in GetAttachmentsForMessage(messageId))
@@ -169,25 +141,19 @@ namespace NServiceBus.Attachments
             }
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetBytesForMessage(string, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
         {
             return GetBytesForMessage(messageId, "default", cancellation);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStringForMessage(string, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
         {
             return GetStringForMessage(messageId, "default", cancellation);
         }
 
-        /// <summary>
-        /// Read all attachment metadata for the current message.
-        /// </summary>
+        /// <inheritdoc />
         public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
         {
             var list = new List<AttachmentInfo>();
@@ -199,18 +165,14 @@ namespace NServiceBus.Attachments
             return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(list);
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetBytesForMessage(string, string, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
             return Task.FromResult(attachment.ToAttachmentBytes());
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStringForMessage(string, string, CancellationToken)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);

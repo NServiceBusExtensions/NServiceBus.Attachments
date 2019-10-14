@@ -16,9 +16,7 @@ namespace NServiceBus.Attachments
         Dictionary<string, MockAttachment> currentAttachments = new Dictionary<string, MockAttachment>(StringComparer.OrdinalIgnoreCase);
         Dictionary<string, Dictionary<string, MockAttachment>> attachments = new Dictionary<string, Dictionary<string, MockAttachment>>(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>
-        /// Adds a attachment that can then be used in a test.
-        /// </summary>
+        /// <inheritdoc />
         public void AddAttachment(string payload, IDictionary<string, string>? metadata = null)
         {
             AddAttachment("default", payload, metadata);
