@@ -21,7 +21,7 @@ namespace NServiceBus.Attachments.FileShare
             ThrowIfFileNotFound(dataFile, messageId, name);
             var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
             var metadata = ReadMetadata(attachmentDirectory);
-            return new AttachmentBytes(bytes, metadata);
+            return new AttachmentBytes(name, bytes, metadata);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace NServiceBus.Attachments.FileShare
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = ReadMetadata(attachmentDirectory);
-            var attachmentString = new AttachmentString(File.ReadAllText(dataFile), metadata);
+            var attachmentString = new AttachmentString(name, File.ReadAllText(dataFile), metadata);
             return Task.FromResult(attachmentString);
         }
 
@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments.FileShare
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = ReadMetadata(attachmentDirectory);
             var read = FileHelpers.OpenRead(dataFile);
-            return new AttachmentStream(read, read.Length, metadata);
+            return new AttachmentStream(name, read, read.Length, metadata);
         }
     }
 }

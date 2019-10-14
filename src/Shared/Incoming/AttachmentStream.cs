@@ -26,11 +26,11 @@ namespace NServiceBus.Attachments
         static Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
 
         /// <summary>
-        /// An empty <see cref="AttachmentStream"/> that contains a <see cref="Array.Empty{T}"/> of <see cref="byte"/>s.
+        /// An empty <see cref="AttachmentStream"/> that contains a "default" name and empty <see cref="MemoryStream"/> as content.
         /// </summary>
         public static AttachmentStream Empty()
         {
-            return new AttachmentStream(new MemoryStream(), 0, emptyDictionary);
+            return new AttachmentStream("default", new MemoryStream(), 0, emptyDictionary);
         }
 
         Stream inner;
@@ -39,17 +39,20 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
         /// </summary>
+        /// <param name="name">The name of the attachment.</param>
         /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
         /// <param name="length">The length of <paramref name="inner"/>.</param>
         /// <param name="metadata">The attachment metadata.</param>
         /// <param name="cleanups">Any extra <see cref="IAsyncDisposable"/>s to cleanup.</param>
-        public AttachmentStream(Stream inner, long length, IReadOnlyDictionary<string, string> metadata, params IAsyncDisposable[] cleanups)
+        public AttachmentStream(string name, Stream inner, long length, IReadOnlyDictionary<string, string> metadata, params IAsyncDisposable[] cleanups)
         {
+            Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(inner, nameof(inner));
             Guard.AgainstNull(metadata, nameof(metadata));
             Guard.AgainstNull(cleanups, nameof(cleanups));
             this.inner = inner;
             this.cleanups = cleanups;
+            Name = name;
             Length = length;
             Metadata = metadata;
         }
@@ -104,6 +107,7 @@ namespace NServiceBus.Attachments
         public override bool CanTimeout => inner.CanTimeout;
         public override bool CanWrite => false;
 
+        public string Name { get; }
         public override long Length { get; }
         /// <summary>
         /// The attachment metadata.

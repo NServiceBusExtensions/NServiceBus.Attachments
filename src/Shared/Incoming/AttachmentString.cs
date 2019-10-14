@@ -18,9 +18,9 @@ namespace NServiceBus.Attachments
     public class AttachmentString
     {
         /// <summary>
-        /// An empty <see cref="AttachmentString"/> that contains a <see cref="string.Empty"/>.
+        /// An empty <see cref="AttachmentString"/> that contains a "default" name and <see cref="string.Empty"/> contents.
         /// </summary>
-        public static AttachmentString Empty = new AttachmentString(string.Empty);
+        public static AttachmentString Empty = new AttachmentString("default", string.Empty);
 
         /// <summary>
         /// The attachment bytes.
@@ -35,10 +35,12 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
         /// </summary>
+        /// <param name="name">The name of the attachment.</param>
         /// <param name="value">The <see cref="string"/>s to wrap.</param>
         /// <param name="metadata">The attachment metadata.</param>
-        public AttachmentString(string value, IReadOnlyDictionary<string, string>? metadata = null)
+        public AttachmentString(string name, string value, IReadOnlyDictionary<string, string>? metadata = null)
         {
+            Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(value, nameof(value));
             if (metadata == null)
             {

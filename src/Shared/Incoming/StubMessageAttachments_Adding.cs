@@ -51,6 +51,7 @@ namespace NServiceBus.Attachments
             currentAttachments.Add(name,
                 new MockAttachment
                 (
+                    name: name,
                     bytes: bytes,
                     metadata: BuildMetadata(metadata),
                     expiry: DateTime.UtcNow.AddDays(10)
@@ -80,6 +81,7 @@ namespace NServiceBus.Attachments
             attachmentsForMessage.Add(name,
                 new MockAttachment
                 (
+                    name: name,
                     bytes: bytes,
                     metadata: BuildMetadata(metadata),
                     expiry: DateTime.UtcNow.AddDays(10)

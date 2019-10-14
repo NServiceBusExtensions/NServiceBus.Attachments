@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.Sql
                 var metadata = MetadataSerializer.Deserialize(metadataString);
                 //TODO: read string directly
                 var bytes = (byte[]) reader[2];
-                return new AttachmentString(Encoding.UTF8.GetString(bytes), metadata);
+                return new AttachmentString(name, Encoding.UTF8.GetString(bytes), metadata);
             }
             throw ThrowNotFound(messageId, name);
         }
@@ -50,7 +50,7 @@ namespace NServiceBus.Attachments.Sql
                 var metadata = MetadataSerializer.Deserialize(metadataString);
                 var bytes = (byte[]) reader[2];
 
-                return new AttachmentBytes(bytes, metadata);
+                return new AttachmentBytes(name, bytes, metadata);
             }
             throw ThrowNotFound(messageId, name);
         }
@@ -77,7 +77,7 @@ namespace NServiceBus.Attachments.Sql
                     throw ThrowNotFound(messageId, name);
                 }
 
-                return InnerGetStream(reader, command, disposeConnectionOnStreamDispose);
+                return InnerGetStream(name, reader, command, disposeConnectionOnStreamDispose);
             }
             catch (Exception)
             {
@@ -93,7 +93,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        static AttachmentStream InnerGetStream(DbDataReader reader, DbCommand command, bool disposeConnection)
+        static AttachmentStream InnerGetStream(string name, DbDataReader reader, DbCommand command, bool disposeConnection)
         {
             var length = reader.GetInt64(0);
             var metadataString = reader.GetStringOrNull(1);
@@ -101,9 +101,9 @@ namespace NServiceBus.Attachments.Sql
             var metadata = MetadataSerializer.Deserialize(metadataString);
             if (disposeConnection)
             {
-                return new AttachmentStream(sqlStream, length, metadata, command, reader, command.Connection);
+                return new AttachmentStream(name, sqlStream, length, metadata, command, reader, command.Connection);
             }
-            return new AttachmentStream(sqlStream, length, metadata, command, reader);
+            return new AttachmentStream(name, sqlStream, length, metadata, command, reader);
         }
 
         DbCommand CreateGetDataCommand(string messageId, string name, DbConnection connection, DbTransaction? transaction)
