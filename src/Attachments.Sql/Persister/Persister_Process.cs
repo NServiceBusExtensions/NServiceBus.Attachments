@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
         /// </summary>
-        public virtual async Task ProcessStreams(string messageId, DbConnection connection, DbTransaction? transaction, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreams(string messageId, DbConnection connection, DbTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.Sql
                 var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
                 await using var sqlStream = reader.GetStream(3);
                 await using var attachmentStream = new AttachmentStream(name, sqlStream, length, metadata);
-                var task = action(name, attachmentStream);
+                var task = action(attachmentStream);
                 Guard.ThrowIfNullReturned(messageId, null, task);
                 await task;
             }

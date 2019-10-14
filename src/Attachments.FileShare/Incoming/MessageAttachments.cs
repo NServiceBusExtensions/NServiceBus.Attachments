@@ -38,7 +38,7 @@ class MessageAttachments :
         return persister.ProcessStream(messageId, name, action, cancellation);
     }
 
-    public Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStreams(messageId, action, cancellation);
     }
@@ -98,7 +98,7 @@ class MessageAttachments :
         return persister.ProcessStream(messageId, name, action, cancellation);
     }
 
-    public Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStreams(messageId, action, cancellation);
     }

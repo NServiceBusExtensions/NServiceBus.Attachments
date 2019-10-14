@@ -40,7 +40,7 @@ class MessageAttachmentsFromDbConnection :
         return persister.ProcessStream(messageId, name, connection, null, action, cancellation);
     }
 
-    public Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStreams(messageId, connection, null, action, cancellation);
     }
@@ -95,7 +95,7 @@ class MessageAttachmentsFromDbConnection :
         return persister.ProcessStream(messageId, name, connection, null, action, cancellation);
     }
 
-    public Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         return persister.ProcessStreams(messageId, connection, null, action, cancellation);
     }

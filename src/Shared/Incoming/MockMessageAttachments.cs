@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.ProcessStreams"/>
         /// </summary>
-        public virtual Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }
@@ -134,9 +134,9 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{string, AttachmentStream,Task},CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{AttachmentStream,Task},CancellationToken)"/>
         /// </summary>
-        public virtual Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             return Task.CompletedTask;
         }

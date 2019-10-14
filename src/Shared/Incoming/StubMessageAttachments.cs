@@ -76,12 +76,12 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.ProcessStreams"/>
         /// </summary>
-        public virtual async Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             foreach (var pair in currentAttachments)
             {
                 await using var attachmentStream = pair.Value.ToAttachmentStream();
-                await action(pair.Key, attachmentStream);
+                await action(attachmentStream);
             }
         }
 
@@ -157,15 +157,15 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string, Func{string, AttachmentStream, Task}, CancellationToken)"/>
+        /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string, Func{AttachmentStream, Task}, CancellationToken)"/>
         /// </summary>
-        public virtual async Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             foreach (var pair in GetAttachmentsForMessage(messageId))
             {
                 var attachment = pair.Value;
                 await using var attachmentStream = attachment.ToAttachmentStream();
-                await action(pair.Key, attachmentStream);
+                await action(attachmentStream);
             }
         }
 

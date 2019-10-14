@@ -35,8 +35,9 @@ namespace NServiceBus.Attachments
             }
 
             return attachments.ProcessStreams(
-                async (name, stream) =>
+                async stream =>
                 {
+                    var name = stream.Name;
                     if (name == "default" && nameForDefault != null)
                     {
                         name = nameForDefault;

@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
         /// </summary>
-        public virtual async Task ProcessStreams(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(action, nameof(action));
@@ -27,7 +27,7 @@ namespace NServiceBus.Attachments.FileShare
                 var read = FileHelpers.OpenRead(dataFile);
                 var metadata = ReadMetadata(attachmentDirectory);
                 await using var fileStream = new AttachmentStream(attachmentName, read, read.Length, metadata);
-                await action(attachmentName, fileStream);
+                await action(fileStream);
             }
         }
 

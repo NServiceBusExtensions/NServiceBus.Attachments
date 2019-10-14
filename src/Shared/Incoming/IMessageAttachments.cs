@@ -41,7 +41,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, all attachments for the current message.
         /// </summary>
-        Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Read all attachment metadata for the current message.
@@ -97,7 +97,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Process with the delegate <paramref name="action"/>, all attachments for the for the message with <paramref name="messageId"/>.
         /// </summary>
-        Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default);
+        Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.

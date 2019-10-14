@@ -55,7 +55,7 @@ class MessageAttachmentsFromTransaction :
         await persister.ProcessStream(messageId, name, connection, null, action, cancellation);
     }
 
-    public async Task ProcessStreams(Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         await using var connection = await GetConnection();
         await persister.ProcessStreams(messageId, connection, null, action, cancellation);
@@ -121,7 +121,7 @@ class MessageAttachmentsFromTransaction :
         await persister.ProcessStream(messageId, name, connection, null, action, cancellation);
     }
 
-    public async Task ProcessStreamsForMessage(string messageId, Func<string, AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public async Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         await using var connection = await GetConnection();
         await persister.ProcessStreams(messageId, connection, null, action, cancellation);

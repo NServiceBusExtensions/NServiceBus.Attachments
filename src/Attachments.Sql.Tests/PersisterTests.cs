@@ -133,20 +133,20 @@ public class PersisterTests :
         await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
         await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
         await persister.ProcessStreams("theMessageId", connection, null,
-            action: (name, stream) =>
+            action: stream =>
             {
                 count++;
                 var array = ToBytes(stream);
                 if (count == 1)
                 {
                     Assert.Equal(1, array[0]);
-                    Assert.Equal("theName1", name);
+                    Assert.Equal("theName1", stream.Name);
                 }
 
                 if (count == 2)
                 {
                     Assert.Equal(2, array[0]);
-                    Assert.Equal("theName2", name);
+                    Assert.Equal("theName2", stream.Name);
                 }
 
                 return Task.CompletedTask;
