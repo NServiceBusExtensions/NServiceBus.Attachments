@@ -47,7 +47,7 @@ class SendBehavior :
         {
             if (state.Transaction != null)
             {
-                using (var connection = await state.GetConnection())
+                await using (var connection = await state.GetConnection())
                 {
                     connection.EnlistTransaction(state.Transaction);
                     await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
@@ -68,7 +68,7 @@ class SendBehavior :
                 return;
             }
 
-            using (var connection = await state.GetConnection())
+            await using (var connection = await state.GetConnection())
             {
                 await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
             }
@@ -76,7 +76,7 @@ class SendBehavior :
             return;
         }
 
-        using (var connection = await connectionFactory())
+        await using (var connection = await connectionFactory())
         {
             //TODO: should this be done ?
             if (context.TryReadTransaction(out var transaction))
@@ -84,7 +84,7 @@ class SendBehavior :
                 connection.EnlistTransaction(transaction);
             }
 
-            using var dbTransaction = connection.BeginTransaction();
+            await using var dbTransaction = connection.BeginTransaction();
             await ProcessOutgoing(timeToBeReceived, connection, dbTransaction, context, outgoingAttachments);
             dbTransaction.Commit();
         }
@@ -122,7 +122,7 @@ class SendBehavior :
 
     async Task ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
-        using (stream)
+        await using (stream)
         {
             await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata);
         }

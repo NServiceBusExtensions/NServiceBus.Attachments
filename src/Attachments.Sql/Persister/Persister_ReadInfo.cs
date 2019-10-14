@@ -20,8 +20,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
-            using var command = GetReadInfoCommand(connection, transaction, messageId);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = GetReadInfoCommand(connection, transaction, messageId);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
@@ -58,8 +58,8 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(action, nameof(action));
-            using var command = GetReadInfosCommand(connection, transaction);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = GetReadInfosCommand(connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();

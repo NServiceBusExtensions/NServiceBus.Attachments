@@ -17,7 +17,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
             Guard.AgainstNull(connection, nameof(connection));
-            using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
+            await using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
             await command.ExecuteNonQueryAsync(cancellation);
         }
 
@@ -32,7 +32,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
+            await using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
             await command.ExecuteNonQueryAsync(cancellation);
         }
 
@@ -46,7 +46,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
+            await using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
             await command.ExecuteNonQueryAsync(cancellation);
         }
 

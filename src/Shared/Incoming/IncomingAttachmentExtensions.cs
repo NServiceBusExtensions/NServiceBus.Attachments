@@ -42,7 +42,7 @@ namespace NServiceBus.Attachments
                         name = nameForDefault;
                     }
 
-                    using var fileStream = File.Create(Path.Combine(directory, name));
+                    await using var fileStream = File.Create(Path.Combine(directory, name));
                     await stream.CopyToAsync(fileStream, 4096, cancellation);
                 },
                 cancellation);

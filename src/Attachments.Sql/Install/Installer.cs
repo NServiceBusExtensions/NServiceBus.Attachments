@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNull(table, nameof(table));
-            using var command = connection.CreateCommand();
+            await using var command = connection.CreateCommand();
             command.CommandText = GetTableSql();
             command.AddParameter("schema", table.Schema);
             command.AddParameter("table", table.TableName);

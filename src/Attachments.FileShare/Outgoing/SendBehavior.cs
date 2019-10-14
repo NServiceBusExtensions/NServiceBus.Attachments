@@ -71,7 +71,7 @@ class SendBehavior :
 
     async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
-        using (stream)
+        await using (stream)
         {
             await persister.SaveStream(messageId, name, expiry, stream, metadata);
         }
