@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,6 +92,65 @@ namespace NServiceBus.Attachments.Sql
                     await command.DisposeAsync();
                 }
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentStream"/>s to an attachment.
+        /// </summary>
+        public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNull(connection, nameof(connection));
+            await using var command = CreateGetDatasCommand(messageId, connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
+            {
+                cancellation.ThrowIfCancellationRequested();
+                var name = reader.GetString(0);
+                var length = reader.GetInt64(1);
+                var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
+                await using var sqlStream = reader.GetStream(3);
+                yield return new AttachmentStream(name, sqlStream, length, metadata);
+            }
+        }
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentBytes"/>s for an attachment.
+        /// </summary>
+        public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNull(connection, nameof(connection));
+            await using var command = CreateGetDatasCommand(messageId, connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
+            {
+                cancellation.ThrowIfCancellationRequested();
+                var name = reader.GetString(0);
+                var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
+                var bytes = (byte[]) reader[3];
+                yield return new AttachmentBytes(name, bytes, metadata);
+            }
+        }
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentString"/>s for an attachment.
+        /// </summary>
+        public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNull(connection, nameof(connection));
+            await using var command = CreateGetDatasCommand(messageId, connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
+            {
+                cancellation.ThrowIfCancellationRequested();
+                var name = reader.GetString(0);
+                var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
+                //TODO: read string directly
+                var bytes = (byte[]) reader[3];
+                yield return new AttachmentString(name, Encoding.UTF8.GetString(bytes), metadata);
             }
         }
 

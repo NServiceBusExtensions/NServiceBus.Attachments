@@ -124,6 +124,64 @@ public class PersisterTests :
     }
 
     [Fact]
+    public async Task GetMultipleStreams()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var count = 0;
+        await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
+        await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
+        await foreach (var attachment in persister.GetStreams("theMessageId", connection, null))
+        {
+            var array = ToBytes(attachment);
+            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(array[0] == 1 || array[0] == 2);
+            Interlocked.Increment(ref count);
+        }
+
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
+    public async Task GetMultipleBytes()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var count = 0;
+        await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
+        await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
+        await foreach (var attachment in persister.GetBytes("theMessageId", connection, null))
+        {
+            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(attachment.Bytes[0] == 1 || attachment.Bytes[0] == 2);
+            Interlocked.Increment(ref count);
+        }
+
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
+    public async Task GetMultipleStrings()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var count = 0;
+        await persister.SaveString(connection, null, "theMessageId", "theName1", defaultTestDate, "a", metadata);
+        await persister.SaveString(connection, null, "theMessageId", "theName2", defaultTestDate, "b", metadata);
+        await foreach (var attachment in persister.GetStrings("theMessageId", connection, null))
+        {
+            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(attachment.Value == "a" || attachment.Value == "b");
+            Interlocked.Increment(ref count);
+        }
+
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
     public async Task ProcessStreams()
     {
         await using var connection = Connection.OpenConnection();

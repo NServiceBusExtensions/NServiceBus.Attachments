@@ -89,7 +89,22 @@ namespace NServiceBus.Attachments.Sql
         Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
-        /// Reads a byte array for an attachment.
+        /// Reads all <see cref="AttachmentBytes"/>s for an attachment.
+        /// </summary>
+        IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentString"/>s for an attachment.
+        /// </summary>
+        IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads all <see cref="AttachmentStream"/>s to an attachment.
+        /// </summary>
+        IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+
+        /// <summary>
+        /// Reads an <see cref="AttachmentBytes"/> for an attachment.
         /// </summary>
         Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
 
