@@ -9,9 +9,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Deletes all attachments.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task DeleteAllAttachments(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));

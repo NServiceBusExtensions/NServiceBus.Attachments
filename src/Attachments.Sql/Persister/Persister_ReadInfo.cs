@@ -12,9 +12,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -36,9 +34,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        /// <summary>
-        /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, CancellationToken cancellation = default)
         {
             var list = new ConcurrentBag<AttachmentInfo>();
@@ -51,9 +47,7 @@ namespace NServiceBus.Attachments.Sql
             return list;
         }
 
-        /// <summary>
-        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ReadAllInfo(DbConnection connection, DbTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
@@ -74,9 +68,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        /// <summary>
-        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             var list = new ConcurrentBag<AttachmentInfo>();

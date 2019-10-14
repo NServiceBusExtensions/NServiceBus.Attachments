@@ -9,9 +9,7 @@ namespace NServiceBus.Attachments.FileShare
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Deletes attachments older than <paramref name="dateTime"/>.
-        /// </summary>
+        /// <inheritdoc />
         public virtual void CleanupItemsOlderThan(DateTime dateTime, CancellationToken cancellation = default)
         {
             foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))
@@ -29,9 +27,7 @@ namespace NServiceBus.Attachments.FileShare
             }
         }
 
-        /// <summary>
-        /// Deletes all items.
-        /// </summary>
+        /// <inheritdoc />
         public virtual void PurgeItems(CancellationToken cancellation = default)
         {
             foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))

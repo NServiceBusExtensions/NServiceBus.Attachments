@@ -10,9 +10,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ProcessStreams(string messageId, DbConnection connection, DbTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -34,9 +32,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        /// <summary>
-        /// Processes an attachment by passing it to <paramref name="action"/>.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ProcessStream(string messageId, string name, DbConnection connection, DbTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));

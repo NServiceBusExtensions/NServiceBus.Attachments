@@ -9,9 +9,7 @@ namespace NServiceBus.Attachments.FileShare
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Reads an <see cref="AttachmentBytes"/> for an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -24,9 +22,7 @@ namespace NServiceBus.Attachments.FileShare
             return new AttachmentBytes(name, bytes, metadata);
         }
 
-        /// <summary>
-        /// Reads an <see cref="AttachmentString"/> for an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<AttachmentString> GetString(string messageId, string name, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -39,9 +35,7 @@ namespace NServiceBus.Attachments.FileShare
             return Task.FromResult(attachment);
         }
 
-        /// <summary>
-        /// Reads an <see cref="AttachmentStream"/> an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual AttachmentStream GetStream(string messageId, string name)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));

@@ -13,10 +13,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Saves <paramref name="stream"/> as an attachment.
-        /// </summary>
-        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        /// <inheritdoc />
         public virtual Task SaveStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
@@ -27,10 +24,7 @@ namespace NServiceBus.Attachments.Sql
             return Save(connection, transaction, messageId, name, expiry, stream, metadata, cancellation);
         }
 
-        /// <summary>
-        /// Saves <paramref name="bytes"/> as an attachment.
-        /// </summary>
-        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        /// <inheritdoc />
         public virtual Task SaveBytes(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
@@ -41,10 +35,7 @@ namespace NServiceBus.Attachments.Sql
             return Save(connection, transaction, messageId, name, expiry, bytes, metadata, cancellation);
         }
 
-        /// <summary>
-        /// Saves <paramref name="value"/> as an attachment.
-        /// </summary>
-        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        /// <inheritdoc />
         public virtual Task SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));

@@ -10,9 +10,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Deletes attachments older than <paramref name="dateTime"/>.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
@@ -23,9 +21,7 @@ namespace NServiceBus.Attachments.Sql
             await command.ExecuteNonQueryAsync(cancellation);
         }
 
-        /// <summary>
-        /// Deletes all items.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));

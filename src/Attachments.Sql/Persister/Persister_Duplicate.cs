@@ -9,9 +9,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Copies attachments to a different message.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
@@ -21,9 +19,7 @@ namespace NServiceBus.Attachments.Sql
             await command.ExecuteNonQueryAsync(cancellation);
         }
 
-        /// <summary>
-        /// Copies an attachments to a different message.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, string targetName, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
@@ -36,9 +32,7 @@ namespace NServiceBus.Attachments.Sql
             await command.ExecuteNonQueryAsync(cancellation);
         }
 
-        /// <summary>
-        /// Copies an attachments to a different message.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));

@@ -13,9 +13,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Reads a string for an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -35,9 +33,7 @@ namespace NServiceBus.Attachments.Sql
             throw ThrowNotFound(messageId, name);
         }
 
-        /// <summary>
-        /// Reads an <see cref="AttachmentBytes"/> for an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -57,9 +53,7 @@ namespace NServiceBus.Attachments.Sql
             throw ThrowNotFound(messageId, name);
         }
 
-        /// <summary>
-        /// Reads an <see cref="AttachmentStream"/> for an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction? transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -95,9 +89,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        /// <summary>
-        /// Reads all <see cref="AttachmentStream"/>s to an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -115,9 +107,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        /// <summary>
-        /// Reads all <see cref="AttachmentBytes"/>s for an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -134,9 +124,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        /// <summary>
-        /// Reads all <see cref="AttachmentString"/>s for an attachment.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));

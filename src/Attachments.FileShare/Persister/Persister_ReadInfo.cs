@@ -9,9 +9,7 @@ namespace NServiceBus.Attachments.FileShare
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Reads the <see cref="AttachmentInfo"/> for all attachments.
-        /// </summary>
+        /// <inheritdoc />
         public virtual IEnumerable<AttachmentInfo> ReadAllInfo()
         {
             return from messageDirectory in Directory.EnumerateDirectories(fileShare)
@@ -20,9 +18,7 @@ namespace NServiceBus.Attachments.FileShare
                 select attachmentInfo;
         }
 
-        /// <summary>
-        /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
-        /// </summary>
+        /// <inheritdoc />
         public virtual IEnumerable<AttachmentInfo> ReadAllMessageInfo(string messageId)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));

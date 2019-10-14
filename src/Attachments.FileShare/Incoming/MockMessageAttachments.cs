@@ -2,33 +2,25 @@
 {
     public partial class MockMessageAttachments
     {
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStream()"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual AttachmentStream GetStream()
         {
             return AttachmentStream.Empty();
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStream(string)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual AttachmentStream GetStream(string name )
         {
             return AttachmentStream.Empty();
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual AttachmentStream GetStreamForMessage(string messageId)
         {
             return AttachmentStream.Empty();
         }
 
-        /// <summary>
-        /// <see cref="IMessageAttachments.GetStreamForMessage(string,string)"/>
-        /// </summary>
+        /// <inheritdoc />
         public virtual AttachmentStream GetStreamForMessage(string messageId, string name)
         {
             return AttachmentStream.Empty();

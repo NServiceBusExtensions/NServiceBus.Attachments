@@ -28,11 +28,10 @@ namespace NServiceBus.Attachments
         /// </summary>
         public byte[] Bytes { get; }
 
-        /// <summary>
-        /// The attachment metadata.
-        /// </summary>
+        /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Metadata { get; }
 
+        /// <inheritdoc />
         public string Name { get; }
 
         /// <summary>

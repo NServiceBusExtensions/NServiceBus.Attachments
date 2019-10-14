@@ -108,11 +108,10 @@ namespace NServiceBus.Attachments
         public override bool CanTimeout => inner.CanTimeout;
         public override bool CanWrite => false;
 
+        /// <inheritdoc />
         public string Name { get; }
         public override long Length { get; }
-        /// <summary>
-        /// The attachment metadata.
-        /// </summary>
+        /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Metadata { get; }
         public override int ReadTimeout => inner.ReadTimeout;
 

@@ -9,9 +9,7 @@ namespace NServiceBus.Attachments.FileShare
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Copies an attachment to <paramref name="target"/>.
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task CopyTo(string messageId, string name, Stream target, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));

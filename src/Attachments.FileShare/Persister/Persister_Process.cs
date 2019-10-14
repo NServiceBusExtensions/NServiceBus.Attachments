@@ -10,9 +10,7 @@ namespace NServiceBus.Attachments.FileShare
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -31,9 +29,7 @@ namespace NServiceBus.Attachments.FileShare
             }
         }
 
-        /// <summary>
-        /// Processes an attachment by passing it to <paramref name="action"/>.
-        /// </summary>
+        /// <inheritdoc />
         public virtual async Task ProcessStream(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));

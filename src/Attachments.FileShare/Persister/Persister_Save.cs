@@ -11,10 +11,7 @@ namespace NServiceBus.Attachments.FileShare
 {
     public partial class Persister
     {
-        /// <summary>
-        /// Saves <paramref name="stream"/> as an attachment.
-        /// </summary>
-        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        /// <inheritdoc />
         public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -23,10 +20,7 @@ namespace NServiceBus.Attachments.FileShare
             return Save(messageId, name, expiry, metadata, fileStream => stream.CopyToAsync(fileStream, 4096, cancellation));
         }
 
-        /// <summary>
-        /// Saves <paramref name="bytes"/> as an attachment.
-        /// </summary>
-        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        /// <inheritdoc />
         public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -35,10 +29,7 @@ namespace NServiceBus.Attachments.FileShare
             return Save(messageId, name, expiry, metadata, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation));
         }
 
-        /// <summary>
-        /// Saves <paramref name="value"/> as an attachment.
-        /// </summary>
-        /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
+        /// <inheritdoc />
         public virtual Task SaveString(string messageId, string? name, DateTime expiry, string value, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
