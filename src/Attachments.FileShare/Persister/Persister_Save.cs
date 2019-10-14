@@ -35,11 +35,12 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(value, nameof(value));
-            return Save(messageId, name, expiry, metadata, async fileStream =>
-            {
-                await using var writer = fileStream.BuildLeaveOpenWriter();
-                await writer.WriteLineAsync(value);
-            });
+            return Save(messageId, name, expiry, metadata,
+                async fileStream =>
+                {
+                    await using var writer = fileStream.BuildLeaveOpenWriter();
+                    await writer.WriteAsync(value);
+                });
         }
 
         async Task Save(string messageId, string? name, DateTime expiry, IReadOnlyDictionary<string, string>? metadata, Func<FileStream, Task> action)
