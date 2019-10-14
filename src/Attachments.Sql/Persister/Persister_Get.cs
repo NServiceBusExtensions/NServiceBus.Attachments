@@ -129,7 +129,7 @@ namespace NServiceBus.Attachments.Sql
                 cancellation.ThrowIfCancellationRequested();
                 var name = reader.GetString(0);
                 var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
-                var bytes = (byte[]) reader[2];
+                var bytes = (byte[]) reader[3];
                 yield return new AttachmentBytes(name, bytes, metadata);
             }
         }
@@ -149,7 +149,7 @@ namespace NServiceBus.Attachments.Sql
                 var name = reader.GetString(0);
                 var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
                 //TODO: read string directly
-                var bytes = (byte[]) reader[2];
+                var bytes = (byte[]) reader[3];
                 yield return new AttachmentString(name, Encoding.UTF8.GetString(bytes), metadata);
             }
         }

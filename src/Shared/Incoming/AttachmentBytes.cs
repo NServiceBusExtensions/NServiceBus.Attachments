@@ -33,6 +33,8 @@ namespace NServiceBus.Attachments
         /// </summary>
         public readonly IReadOnlyDictionary<string, string>? Metadata;
 
+        public string Name { get; }
+
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
         /// </summary>
@@ -47,6 +49,7 @@ namespace NServiceBus.Attachments
             {
                 metadata = MetadataSerializer.EmptyMetadata;
             }
+            Name = name;
             Bytes = bytes;
             Metadata = metadata;
         }

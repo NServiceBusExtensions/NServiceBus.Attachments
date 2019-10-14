@@ -23,7 +23,7 @@ namespace NServiceBus.Attachments
         public static AttachmentString Empty = new AttachmentString("default", string.Empty);
 
         /// <summary>
-        /// The attachment bytes.
+        /// The attachment value.
         /// </summary>
         public readonly string Value;
 
@@ -52,7 +52,7 @@ namespace NServiceBus.Attachments
             Metadata = metadata;
         }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
         public static implicit operator string(AttachmentString d)
         {
