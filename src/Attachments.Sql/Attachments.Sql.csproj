@@ -11,7 +11,7 @@
     <EmbeddedResource Include="Table.sql" LogicalName="Table.sql" />
 
     <PackageReference Include="ConfigureAwait.Fody" Version="3.2.0" PrivateAssets="All" />
-    <PackageReference Include="Fody" Version="6.0.0" PrivateAssets="all" />
+    <PackageReference Include="Fody" Version="6.0.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01" PrivateAssets="All" />
     <PackageReference Include="NServiceBus" Version="7.1.10" />
     <PackageReference Include="ProjectDefaults" Version="1.0.26" PrivateAssets="All" />
