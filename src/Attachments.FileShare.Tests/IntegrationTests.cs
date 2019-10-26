@@ -11,20 +11,25 @@ using Xunit.Abstractions;
 public class IntegrationTests :
     XunitApprovalBase
 {
-    static ManualResetEvent resetEvent = null!;
+    ManualResetEvent resetEvent = new ManualResetEvent(false);
 
     [Fact]
     public async Task Run()
     {
-        resetEvent = new ManualResetEvent(false);
         var configuration = new EndpointConfiguration("FileShareIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
+        configuration.RegisterComponents(components => components.RegisterSingleton(resetEvent));
         configuration.EnableAttachments(Path.GetFullPath("attachments/IntegrationTests"), TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
         resetEvent.WaitOne();
         await endpoint.Stop();
+    }
+
+    public override void Dispose()
+    {
+        resetEvent.Dispose();
     }
 
     static Task SendStartMessage(IEndpointInstance endpoint)
@@ -68,6 +73,13 @@ public class IntegrationTests :
     class ReplyHandler :
         IHandleMessages<ReplyMessage>
     {
+        ManualResetEvent resetEvent;
+
+        public ReplyHandler(ManualResetEvent resetEvent)
+        {
+            this.resetEvent = resetEvent;
+        }
+
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
             await using var memoryStream = new MemoryStream();
