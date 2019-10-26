@@ -17,7 +17,6 @@ class Program
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         configuration.DisableFeature<TimeoutManager>();
-        configuration.DisableFeature<MessageDrivenSubscriptions>();
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);

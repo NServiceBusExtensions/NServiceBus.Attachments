@@ -25,7 +25,6 @@ public static class Helpers
         configuration.PurgeOnStartup(true);
         configuration.DisableFeature<TimeoutManager>();
         configuration.EnableInstallers();
-        configuration.DisableFeature<MessageDrivenSubscriptions>();
         configuration.LimitMessageProcessingConcurrencyTo(10);
     }
 
@@ -35,7 +34,6 @@ public static class Helpers
         recoverability.Immediate(x => x.NumberOfRetries(0));
         recoverability.Delayed(x => x.NumberOfRetries(0));
     }
-
 
     public static byte[] Buffer = new byte[1000 * 10 * 1000];
 }

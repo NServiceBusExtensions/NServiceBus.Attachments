@@ -93,6 +93,7 @@ public class IntegrationTests :
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         attachments.DisableCleanupTask();
+
         attachments.UseTable("Attachments");
         if (useSqlTransportConnection)
         {
@@ -104,15 +105,14 @@ public class IntegrationTests :
             var transport = configuration.UseTransport<SqlServerTransport>();
             transport.ConnectionString(Connection.ConnectionString);
             transport.Transactions(transactionMode);
+            transport.DisablePublishing();
         }
         else
         {
             var transport = configuration.UseTransport<LearningTransport>();
             transport.Transactions(transactionMode);
         }
-
         configuration.DisableFeature<TimeoutManager>();
-        configuration.DisableFeature<MessageDrivenSubscriptions>();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
 
