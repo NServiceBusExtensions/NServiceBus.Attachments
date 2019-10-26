@@ -9,27 +9,34 @@ using Xunit.Abstractions;
 public class IncomingWhenNotEnabledTests :
     TestBase
 {
-    static ManualResetEvent resetEvent = null!;
-    static Exception exception = null!;
+    public ManualResetEvent ResetEvent = new ManualResetEvent(false);
+    public Exception? Exception;
 
     [Fact]
     public async Task Run()
     {
-        resetEvent = new ManualResetEvent(false);
         var configuration = new EndpointConfiguration("FileShareIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
+        configuration.RegisterComponents(components => components.RegisterSingleton(this));
         configuration.UseTransport<LearningTransport>();
         var endpoint = await Endpoint.Start(configuration);
         await endpoint.SendLocal(new SendMessage());
-        resetEvent.WaitOne();
+        ResetEvent.WaitOne();
         await endpoint.Stop();
-
-        Approvals.Verify(exception.Message);
+        Assert.NotNull(Exception);
+        Approvals.Verify(Exception!.Message);
     }
 
     class Handler :
         IHandleMessages<SendMessage>
     {
+        IncomingWhenNotEnabledTests incomingWhenNotEnabledTests;
+
+        public Handler(IncomingWhenNotEnabledTests incomingWhenNotEnabledTests)
+        {
+            this.incomingWhenNotEnabledTests = incomingWhenNotEnabledTests;
+        }
+
         public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             try
@@ -38,11 +45,11 @@ public class IncomingWhenNotEnabledTests :
             }
             catch (Exception e)
             {
-                exception = e;
+                incomingWhenNotEnabledTests.Exception = e;
             }
             finally
             {
-                resetEvent.Set();
+                incomingWhenNotEnabledTests.ResetEvent.Set();
             }
 
             return Task.CompletedTask;
@@ -52,6 +59,12 @@ public class IncomingWhenNotEnabledTests :
     class SendMessage :
         IMessage
     {
+    }
+
+    public override void Dispose()
+    {
+        ResetEvent.Dispose();
+        base.Dispose();
     }
 
     public IncomingWhenNotEnabledTests(ITestOutputHelper output) :

@@ -9,8 +9,8 @@ using Xunit.Abstractions;
 public class IncomingWhenNotEnabledTests :
     XunitApprovalBase
 {
-    static ManualResetEvent resetEvent = null!;
-    static Exception exception = null!;
+    public ManualResetEvent ResetEvent = new ManualResetEvent(false);
+    public Exception? Exception;
 
     static IncomingWhenNotEnabledTests()
     {
@@ -20,21 +20,28 @@ public class IncomingWhenNotEnabledTests :
     [Fact]
     public async Task Run()
     {
-        resetEvent = new ManualResetEvent(false);
         var configuration = new EndpointConfiguration("SqlIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
+        configuration.RegisterComponents(components => components.RegisterSingleton(this));
         var endpoint = await Endpoint.Start(configuration);
         await endpoint.SendLocal(new SendMessage());
-        resetEvent.WaitOne();
+        ResetEvent.WaitOne();
         await endpoint.Stop();
 
-        Approvals.Verify(exception.Message);
+        Assert.NotNull(Exception);
+        Approvals.Verify(Exception!.Message);
     }
 
     class Handler :
         IHandleMessages<SendMessage>
     {
+        IncomingWhenNotEnabledTests incomingWhenNotEnabledTests;
+
+        public Handler(IncomingWhenNotEnabledTests incomingWhenNotEnabledTests)
+        {
+            this.incomingWhenNotEnabledTests = incomingWhenNotEnabledTests;
+        }
         public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             try
@@ -43,11 +50,11 @@ public class IncomingWhenNotEnabledTests :
             }
             catch (Exception e)
             {
-                exception = e;
+                incomingWhenNotEnabledTests.Exception = e;
             }
             finally
             {
-                resetEvent.Set();
+                incomingWhenNotEnabledTests.ResetEvent.Set();
             }
 
             return Task.CompletedTask;
@@ -57,6 +64,12 @@ public class IncomingWhenNotEnabledTests :
     class SendMessage :
         IMessage
     {
+    }
+
+    public override void Dispose()
+    {
+        ResetEvent.Dispose();
+        base.Dispose();
     }
 
     public IncomingWhenNotEnabledTests(ITestOutputHelper output) :

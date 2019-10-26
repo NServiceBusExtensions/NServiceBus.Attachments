@@ -57,7 +57,8 @@ public class AttachmentCleanerTests
         Assert.False(criticalActionTriggered);
     }
 
-    class TestableCleaner : Cleaner
+    class TestableCleaner :
+        Cleaner
     {
         public TestableCleaner(Func<CancellationToken, Task> cleanup, Action<string, Exception> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
             : base(cleanup, criticalError, frequencyToRunCleanup, timer)
