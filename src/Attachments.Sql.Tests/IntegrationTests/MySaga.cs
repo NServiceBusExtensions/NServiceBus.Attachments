@@ -7,6 +7,13 @@ class MySaga :
     Saga<MySaga.SagaData>,
     IAmStartedByMessages<SendMessage>
 {
+    IntegrationTests integrationTests;
+
+    public MySaga(IntegrationTests integrationTests)
+    {
+        this.integrationTests = integrationTests;
+    }
+
     protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaData> mapper)
     {
         mapper.ConfigureMapping<SendMessage>(msg => msg.MyId)
@@ -18,7 +25,7 @@ class MySaga :
         var incomingAttachment = context.Attachments();
         await using var stream = await incomingAttachment.GetStream();
         Debug.WriteLine(stream);
-        IntegrationTests.SagaEvent.Set();
+        integrationTests.SagaEvent.Set();
     }
 
     public class SagaData :

@@ -15,8 +15,8 @@ using Xunit.Abstractions;
 public class IntegrationTests :
     XunitApprovalBase
 {
-    internal static ManualResetEvent HandlerEvent = null!;
-    internal static ManualResetEvent SagaEvent = null!;
+    internal ManualResetEvent HandlerEvent = new ManualResetEvent(false);
+    internal ManualResetEvent SagaEvent = new ManualResetEvent(false);
     bool shouldPerformNestedConnection = true;
 
     static IntegrationTests()
@@ -59,8 +59,6 @@ public class IntegrationTests :
             // so a nested connection will cause DTC
             shouldPerformNestedConnection = false;
         }
-        HandlerEvent = new ManualResetEvent(false);
-        SagaEvent = new ManualResetEvent(false);
         var endpointName = "SqlIntegrationTests";
         var configuration = new EndpointConfiguration(endpointName);
         var attachments = configuration.EnableAttachments(() => Connection.OpenAsyncConnection(), TimeToKeep.Default);
@@ -128,7 +126,6 @@ public class IntegrationTests :
         }
 
         await endpoint.Stop();
-        base.Dispose();
     }
 
     static Task RunSqlScripts(string endpointName, Func<DbConnection> connectionBuilder)
@@ -178,12 +175,15 @@ public class IntegrationTests :
         return stream;
     }
 
-    public IntegrationTests(ITestOutputHelper output) :
-        base(output)
+    public override void Dispose()
     {
+        HandlerEvent.Dispose();
+        SagaEvent.Dispose();
+        base.Dispose();
     }
 
-    public override void Dispose()
+    public IntegrationTests(ITestOutputHelper output) :
+        base(output)
     {
     }
 }

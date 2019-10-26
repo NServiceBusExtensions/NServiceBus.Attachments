@@ -22,6 +22,6 @@ class ReplyHandler :
         Debug.WriteLine(buffer);
         await using var stream = await incomingAttachment.GetStream();
         Debug.WriteLine(stream);
-        IntegrationTests.HandlerEvent.Set();
+        integrationTests.HandlerEvent.Set();
     }
 }

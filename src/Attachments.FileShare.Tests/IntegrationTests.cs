@@ -30,6 +30,7 @@ public class IntegrationTests :
     public override void Dispose()
     {
         resetEvent.Dispose();
+        base.Dispose();
     }
 
     static Task SendStartMessage(IEndpointInstance endpoint)
