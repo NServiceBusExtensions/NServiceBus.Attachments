@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="4.2.2" />
-    <PackageReference Include="Fody" Version="6.0.4" PrivateAssets="All"/>
+    <PackageReference Include="Fody" Version="6.0.4" PrivateAssets="All" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="1.0.19269.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
@@ -17,7 +17,7 @@
     <PackageReference Include="Xunit" Version="2.4.1" />
     <PackageReference Include="Xunit.ApprovalTests" Version="4.3.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <PackageReference Include="ProjectDefaults" Version="1.0.27" PrivateAssets="All" />
