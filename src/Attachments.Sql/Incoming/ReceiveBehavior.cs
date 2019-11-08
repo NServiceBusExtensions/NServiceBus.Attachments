@@ -40,11 +40,11 @@ class ReceiveBehavior :
             {
                 if (storageAccessor.TryGetTransaction(session, out var transaction))
                 {
-                    return new SqlAttachmentState(transaction!, persister);
+                    return new SqlAttachmentState(transaction, persister);
                 }
                 if (storageAccessor.TryGetConnection(session, out var connection))
                 {
-                    return new SqlAttachmentState(connection!, persister);
+                    return new SqlAttachmentState(connection, persister);
                 }
             }
         }
