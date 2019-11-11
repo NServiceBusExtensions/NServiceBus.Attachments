@@ -2,10 +2,15 @@
 using Newtonsoft.Json;
 using JsonReader = Newtonsoft.Json.JsonReader;
 
-public class StringConverter : JsonConverter
+public class StringConverter :
+    JsonConverter
 {
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
+        if (value == null)
+        {
+            return;
+        }
         var input = (string)value;
 
         if (Guid.TryParse(input, out _))
@@ -21,7 +26,7 @@ public class StringConverter : JsonConverter
         writer.WriteValue(input);
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
         throw new NotImplementedException();
     }
