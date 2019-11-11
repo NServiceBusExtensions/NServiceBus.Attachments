@@ -12,9 +12,6 @@ public abstract class TestBase :
         {
             settings.DefaultValueHandling = DefaultValueHandling.Ignore;
             settings.ContractResolver = new CustomContractResolver();
-            var converters = settings.Converters;
-            converters.Add(new GuidConverter());
-            converters.Add(new StringConverter());
         };
     }
 
