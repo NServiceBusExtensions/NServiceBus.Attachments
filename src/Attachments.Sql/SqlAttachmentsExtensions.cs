@@ -40,7 +40,7 @@ namespace NServiceBus
                     }
                     catch
                     {
-                        connection.Dispose();
+                        await connection.DisposeAsync();
                         throw;
                     }
                 },
