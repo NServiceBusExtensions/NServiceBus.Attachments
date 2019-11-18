@@ -21,7 +21,7 @@ class Program
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);
         transport.Transactions(TransportTransactionMode.SendsAtomicWithReceive);
-        var attachments = configuration.EnableAttachments(() => Connection.OpenAsyncConnection(), TimeToKeep.Default);
+        var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
         attachments.UseTransportConnectivity();
         var endpoint = await Endpoint.Start(configuration);
         await SendMessage(endpoint);

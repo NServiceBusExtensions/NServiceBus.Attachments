@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
@@ -12,6 +13,40 @@ namespace NServiceBus
     /// </summary>
     public static class SqlAttachmentsExtensions
     {
+        /// <summary>
+        /// Enable SQL attachments for this endpoint.
+        /// </summary>
+        public static AttachmentSettings EnableAttachments(
+            this EndpointConfiguration configuration,
+            Func<DbConnection> connectionFactory,
+            GetTimeToKeep timeToKeep)
+        {
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
+            Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
+            var dbConnection = connectionFactory();
+            if (dbConnection.State == ConnectionState.Open)
+            {
+                throw new Exception("This overload of EnableAttachments expects `Func<DbConnection> connectionFactory` to return a un-opened DbConnection.");
+            }
+            return EnableAttachments(configuration,
+                connectionFactory: async () =>
+                {
+                    var connection = connectionFactory();
+                    try
+                    {
+                        await connection.OpenAsync().ConfigureAwait(false);
+                        return connection;
+                    }
+                    catch
+                    {
+                        connection.Dispose();
+                        throw;
+                    }
+                },
+                timeToKeep);
+        }
+
         /// <summary>
         /// Enable SQL attachments for this endpoint.
         /// </summary>

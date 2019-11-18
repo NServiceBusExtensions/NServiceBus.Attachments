@@ -61,7 +61,7 @@ public class IntegrationTests :
         }
         var endpointName = "SqlIntegrationTests";
         var configuration = new EndpointConfiguration(endpointName);
-        var attachments = configuration.EnableAttachments(() => Connection.OpenAsyncConnection(), TimeToKeep.Default);
+        var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
         if (useStorageSession)
         {
             attachments.UseSynchronizedStorageSessionConnectivity();
