@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using NServiceBus;
-using NServiceBus.Features;
 
 public static class Helpers
 {
@@ -23,7 +22,6 @@ public static class Helpers
         configuration.UseTransport<LearningTransport>();
         configuration.SendFailedMessagesTo("error");
         configuration.PurgeOnStartup(true);
-        configuration.DisableFeature<TimeoutManager>();
         configuration.EnableInstallers();
         configuration.LimitMessageProcessingConcurrencyTo(10);
     }

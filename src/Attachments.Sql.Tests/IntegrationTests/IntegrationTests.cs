@@ -7,8 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
-using NServiceBus.Features;
 using NServiceBus.Persistence.Sql;
+using NServiceBus.Transport.SQLServer;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -103,14 +103,14 @@ public class IntegrationTests :
             var transport = configuration.UseTransport<SqlServerTransport>();
             transport.ConnectionString(Connection.ConnectionString);
             transport.Transactions(transactionMode);
-            transport.DisablePublishing();
+            var delayedDelivery = transport.NativeDelayedDelivery();
+            delayedDelivery.DisableTimeoutManagerCompatibility();
         }
         else
         {
             var transport = configuration.UseTransport<LearningTransport>();
             transport.Transactions(transactionMode);
         }
-        configuration.DisableFeature<TimeoutManager>();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
 

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
-using NServiceBus.Features;
+using NServiceBus.Transport.SQLServer;
 
 class Program
 {
@@ -16,11 +16,12 @@ class Program
         var configuration = new EndpointConfiguration("Attachments.Sql.Sample");
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
-        configuration.DisableFeature<TimeoutManager>();
         configuration.UsePersistence<LearningPersistence>();
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);
         transport.Transactions(TransportTransactionMode.SendsAtomicWithReceive);
+        var delayedDelivery = transport.NativeDelayedDelivery();
+        delayedDelivery.DisableTimeoutManagerCompatibility();
         var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
         attachments.UseTransportConnectivity();
         var endpoint = await Endpoint.Start(configuration);
