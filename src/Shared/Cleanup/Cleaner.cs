@@ -5,9 +5,14 @@ using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.Logging;
 
-class Cleaner : FeatureStartupTask
+class Cleaner :
+    FeatureStartupTask
 {
-    public Cleaner(Func<CancellationToken, Task> cleanup, Action<string, Exception> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
+    public Cleaner(
+        Func<CancellationToken, Task> cleanup,
+        Action<string, Exception> criticalError,
+        TimeSpan frequencyToRunCleanup,
+        IAsyncTimer timer)
     {
         this.cleanup = cleanup;
         this.frequencyToRunCleanup = frequencyToRunCleanup;

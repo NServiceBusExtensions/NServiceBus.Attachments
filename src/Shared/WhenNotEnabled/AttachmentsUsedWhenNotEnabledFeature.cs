@@ -8,7 +8,8 @@ using NServiceBus.Attachments.Sql;
 using NServiceBus.Attachments;
 #endif
 
-class AttachmentsUsedWhenNotEnabledFeature : Feature
+class AttachmentsUsedWhenNotEnabledFeature :
+    Feature
 {
     public AttachmentsUsedWhenNotEnabledFeature()
     {

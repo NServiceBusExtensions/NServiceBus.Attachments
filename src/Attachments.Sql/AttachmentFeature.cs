@@ -4,7 +4,8 @@ using NServiceBus.Features;
 using NServiceBus.ObjectBuilder;
 using NServiceBus.Attachments.Sql;
 
-class AttachmentFeature : Feature
+class AttachmentFeature :
+    Feature
 {
     protected override void Setup(FeatureConfigurationContext context)
     {

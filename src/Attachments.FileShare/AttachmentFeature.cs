@@ -5,7 +5,8 @@ using NServiceBus.Attachments.FileShare;
 using NServiceBus.Features;
 using NServiceBus.ObjectBuilder;
 
-class AttachmentFeature : Feature
+class AttachmentFeature :
+    Feature
 {
     protected override void Setup(FeatureConfigurationContext context)
     {

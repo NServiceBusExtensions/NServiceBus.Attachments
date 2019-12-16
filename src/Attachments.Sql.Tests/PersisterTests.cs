@@ -4,11 +4,12 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class PersisterTests :
-    XunitApprovalBase
+    VerifyBase
 {
     DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
@@ -226,8 +227,8 @@ public class PersisterTests :
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
-        var result = await persister.ReadAllInfo(connection, null);
-        ObjectApprover.Verify(result);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verify(result);
     }
 
     [Fact]
@@ -237,9 +238,8 @@ public class PersisterTests :
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
-        var result = await  persister.ReadAllInfo(connection, null);
-        Assert.NotNull(result);
-        ObjectApprover.Verify(result);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verify(result);
     }
 
     [Fact]
@@ -249,9 +249,8 @@ public class PersisterTests :
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", metadata);
-        var result = await persister.ReadAllInfo(connection, null);
-        Assert.NotNull(result);
-        ObjectApprover.Verify(result);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verify(result);
     }
 
     [Fact]
@@ -263,8 +262,8 @@ public class PersisterTests :
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
         await persister.Duplicate("theSourceMessageId", connection, null, "theTargetMessageId");
-        var result = await persister.ReadAllInfo(connection, null);
-        ObjectApprover.Verify(result);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verify(result);
     }
 
     [Fact]
@@ -276,8 +275,8 @@ public class PersisterTests :
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId");
-        var result = await persister.ReadAllInfo(connection, null);
-        ObjectApprover.Verify(result);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verify(result);
     }
 
     [Fact]
@@ -288,8 +287,8 @@ public class PersisterTests :
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId","theName2");
-        var result = await persister.ReadAllInfo(connection, null);
-        ObjectApprover.Verify(result);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verify(result);
     }
 
     [Fact]
@@ -307,8 +306,7 @@ public class PersisterTests :
                 list.Add(info);
                 return Task.CompletedTask;
             });
-        Assert.NotNull(list);
-        ObjectApprover.Verify(list);
+        await Verify(list);
     }
 
     [Fact]
@@ -320,9 +318,8 @@ public class PersisterTests :
         await persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream());
         await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
         await persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1));
-        var result = await persister.ReadAllInfo(connection, null);
-        Assert.NotNull(result);
-        ObjectApprover.Verify(result);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verify(result);
     }
 
     static Stream GetStream(byte content = 5)

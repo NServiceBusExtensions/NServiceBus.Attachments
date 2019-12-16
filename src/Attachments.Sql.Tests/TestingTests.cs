@@ -7,11 +7,12 @@ using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class TestingTests :
-    XunitApprovalBase
+    VerifyBase
 {
     [Fact]
     public async Task OutgoingAttachments()
@@ -52,7 +53,8 @@ public class TestingTests :
         Assert.True(mockMessageAttachments.GetBytesWasCalled);
     }
 
-    public class CustomMockMessageAttachments : MockMessageAttachments
+    public class CustomMockMessageAttachments :
+        MockMessageAttachments
     {
         public override Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
         {

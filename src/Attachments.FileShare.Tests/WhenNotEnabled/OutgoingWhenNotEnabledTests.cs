@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using ApprovalTests;
 using NServiceBus;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class OutgoingWhenNotEnabledTests :
-    TestBase
+    VerifyBase
 {
     [Fact]
     public async Task Run()
@@ -18,7 +18,7 @@ public class OutgoingWhenNotEnabledTests :
         var endpoint = await Endpoint.Start(configuration);
 
         var exception = await Assert.ThrowsAsync<Exception>(() => SendStartMessageWithAttachment(endpoint));
-        Approvals.Verify(exception.Message);
+        await Verify(exception.Message);
         await endpoint.Stop();
     }
 

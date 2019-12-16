@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ApprovalTests;
 using NServiceBus;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class IncomingWhenNotEnabledTests :
-    TestBase
+    VerifyBase
 {
     public ManualResetEvent ResetEvent = new ManualResetEvent(false);
     public Exception? Exception;
@@ -24,7 +24,7 @@ public class IncomingWhenNotEnabledTests :
         ResetEvent.WaitOne();
         await endpoint.Stop();
         Assert.NotNull(Exception);
-        Approvals.Verify(Exception!.Message);
+        await Verify(Exception!.Message);
     }
 
     class Handler :

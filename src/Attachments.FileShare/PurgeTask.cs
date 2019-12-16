@@ -3,7 +3,8 @@ using NServiceBus;
 using NServiceBus.Attachments.FileShare;
 using NServiceBus.Features;
 
-class PurgeTask : FeatureStartupTask
+class PurgeTask :
+    FeatureStartupTask
 {
     IPersister persister;
 

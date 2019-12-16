@@ -5,11 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.FileShare;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class IntegrationTests :
-    XunitApprovalBase
+    VerifyBase
 {
     ManualResetEvent resetEvent = new ManualResetEvent(false);
 

@@ -9,11 +9,12 @@ using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
 using NServiceBus.Transport.SQLServer;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class IntegrationTests :
-    XunitApprovalBase
+    VerifyBase
 {
     internal ManualResetEvent HandlerEvent = new ManualResetEvent(false);
     internal ManualResetEvent SagaEvent = new ManualResetEvent(false);
