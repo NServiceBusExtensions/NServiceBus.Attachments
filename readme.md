@@ -5,7 +5,15 @@ Source File: /readme.source.md
 To change this file edit the source file and then run MarkdownSnippets.
 -->
 
-<img src="/src/icon.png" height="25px"> Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
+<img src="/src/icon.png" height="25px"> NServiceBus.Attachments
+
+[![Build status](https://ci.appveyor.com/api/projects/status/6483bemehfuowaa2/branch/master?svg=true)](https://ci.appveyor.com/project/SimonCropp/nservicebus-attachments)
+[![NuGet Status](https://img.shields.io/nuget/v/Attachments.FileShare.svg?label=Attachments.FileShare)](https://www.nuget.org/packages/Attachments.FileShare/)
+[![NuGet Status](https://img.shields.io/nuget/v/Attachments.FileShare.Raw.svg?label=Attachments.FileShare.Raw)](https://www.nuget.org/packages/Attachments.FileShare.Raw/)
+[![NuGet Status](https://img.shields.io/nuget/v/Attachments.Sql.svg?label=Attachments.Sql)](https://www.nuget.org/packages/Attachments.Sql/)
+[![NuGet Status](https://img.shields.io/nuget/v/Attachments.Sql.Raw.svg?label=Attachments.Sql.Raw)](https://www.nuget.org/packages/Attachments.Sql.Raw/)
+
+Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
 
 <!--- StartOpenCollectiveBackers -->
 
@@ -14,26 +22,33 @@ To change this file edit the source file and then run MarkdownSnippets.
 
 ## Community backed
 
-**It is expected that all developers [become a Patron](https://opencollective.com/nservicebusextensions/order/6976) to use any of these libraries. [Go to licensing FAQ](https://github.com/NServiceBusExtensions/Home/#licensingpatron-faq)**
+**It is expected that all developers [become a Patron](https://opencollective.com/nservicebusextensions/order/6976) to use this tool. [Go to licensing FAQ](https://github.com/NServiceBusExtensions/Home/#licensingpatron-faq)**
 
-
-### Sponsors
-
-Support this project by [becoming a Sponsors](https://opencollective.com/nservicebusextensions/order/6972). The company avatar will show up here with a link to your website. The avatar will also be added to all GitHub repositories under this organization.
-
-
-### Patrons
-
-Thanks to all the backing developers! Support this project by [becoming a patron](https://opencollective.com/nservicebusextensions/order/6976).
+Thanks to the current backers.
 
 <img src="https://opencollective.com/nservicebusextensions/tiers/patron.svg?width=890&avatarHeight=60&button=false">
 
+<a href="#" id="endofbacking"></a>
+
 <!--- EndOpenCollectiveBackers -->
 
-<a href="#" id="endofbacking"></a>
+
+<!-- toc -->
+## Contents
+
+  * [NuGet packages](#nuget-packages)
+  * [SQL](#sql)
+  * [FileShare](#fileshare)
+  * [Release Notes](#release-notes)
+  * [Icon](#icon)<!-- endtoc -->
+
 
 ## NuGet packages
 
+ * Attachments.FileShare
+ * Attachments.FileShare.Raw
+ * Attachments.Sql
+ * Attachments.Sql.Raw
 
 ## SQL
 
