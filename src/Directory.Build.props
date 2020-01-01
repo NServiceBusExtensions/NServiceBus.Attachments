@@ -6,5 +6,12 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <NoWarn>CS1591</NoWarn>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileFullPath)\..\..\license.txt"
+          Pack="true"
+          PackagePath="license.txt"/>
+  </ItemGroup>
 </Project>
