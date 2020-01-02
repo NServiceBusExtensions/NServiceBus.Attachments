@@ -20,14 +20,14 @@ Two settings are required as part of the default usage:
 <!-- snippet: EnableAttachments -->
 <a id='snippet-enableattachments'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L9-L15' title='File snippet `enableattachments` was extracted from'>snippet source</a> | <a href='#snippet-enableattachments' title='Navigate to start of snippet `enableattachments`'>anchor</a></sup>
 <a id='snippet-enableattachments-1'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     connectionFactory: async () =>
     {
         var connection = new SqlConnection(connectionString);
@@ -57,14 +57,14 @@ This usage results in the following:
 <!-- snippet: EnableAttachmentsRecommended -->
 <a id='snippet-enableattachmentsrecommended'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: TimeToKeep.Default);
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L17-L23' title='File snippet `enableattachmentsrecommended` was extracted from'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended' title='Navigate to start of snippet `enableattachmentsrecommended`'>anchor</a></sup>
 <a id='snippet-enableattachmentsrecommended-1'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
@@ -81,7 +81,7 @@ Attachment cleanup is enabled by default. It can be disabled using the following
 <!-- snippet: DisableCleanupTask -->
 <a id='snippet-disablecleanuptask'/></a>
 ```cs
-var attachments = endpointConfiguration.EnableAttachments(
+var attachments = configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
@@ -89,7 +89,7 @@ attachments.DisableCleanupTask();
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L28-L35' title='File snippet `disablecleanuptask` was extracted from'>snippet source</a> | <a href='#snippet-disablecleanuptask' title='Navigate to start of snippet `disablecleanuptask`'>anchor</a></sup>
 <a id='snippet-disablecleanuptask-1'/></a>
 ```cs
-var attachments = endpointConfiguration.EnableAttachments(
+var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
@@ -329,8 +329,8 @@ class HandlerProcessStreams :
             action: async stream =>
             {
                 // Use the attachment stream. in this example copy to a file
-                await using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(fileToCopyTo);
+                await using var file = File.Create($"{stream.Name}.txt");
+                await stream.CopyToAsync(file);
             });
     }
 }
@@ -348,8 +348,8 @@ class HandlerProcessStreams :
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    await using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(fileToCopyTo);
+                    await using var file = File.Create($"{stream.Name}.txt");
+                    await stream.CopyToAsync(file);
                 })
             .ConfigureAwait(false);
     }
@@ -511,8 +511,8 @@ class HandlerProcessStreamsForMessage :
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    await using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(fileToCopyTo);
+                    await using var file = File.Create($"{stream.Name}.txt");
+                    await stream.CopyToAsync(file);
                 })
             .ConfigureAwait(false);
     }
@@ -646,7 +646,8 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
+    public override Task<AttachmentBytes> GetBytes(
+        CancellationToken cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -655,12 +656,14 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L28-L42' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L28-L43' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'/></a>
 ```cs
-public class CustomMockMessageAttachments : MockMessageAttachments
+public class CustomMockMessageAttachments :
+    MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
+    public override Task<AttachmentBytes> GetBytes(
+        CancellationToken cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -669,7 +672,7 @@ public class CustomMockMessageAttachments : MockMessageAttachments
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L28-L41' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L28-L43' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
 <!-- endsnippet -->
 
 Putting these parts together allows a handler, using incoming attachments, to be tested.
@@ -687,7 +690,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L44-L56' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L45-L57' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'/></a>
 ```cs
 public class Handler : IHandleMessages<MyMessage>
@@ -699,7 +702,7 @@ public class Handler : IHandleMessages<MyMessage>
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L43-L54' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L45-L56' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
 <!-- endsnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -721,7 +724,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L58-L76' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L59-L77' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
 <a id='snippet-testincoming-1'/></a>
 ```cs
 [Fact]
@@ -740,6 +743,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L56-L74' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming-1' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L58-L76' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming-1' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
 <!-- endsnippet -->
 <!-- end include: attachments. path: /doco/mdsource/attachments.include.md -->

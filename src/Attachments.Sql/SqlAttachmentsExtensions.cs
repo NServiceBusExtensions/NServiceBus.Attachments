@@ -35,7 +35,7 @@ namespace NServiceBus
                     var connection = connectionFactory();
                     try
                     {
-                        await connection.OpenAsync().ConfigureAwait(false);
+                        await connection.OpenAsync();
                         return connection;
                     }
                     catch

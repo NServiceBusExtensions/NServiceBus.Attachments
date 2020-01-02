@@ -9,11 +9,11 @@ public class Usage
 {
     string connectionString = null!;
 
-    Usage(EndpointConfiguration endpointConfiguration)
+    Usage(EndpointConfiguration configuration)
     {
         #region EnableAttachments
 
-        endpointConfiguration.EnableAttachments(
+        configuration.EnableAttachments(
             connectionFactory: async () =>
             {
                 var connection = new SqlConnection(connectionString);
@@ -34,18 +34,18 @@ public class Usage
 
         #region EnableAttachmentsRecommended
 
-        endpointConfiguration.EnableAttachments(
+        configuration.EnableAttachments(
             connectionFactory: OpenConnection,
             timeToKeep: TimeToKeep.Default);
 
         #endregion
     }
 
-    void DisableCleanupTask(EndpointConfiguration endpointConfiguration)
+    void DisableCleanupTask(EndpointConfiguration configuration)
     {
         #region DisableCleanupTask
 
-        var attachments = endpointConfiguration.EnableAttachments(
+        var attachments = configuration.EnableAttachments(
             connectionFactory: OpenConnection,
             timeToKeep: TimeToKeep.Default);
         attachments.DisableCleanupTask();
@@ -53,44 +53,48 @@ public class Usage
         #endregion
     }
 
-    void UseTransportConnectivity(EndpointConfiguration endpointConfiguration)
+    void UseTransportConnectivity(EndpointConfiguration configuration)
     {
         #region UseTransportConnectivity
 
-        var attachments = endpointConfiguration.EnableAttachments(OpenConnection, TimeToKeep.Default);
+        var attachments = configuration.EnableAttachments(
+            OpenConnection,
+            TimeToKeep.Default);
         attachments.UseTransportConnectivity();
 
         #endregion
     }
 
-    void UseSynchronizedStorageSessionConnectivity(EndpointConfiguration endpointConfiguration)
+    void UseSynchronizedStorageSessionConnectivity(EndpointConfiguration configuration)
     {
         #region UseSynchronizedStorageSessionConnectivity
 
-        var attachments = endpointConfiguration.EnableAttachments(OpenConnection, TimeToKeep.Default);
+        var attachments = configuration.EnableAttachments(
+            OpenConnection,
+            TimeToKeep.Default);
         attachments.UseSynchronizedStorageSessionConnectivity();
 
         #endregion
     }
 
-    void ExecuteAtStartup(EndpointConfiguration endpointConfiguration)
+    void ExecuteAtStartup(EndpointConfiguration configuration)
     {
         #region ExecuteAtStartup
 
-        endpointConfiguration.EnableInstallers();
-        var attachments = endpointConfiguration.EnableAttachments(
+        configuration.EnableInstallers();
+        var attachments = configuration.EnableAttachments(
             connectionFactory: OpenConnection,
             timeToKeep: TimeToKeep.Default);
 
         #endregion
     }
 
-    void DisableInstaller(EndpointConfiguration endpointConfiguration)
+    void DisableInstaller(EndpointConfiguration configuration)
     {
         #region DisableInstaller
 
-        endpointConfiguration.EnableInstallers();
-        var attachments = endpointConfiguration.EnableAttachments(
+        configuration.EnableInstallers();
+        var attachments = configuration.EnableAttachments(
             connectionFactory: OpenConnection,
             timeToKeep: TimeToKeep.Default);
         attachments.DisableInstaller();
@@ -98,11 +102,11 @@ public class Usage
         #endregion
     }
 
-    void UseTableName(EndpointConfiguration endpointConfiguration)
+    void UseTableName(EndpointConfiguration configuration)
     {
         #region UseTableName
 
-        var attachments = endpointConfiguration.EnableAttachments(
+        var attachments = configuration.EnableAttachments(
             connectionFactory: OpenConnection,
             timeToKeep: TimeToKeep.Default);
         attachments.UseTable(new Table("CustomAttachmentsTableName", "dbo"));

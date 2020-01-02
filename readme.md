@@ -36,11 +36,8 @@ Thanks to the current backers.
 <!-- toc -->
 ## Contents
 
-  * [NuGet packages](#nuget-packages)
   * [SQL](#sql)
-  * [FileShare](#fileshare)
-  * [Release Notes](#release-notes)
-  * [Icon](#icon)<!-- endtoc -->
+  * [FileShare](#fileshare)<!-- endtoc -->
 
 
 ## NuGet packages

@@ -20,14 +20,14 @@ Two settings are required as part of the default usage:
 <!-- snippet: EnableAttachments -->
 <a id='snippet-enableattachments'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L9-L15' title='File snippet `enableattachments` was extracted from'>snippet source</a> | <a href='#snippet-enableattachments' title='Navigate to start of snippet `enableattachments`'>anchor</a></sup>
 <a id='snippet-enableattachments-1'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     connectionFactory: async () =>
     {
         var connection = new SqlConnection(connectionString);
@@ -70,7 +70,7 @@ async Task<DbConnection> OpenConnection()
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L113-L130' title='File snippet `openconnection` was extracted from'>snippet source</a> | <a href='#snippet-openconnection' title='Navigate to start of snippet `openconnection`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L117-L134' title='File snippet `openconnection` was extracted from'>snippet source</a> | <a href='#snippet-openconnection' title='Navigate to start of snippet `openconnection`'>anchor</a></sup>
 <!-- endsnippet -->
 
 Also uses the `NServiceBus.Attachments.Sql.TimeToKeep.Default` method for attachment cleanup.
@@ -80,14 +80,14 @@ This usage results in the following:
 <!-- snippet: EnableAttachmentsRecommended -->
 <a id='snippet-enableattachmentsrecommended'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: TimeToKeep.Default);
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L17-L23' title='File snippet `enableattachmentsrecommended` was extracted from'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended' title='Navigate to start of snippet `enableattachmentsrecommended`'>anchor</a></sup>
 <a id='snippet-enableattachmentsrecommended-1'/></a>
 ```cs
-endpointConfiguration.EnableAttachments(
+configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
@@ -109,10 +109,12 @@ To use the ambient [SynchronizedStorageSession persister](https://docs.particula
 <!-- snippet: UseSynchronizedStorageSessionConnectivity -->
 <a id='snippet-usesynchronizedstoragesessionconnectivity'/></a>
 ```cs
-var attachments = endpointConfiguration.EnableAttachments(OpenConnection, TimeToKeep.Default);
+var attachments = configuration.EnableAttachments(
+    OpenConnection,
+    TimeToKeep.Default);
 attachments.UseSynchronizedStorageSessionConnectivity();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L68-L73' title='File snippet `usesynchronizedstoragesessionconnectivity` was extracted from'>snippet source</a> | <a href='#snippet-usesynchronizedstoragesessionconnectivity' title='Navigate to start of snippet `usesynchronizedstoragesessionconnectivity`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L70-L77' title='File snippet `usesynchronizedstoragesessionconnectivity` was extracted from'>snippet source</a> | <a href='#snippet-usesynchronizedstoragesessionconnectivity' title='Navigate to start of snippet `usesynchronizedstoragesessionconnectivity`'>anchor</a></sup>
 <!-- endsnippet -->
 
 This approach attempts to use the SynchronizedStorageSession using the following steps:
@@ -131,10 +133,12 @@ To use the ambient [transport transaction](https://docs.particular.net/transport
 <!-- snippet: UseTransportConnectivity -->
 <a id='snippet-usetransportconnectivity'/></a>
 ```cs
-var attachments = endpointConfiguration.EnableAttachments(OpenConnection, TimeToKeep.Default);
+var attachments = configuration.EnableAttachments(
+    OpenConnection,
+    TimeToKeep.Default);
 attachments.UseTransportConnectivity();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L58-L63' title='File snippet `usetransportconnectivity` was extracted from'>snippet source</a> | <a href='#snippet-usetransportconnectivity' title='Navigate to start of snippet `usetransportconnectivity`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L58-L65' title='File snippet `usetransportconnectivity` was extracted from'>snippet source</a> | <a href='#snippet-usetransportconnectivity' title='Navigate to start of snippet `usetransportconnectivity`'>anchor</a></sup>
 <!-- endsnippet -->
 
 This approach attempts to use the transport transaction using the following steps:
@@ -155,12 +159,12 @@ To streamline development the attachment installer is, by default, executed at e
 <!-- snippet: ExecuteAtStartup -->
 <a id='snippet-executeatstartup'/></a>
 ```cs
-endpointConfiguration.EnableInstallers();
-var attachments = endpointConfiguration.EnableAttachments(
+configuration.EnableInstallers();
+var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L78-L85' title='File snippet `executeatstartup` was extracted from'>snippet source</a> | <a href='#snippet-executeatstartup' title='Navigate to start of snippet `executeatstartup`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L82-L89' title='File snippet `executeatstartup` was extracted from'>snippet source</a> | <a href='#snippet-executeatstartup' title='Navigate to start of snippet `executeatstartup`'>anchor</a></sup>
 <!-- endsnippet -->
 
 NOTE: Note that this is also a valid approach for higher level environments.
@@ -173,13 +177,13 @@ However in higher level environment scenarios, where standard installers are bei
 <!-- snippet: DisableInstaller -->
 <a id='snippet-disableinstaller'/></a>
 ```cs
-endpointConfiguration.EnableInstallers();
-var attachments = endpointConfiguration.EnableAttachments(
+configuration.EnableInstallers();
+var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 attachments.DisableInstaller();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L90-L98' title='File snippet `disableinstaller` was extracted from'>snippet source</a> | <a href='#snippet-disableinstaller' title='Navigate to start of snippet `disableinstaller`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L94-L102' title='File snippet `disableinstaller` was extracted from'>snippet source</a> | <a href='#snippet-disableinstaller' title='Navigate to start of snippet `disableinstaller`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -190,12 +194,12 @@ The default table name and schema is `dbo.MessageAttachments`. It can be changed
 <!-- snippet: UseTableName -->
 <a id='snippet-usetablename'/></a>
 ```cs
-var attachments = endpointConfiguration.EnableAttachments(
+var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 attachments.UseTable(new Table("CustomAttachmentsTableName", "dbo"));
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L103-L110' title='File snippet `usetablename` was extracted from'>snippet source</a> | <a href='#snippet-usetablename' title='Navigate to start of snippet `usetablename`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L107-L114' title='File snippet `usetablename` was extracted from'>snippet source</a> | <a href='#snippet-usetablename' title='Navigate to start of snippet `usetablename`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -209,7 +213,7 @@ Attachment cleanup is enabled by default. It can be disabled using the following
 <!-- snippet: DisableCleanupTask -->
 <a id='snippet-disablecleanuptask'/></a>
 ```cs
-var attachments = endpointConfiguration.EnableAttachments(
+var attachments = configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
@@ -217,7 +221,7 @@ attachments.DisableCleanupTask();
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L28-L35' title='File snippet `disablecleanuptask` was extracted from'>snippet source</a> | <a href='#snippet-disablecleanuptask' title='Navigate to start of snippet `disablecleanuptask`'>anchor</a></sup>
 <a id='snippet-disablecleanuptask-1'/></a>
 ```cs
-var attachments = endpointConfiguration.EnableAttachments(
+var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
@@ -457,8 +461,8 @@ class HandlerProcessStreams :
             action: async stream =>
             {
                 // Use the attachment stream. in this example copy to a file
-                await using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(fileToCopyTo);
+                await using var file = File.Create($"{stream.Name}.txt");
+                await stream.CopyToAsync(file);
             });
     }
 }
@@ -476,8 +480,8 @@ class HandlerProcessStreams :
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    await using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(fileToCopyTo);
+                    await using var file = File.Create($"{stream.Name}.txt");
+                    await stream.CopyToAsync(file);
                 })
             .ConfigureAwait(false);
     }
@@ -639,8 +643,8 @@ class HandlerProcessStreamsForMessage :
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    await using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(fileToCopyTo);
+                    await using var file = File.Create($"{stream.Name}.txt");
+                    await stream.CopyToAsync(file);
                 })
             .ConfigureAwait(false);
     }
@@ -774,7 +778,8 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
+    public override Task<AttachmentBytes> GetBytes(
+        CancellationToken cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -783,12 +788,14 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L28-L42' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L28-L43' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'/></a>
 ```cs
-public class CustomMockMessageAttachments : MockMessageAttachments
+public class CustomMockMessageAttachments :
+    MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
+    public override Task<AttachmentBytes> GetBytes(
+        CancellationToken cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -797,7 +804,7 @@ public class CustomMockMessageAttachments : MockMessageAttachments
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L28-L41' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L28-L43' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
 <!-- endsnippet -->
 
 Putting these parts together allows a handler, using incoming attachments, to be tested.
@@ -815,7 +822,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L44-L56' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L45-L57' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'/></a>
 ```cs
 public class Handler : IHandleMessages<MyMessage>
@@ -827,7 +834,7 @@ public class Handler : IHandleMessages<MyMessage>
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L43-L54' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L45-L56' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
 <!-- endsnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -849,7 +856,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L58-L76' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L59-L77' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
 <a id='snippet-testincoming-1'/></a>
 ```cs
 [Fact]
@@ -868,6 +875,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L56-L74' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming-1' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L58-L76' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming-1' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
 <!-- endsnippet -->
 <!-- end include: attachments. path: /doco/mdsource/attachments.include.md -->

@@ -4,11 +4,11 @@ using NServiceBus.Attachments.FileShare;
 
 public class Usage
 {
-    Usage(EndpointConfiguration endpointConfiguration)
+    Usage(EndpointConfiguration configuration)
     {
         #region EnableAttachments
 
-        endpointConfiguration.EnableAttachments(
+        configuration.EnableAttachments(
             fileShare: "networkSharePath",
             timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
 
@@ -16,18 +16,18 @@ public class Usage
 
         #region EnableAttachmentsRecommended
 
-        endpointConfiguration.EnableAttachments(
+        configuration.EnableAttachments(
             fileShare: "networkSharePath",
             timeToKeep: TimeToKeep.Default);
 
         #endregion
     }
 
-    void DisableCleanupTask(EndpointConfiguration endpointConfiguration)
+    void DisableCleanupTask(EndpointConfiguration configuration)
     {
         #region DisableCleanupTask
 
-        var attachments = endpointConfiguration.EnableAttachments(
+        var attachments = configuration.EnableAttachments(
             fileShare: "networkSharePath",
             timeToKeep: TimeToKeep.Default);
         attachments.DisableCleanupTask();
