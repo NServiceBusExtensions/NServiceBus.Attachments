@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
-using NServiceBus.Transport.SQLServer;
 
 class Program
 {
@@ -20,8 +19,6 @@ class Program
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);
         transport.Transactions(TransportTransactionMode.SendsAtomicWithReceive);
-        var delayedDelivery = transport.NativeDelayedDelivery();
-        delayedDelivery.DisableTimeoutManagerCompatibility();
         var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
         attachments.UseTransportConnectivity();
         var endpoint = await Endpoint.Start(configuration);

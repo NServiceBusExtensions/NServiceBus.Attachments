@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
-using NServiceBus.Transport.SQLServer;
 using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
@@ -104,8 +103,6 @@ public class IntegrationTests :
             var transport = configuration.UseTransport<SqlServerTransport>();
             transport.ConnectionString(Connection.ConnectionString);
             transport.Transactions(transactionMode);
-            var delayedDelivery = transport.NativeDelayedDelivery();
-            delayedDelivery.DisableTimeoutManagerCompatibility();
         }
         else
         {
