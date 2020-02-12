@@ -46,7 +46,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Read all attachment metadata for the current message.
         /// </summary>
-        Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default);
+        IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="byte"/> array, for the current message, the attachment with the default name of <see cref="string.Empty"/>.

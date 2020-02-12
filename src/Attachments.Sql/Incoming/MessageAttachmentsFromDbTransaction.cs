@@ -130,7 +130,7 @@ class MessageAttachmentsFromDbTransaction :
         return persister.GetStream(messageId, name, transaction.Connection, transaction, false, cancellation);
     }
 
-    public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
     {
         return persister.ReadAllMessageInfo(transaction.Connection, transaction, messageId, cancellation);
     }

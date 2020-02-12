@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -162,9 +163,12 @@ class MessageAttachmentsFromTransaction :
         return await persister.GetStream(messageId, name, connection, null, true, cancellation);
     }
 
-    public async Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+    public async IAsyncEnumerable<AttachmentInfo> GetMetadata([EnumeratorCancellation] CancellationToken cancellation = default)
     {
         var connection = await GetConnection();
-        return await persister.ReadAllMessageInfo(connection, null, messageId, cancellation);
+        await foreach (var info in persister.ReadAllMessageInfo(connection, null, messageId, cancellation))
+        {
+            yield return info;
+        }
     }
 }

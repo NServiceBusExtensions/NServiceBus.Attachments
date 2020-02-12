@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Cleanup\IAsyncTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Guard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Incoming\AsyncEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\IAttachment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\IncomingAttachmentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Incoming\AttachmentString.cs" />

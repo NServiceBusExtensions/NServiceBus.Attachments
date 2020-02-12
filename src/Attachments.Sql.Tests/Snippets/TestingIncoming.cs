@@ -103,7 +103,7 @@ class MyMessageAttachments : IMessageAttachments
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = new CancellationToken())
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }

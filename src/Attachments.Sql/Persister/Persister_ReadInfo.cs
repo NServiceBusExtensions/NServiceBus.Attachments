@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace NServiceBus.Attachments.Sql
 {
     public partial class Persister
     {
+        //TODO: remove?
         /// <inheritdoc />
         public virtual async Task ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
@@ -35,16 +37,25 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, CancellationToken cancellation = default)
+        public virtual async IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(
+            DbConnection connection,
+            DbTransaction? transaction,
+            string messageId,
+            [EnumeratorCancellation] CancellationToken cancellation = default)
         {
-            var list = new ConcurrentBag<AttachmentInfo>();
-            await ReadAllMessageInfo(connection, transaction, messageId,
-                    metadata =>
-                    {
-                        list.Add(metadata);
-                        return Task.CompletedTask;
-                    }, cancellation);
-            return list;
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNull(connection, nameof(connection));
+            await using var command = GetReadInfoCommand(connection, transaction, messageId);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
+            {
+                cancellation.ThrowIfCancellationRequested();
+                yield return new AttachmentInfo(
+                    messageId: messageId,
+                    name: reader.GetString(1),
+                    expiry: reader.GetDateTime(2),
+                    metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
+            }
         }
 
         /// <inheritdoc />

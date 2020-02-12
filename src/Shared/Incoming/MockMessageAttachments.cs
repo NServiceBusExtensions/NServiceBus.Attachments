@@ -64,9 +64,9 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// Read all attachment metadata for the current message.
         /// </summary>
-        public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+        public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
         {
-            return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(new List<AttachmentInfo>());
+            return new AsyncEnumerable<AttachmentInfo>();
         }
 
         /// <summary>

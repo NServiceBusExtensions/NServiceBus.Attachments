@@ -35,12 +35,12 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
-        IEnumerable<AttachmentInfo> ReadAllInfo();
+        IAsyncEnumerable<AttachmentInfo> ReadAllInfo(CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
         /// </summary>
-        IEnumerable<AttachmentInfo> ReadAllMessageInfo(string messageId);
+        IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(string messageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes all attachments.
@@ -90,7 +90,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads an <see cref="AttachmentStream"/> an attachment.
         /// </summary>
-        AttachmentStream GetStream(string messageId, string name);
+        Task<AttachmentStream> GetStream(string messageId, string name, CancellationToken cancellation = default);
 
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.

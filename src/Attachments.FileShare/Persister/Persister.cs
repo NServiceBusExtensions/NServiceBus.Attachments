@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.FileShare
 #if Raw
@@ -78,7 +79,7 @@ namespace NServiceBus.Attachments.FileShare
             throw new Exception($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
         }
 
-        static IReadOnlyDictionary<string, string> ReadMetadata(string attachmentDirectory)
+        static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory)
         {
             var metadataFile = GetMetadataFile(attachmentDirectory);
             if (!File.Exists(metadataFile))
@@ -87,7 +88,7 @@ namespace NServiceBus.Attachments.FileShare
             }
 
             using var stream = FileHelpers.OpenRead(metadataFile);
-            return MetadataSerializer.Deserialize(stream);
+            return await MetadataSerializer.Deserialize(stream);
         }
 
         static string GetMetadataFile(string attachmentDirectory)

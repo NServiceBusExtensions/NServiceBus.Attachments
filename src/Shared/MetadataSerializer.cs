@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
+using System.Threading.Tasks;
+using Serializer = System.Text.Json.JsonSerializer;
 
 namespace NServiceBus.Attachments
 #if FileShare
@@ -32,10 +32,8 @@ namespace NServiceBus.Attachments
             {
                 return null;
             }
-            var serializer = BuildSerializer();
-            using var stream = new MemoryStream();
-            serializer.WriteObject(stream, instance);
-            return Encoding.UTF8.GetString(stream.ToArray());
+
+            return Serializer.Serialize(instance);
         }
 
         /// <summary>
@@ -48,35 +46,23 @@ namespace NServiceBus.Attachments
                 return EmptyMetadata;
             }
 
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
-            return Deserialize(stream);
+            return Serializer.Deserialize<Dictionary<string, string>>(json);
         }
 
         /// <summary>
         ///
         /// </summary>
-        public static IReadOnlyDictionary<string, string> Deserialize(Stream stream)
+        public static async Task<IReadOnlyDictionary<string, string>> Deserialize(Stream stream)
         {
-            var serializer = BuildSerializer();
-            return (IReadOnlyDictionary<string, string>) serializer.ReadObject(stream);
+            return await Serializer.DeserializeAsync<Dictionary<string, string>>(stream);
         }
 
         /// <summary>
         ///
         /// </summary>
-        public static void Serialize(Stream stream, IReadOnlyDictionary<string, string> metadata)
+        public static Task Serialize(Stream stream, IReadOnlyDictionary<string, string> metadata)
         {
-            var serializer = BuildSerializer();
-            serializer.WriteObject(stream, metadata);
-        }
-
-        static DataContractJsonSerializer BuildSerializer()
-        {
-            var settings = new DataContractJsonSerializerSettings
-            {
-                UseSimpleDictionaryFormat = true
-            };
-            return new DataContractJsonSerializer(typeof(Dictionary<string, string>), settings);
+            return Serializer.SerializeAsync(stream, metadata);
         }
     }
 }

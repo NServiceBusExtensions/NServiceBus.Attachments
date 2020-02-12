@@ -540,7 +540,7 @@ class HandlerGetStream :
     public async Task Handle(MyMessage message, IMessageHandlerContext context)
     {
         var attachments = context.Attachments();
-        await using var stream = attachments.GetStream("attachment1");
+        await using var stream = await attachments.GetStream("attachment1");
         // Use the attachment stream. in this example copy to a file
         await using var fileToCopyTo = File.Create("FilePath.txt");
         await stream.CopyToAsync(fileToCopyTo);

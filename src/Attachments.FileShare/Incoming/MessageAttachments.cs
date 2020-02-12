@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
@@ -43,9 +42,9 @@ class MessageAttachments :
         return persister.ProcessStreams(messageId, action, cancellation);
     }
 
-    public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
     {
-        return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(persister.ReadAllMessageInfo(messageId).ToList());
+        return persister.ReadAllMessageInfo(messageId, cancellation);
     }
 
     public Task<AttachmentString> GetString(CancellationToken cancellation = default)
@@ -68,14 +67,14 @@ class MessageAttachments :
         return persister.GetBytes(messageId, name, cancellation);
     }
 
-    public AttachmentStream GetStream()
+    public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, "default");
+        return persister.GetStream(messageId, "default",cancellation);
     }
 
-    public AttachmentStream GetStream(string name)
+    public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, name);
+        return persister.GetStream(messageId, name,cancellation);
     }
 
     public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
@@ -123,13 +122,13 @@ class MessageAttachments :
         return persister.GetString(messageId, name, cancellation);
     }
 
-    public AttachmentStream GetStreamForMessage(string messageId)
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, "default");
+        return persister.GetStream(messageId, "default",cancellation);
     }
 
-    public AttachmentStream GetStreamForMessage(string messageId, string name)
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, name);
+        return persister.GetStream(messageId, name,cancellation);
     }
 }

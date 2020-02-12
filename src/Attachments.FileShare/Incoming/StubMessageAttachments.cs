@@ -1,31 +1,34 @@
-﻿namespace NServiceBus.Attachments.FileShare.Testing
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace NServiceBus.Attachments.FileShare.Testing
 {
     public partial class StubMessageAttachments
     {
         /// <inheritdoc />
-        public virtual AttachmentStream GetStream()
+        public virtual Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
         {
-            return GetStream("default");
+            return GetStream("default", cancellation);
         }
 
         /// <inheritdoc />
-        public virtual AttachmentStream GetStream(string name)
+        public virtual Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
         {
             var attachment = GetCurrentMessageAttachment(name);
-            return attachment.ToAttachmentStream();
+            return Task.FromResult(attachment.ToAttachmentStream());
         }
 
         /// <inheritdoc />
-        public virtual AttachmentStream GetStreamForMessage(string messageId)
+        public virtual Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
         {
-            return GetStreamForMessage(messageId, "default");
+            return GetStreamForMessage(messageId, "default", cancellation);
         }
 
         /// <inheritdoc />
-        public virtual AttachmentStream GetStreamForMessage(string messageId, string name)
+        public virtual Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
-            return attachment.ToAttachmentStream();
+            return Task.FromResult(attachment.ToAttachmentStream());
         }
     }
 }

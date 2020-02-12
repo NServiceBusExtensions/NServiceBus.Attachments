@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -154,15 +155,10 @@ namespace NServiceBus.Attachments
         }
 
         /// <inheritdoc />
-        public Task<IReadOnlyCollection<AttachmentInfo>> GetMetadata(CancellationToken cancellation = default)
+        public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
         {
-            var list = new List<AttachmentInfo>();
-            foreach (var attachment in currentAttachments)
-            {
-                list.Add(new AttachmentInfo(messageId, attachment.Key, attachment.Value.Expiry, attachment.Value.Metadata));
-            }
-
-            return Task.FromResult<IReadOnlyCollection<AttachmentInfo>>(list);
+            var infos = currentAttachments.Select(_ => new AttachmentInfo(messageId, _.Key, _.Value.Expiry, _.Value.Metadata));
+            return new AsyncEnumerable<AttachmentInfo>(infos);
         }
 
         /// <inheritdoc />
