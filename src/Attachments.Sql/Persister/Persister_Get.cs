@@ -74,8 +74,13 @@ namespace NServiceBus.Attachments.Sql
                 reader = await command.ExecuteSequentialReader(cancellation);
                 if (!await reader.ReadAsync(cancellation))
                 {
+                    #if NETSTANDARD2_1
                     await reader.DisposeAsync();
                     await command.DisposeAsync();
+                    #else
+                    reader.Dispose();
+                    command.Dispose();
+                    #endif
                     throw ThrowNotFound(messageId, name);
                 }
 
@@ -83,6 +88,7 @@ namespace NServiceBus.Attachments.Sql
             }
             catch (Exception)
             {
+#if NETSTANDARD2_1
                 if (reader != null)
                 {
                     await reader.DisposeAsync();
@@ -91,6 +97,10 @@ namespace NServiceBus.Attachments.Sql
                 {
                     await command.DisposeAsync();
                 }
+#else
+                reader?.Dispose();
+                command?.Dispose();
+#endif
                 throw;
             }
         }

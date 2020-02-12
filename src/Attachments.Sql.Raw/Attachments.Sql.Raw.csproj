@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.Sql.Raw</AssemblyName>
     <PackageName>NServiceBus.Attachments.Sql.Raw</PackageName>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <DefineConstants>$(DefineConstants);Sql;Raw</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -12,6 +12,8 @@
     <PackageReference Include="ProjectDefaults" Version="1.0.41" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" Condition="$(Configuration) == 'Release'" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.0" Condition="$(TargetFramework) == 'netstandard2.0'" />
+    <PackageReference Include="Nullable" Version="1.2.0" Condition="$(TargetFramework) == 'netstandard2.0'" PrivateAssets="All" />
 
     <Compile Include="..\Attachments.Sql\Persister\*.cs" />
     <Compile Include="..\Attachments.Sql\Install\Installer.cs" />
