@@ -40,7 +40,11 @@ namespace NServiceBus
                     }
                     catch
                     {
+                        #if NETSTANDARD2_1
                         await connection.DisposeAsync();
+                        #else
+                        connection.Dispose();
+                        #endif
                         throw;
                     }
                 },

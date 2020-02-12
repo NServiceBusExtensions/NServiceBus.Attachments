@@ -19,7 +19,7 @@ class PurgeTask: FeatureStartupTask
 
     protected override async Task OnStart(IMessageSession session)
     {
-        await using var connection = await connectionFactory();
+        using var connection = await connectionFactory();
         await persister.PurgeItems(connection, null, CancellationToken.None);
     }
 

@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+#if !NETSTANDARD2_0
 using System.Linq;
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,7 +37,11 @@ namespace NServiceBus.Attachments
         }
 
         Stream inner;
+#if NETSTANDARD2_0
+        IDisposable[] cleanups;
+        #else
         IAsyncDisposable[] cleanups;
+#endif
 
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -45,7 +51,17 @@ namespace NServiceBus.Attachments
         /// <param name="length">The length of <paramref name="inner"/>.</param>
         /// <param name="metadata">The attachment metadata.</param>
         /// <param name="cleanups">Any extra <see cref="IAsyncDisposable"/>s to cleanup.</param>
-        public AttachmentStream(string name, Stream inner, long length, IReadOnlyDictionary<string, string> metadata, params IAsyncDisposable[] cleanups)
+        public AttachmentStream(
+            string name,
+            Stream inner,
+            long length,
+            IReadOnlyDictionary<string, string> metadata,
+#if NETSTANDARD2_0
+            params IDisposable[] cleanups
+#else
+            params IAsyncDisposable[] cleanups
+#endif
+            )
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(inner, nameof(inner));
@@ -78,6 +94,52 @@ namespace NServiceBus.Attachments
             return inner.ReadAsync(buffer, offset, count, cancellation);
         }
 
+#if NETSTANDARD2_0
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            inner.Dispose();
+            if (cleanups != null)
+            {
+                foreach (var disposable in cleanups)
+                {
+                    disposable.Dispose();
+                }
+            }
+        }
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            inner.Dispose();
+            if (cleanups != null)
+            {
+                foreach (var disposable in cleanups)
+                {
+                    disposable.DisposeAsync().GetAwaiter().GetResult();
+                }
+            }
+        }
+
+        public override async ValueTask DisposeAsync()
+        {
+            await base.DisposeAsync();
+            await inner.DisposeAsync();
+            if (cleanups != null)
+            {
+                await Task.WhenAll(cleanups.Select(async x => await x.DisposeAsync()));
+            }
+        }
+
+        public override void Write(ReadOnlySpan<byte> buffer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
         public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
             return inner.ReadAsync(buffer, cancellationToken);
@@ -87,6 +149,12 @@ namespace NServiceBus.Attachments
         {
             return inner.Read(buffer);
         }
+
+        public override void CopyTo(Stream destination, int bufferSize)
+        {
+            inner.CopyTo(destination, bufferSize);
+        }
+#endif
 
         public override int ReadByte()
         {
@@ -137,21 +205,6 @@ namespace NServiceBus.Attachments
             return inner.CopyToAsync(destination, bufferSize, cancellation);
         }
 
-        public override void CopyTo(Stream destination, int bufferSize)
-        {
-            inner.CopyTo(destination, bufferSize);
-        }
-
-        public override async ValueTask DisposeAsync()
-        {
-            await base.DisposeAsync();
-            await inner.DisposeAsync();
-            if (cleanups != null)
-            {
-                await Task.WhenAll(cleanups.Select(async x => await x.DisposeAsync()));
-            }
-        }
-
         public override int EndRead(IAsyncResult asyncResult)
         {
             return inner.EndRead(asyncResult);
@@ -187,17 +240,7 @@ namespace NServiceBus.Attachments
             throw new NotImplementedException();
         }
 
-        public override void Write(ReadOnlySpan<byte> buffer)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

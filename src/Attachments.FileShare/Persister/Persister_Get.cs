@@ -33,7 +33,7 @@ namespace NServiceBus.Attachments.FileShare
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-            var allText = await File.ReadAllTextAsync(dataFile, cancellation);
+            var allText = File.ReadAllText(dataFile);
             return new AttachmentString(name, allText, metadata);
         }
 
@@ -74,7 +74,7 @@ namespace NServiceBus.Attachments.FileShare
                 var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-                var allText = await File.ReadAllTextAsync(dataFile, cancellation);
+                var allText = File.ReadAllText(dataFile);
                 yield return new AttachmentString(attachmentName, allText, metadata);
             }
         }
@@ -90,7 +90,7 @@ namespace NServiceBus.Attachments.FileShare
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile).Name;
-                await using var read = FileHelpers.OpenRead(dataFile);
+                using var read = FileHelpers.OpenRead(dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 yield return new AttachmentStream(attachmentName, read, read.Length, metadata);
             }

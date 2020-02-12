@@ -38,7 +38,7 @@ namespace NServiceBus.Attachments.FileShare
             return Save(messageId, name, expiry, metadata,
                 async fileStream =>
                 {
-                    await using var writer = fileStream.BuildLeaveOpenWriter();
+                    using var writer = fileStream.BuildLeaveOpenWriter();
                     await writer.WriteAsync(value);
                 },
                 cancellation);
@@ -64,12 +64,12 @@ namespace NServiceBus.Attachments.FileShare
             var dataFile = Path.Combine(attachmentDirectory, "data");
             expiry = expiry.ToUniversalTime();
             var expiryFile = Path.Combine(attachmentDirectory, $"{expiry:yyyy-MM-ddTHHmm}.expiry");
-            await using (File.Create(expiryFile))
+            using (File.Create(expiryFile))
             {
             }
             await WriteMetadata(attachmentDirectory, metadata, cancellation);
 
-            await using var fileStream = FileHelpers.OpenWrite(dataFile);
+            using var fileStream = FileHelpers.OpenWrite(dataFile);
             await action(fileStream);
         }
     }

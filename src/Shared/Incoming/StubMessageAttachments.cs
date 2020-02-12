@@ -71,7 +71,7 @@ namespace NServiceBus.Attachments
         {
             foreach (var pair in currentAttachments)
             {
-                await using var attachmentStream = pair.Value.ToAttachmentStream();
+                using var attachmentStream = pair.Value.ToAttachmentStream();
                 await action(attachmentStream);
             }
         }
@@ -121,7 +121,7 @@ namespace NServiceBus.Attachments
         public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
-            await using var attachmentStream = attachment.ToAttachmentStream();
+            using var attachmentStream = attachment.ToAttachmentStream();
             await action(attachmentStream);
         }
 
@@ -137,7 +137,7 @@ namespace NServiceBus.Attachments
             foreach (var pair in GetAttachmentsForMessage(messageId))
             {
                 var attachment = pair.Value;
-                await using var attachmentStream = attachment.ToAttachmentStream();
+                using var attachmentStream = attachment.ToAttachmentStream();
                 await action(attachmentStream);
             }
         }
