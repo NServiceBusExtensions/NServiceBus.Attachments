@@ -24,12 +24,7 @@ namespace NServiceBus.Attachments
     /// </summary>
     public class AttachmentStream :
         Stream,
-        IAttachment,
-#if NETSTANDARD2_0
-        IDisposable
-#else
-        IAsyncDisposable
-#endif
+        IAttachment
     {
         static Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
 
