@@ -20,8 +20,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
             if (await reader.ReadAsync(cancellation))
             {
                 var metadataString = reader.GetStringOrNull(1);
