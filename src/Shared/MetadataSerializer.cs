@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Serializer = System.Text.Json.JsonSerializer;
 
@@ -52,17 +53,22 @@ namespace NServiceBus.Attachments
         /// <summary>
         ///
         /// </summary>
-        public static async Task<IReadOnlyDictionary<string, string>> Deserialize(Stream stream)
+        public static async Task<IReadOnlyDictionary<string, string>> Deserialize(
+            Stream stream,
+            CancellationToken cancellation = default)
         {
-            return await Serializer.DeserializeAsync<Dictionary<string, string>>(stream);
+            return await Serializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancellation);
         }
 
         /// <summary>
         ///
         /// </summary>
-        public static Task Serialize(Stream stream, IReadOnlyDictionary<string, string> metadata)
+        public static Task Serialize(
+            Stream stream,
+            IReadOnlyDictionary<string, string> metadata,
+            CancellationToken cancellation = default)
         {
-            return Serializer.SerializeAsync(stream, metadata);
+            return Serializer.SerializeAsync(stream, metadata, cancellationToken: cancellation);
         }
     }
 }

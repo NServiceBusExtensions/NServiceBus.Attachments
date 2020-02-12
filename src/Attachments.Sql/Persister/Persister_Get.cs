@@ -54,7 +54,13 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async Task<AttachmentStream> GetStream(string messageId, string name, DbConnection connection, DbTransaction? transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation)
+        public virtual async Task<AttachmentStream> GetStream(
+            string messageId,
+            string name,
+            DbConnection connection,
+            DbTransaction? transaction,
+            bool disposeConnectionOnStreamDispose,
+            CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -90,7 +96,11 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
+        public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(
+            string messageId,
+            DbConnection connection,
+            DbTransaction? transaction,
+            [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
@@ -108,7 +118,11 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
+        public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(
+            string messageId,
+            DbConnection connection,
+            DbTransaction? transaction,
+            [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));

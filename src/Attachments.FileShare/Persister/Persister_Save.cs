@@ -17,7 +17,7 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(stream, nameof(stream));
-            return Save(messageId, name, expiry, metadata, fileStream => stream.CopyToAsync(fileStream, 4096, cancellation));
+            return Save(messageId, name, expiry, metadata, fileStream => stream.CopyToAsync(fileStream, 4096, cancellation), cancellation);
         }
 
         /// <inheritdoc />
@@ -26,7 +26,7 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(bytes, nameof(bytes));
-            return Save(messageId, name, expiry, metadata, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation));
+            return Save(messageId, name, expiry, metadata, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation), cancellation);
         }
 
         /// <inheritdoc />
@@ -40,10 +40,17 @@ namespace NServiceBus.Attachments.FileShare
                 {
                     await using var writer = fileStream.BuildLeaveOpenWriter();
                     await writer.WriteAsync(value);
-                });
+                },
+                cancellation);
         }
 
-        async Task Save(string messageId, string? name, DateTime expiry, IReadOnlyDictionary<string, string>? metadata, Func<FileStream, Task> action)
+        async Task Save(
+            string messageId,
+            string? name,
+            DateTime expiry,
+            IReadOnlyDictionary<string, string>? metadata,
+            Func<FileStream, Task> action,
+            CancellationToken cancellation = default)
         {
             if (name == null)
             {
@@ -60,7 +67,7 @@ namespace NServiceBus.Attachments.FileShare
             await using (File.Create(expiryFile))
             {
             }
-            WriteMetadata(attachmentDirectory, metadata);
+            await WriteMetadata(attachmentDirectory, metadata, cancellation);
 
             await using var fileStream = FileHelpers.OpenWrite(dataFile);
             await action(fileStream);

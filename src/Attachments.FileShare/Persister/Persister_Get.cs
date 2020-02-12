@@ -20,7 +20,7 @@ namespace NServiceBus.Attachments.FileShare
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
             var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
-            var metadata = await ReadMetadata(attachmentDirectory);
+            var metadata = await ReadMetadata(attachmentDirectory, cancellation);
             return new AttachmentBytes(name, bytes, metadata);
         }
 
@@ -32,7 +32,7 @@ namespace NServiceBus.Attachments.FileShare
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
-            var metadata = await ReadMetadata(attachmentDirectory);
+            var metadata = await ReadMetadata(attachmentDirectory, cancellation);
             var allText = await File.ReadAllTextAsync(dataFile, cancellation);
             return new AttachmentString(name, allText, metadata);
         }
@@ -42,7 +42,7 @@ namespace NServiceBus.Attachments.FileShare
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            return OpenAttachmentStream(messageId, name);
+            return OpenAttachmentStream(messageId, name, cancellation);
         }
 
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace NServiceBus.Attachments.FileShare
                 var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
-                var metadata = await ReadMetadata(attachmentDirectory);
+                var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 yield return new AttachmentBytes(attachmentName, bytes, metadata);
             }
         }
@@ -73,7 +73,7 @@ namespace NServiceBus.Attachments.FileShare
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile).Name;
-                var metadata = await ReadMetadata(attachmentDirectory);
+                var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 var allText = await File.ReadAllTextAsync(dataFile, cancellation);
                 yield return new AttachmentString(attachmentName, allText, metadata);
             }
@@ -91,17 +91,20 @@ namespace NServiceBus.Attachments.FileShare
                 var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 await using var read = FileHelpers.OpenRead(dataFile);
-                var metadata = await ReadMetadata(attachmentDirectory);
+                var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 yield return new AttachmentStream(attachmentName, read, read.Length, metadata);
             }
         }
 
-        async Task<AttachmentStream> OpenAttachmentStream(string messageId, string name)
+        async Task<AttachmentStream> OpenAttachmentStream(
+            string messageId,
+            string name,
+            CancellationToken cancellation = default)
         {
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
-            var metadata = await ReadMetadata(attachmentDirectory);
+            var metadata = await ReadMetadata(attachmentDirectory, cancellation);
             var read = FileHelpers.OpenRead(dataFile);
             return new AttachmentStream(name, read, read.Length, metadata);
         }
