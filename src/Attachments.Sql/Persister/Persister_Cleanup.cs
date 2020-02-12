@@ -14,7 +14,7 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $"delete from {table} where expiry < @date";
             command.AddParameter("date", dateTime);
@@ -25,7 +25,7 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $@"
 if exists (

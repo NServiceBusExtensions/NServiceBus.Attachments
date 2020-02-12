@@ -48,7 +48,7 @@ namespace NServiceBus.Attachments.Sql
 
         async Task Save(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
-            await using var command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $@"
 insert into {table}

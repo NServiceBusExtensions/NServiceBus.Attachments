@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task DeleteAllAttachments(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $"delete from {table}";
             await command.ExecuteNonQueryAsync(cancellation);
