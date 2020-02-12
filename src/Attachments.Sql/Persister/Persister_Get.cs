@@ -40,8 +40,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
             if (await reader.ReadAsync(cancellation))
             {
                 var metadataString = reader.GetStringOrNull(1);
@@ -104,15 +104,15 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = CreateGetDatasCommand(messageId, connection, transaction);
-            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            using var command = CreateGetDatasCommand(messageId, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
                 var name = reader.GetString(0);
                 var length = reader.GetInt64(1);
                 var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
-                await using var sqlStream = reader.GetStream(3);
+                using var sqlStream = reader.GetStream(3);
                 yield return new AttachmentStream(name, sqlStream, length, metadata);
             }
         }
@@ -126,8 +126,8 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = CreateGetDatasCommand(messageId, connection, transaction);
-            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            using var command = CreateGetDatasCommand(messageId, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
@@ -143,8 +143,8 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
-            await using var command = CreateGetDatasCommand(messageId, connection, transaction);
-            await using var reader = await command.ExecuteSequentialReader(cancellation);
+            using var command = CreateGetDatasCommand(messageId, connection, transaction);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
