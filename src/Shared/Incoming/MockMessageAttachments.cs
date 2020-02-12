@@ -26,7 +26,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public virtual async Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
         {
-            await target.CopyToAsync(name, target, cancellation);
+            await target.CopyToAsync(target);
         }
 
         /// <summary>
