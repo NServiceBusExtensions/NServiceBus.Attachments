@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+#if !NETSTANDARD2_0
+using System.Linq;
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +24,12 @@ namespace NServiceBus.Attachments
     /// </summary>
     public class AttachmentStream :
         Stream,
-        IAttachment
+        IAttachment,
+#if NETSTANDARD2_0
+        IDisposable
+#else
+        IAsyncDisposable
+#endif
     {
         static Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
 
@@ -34,7 +42,11 @@ namespace NServiceBus.Attachments
         }
 
         Stream inner;
+#if NETSTANDARD2_0
         IDisposable[] cleanups;
+        #else
+        IAsyncDisposable[] cleanups;
+#endif
 
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -49,7 +61,11 @@ namespace NServiceBus.Attachments
             Stream inner,
             long length,
             IReadOnlyDictionary<string, string> metadata,
+#if NETSTANDARD2_0
             params IDisposable[] cleanups
+#else
+            params IAsyncDisposable[] cleanups
+#endif
             )
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -83,7 +99,42 @@ namespace NServiceBus.Attachments
             return inner.ReadAsync(buffer, offset, count, cancellation);
         }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            inner.Dispose();
+            if (cleanups != null)
+            {
+                foreach (var disposable in cleanups)
+                {
+                    disposable.Dispose();
+                }
+            }
+        }
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            inner.Dispose();
+            if (cleanups != null)
+            {
+                foreach (var disposable in cleanups)
+                {
+                    disposable.DisposeAsync().GetAwaiter().GetResult();
+                }
+            }
+        }
+
+        public override async ValueTask DisposeAsync()
+        {
+            await base.DisposeAsync();
+            await inner.DisposeAsync();
+            if (cleanups != null)
+            {
+                await Task.WhenAll(cleanups.Select(async x => await x.DisposeAsync()));
+            }
+        }
 
         public override void Write(ReadOnlySpan<byte> buffer)
         {
@@ -109,18 +160,6 @@ namespace NServiceBus.Attachments
             inner.CopyTo(destination, bufferSize);
         }
 #endif
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            inner.Dispose();
-            if (cleanups != null)
-            {
-                foreach (var disposable in cleanups)
-                {
-                    disposable.Dispose();
-                }
-            }
-        }
 
         public override int ReadByte()
         {
