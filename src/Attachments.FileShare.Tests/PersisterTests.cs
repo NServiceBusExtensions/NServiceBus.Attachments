@@ -7,18 +7,12 @@ using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class PersisterTests :
-    VerifyBase
+[UsesVerify]
+public class PersisterTests
 {
     DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
-
-    public PersisterTests(ITestOutputHelper output) :
-        base(output)
-    {
-    }
 
     static Persister GetPersister([CallerMemberName] string? path = null)
     {
@@ -158,8 +152,6 @@ public class PersisterTests :
         Assert.Equal(2, count);
     }
 
-
-
     static byte[] ToBytes(Stream stream)
     {
         using var memoryStream = new MemoryStream();
@@ -176,7 +168,7 @@ public class PersisterTests :
             expiry: defaultTestDate,
             stream: GetStream(),
             metadata: metadata);
-        await Verify(persister.ReadAllInfo());
+        await Verifier.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -185,7 +177,7 @@ public class PersisterTests :
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        await Verify(persister.ReadAllMessageInfo("theMessageId"));
+        await Verifier.Verify(persister.ReadAllMessageInfo("theMessageId"));
     }
 
     [Fact]
@@ -193,7 +185,7 @@ public class PersisterTests :
     {
         var persister = GetPersister();
         await persister.SaveBytes("theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
-        await Verify(persister.ReadAllInfo());
+        await Verifier.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -201,7 +193,7 @@ public class PersisterTests :
     {
         var persister = GetPersister();
         await persister.SaveString("theMessageId", "theName", defaultTestDate, "foo", metadata);
-        await Verify(persister.ReadAllInfo());
+        await Verifier.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -210,7 +202,7 @@ public class PersisterTests :
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId", "theName2");
-        await Verify(persister.ReadAllInfo());
+        await Verifier.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -220,7 +212,7 @@ public class PersisterTests :
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId");
-        await Verify(persister.ReadAllInfo());
+        await Verifier.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -230,7 +222,7 @@ public class PersisterTests :
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
-        await Verify(persister.ReadAllInfo());
+        await Verifier.Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -240,7 +232,7 @@ public class PersisterTests :
         await persister.SaveStream("theMessageId1", "theName", defaultTestDate, GetStream());
         await persister.SaveStream("theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
         persister.CleanupItemsOlderThan(new DateTime(2001, 1, 1, 1, 1, 1));
-        await Verify(persister.ReadAllInfo());
+        await Verifier.Verify(persister.ReadAllInfo());
     }
 
     static Stream GetStream(byte content = 5)

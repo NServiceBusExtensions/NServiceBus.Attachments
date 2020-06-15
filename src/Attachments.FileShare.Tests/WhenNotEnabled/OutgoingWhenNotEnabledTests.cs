@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using NServiceBus;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class OutgoingWhenNotEnabledTests :
-    VerifyBase
+public class OutgoingWhenNotEnabledTests
 {
     [Fact]
     public async Task Run()
@@ -18,7 +16,7 @@ public class OutgoingWhenNotEnabledTests :
         var endpoint = await Endpoint.Start(configuration);
 
         var exception = await Assert.ThrowsAsync<Exception>(() => SendStartMessageWithAttachment(endpoint));
-        await Verify(exception.Message);
+        await Verifier.Verify(exception.Message);
         await endpoint.Stop();
     }
 
@@ -43,11 +41,6 @@ public class OutgoingWhenNotEnabledTests :
 
     class SendMessage :
         IMessage
-    {
-    }
-
-    public OutgoingWhenNotEnabledTests(ITestOutputHelper output) :
-        base(output)
     {
     }
 }

@@ -9,7 +9,9 @@ static class SqlTransportHelper
     {
         if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
         {
+#pragma warning disable 8762
             return transportTransaction.TryGet(out transaction);
+#pragma warning restore 8762
         }
 
         transaction = null;

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class PersisterTests :
-    VerifyBase
+[UsesVerify]
+public class PersisterTests
 {
     DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
@@ -20,8 +19,7 @@ public class PersisterTests :
         DbSetup.Setup();
     }
 
-    public PersisterTests(ITestOutputHelper output) :
-        base(output)
+    public PersisterTests()
     {
         persister = new Persister("MessageAttachments");
     }
@@ -228,7 +226,7 @@ public class PersisterTests :
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
         var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        await Verifier.Verify(result);
     }
 
     [Fact]
@@ -239,7 +237,7 @@ public class PersisterTests :
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
         var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        await Verifier.Verify(result);
     }
 
     [Fact]
@@ -250,7 +248,7 @@ public class PersisterTests :
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", metadata);
         var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        await Verifier.Verify(result);
     }
 
     [Fact]
@@ -263,7 +261,7 @@ public class PersisterTests :
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
         await persister.Duplicate("theSourceMessageId", connection, null, "theTargetMessageId");
         var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        await Verifier.Verify(result);
     }
 
     [Fact]
@@ -276,7 +274,7 @@ public class PersisterTests :
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId");
         var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        await Verifier.Verify(result);
     }
 
     [Fact]
@@ -288,7 +286,7 @@ public class PersisterTests :
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId","theName2");
         var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        await Verifier.Verify(result);
     }
 
     [Fact]
@@ -306,7 +304,7 @@ public class PersisterTests :
                 list.Add(info);
                 return Task.CompletedTask;
             });
-        await Verify(list);
+        await Verifier.Verify(list);
     }
 
     [Fact]
@@ -319,7 +317,7 @@ public class PersisterTests :
         await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
         await persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1));
         var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        await Verifier.Verify(result);
     }
 
     static Stream GetStream(byte content = 5)

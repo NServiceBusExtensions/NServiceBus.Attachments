@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using NServiceBus;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class IncomingWhenNotEnabledTests :
-    VerifyBase
+public class IncomingWhenNotEnabledTests : IDisposable
 {
     public ManualResetEvent ResetEvent = new ManualResetEvent(false);
     public Exception? Exception;
@@ -24,7 +22,7 @@ public class IncomingWhenNotEnabledTests :
         ResetEvent.WaitOne();
         await endpoint.Stop();
         Assert.NotNull(Exception);
-        await Verify(Exception!.Message);
+        await Verifier.Verify(Exception!.Message);
     }
 
     class Handler :
@@ -61,14 +59,8 @@ public class IncomingWhenNotEnabledTests :
     {
     }
 
-    public override void Dispose()
+    public void Dispose()
     {
         ResetEvent.Dispose();
-        base.Dispose();
-    }
-
-    public IncomingWhenNotEnabledTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

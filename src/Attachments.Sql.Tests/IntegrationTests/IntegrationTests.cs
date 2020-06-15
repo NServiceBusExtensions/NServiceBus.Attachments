@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class IntegrationTests :
-    VerifyBase
+public class IntegrationTests : IDisposable
 {
     internal ManualResetEvent HandlerEvent = new ManualResetEvent(false);
     internal ManualResetEvent SagaEvent = new ManualResetEvent(false);
@@ -173,15 +170,9 @@ public class IntegrationTests :
         return stream;
     }
 
-    public override void Dispose()
+    public void Dispose()
     {
         HandlerEvent.Dispose();
         SagaEvent.Dispose();
-        base.Dispose();
-    }
-
-    public IntegrationTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.FileShare;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class IntegrationTests :
-    VerifyBase
+public class IntegrationTests: IDisposable
 {
     ManualResetEvent resetEvent = new ManualResetEvent(false);
 
@@ -28,10 +26,9 @@ public class IntegrationTests :
         await endpoint.Stop();
     }
 
-    public override void Dispose()
+    public void Dispose()
     {
         resetEvent.Dispose();
-        base.Dispose();
     }
 
     static Task SendStartMessage(IEndpointInstance endpoint)
@@ -101,11 +98,6 @@ public class IntegrationTests :
 
     class ReplyMessage :
         IMessage
-    {
-    }
-
-    public IntegrationTests(ITestOutputHelper output) :
-        base(output)
     {
     }
 }

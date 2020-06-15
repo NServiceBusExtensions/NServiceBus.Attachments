@@ -7,12 +7,9 @@ using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class TestingTests :
-    VerifyBase
+public class TestingTests
 {
     [Fact]
     public async Task OutgoingAttachments()
@@ -77,11 +74,6 @@ public class TestingTests :
     }
 
     public class AMessage
-    {
-    }
-
-    public TestingTests(ITestOutputHelper output) :
-        base(output)
     {
     }
 }

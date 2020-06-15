@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 using NServiceBus.Logging;
-using Verify;
+using VerifyTests;
 
 public static class ModuleInitializer
 {
     public static void Initialize()
     {
         LogManager.UseFactory(NullLogger.Instance);
-        SharedVerifySettings.ModifySerialization(settings =>
+        VerifierSettings.ModifySerialization(settings =>
         {
             settings.AddExtraSettings(serializerSettings =>
             {
