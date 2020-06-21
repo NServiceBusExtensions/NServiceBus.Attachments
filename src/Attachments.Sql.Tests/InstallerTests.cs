@@ -1,8 +1,10 @@
 ﻿using System.Data.Common;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
+using VerifyXunit;
 using Xunit;
 
+[UsesVerify]
 public class InstallerTests
 {
     static InstallerTests()
