@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
@@ -82,11 +81,12 @@ class SendBehavior :
         dbTransaction.Commit();
     }
 
-    Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
+    async Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
-        var tasks = outgoingAttachments.Inner
-            .Select(pair => ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, pair.Value, pair.Key))
-            .ToList();
+        foreach (var outgoing in outgoingAttachments.Inner)
+        {
+            await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing.Value, outgoing.Key);
+        }
         if (outgoingAttachments.DuplicateIncomingAttachments)
         {
             if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
@@ -94,22 +94,20 @@ class SendBehavior :
                 throw new Exception("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
             }
 
-            tasks.Add(persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId));
+            await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
         }
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
             if (duplicate.To == null)
             {
-                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.From, connection, transaction, context.MessageId));
+                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, connection, transaction, context.MessageId);
             }
             else
             {
-                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.From, connection, transaction, context.MessageId, duplicate.To));
+                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, connection, transaction, context.MessageId, duplicate.To);
             }
         }
-
-        return Task.WhenAll(tasks);
     }
 
     async Task ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)

@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if !NETSTANDARD2_0
-using System.Linq;
-#endif
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -127,7 +124,10 @@ namespace NServiceBus.Attachments
             await inner.DisposeAsync();
             if (cleanups != null)
             {
-                await Task.WhenAll(cleanups.Select(async x => await x.DisposeAsync()));
+                foreach (var cleanup in cleanups)
+                {
+                    await cleanup.DisposeAsync();
+                }
             }
         }
 

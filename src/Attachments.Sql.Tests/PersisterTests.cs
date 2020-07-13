@@ -97,28 +97,23 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var count = 0;
-        var saves = new List<Task>();
         for (var i = 0; i < 10; i++)
         {
-            saves.Add(persister.SaveStream(connection, null, "theMessageId", $"theName{i}", defaultTestDate, GetStream(), metadata));
+            await persister.SaveStream(connection, null, "theMessageId", $"theName{i}", defaultTestDate, GetStream(), metadata);
         }
 
-        await Task.WhenAll(saves);
-
-        var reads = new List<Task>();
         for (var i = 0; i < 10; i++)
         {
-            reads.Add(persister.ProcessStream("theMessageId", $"theName{i}", connection, null,
+            await persister.ProcessStream("theMessageId", $"theName{i}", connection, null,
                 action: stream =>
                 {
                     Interlocked.Increment(ref count);
                     var array = ToBytes(stream);
                     Assert.Equal(5, array[0]);
                     return Task.CompletedTask;
-                }));
+                });
         }
 
-        await Task.WhenAll(reads);
         Assert.Equal(10, count);
     }
 

@@ -24,12 +24,12 @@ class SendBehavior :
         await next();
     }
 
-    Task ProcessStreams(IOutgoingLogicalMessageContext context)
+    async Task ProcessStreams(IOutgoingLogicalMessageContext context)
     {
         var extensions = context.Extensions;
         if (!extensions.TryGet<IOutgoingAttachments>(out var attachments))
         {
-            return Task.CompletedTask;
+            return;
         }
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
@@ -37,36 +37,33 @@ class SendBehavior :
         var duplicateIncoming = outgoingAttachments.DuplicateIncomingAttachments;
         if (!outgoingAttachments.HasPendingAttachments)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        var tasks = inner
-            .Select(pair =>
-            {
-                var name = pair.Key;
-                var outgoing = pair.Value;
-                return ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
-            })
-            .ToList();
+        foreach (var item in inner)
+        {
+            var name = item.Key;
+            var outgoing = item.Value;
+            await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
+        }
         if (duplicateIncoming)
         {
-            tasks.Add(persister.Duplicate(context.IncomingMessageId(), context.MessageId));
+            await persister.Duplicate(context.IncomingMessageId(), context.MessageId);
         }
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
             if (duplicate.To == null)
             {
-                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId));
+                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId);
             }
             else
             {
-                tasks.Add(persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To));
+                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To);
             }
         }
-        return Task.WhenAll(tasks);
     }
 
     async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
