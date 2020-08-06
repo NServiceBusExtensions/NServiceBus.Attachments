@@ -18,14 +18,14 @@ Two settings are required as part of the default usage:
  * A default time to keep for attachments.
 
 <!-- snippet: EnableAttachments -->
-<a id='snippet-enableattachments'/></a>
+<a id='snippet-enableattachments'></a>
 ```cs
 configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L9-L15' title='File snippet `enableattachments` was extracted from'>snippet source</a> | <a href='#snippet-enableattachments' title='Navigate to start of snippet `enableattachments`'>anchor</a></sup>
-<a id='snippet-enableattachments-1'/></a>
+<a id='snippet-enableattachments-1'></a>
 ```cs
 configuration.EnableAttachments(
     connectionFactory: async () =>
@@ -53,7 +53,7 @@ configuration.EnableAttachments(
 Extract out the connection factory to a helper method
 
 <!-- snippet: OpenConnection -->
-<a id='snippet-openconnection'/></a>
+<a id='snippet-openconnection'></a>
 ```cs
 async Task<DbConnection> OpenConnection()
 {
@@ -78,14 +78,14 @@ Also uses the `NServiceBus.Attachments.Sql.TimeToKeep.Default` method for attach
 This usage results in the following:
 
 <!-- snippet: EnableAttachmentsRecommended -->
-<a id='snippet-enableattachmentsrecommended'/></a>
+<a id='snippet-enableattachmentsrecommended'></a>
 ```cs
 configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: TimeToKeep.Default);
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L17-L23' title='File snippet `enableattachmentsrecommended` was extracted from'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended' title='Navigate to start of snippet `enableattachmentsrecommended`'>anchor</a></sup>
-<a id='snippet-enableattachmentsrecommended-1'/></a>
+<a id='snippet-enableattachmentsrecommended-1'></a>
 ```cs
 configuration.EnableAttachments(
     connectionFactory: OpenConnection,
@@ -107,7 +107,7 @@ If both `UseSynchronizedStorageSessionConnectivity` and `UseTransportConnectivit
 To use the ambient [SynchronizedStorageSession persister](https://docs.particular.net/nservicebus/handlers/accessing-data.md#using-nservicebus-persistence):
 
 <!-- snippet: UseSynchronizedStorageSessionConnectivity -->
-<a id='snippet-usesynchronizedstoragesessionconnectivity'/></a>
+<a id='snippet-usesynchronizedstoragesessionconnectivity'></a>
 ```cs
 var attachments = configuration.EnableAttachments(
     OpenConnection,
@@ -131,7 +131,7 @@ The properties are retrieved using [reflection](https://docs.microsoft.com/en-us
 To use the ambient [transport transaction](https://docs.particular.net/transports/transactions):
 
 <!-- snippet: UseTransportConnectivity -->
-<a id='snippet-usetransportconnectivity'/></a>
+<a id='snippet-usetransportconnectivity'></a>
 ```cs
 var attachments = configuration.EnableAttachments(
     OpenConnection,
@@ -157,7 +157,7 @@ This approach attempts to use the transport transaction using the following step
 To streamline development the attachment installer is, by default, executed at endpoint startup, in the same manner as all other [installers](https://docs.particular.net/nservicebus/operations/installers).
 
 <!-- snippet: ExecuteAtStartup -->
-<a id='snippet-executeatstartup'/></a>
+<a id='snippet-executeatstartup'></a>
 ```cs
 configuration.EnableInstallers();
 var attachments = configuration.EnableAttachments(
@@ -175,7 +175,7 @@ NOTE: Note that this is also a valid approach for higher level environments.
 However in higher level environment scenarios, where standard installers are being run, but the SQL attachment installation has been executed as part of a deployment, it may be necessary to explicitly disable the attachment installer executing while leaving standard installers enabled.
 
 <!-- snippet: DisableInstaller -->
-<a id='snippet-disableinstaller'/></a>
+<a id='snippet-disableinstaller'></a>
 ```cs
 configuration.EnableInstallers();
 var attachments = configuration.EnableAttachments(
@@ -192,7 +192,7 @@ attachments.DisableInstaller();
 The default table name and schema is `dbo.MessageAttachments`. It can be changed with the following:
 
 <!-- snippet: UseTableName -->
-<a id='snippet-usetablename'/></a>
+<a id='snippet-usetablename'></a>
 ```cs
 var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
@@ -211,7 +211,7 @@ attachments.UseTable(new Table("CustomAttachmentsTableName", "dbo"));
 Attachment cleanup is enabled by default. It can be disabled using the following:
 
 <!-- snippet: DisableCleanupTask -->
-<a id='snippet-disablecleanuptask'/></a>
+<a id='snippet-disablecleanuptask'></a>
 ```cs
 var attachments = configuration.EnableAttachments(
     fileShare: "networkSharePath",
@@ -219,7 +219,7 @@ var attachments = configuration.EnableAttachments(
 attachments.DisableCleanupTask();
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L28-L35' title='File snippet `disablecleanuptask` was extracted from'>snippet source</a> | <a href='#snippet-disablecleanuptask' title='Navigate to start of snippet `disablecleanuptask`'>anchor</a></sup>
-<a id='snippet-disablecleanuptask-1'/></a>
+<a id='snippet-disablecleanuptask-1'></a>
 ```cs
 var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
@@ -267,7 +267,7 @@ The recommended approach for adding an attachment is by providing a delegate tha
 There are both async and sync variants.
 
 <!-- snippet: OutgoingFactory -->
-<a id='snippet-outgoingfactory'/></a>
+<a id='snippet-outgoingfactory'></a>
 ```cs
 class HandlerFactory :
     IHandleMessages<MyMessage>
@@ -284,7 +284,7 @@ class HandlerFactory :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L8-L24' title='File snippet `outgoingfactory` was extracted from'>snippet source</a> | <a href='#snippet-outgoingfactory' title='Navigate to start of snippet `outgoingfactory`'>anchor</a></sup>
-<a id='snippet-outgoingfactory-1'/></a>
+<a id='snippet-outgoingfactory-1'></a>
 ```cs
 class HandlerFactory :
     IHandleMessages<MyMessage>
@@ -304,7 +304,7 @@ class HandlerFactory :
 <!-- endsnippet -->
 
 <!-- snippet: OutgoingFactoryAsync -->
-<a id='snippet-outgoingfactoryasync'/></a>
+<a id='snippet-outgoingfactoryasync'></a>
 ```cs
 class HandlerFactoryAsync :
     IHandleMessages<MyMessage>
@@ -323,7 +323,7 @@ class HandlerFactoryAsync :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L26-L44' title='File snippet `outgoingfactoryasync` was extracted from'>snippet source</a> | <a href='#snippet-outgoingfactoryasync' title='Navigate to start of snippet `outgoingfactoryasync`'>anchor</a></sup>
-<a id='snippet-outgoingfactoryasync-1'/></a>
+<a id='snippet-outgoingfactoryasync-1'></a>
 ```cs
 class HandlerFactoryAsync :
     IHandleMessages<MyMessage>
@@ -350,7 +350,7 @@ class HandlerFactoryAsync :
 In some cases an instance of a stream is already available in scope and as such it can be passed directly.
 
 <!-- snippet: OutgoingInstance -->
-<a id='snippet-outgoinginstance'/></a>
+<a id='snippet-outgoinginstance'></a>
 ```cs
 class HandlerInstance :
     IHandleMessages<MyMessage>
@@ -369,7 +369,7 @@ class HandlerInstance :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L46-L64' title='File snippet `outgoinginstance` was extracted from'>snippet source</a> | <a href='#snippet-outgoinginstance' title='Navigate to start of snippet `outgoinginstance`'>anchor</a></sup>
-<a id='snippet-outgoinginstance-1'/></a>
+<a id='snippet-outgoinginstance-1'></a>
 ```cs
 class HandlerInstance :
     IHandleMessages<MyMessage>
@@ -401,7 +401,7 @@ Approaches to using attachments for the current incoming message.
 Processes an attachment with a specific name.
 
 <!-- snippet: ProcessStream -->
-<a id='snippet-processstream'/></a>
+<a id='snippet-processstream'></a>
 ```cs
 class HandlerProcessStream :
     IHandleMessages<MyMessage>
@@ -421,7 +421,7 @@ class HandlerProcessStream :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L7-L26' title='File snippet `processstream` was extracted from'>snippet source</a> | <a href='#snippet-processstream' title='Navigate to start of snippet `processstream`'>anchor</a></sup>
-<a id='snippet-processstream-1'/></a>
+<a id='snippet-processstream-1'></a>
 ```cs
 class HandlerProcessStream :
     IHandleMessages<MyMessage>
@@ -449,7 +449,7 @@ class HandlerProcessStream :
 Processes all attachments.
 
 <!-- snippet: ProcessStreams -->
-<a id='snippet-processstreams'/></a>
+<a id='snippet-processstreams'></a>
 ```cs
 class HandlerProcessStreams :
     IHandleMessages<MyMessage>
@@ -468,7 +468,7 @@ class HandlerProcessStreams :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L28-L46' title='File snippet `processstreams` was extracted from'>snippet source</a> | <a href='#snippet-processstreams' title='Navigate to start of snippet `processstreams`'>anchor</a></sup>
-<a id='snippet-processstreams-1'/></a>
+<a id='snippet-processstreams-1'></a>
 ```cs
 class HandlerProcessStreams :
     IHandleMessages<MyMessage>
@@ -496,7 +496,7 @@ class HandlerProcessStreams :
 Copy an attachment with a specific name to another stream.
 
 <!-- snippet: CopyTo -->
-<a id='snippet-copyto'/></a>
+<a id='snippet-copyto'></a>
 ```cs
 class HandlerCopyTo :
     IHandleMessages<MyMessage>
@@ -510,7 +510,7 @@ class HandlerCopyTo :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L69-L82' title='File snippet `copyto` was extracted from'>snippet source</a> | <a href='#snippet-copyto' title='Navigate to start of snippet `copyto`'>anchor</a></sup>
-<a id='snippet-copyto-1'/></a>
+<a id='snippet-copyto-1'></a>
 ```cs
 class HandlerCopyTo :
     IHandleMessages<MyMessage>
@@ -532,7 +532,7 @@ class HandlerCopyTo :
 Get a stream for an attachment with a specific name.
 
 <!-- snippet: GetStream -->
-<a id='snippet-getstream'/></a>
+<a id='snippet-getstream'></a>
 ```cs
 class HandlerGetStream :
     IHandleMessages<MyMessage>
@@ -548,7 +548,7 @@ class HandlerGetStream :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L99-L114' title='File snippet `getstream` was extracted from'>snippet source</a> | <a href='#snippet-getstream' title='Navigate to start of snippet `getstream`'>anchor</a></sup>
-<a id='snippet-getstream-1'/></a>
+<a id='snippet-getstream-1'></a>
 ```cs
 class HandlerGetStream :
     IHandleMessages<MyMessage>
@@ -574,7 +574,7 @@ Get a byte array for an attachment with a specific name.
 WARNING: This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
 
 <!-- snippet: GetBytes -->
-<a id='snippet-getbytes'/></a>
+<a id='snippet-getbytes'></a>
 ```cs
 class HandlerGetBytes :
     IHandleMessages<MyMessage>
@@ -588,7 +588,7 @@ class HandlerGetBytes :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L84-L97' title='File snippet `getbytes` was extracted from'>snippet source</a> | <a href='#snippet-getbytes' title='Navigate to start of snippet `getbytes`'>anchor</a></sup>
-<a id='snippet-getbytes-1'/></a>
+<a id='snippet-getbytes-1'></a>
 ```cs
 class HandlerGetBytes :
     IHandleMessages<MyMessage>
@@ -610,7 +610,7 @@ class HandlerGetBytes :
 All of the above examples have companion methods that are suffixed with `ForMessage`. These methods allow a handler or saga to read any attachments as long as the message id for that attachment is known. For example processing all attachments for a specific message could be done as follows
 
 <!-- snippet: ProcessStreamsForMessage -->
-<a id='snippet-processstreamsformessage'/></a>
+<a id='snippet-processstreamsformessage'></a>
 ```cs
 class HandlerProcessStreamsForMessage :
     IHandleMessages<MyMessage>
@@ -630,7 +630,7 @@ class HandlerProcessStreamsForMessage :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L48-L67' title='File snippet `processstreamsformessage` was extracted from'>snippet source</a> | <a href='#snippet-processstreamsformessage' title='Navigate to start of snippet `processstreamsformessage`'>anchor</a></sup>
-<a id='snippet-processstreamsformessage-1'/></a>
+<a id='snippet-processstreamsformessage-1'></a>
 ```cs
 class HandlerProcessStreamsForMessage :
     IHandleMessages<MyMessage>
@@ -664,7 +664,7 @@ The below examples also use the [NServiceBus.Testing](https://docs.particular.ne
 ### Testing outgoing attachments
 
 <!-- snippet: TestOutgoingHandler -->
-<a id='snippet-testoutgoinghandler'/></a>
+<a id='snippet-testoutgoinghandler'></a>
 ```cs
 public class Handler :
     IHandleMessages<MyMessage>
@@ -679,7 +679,7 @@ public class Handler :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L10-L24' title='File snippet `testoutgoinghandler` was extracted from'>snippet source</a> | <a href='#snippet-testoutgoinghandler' title='Navigate to start of snippet `testoutgoinghandler`'>anchor</a></sup>
-<a id='snippet-testoutgoinghandler-1'/></a>
+<a id='snippet-testoutgoinghandler-1'></a>
 ```cs
 public class Handler :
     IHandleMessages<MyMessage>
@@ -697,7 +697,7 @@ public class Handler :
 <!-- endsnippet -->
 
 <!-- snippet: TestOutgoing -->
-<a id='snippet-testoutgoing'/></a>
+<a id='snippet-testoutgoing'></a>
 ```cs
 [Fact]
 public async Task TestOutgoingAttachments()
@@ -719,7 +719,7 @@ public async Task TestOutgoingAttachments()
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L26-L47' title='File snippet `testoutgoing` was extracted from'>snippet source</a> | <a href='#snippet-testoutgoing' title='Navigate to start of snippet `testoutgoing`'>anchor</a></sup>
-<a id='snippet-testoutgoing-1'/></a>
+<a id='snippet-testoutgoing-1'></a>
 ```cs
 [Fact]
 public async Task TestOutgoingAttachments()
@@ -752,14 +752,14 @@ public async Task TestOutgoingAttachments()
 To mock or verify incoming attachments is it necessary to inject a instance of `IMessageAttachments` into the current `IMessageHandlerContext`. This can be done using the `MockAttachmentHelper.InjectAttachmentsInstance()` extension method which exists in the `NServiceBus.Attachments.Testing` namespace.
 
 <!-- snippet: InjectAttachmentsInstance -->
-<a id='snippet-injectattachmentsinstance'/></a>
+<a id='snippet-injectattachmentsinstance'></a>
 ```cs
 var context = new TestableMessageHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L16-L22' title='File snippet `injectattachmentsinstance` was extracted from'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Navigate to start of snippet `injectattachmentsinstance`'>anchor</a></sup>
-<a id='snippet-injectattachmentsinstance-1'/></a>
+<a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
 var context = new TestableMessageHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
@@ -773,7 +773,7 @@ The implementation of `IMessageHandlerContext` can be a custom coded mock or con
 There is a default implementation of `IMessageAttachments` named  `MockMessageAttachments`. This implementation stubs out all methods. All members are virtual so it can be used as simplified base class for custom mocks.
 
 <!-- snippet: CustomMockMessageAttachments -->
-<a id='snippet-custommockmessageattachments'/></a>
+<a id='snippet-custommockmessageattachments'></a>
 ```cs
 public class CustomMockMessageAttachments :
     MockMessageAttachments
@@ -789,7 +789,7 @@ public class CustomMockMessageAttachments :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L28-L43' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
-<a id='snippet-custommockmessageattachments-1'/></a>
+<a id='snippet-custommockmessageattachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
     MockMessageAttachments
@@ -810,7 +810,7 @@ public class CustomMockMessageAttachments :
 Putting these parts together allows a handler, using incoming attachments, to be tested.
 
 <!-- snippet: TestIncomingHandler -->
-<a id='snippet-testincominghandler'/></a>
+<a id='snippet-testincominghandler'></a>
 ```cs
 public class Handler :
     IHandleMessages<MyMessage>
@@ -823,7 +823,7 @@ public class Handler :
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L45-L57' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
-<a id='snippet-testincominghandler-1'/></a>
+<a id='snippet-testincominghandler-1'></a>
 ```cs
 public class Handler : IHandleMessages<MyMessage>
 {
@@ -838,7 +838,7 @@ public class Handler : IHandleMessages<MyMessage>
 <!-- endsnippet -->
 
 <!-- snippet: TestIncoming -->
-<a id='snippet-testincoming'/></a>
+<a id='snippet-testincoming'></a>
 ```cs
 [Fact]
 public async Task TestIncomingAttachment()
@@ -857,7 +857,7 @@ public async Task TestIncomingAttachment()
 }
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L59-L77' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
-<a id='snippet-testincoming-1'/></a>
+<a id='snippet-testincoming-1'></a>
 ```cs
 [Fact]
 public async Task TestIncomingAttachment()
