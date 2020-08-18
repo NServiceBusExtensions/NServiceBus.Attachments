@@ -51,7 +51,7 @@ Support is available via a [Tidelift Subscription](https://tidelift.com/subscrip
 
   * [SQL](#sql)
   * [FileShare](#fileshare)
-  * [Security contact information](#security-contact-information)<!-- endtoc -->
+  * [Security contact information](#security-contact-information)<!-- endToc -->
 
 
 ## NuGet packages
