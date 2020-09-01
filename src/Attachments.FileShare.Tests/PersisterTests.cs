@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
@@ -194,6 +195,16 @@ public class PersisterTests
         var persister = GetPersister();
         await persister.SaveString("theMessageId", "theName", defaultTestDate, "foo", null, metadata);
         await Verifier.Verify(persister.ReadAllInfo());
+    }
+
+    [Fact]
+    public async Task SaveStringEncoding()
+    {
+        var persister = GetPersister();
+        var expected = "¡™£¢∞§¶•ªº–≠";
+        await persister.SaveString("theMessageId", "theName", defaultTestDate, expected, Encoding.UTF32, metadata);
+        var result = await persister.GetString("theMessageId", "theName", Encoding.UTF32);
+        Assert.Equal(expected, result.Value);
     }
 
     [Fact]
