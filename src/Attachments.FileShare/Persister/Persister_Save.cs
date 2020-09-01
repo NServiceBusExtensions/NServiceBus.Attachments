@@ -52,10 +52,7 @@ namespace NServiceBus.Attachments.FileShare
             Func<FileStream, Task> action,
             CancellationToken cancellation = default)
         {
-            if (name == null)
-            {
-                name = "default";
-            }
+            name ??= "default";
 
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             ThrowIfDirectoryExists(attachmentDirectory, messageId, name);
