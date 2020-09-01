@@ -44,10 +44,7 @@ namespace NServiceBus.Attachments
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(value, nameof(value));
-            if (metadata == null)
-            {
-                metadata = MetadataSerializer.EmptyMetadata;
-            }
+            metadata ??= MetadataSerializer.EmptyMetadata;
 
             Name = name;
             Value = value;
