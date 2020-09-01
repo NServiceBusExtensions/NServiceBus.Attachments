@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
@@ -244,6 +245,18 @@ public class PersisterTests
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", null, metadata);
         var result = persister.ReadAllInfo(connection, null);
         await Verifier.Verify(result);
+    }
+
+    [Fact]
+    public async Task SaveStringEncoding()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var expected = "¡™£¢∞§¶•ªº–≠";
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, expected, Encoding.UTF32, metadata);
+        var result = await persister.GetString("theMessageId", "theName", connection, null, Encoding.UTF32);
+        Assert.Equal(expected, result.Value);
     }
 
     [Fact]
