@@ -87,7 +87,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetString(CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetString(Encoding,CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
         {
@@ -95,7 +95,7 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetString(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetString(string,Encoding,CancellationToken)"/>
         /// </summary>
         public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
         {
