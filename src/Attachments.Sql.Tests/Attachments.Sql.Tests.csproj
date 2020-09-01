@@ -11,9 +11,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NServiceBus" Version="7.4.2" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="6.0.4" />
-    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="6.1.1" />
+    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="6.1.2" />
     <PackageReference Include="NServiceBus.Testing" Version="7.2.0" />
-    <PackageReference Include="Verify.Xunit" Version="6.10.5" />
+    <PackageReference Include="Verify.Xunit" Version="6.10.6" />
     <PackageReference Include="Xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
