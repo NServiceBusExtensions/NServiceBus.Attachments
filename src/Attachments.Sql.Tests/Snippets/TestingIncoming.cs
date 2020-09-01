@@ -174,12 +174,12 @@ class MyMessageAttachments : IMessageAttachments
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = new CancellationToken())
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation =default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = new CancellationToken())
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }
