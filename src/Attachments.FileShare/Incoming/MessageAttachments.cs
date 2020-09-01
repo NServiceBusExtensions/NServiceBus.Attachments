@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.FileShare;
@@ -47,14 +48,14 @@ class MessageAttachments :
         return persister.ReadAllMessageInfo(messageId, cancellation);
     }
 
-    public Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, "default", cancellation);
+        return persister.GetString(messageId, "default", encoding, cancellation);
     }
 
-    public Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, name, cancellation);
+        return persister.GetString(messageId, name, encoding, cancellation);
     }
 
     public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
@@ -112,14 +113,14 @@ class MessageAttachments :
         return persister.GetBytes(messageId, name, cancellation);
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, "default", cancellation);
+        return persister.GetString(messageId, "default", encoding, cancellation);
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, name, cancellation);
+        return persister.GetString(messageId, name, encoding, cancellation);
     }
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)

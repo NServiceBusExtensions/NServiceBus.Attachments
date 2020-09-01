@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 // ReSharper disable PartialTypeWithSinglePart
@@ -67,12 +68,12 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<AttachmentString> GetString(CancellationToken cancellation = default);
+        Task<AttachmentString> GetString(Encoding? encoding = null, CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="string"/> array, for the current message, the attachment of <paramref name="name"/>.
         /// </summary>
-        Task<AttachmentString> GetString(string name, CancellationToken cancellation = default);
+        Task<AttachmentString> GetString(string name, Encoding? encoding = null, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copy, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.
@@ -121,7 +122,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default);
+        Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default);
 
         /// <summary>
         /// Get a <see cref="string"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
@@ -129,6 +130,6 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default);
+        Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default);
     }
 }

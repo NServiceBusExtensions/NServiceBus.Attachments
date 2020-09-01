@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace NServiceBus.Attachments.FileShare
         }
 
         /// <inheritdoc />
-        public virtual async Task<AttachmentString> GetString(string messageId, string name, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -33,7 +34,8 @@ namespace NServiceBus.Attachments.FileShare
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-            var allText = File.ReadAllText(dataFile);
+            encoding ??= Encoding.UTF8;
+            var allText = File.ReadAllText(dataFile, encoding);
             return new AttachmentString(name, allText, metadata);
         }
 
@@ -63,18 +65,19 @@ namespace NServiceBus.Attachments.FileShare
         }
 
         /// <inheritdoc />
-        public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, [EnumeratorCancellation] CancellationToken cancellation = default)
+        public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, Encoding? encoding = null, [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             var messageDirectory = GetMessageDirectory(messageId);
             ThrowIfDirectoryNotFound(messageDirectory, messageId);
+            encoding ??= Encoding.UTF8;
             foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
             {
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-                var allText = File.ReadAllText(dataFile);
+                var allText = File.ReadAllText(dataFile, encoding);
                 yield return new AttachmentString(attachmentName, allText, metadata);
             }
         }

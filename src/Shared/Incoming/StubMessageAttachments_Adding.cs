@@ -17,18 +17,19 @@ namespace NServiceBus.Attachments
         Dictionary<string, Dictionary<string, MockAttachment>> attachments = new Dictionary<string, Dictionary<string, MockAttachment>>(StringComparer.OrdinalIgnoreCase);
 
         /// <inheritdoc />
-        public void AddAttachment(string payload, IDictionary<string, string>? metadata = null)
+        public void AddAttachment(string payload, Encoding? encoding, IDictionary<string, string>? metadata = null)
         {
-            AddAttachment("default", payload, metadata);
+            AddAttachment("default", payload, encoding, metadata);
         }
 
         /// <summary>
         /// Adds a attachment that can then be used in a test.
         /// </summary>
-        public void AddAttachment(string name, string payload, IDictionary<string, string>? metadata = null)
+        public void AddAttachment(string name, string payload, Encoding? encoding, IDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNull(payload, nameof(payload));
-            AddAttachment(name, Encoding.UTF8.GetBytes(payload), metadata);
+            encoding ??= Encoding.UTF8;
+            AddAttachment(name, encoding.GetBytes(payload), metadata);
         }
 
         /// <summary>

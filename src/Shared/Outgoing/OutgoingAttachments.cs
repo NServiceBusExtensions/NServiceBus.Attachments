@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 #if FileShare
@@ -37,10 +38,12 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
-        {
-            AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name)
-        });
+        Inner.Add(
+            name,
+            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            {
+                AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name)
+            });
     }
 
     public void Add(Func<Stream> streamFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
@@ -57,20 +60,24 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
-        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
-        {
-            StreamFactory = streamFactory.WrapFuncInCheck(name),
-        });
+        Inner.Add(
+            name,
+            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            {
+                StreamFactory = streamFactory.WrapFuncInCheck(name),
+            });
     }
 
     public void Add(string name, Stream stream, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(stream, nameof(stream));
-        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
-        {
-            StreamInstance = stream
-        });
+        Inner.Add(
+            name,
+            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            {
+                StreamInstance = stream
+            });
     }
 
     public void AddBytes(Func<byte[]> bytesFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
@@ -102,35 +109,41 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
-        {
-            BytesFactory = bytesFactory.WrapFuncInCheck(name)
-        });
+        Inner.Add(
+            name,
+            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            {
+                BytesFactory = bytesFactory.WrapFuncInCheck(name)
+            });
     }
 
     public void AddBytes(string name, byte[] bytes, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytes, nameof(bytes));
-        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
-        {
-            BytesInstance = bytes,
-        });
+        Inner.Add(
+            name,
+            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            {
+                BytesInstance = bytes,
+            });
     }
 
-    public void AddString(string value, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
+    public void AddString(string value, Encoding? encoding, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
     {
-        AddString("default", value, timeToKeep, cleanup, metadata);
+        AddString("default", value, encoding, timeToKeep, cleanup, metadata);
     }
 
-    public void AddString(string name, string value, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
+    public void AddString(string name, string value, Encoding? encoding, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(value, nameof(value));
-        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
-        {
-            StringInstance = value,
-        });
+        Inner.Add(
+            name,
+            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), encoding)
+            {
+                StringInstance = value,
+            });
     }
 
     public void AddBytes(Func<Task<byte[]>> bytesFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
@@ -142,9 +155,11 @@ class OutgoingAttachments :
     {
         Guard.AgainstNull(name, nameof(name));
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
-        Inner.Add(name, new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name))
-        {
-            AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name)
-        });
+        Inner.Add(
+            name,
+            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            {
+                AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name)
+            });
     }
 }

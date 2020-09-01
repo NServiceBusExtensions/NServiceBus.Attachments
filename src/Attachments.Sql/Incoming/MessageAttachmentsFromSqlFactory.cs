@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
@@ -57,10 +58,10 @@ class MessageAttachmentsFromSqlFactory :
         return await persister.GetBytes(messageId, "default", connection, null, cancellation);
     }
 
-    public async Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    public async Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
     {
         using var connection = await connectionFactory();
-        return await persister.GetString(messageId, "default", connection, null, cancellation);
+        return await persister.GetString(messageId, "default", connection, null, encoding, cancellation);
     }
 
     public async Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
@@ -69,10 +70,10 @@ class MessageAttachmentsFromSqlFactory :
         return await persister.GetBytes(messageId, name, connection, null, cancellation);
     }
 
-    public async Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    public async Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
     {
         using var connection = await connectionFactory();
-        return await persister.GetString(messageId, name, connection, null, cancellation);
+        return await persister.GetString(messageId, name, connection, null, encoding, cancellation);
     }
 
     public async Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
@@ -129,16 +130,16 @@ class MessageAttachmentsFromSqlFactory :
         return await persister.GetBytes(messageId, name, connection, null, cancellation);
     }
 
-    public async Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    public async Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
     {
         using var connection = await connectionFactory();
-        return await persister.GetString(messageId, "default", connection, null, cancellation);
+        return await persister.GetString(messageId, "default", connection, null, encoding, cancellation);
     }
 
-    public async Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public async Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
     {
         using var connection = await connectionFactory();
-        return await persister.GetString(messageId, name, connection, null, cancellation);
+        return await persister.GetString(messageId, name, connection, null, encoding, cancellation);
     }
 
     public async Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)

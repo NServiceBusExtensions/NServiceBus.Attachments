@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,15 +31,19 @@ namespace NServiceBus.Attachments.FileShare
         }
 
         /// <inheritdoc />
-        public virtual Task SaveString(string messageId, string? name, DateTime expiry, string value, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+        public virtual Task SaveString(string messageId, string? name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(value, nameof(value));
-            return Save(messageId, name, expiry, metadata,
+            return Save(
+                messageId,
+                name,
+                expiry,
+                metadata,
                 async fileStream =>
                 {
-                    using var writer = fileStream.BuildLeaveOpenWriter();
+                    using var writer = fileStream.BuildLeaveOpenWriter(encoding);
                     await writer.WriteAsync(value);
                 },
                 cancellation);

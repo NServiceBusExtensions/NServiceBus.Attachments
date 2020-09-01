@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text;
 using System.Threading;
 using NServiceBus;
 using NServiceBus.Attachments.FileShare;
@@ -140,12 +141,12 @@ class MyMessageAttachments :
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }
@@ -185,12 +186,12 @@ class MyMessageAttachments :
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding,  CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }

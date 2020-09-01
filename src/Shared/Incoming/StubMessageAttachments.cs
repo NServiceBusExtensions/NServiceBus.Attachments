@@ -44,7 +44,7 @@ namespace NServiceBus.Attachments
         /// <inheritdoc />
         public virtual Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
         {
-            CopyCurrentMessageAttachmentToStream(name, target);
+            CopyCurrentMessageAttachmentToStream(name, target, null);
             return Task.CompletedTask;
         }
 
@@ -77,16 +77,16 @@ namespace NServiceBus.Attachments
         }
 
         /// <inheritdoc />
-        public virtual Task<AttachmentString> GetString(CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
         {
-            return GetString("default", cancellation);
+            return GetString("default", encoding, cancellation);
         }
 
         /// <inheritdoc />
-        public virtual Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
         {
             var attachment = GetCurrentMessageAttachment(name);
-            return Task.FromResult(attachment.ToAttachmentString());
+            return Task.FromResult(attachment.ToAttachmentString(encoding));
         }
 
         /// <inheritdoc />
@@ -106,7 +106,7 @@ namespace NServiceBus.Attachments
         public virtual Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
-            using var writer = BuildWriter(target);
+            using var writer = BuildWriter(target, null);
             writer.Write(attachment.Bytes);
             return Task.CompletedTask;
         }
@@ -149,9 +149,9 @@ namespace NServiceBus.Attachments
         }
 
         /// <inheritdoc />
-        public virtual Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
         {
-            return GetStringForMessage(messageId, "default", cancellation);
+            return GetStringForMessage(messageId, "default", encoding, cancellation);
         }
 
         /// <inheritdoc />
@@ -169,17 +169,17 @@ namespace NServiceBus.Attachments
         }
 
         /// <inheritdoc />
-        public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
         {
             var attachment = GetAttachmentForMessage(messageId, name);
-            return Task.FromResult(attachment.ToAttachmentString());
+            return Task.FromResult(attachment.ToAttachmentString(encoding));
         }
 
-        void CopyCurrentMessageAttachmentToStream(string name, Stream target)
+        void CopyCurrentMessageAttachmentToStream(string name, Stream target, Encoding? encoding)
         {
             var bytes = GetCurrentMessageBytes(name);
 
-            using var writer = BuildWriter(target);
+            using var writer = BuildWriter(target, encoding);
             writer.Write(bytes);
         }
 
@@ -224,9 +224,10 @@ namespace NServiceBus.Attachments
             throw new Exception($"Cant find an attachment: {name}");
         }
 
-        static BinaryWriter BuildWriter(Stream target)
+        static BinaryWriter BuildWriter(Stream target, Encoding? encoding)
         {
-            return new BinaryWriter(target, Encoding.UTF8, leaveOpen: true);
+            encoding ??= Encoding.UTF8;
+            return new BinaryWriter(target, encoding, leaveOpen: true);
         }
 
         Task InnerProcessStream(string name, Func<AttachmentStream, Task> action)
