@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
@@ -55,14 +56,14 @@ class MessageAttachmentsFromDbConnection :
         return persister.GetBytes(messageId, name, connection, null, cancellation);
     }
 
-    public Task<AttachmentString> GetString(CancellationToken cancellation = default)
+    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, "default", connection, null, cancellation);
+        return persister.GetString(messageId, "default", connection, null, encoding, cancellation);
     }
 
-    public Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, name, connection, null, cancellation);
+        return persister.GetString(messageId, name, connection, null, encoding, cancellation);
     }
 
     public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
@@ -110,14 +111,14 @@ class MessageAttachmentsFromDbConnection :
         return persister.GetBytes(messageId, name, connection, null, cancellation);
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, "default", connection, null, cancellation);
+        return persister.GetString(messageId, "default", connection, null, encoding, cancellation);
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
     {
-        return persister.GetString(messageId, name, connection, null, cancellation);
+        return persister.GetString(messageId, name, connection, null, encoding, cancellation);
     }
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)

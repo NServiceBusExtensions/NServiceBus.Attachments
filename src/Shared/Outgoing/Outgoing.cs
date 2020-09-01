@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Text;
 
 namespace NServiceBus.Attachments
 #if FileShare
@@ -13,13 +14,15 @@ namespace NServiceBus.Attachments
 {
     class Outgoing
     {
-        public Outgoing(IReadOnlyDictionary<string, string>? metadata, GetTimeToKeep? timeToKeep, Action? cleanup)
+        public Outgoing(IReadOnlyDictionary<string, string>? metadata, GetTimeToKeep? timeToKeep, Action? cleanup, Encoding? encoding)
         {
             Metadata = metadata;
             TimeToKeep = timeToKeep;
             Cleanup = cleanup;
+            Encoding = encoding;
         }
 
+        public Encoding? Encoding;
         public Func<Task<Stream>>? AsyncStreamFactory;
         public Func<Stream>? StreamFactory;
         public Stream? StreamInstance;

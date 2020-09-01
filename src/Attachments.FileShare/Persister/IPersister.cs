@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace NServiceBus.Attachments.FileShare
         /// Saves <paramref name="value"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveString(string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
+        Task SaveString(string messageId, string name, DateTime expiry, string value, Encoding? encoding, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
@@ -85,7 +86,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads an <see cref="AttachmentString"/> for an attachment.
         /// </summary>
-        Task<AttachmentString> GetString(string messageId, string name, CancellationToken cancellation = default);
+        Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads an <see cref="AttachmentStream"/> an attachment.
@@ -110,7 +111,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Reads all <see cref="AttachmentString"/>s for an attachment.
         /// </summary>
-        IAsyncEnumerable<AttachmentString> GetStrings(string messageId, CancellationToken cancellation = default);
+        IAsyncEnumerable<AttachmentString> GetStrings(string messageId, Encoding? encoding, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads all <see cref="AttachmentStream"/>s to an attachment.

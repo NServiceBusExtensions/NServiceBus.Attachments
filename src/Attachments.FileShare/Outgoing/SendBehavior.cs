@@ -130,7 +130,7 @@ class SendBehavior :
 
         if (outgoing.StringInstance != null)
         {
-            await persister.SaveString(messageId, name, expiry, outgoing.StringInstance, outgoing.Metadata);
+            await persister.SaveString(messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, outgoing.Metadata);
             return;
         }
 

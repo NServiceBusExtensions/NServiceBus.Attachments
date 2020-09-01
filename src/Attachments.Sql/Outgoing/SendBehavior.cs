@@ -175,7 +175,7 @@ class SendBehavior :
 
         if (outgoing.StringInstance != null)
         {
-            await persister.SaveString(connection, transaction, messageId, name, expiry, outgoing.StringInstance, outgoing.Metadata);
+            await persister.SaveString(connection, transaction, messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, outgoing.Metadata);
             return;
         }
 

@@ -24,8 +24,9 @@ static class MockAttachmentExtensions
         return new AttachmentBytes(attachment.Name, attachment.Bytes, attachment.Metadata);
     }
 
-    public static AttachmentString ToAttachmentString(this MockAttachment attachment)
+    public static AttachmentString ToAttachmentString(this MockAttachment attachment, Encoding? encoding)
     {
-        return new AttachmentString(attachment.Name,Encoding.UTF8.GetString(attachment.Bytes), attachment.Metadata);
+        encoding ??= Encoding.UTF8;
+        return new AttachmentString(attachment.Name,encoding.GetString(attachment.Bytes), attachment.Metadata);
     }
 }

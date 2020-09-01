@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 // ReSharper disable PartialTypeWithSinglePart
@@ -88,7 +89,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.GetString(CancellationToken)"/>
         /// </summary>
-        public virtual Task<AttachmentString> GetString(CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
         {
             return Task.FromResult(AttachmentString.Empty);
         }
@@ -96,7 +97,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// <see cref="IMessageAttachments.GetString(string,CancellationToken)"/>
         /// </summary>
-        public virtual Task<AttachmentString> GetString(string name, CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
         {
             return Task.FromResult(AttachmentString.Empty);
         }
@@ -158,17 +159,17 @@ namespace NServiceBus.Attachments
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStringForMessage(string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string,Encoding,CancellationToken)"/>
         /// </summary>
-        public virtual Task<AttachmentString> GetStringForMessage(string messageId, CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
         {
             return Task.FromResult(AttachmentString.Empty);
         }
 
         /// <summary>
-        /// <see cref="IMessageAttachments.GetStringForMessage(string,string,CancellationToken)"/>
+        /// <see cref="IMessageAttachments.GetStringForMessage(string,string,Encoding,CancellationToken)"/>
         /// </summary>
-        public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, CancellationToken cancellation = default)
+        public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
         {
             return Task.FromResult(AttachmentString.Empty);
         }

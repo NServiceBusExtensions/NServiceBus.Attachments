@@ -18,9 +18,10 @@ static class FileHelpers
             options: fileOptions);
     }
 
-    public static StreamWriter BuildLeaveOpenWriter(this Stream input)
+    public static StreamWriter BuildLeaveOpenWriter(this Stream input, Encoding? encoding)
     {
-        return new StreamWriter(input, Encoding.UTF8, 1024, leaveOpen: true);
+        encoding ??= Encoding.UTF8;
+        return new StreamWriter(input, encoding, 1024, leaveOpen: true);
     }
 
     public static void PurgeDirectory(string directory)

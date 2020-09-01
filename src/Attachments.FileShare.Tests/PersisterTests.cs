@@ -140,8 +140,8 @@ public class PersisterTests
     {
         var persister = GetPersister();
         var count = 0;
-        await persister.SaveString("theMessageId", "theName1", defaultTestDate, "a", metadata);
-        await persister.SaveString("theMessageId", "theName2", defaultTestDate, "b", metadata);
+        await persister.SaveString("theMessageId", "theName1", defaultTestDate, "a", null, metadata);
+        await persister.SaveString("theMessageId", "theName2", defaultTestDate, "b", null, metadata);
         await foreach (var attachment in persister.GetStrings("theMessageId"))
         {
             Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
@@ -192,7 +192,7 @@ public class PersisterTests
     public async Task SaveString()
     {
         var persister = GetPersister();
-        await persister.SaveString("theMessageId", "theName", defaultTestDate, "foo", metadata);
+        await persister.SaveString("theMessageId", "theName", defaultTestDate, "foo", null, metadata);
         await Verifier.Verify(persister.ReadAllInfo());
     }
 

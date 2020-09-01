@@ -36,14 +36,15 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual Task SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+        public virtual Task SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(value, nameof(value));
             Guard.AgainstLongAttachmentName(name);
-            return Save(connection, transaction, messageId, name, expiry, Encoding.UTF8.GetBytes(value), metadata, cancellation);
+            encoding ??= Encoding.UTF8;
+            return Save(connection, transaction, messageId, name, expiry, encoding.GetBytes(value), metadata, cancellation);
         }
 
         async Task Save(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)

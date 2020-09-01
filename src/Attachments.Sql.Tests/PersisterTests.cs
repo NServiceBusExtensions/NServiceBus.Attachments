@@ -163,8 +163,8 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var count = 0;
-        await persister.SaveString(connection, null, "theMessageId", "theName1", defaultTestDate, "a", metadata);
-        await persister.SaveString(connection, null, "theMessageId", "theName2", defaultTestDate, "b", metadata);
+        await persister.SaveString(connection, null, "theMessageId", "theName1", defaultTestDate, "a", null, metadata);
+        await persister.SaveString(connection, null, "theMessageId", "theName2", defaultTestDate, "b", null, metadata);
         await foreach (var attachment in persister.GetStrings("theMessageId", connection, null))
         {
             Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
@@ -241,7 +241,7 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", metadata);
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "foo", null, metadata);
         var result = persister.ReadAllInfo(connection, null);
         await Verifier.Verify(result);
     }

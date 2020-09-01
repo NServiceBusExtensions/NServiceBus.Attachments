@@ -626,14 +626,14 @@ var context = new TestableMessageHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L16-L22' title='File snippet `injectattachmentsinstance` was extracted from'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Navigate to start of snippet `injectattachmentsinstance`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L17-L23' title='File snippet `injectattachmentsinstance` was extracted from'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Navigate to start of snippet `injectattachmentsinstance`'>anchor</a></sup>
 <a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
 var context = new TestableMessageHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L16-L22' title='File snippet `injectattachmentsinstance` was extracted from'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Navigate to start of snippet `injectattachmentsinstance`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L17-L23' title='File snippet `injectattachmentsinstance` was extracted from'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Navigate to start of snippet `injectattachmentsinstance`'>anchor</a></sup>
 <!-- endSnippet -->
 
 The implementation of `IMessageHandlerContext` can be a custom coded mock or constructed using any of the popular mocking/assertion frameworks.
@@ -656,7 +656,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L28-L43' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L29-L44' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
@@ -672,7 +672,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L28-L43' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L29-L44' title='File snippet `custommockmessageattachments` was extracted from'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Navigate to start of snippet `custommockmessageattachments`'>anchor</a></sup>
 <!-- endSnippet -->
 
 Putting these parts together allows a handler, using incoming attachments, to be tested.
@@ -690,7 +690,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L45-L57' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L46-L58' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'></a>
 ```cs
 public class Handler : IHandleMessages<MyMessage>
@@ -702,7 +702,7 @@ public class Handler : IHandleMessages<MyMessage>
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L45-L56' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L46-L57' title='File snippet `testincominghandler` was extracted from'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Navigate to start of snippet `testincominghandler`'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -724,7 +724,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L59-L77' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L60-L78' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
 <a id='snippet-testincoming-1'></a>
 ```cs
 [Fact]
@@ -743,6 +743,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L58-L76' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming-1' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L59-L77' title='File snippet `testincoming` was extracted from'>snippet source</a> | <a href='#snippet-testincoming-1' title='Navigate to start of snippet `testincoming`'>anchor</a></sup>
 <!-- endSnippet -->
 <!-- endInclude -->

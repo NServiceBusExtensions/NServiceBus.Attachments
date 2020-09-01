@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments
@@ -79,7 +80,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddString(string name, string value, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
+        void AddString(string name, string value, Encoding? encoding = null, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
@@ -87,7 +88,7 @@ namespace NServiceBus.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddString(string value, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
+        void AddString(string value, Encoding? encoding = null, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.

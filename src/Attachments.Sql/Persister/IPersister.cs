@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace NServiceBus.Attachments.Sql
         /// Saves <paramref name="value"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
+        Task SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
@@ -96,7 +97,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads all <see cref="AttachmentString"/>s for an attachment.
         /// </summary>
-        IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+        IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, Encoding? encoding, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads all <see cref="AttachmentStream"/>s to an attachment.
@@ -111,7 +112,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads an <see cref="AttachmentString"/> for an attachment.
         /// </summary>
-        Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+        Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, Encoding? encoding, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads an <see cref="AttachmentStream"/> for an attachment.

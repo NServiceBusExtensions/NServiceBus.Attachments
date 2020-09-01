@@ -14,12 +14,13 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual async Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, Encoding? encoding = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
+            encoding ??= Encoding.UTF8;
             using var command = CreateGetDataCommand(messageId, name, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             if (await reader.ReadAsync(cancellation))
@@ -28,7 +29,7 @@ namespace NServiceBus.Attachments.Sql
                 var metadata = MetadataSerializer.Deserialize(metadataString);
                 //TODO: read string directly
                 var bytes = (byte[]) reader[2];
-                return new AttachmentString(name, Encoding.UTF8.GetString(bytes), metadata);
+                return new AttachmentString(name, encoding.GetString(bytes), metadata);
             }
             throw ThrowNotFound(messageId, name);
         }
@@ -149,10 +150,11 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, [EnumeratorCancellation] CancellationToken cancellation = default)
+        public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, Encoding? encoding = null, [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
+            encoding ??= Encoding.UTF8;
             using var command = CreateGetDatasCommand(messageId, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
@@ -162,7 +164,7 @@ namespace NServiceBus.Attachments.Sql
                 var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
                 //TODO: read string directly
                 var bytes = (byte[]) reader[3];
-                yield return new AttachmentString(name, Encoding.UTF8.GetString(bytes), metadata);
+                yield return new AttachmentString(name, encoding.GetString(bytes), metadata);
             }
         }
 
