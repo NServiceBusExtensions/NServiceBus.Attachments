@@ -14,6 +14,7 @@
     <Compile Include="..\Shared\Incoming\AttachmentString.cs" />
     <Compile Include="..\Shared\Incoming\AttachmentBytes.cs" />
     <Compile Include="..\Shared\Incoming\IAttachment.cs" />
+    <Compile Include="..\Shared\IoExtensions.cs" />
     <Compile Include="..\Shared\Guard.cs" />
 
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="All" />

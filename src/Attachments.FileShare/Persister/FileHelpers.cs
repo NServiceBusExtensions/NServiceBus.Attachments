@@ -20,8 +20,7 @@ static class FileHelpers
 
     public static StreamWriter BuildLeaveOpenWriter(this Stream input, Encoding? encoding)
     {
-        encoding ??= Encoding.UTF8;
-        return new StreamWriter(input, encoding, 1024, leaveOpen: true);
+        return new StreamWriter(input, encoding.Default(), 1024, leaveOpen: true);
     }
 
     public static void PurgeDirectory(string directory)

@@ -43,8 +43,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(value, nameof(value));
             Guard.AgainstLongAttachmentName(name);
-            encoding ??= Encoding.UTF8;
-            return Save(connection, transaction, messageId, name, expiry, encoding.GetBytes(value), metadata, cancellation);
+            encoding = encoding.Default();
+            return Save(connection, transaction, messageId, name, expiry, value.ToBytes(encoding), metadata, cancellation);
         }
 
         async Task Save(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)

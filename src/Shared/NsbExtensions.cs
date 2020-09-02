@@ -3,7 +3,7 @@ using NServiceBus.Pipeline;
 using NServiceBus.Settings;
 using NServiceBus.Transport;
 
-static class Extensions
+static class NsbExtensions
 {
     public static bool PurgeOnStartup(this ReadOnlySettings settings)
     {

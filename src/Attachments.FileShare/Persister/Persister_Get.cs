@@ -34,8 +34,7 @@ namespace NServiceBus.Attachments.FileShare
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-            encoding ??= Encoding.UTF8;
-            var allText = File.ReadAllText(dataFile, encoding);
+            var allText = File.ReadAllText(dataFile, encoding.Default());
             return new AttachmentString(name, allText, metadata);
         }
 
@@ -70,7 +69,7 @@ namespace NServiceBus.Attachments.FileShare
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             var messageDirectory = GetMessageDirectory(messageId);
             ThrowIfDirectoryNotFound(messageDirectory, messageId);
-            encoding ??= Encoding.UTF8;
+            encoding = encoding.Default();
             foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
             {
                 cancellation.ThrowIfCancellationRequested();

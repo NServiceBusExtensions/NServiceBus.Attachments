@@ -226,8 +226,7 @@ namespace NServiceBus.Attachments
 
         static BinaryWriter BuildWriter(Stream target, Encoding? encoding)
         {
-            encoding ??= Encoding.UTF8;
-            return new BinaryWriter(target, encoding, leaveOpen: true);
+            return new BinaryWriter(target, encoding.Default(), leaveOpen: true);
         }
 
         Task InnerProcessStream(string name, Func<AttachmentStream, Task> action)

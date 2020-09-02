@@ -202,8 +202,12 @@ public class PersisterTests
     {
         var persister = GetPersister();
         var expected = "¡™£¢∞§¶•ªº–≠";
-        await persister.SaveString("theMessageId", "theName", defaultTestDate, expected, Encoding.UTF32, metadata);
-        var result = await persister.GetString("theMessageId", "theName", Encoding.UTF32);
+        var encoding = new UTF8Encoding(true);
+        await persister.SaveString("theMessageId", "theName", defaultTestDate, expected, encoding, metadata);
+        var result = await persister.GetString("theMessageId", "theName", encoding);
+        var attachmentBytes = await persister.GetBytes("theMessageId", "theName");
+        var bytes = attachmentBytes.Bytes;
+        Assert.True(bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF, "Expected a BOM");
         Assert.Equal(expected, result.Value);
     }
 

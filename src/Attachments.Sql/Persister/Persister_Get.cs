@@ -20,7 +20,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
             Guard.AgainstNull(connection, nameof(connection));
-            encoding ??= Encoding.UTF8;
+            encoding = encoding.Default();
             using var command = CreateGetDataCommand(messageId, name, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             if (await reader.ReadAsync(cancellation))
@@ -154,7 +154,7 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNull(connection, nameof(connection));
-            encoding ??= Encoding.UTF8;
+            encoding = encoding.Default();
             using var command = CreateGetDatasCommand(messageId, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))

@@ -28,8 +28,7 @@ namespace NServiceBus.Attachments
         public void AddAttachment(string name, string payload, Encoding? encoding, IDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNull(payload, nameof(payload));
-            encoding ??= Encoding.UTF8;
-            AddAttachment(name, encoding.GetBytes(payload), metadata);
+            AddAttachment(name, payload.ToBytes(encoding.Default()), metadata);
         }
 
         /// <summary>

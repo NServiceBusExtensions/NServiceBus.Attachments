@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -254,9 +255,14 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var expected = "¡™£¢∞§¶•ªº–≠";
-        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, expected, Encoding.UTF32, metadata);
-        var result = await persister.GetString("theMessageId", "theName", connection, null, Encoding.UTF32);
-        Assert.Equal(expected, result.Value);
+        var encoding = new UTF8Encoding(true);
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, expected, encoding, metadata);
+        var result = await persister.GetString("theMessageId", "theName", connection, null, encoding);
+        Trace.Write(result);
+        var attachmentBytes = await persister.GetBytes("theMessageId", "theName", connection, null);
+        var bytes = attachmentBytes.Bytes;
+        Assert.True(bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF, "Expected a BOM");
+        Assert.Equal(expected.ToBytes(encoding), bytes);
     }
 
     [Fact]
