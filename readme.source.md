@@ -52,12 +52,12 @@ toc
 
 ## SQL
 
-[Full Doco](/doco/sql.md)
+[Full Docs](/docs/sql.md)
 
 
 ## FileShare
 
-[Full Doco](/doco/fileshare.md)
+[Full Docs](/docs/fileshare.md)
 
 
 ## Security contact information
