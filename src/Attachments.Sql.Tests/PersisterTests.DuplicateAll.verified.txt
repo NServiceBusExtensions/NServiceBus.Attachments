@@ -1,34 +1,34 @@
-﻿[
+[
   {
-    MessageId: 'theTargetMessageId',
-    Name: 'theName2',
+    MessageId: theTargetMessageId,
+    Name: theName2,
     Expiry: DateTime_1,
     Metadata: {
-      key: 'value'
+      key: value
     }
   },
   {
-    MessageId: 'theTargetMessageId',
-    Name: 'theName1',
+    MessageId: theTargetMessageId,
+    Name: theName1,
     Expiry: DateTime_1,
     Metadata: {
-      key: 'value'
+      key: value
     }
   },
   {
-    MessageId: 'theSourceMessageId',
-    Name: 'theName2',
+    MessageId: theSourceMessageId,
+    Name: theName2,
     Expiry: DateTime_1,
     Metadata: {
-      key: 'value'
+      key: value
     }
   },
   {
-    MessageId: 'theSourceMessageId',
-    Name: 'theName1',
+    MessageId: theSourceMessageId,
+    Name: theName1,
     Expiry: DateTime_1,
     Metadata: {
-      key: 'value'
+      key: value
     }
   }
 ]

@@ -1,18 +1,18 @@
-﻿[
+[
   {
-    MessageId: 'theMessageId',
-    Name: 'theName1',
+    MessageId: theMessageId,
+    Name: theName1,
     Expiry: DateTime_1,
     Metadata: {
-      key: 'value'
+      key: value
     }
   },
   {
-    MessageId: 'theMessageId',
-    Name: 'theName2',
+    MessageId: theMessageId,
+    Name: theName2,
     Expiry: DateTime_1,
     Metadata: {
-      key: 'value'
+      key: value
     }
   }
 ]

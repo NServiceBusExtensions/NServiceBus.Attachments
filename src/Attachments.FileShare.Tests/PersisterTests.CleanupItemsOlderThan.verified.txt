@@ -1,7 +1,7 @@
-﻿[
+[
   {
-    MessageId: 'theMessageId1',
-    Name: 'theName',
+    MessageId: theMessageId1,
+    Name: theName,
     Expiry: DateTime_1
   }
 ]
