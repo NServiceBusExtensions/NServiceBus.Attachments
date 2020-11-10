@@ -30,7 +30,7 @@ select case when exists(
         and type in ('U')
 ) then 1 else 0 end;
 ";
-        var tableExists = (int) command.ExecuteScalar() == 1;
+        var tableExists = (int) command.ExecuteScalar()! == 1;
         Assert.True(tableExists);
     }
 }

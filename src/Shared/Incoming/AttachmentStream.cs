@@ -189,7 +189,7 @@ namespace NServiceBus.Attachments
             set => inner.Position = value;
         }
 
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object? state)
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback? callback, object? state)
         {
             return inner.BeginRead(buffer, offset, count, callback, state);
         }
@@ -208,11 +208,6 @@ namespace NServiceBus.Attachments
         public override int EndRead(IAsyncResult asyncResult)
         {
             return inner.EndRead(asyncResult);
-        }
-
-        public override object InitializeLifetimeService()
-        {
-            return inner.InitializeLifetimeService();
         }
 
         public override bool Equals(object? obj)
@@ -252,7 +247,7 @@ namespace NServiceBus.Attachments
 
         public override int WriteTimeout => throw new NotImplementedException();
 
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object? state)
+        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback? callback, object? state)
         {
             throw new NotImplementedException();
         }
