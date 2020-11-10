@@ -47,7 +47,7 @@ namespace NServiceBus.Attachments
                 return EmptyMetadata;
             }
 
-            return Serializer.Deserialize<Dictionary<string, string>>(json);
+            return Serializer.Deserialize<Dictionary<string, string>>(json)!;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace NServiceBus.Attachments
             Stream stream,
             CancellationToken cancellation = default)
         {
-            return await Serializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancellation);
+            return (await Serializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancellation))!;
         }
 
         /// <summary>
