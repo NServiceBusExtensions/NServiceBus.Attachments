@@ -50,6 +50,26 @@ toc
  * https://www.nuget.org/packages/NServiceBus.Attachments.Sql.Raw
 
 
+## Compared to the DataBus
+
+This project delivers similar functionality to the [DataBus](https://docs.particular.net/nservicebus/messaging/databus/). However it does have some different behavior:
+
+
+### Read on demand
+
+With the DataBus all binary data is read every message received. This is irrespective of if the receiving endpoint requires that data. With NServiceBus.Attachments data is explicitly read on demand, so if data is not required there is no performance impact. NServiceBus.Attachments also supports processing all data items via an `IAsyncEnumerable`.
+
+
+### Memory usage
+
+With the DataBus all data items are place into byte arrays. This means that memory need to be allocated to store those arrays on either reading or writing. With NServiceBus.Attachments data can be streamed and processed in an async manner. This can significantly decrease the memory pressure on an endpoint.
+
+
+### Variety of data APIs
+
+With the DataBus the only interaction is via byte arrays. NServiceBus.Attachments supports reading and writing using streams, byte arrays, or string.
+
+
 ## SQL
 
 [Full Docs](/docs/sql.md)
