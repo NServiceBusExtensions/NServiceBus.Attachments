@@ -24,7 +24,7 @@ public static class Connection
             return;
         }
 
-        ConnectionString = @"Data Source=.;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100";
+        ConnectionString = "Data Source=.;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100";
     }
 
     public static bool IsUsingEnvironmentVariable;
