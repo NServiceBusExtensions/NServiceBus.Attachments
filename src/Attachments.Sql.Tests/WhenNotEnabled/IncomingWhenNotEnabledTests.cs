@@ -8,7 +8,7 @@ using Xunit;
 [UsesVerify]
 public class IncomingWhenNotEnabledTests : IDisposable
 {
-    public ManualResetEvent ResetEvent = new ManualResetEvent(false);
+    public ManualResetEvent ResetEvent = new(false);
     public Exception? Exception;
 
     static IncomingWhenNotEnabledTests()

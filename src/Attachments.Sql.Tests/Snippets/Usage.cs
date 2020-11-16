@@ -28,7 +28,7 @@ public class Usage
                     throw;
                 }
             },
-            timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
+            timeToKeep: _ => TimeSpan.FromDays(7));
 
         #endregion
 

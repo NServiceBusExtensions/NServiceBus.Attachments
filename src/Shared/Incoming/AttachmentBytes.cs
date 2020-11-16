@@ -21,7 +21,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// An empty <see cref="AttachmentBytes"/> that contains a "default" name a <see cref="Array.Empty{T}"/> of <see cref="byte"/>s as contents.
         /// </summary>
-        public static AttachmentBytes Empty = new AttachmentBytes(string.Empty, Array.Empty<byte>());
+        public static AttachmentBytes Empty = new(string.Empty, Array.Empty<byte>());
 
         /// <summary>
         /// The attachment bytes.

@@ -21,7 +21,7 @@ namespace NServiceBus.Attachments
         /// <summary>
         /// An empty <see cref="AttachmentString"/> that contains a "default" name and <see cref="string.Empty"/> contents.
         /// </summary>
-        public static AttachmentString Empty = new AttachmentString("default", string.Empty);
+        public static AttachmentString Empty = new("default", string.Empty);
 
         /// <summary>
         /// The attachment value.

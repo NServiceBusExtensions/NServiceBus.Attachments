@@ -12,8 +12,8 @@ using Xunit;
 
 public class IntegrationTests : IDisposable
 {
-    internal ManualResetEvent HandlerEvent = new ManualResetEvent(false);
-    internal ManualResetEvent SagaEvent = new ManualResetEvent(false);
+    internal ManualResetEvent HandlerEvent = new(false);
+    internal ManualResetEvent SagaEvent = new(false);
     bool shouldPerformNestedConnection = true;
 
     static IntegrationTests()

@@ -12,8 +12,8 @@ using Xunit;
 [UsesVerify]
 public class PersisterTests
 {
-    DateTime defaultTestDate = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
-    Dictionary<string, string> metadata = new Dictionary<string, string> { { "key", "value" } };
+    DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
+    Dictionary<string, string> metadata = new() { { "key", "value" } };
     Persister persister;
 
     static PersisterTests()

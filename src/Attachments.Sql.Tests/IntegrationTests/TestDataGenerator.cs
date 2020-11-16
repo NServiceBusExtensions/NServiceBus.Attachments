@@ -5,29 +5,29 @@ using NServiceBus;
 public class TestDataGenerator :
     IEnumerable<object[]>
 {
-    List<TransportTransactionMode> transactionModes = new List<TransportTransactionMode>
+    List<TransportTransactionMode> transactionModes = new()
     {
         TransportTransactionMode.None,
         TransportTransactionMode.ReceiveOnly,
         TransportTransactionMode.SendsAtomicWithReceive,
         TransportTransactionMode.TransactionScope,
     };
-    List<bool> useSqlPersistenceList = new List<bool>
+    List<bool> useSqlPersistenceList = new()
     {
         true,
         false
     };
-    List<bool> useSqlTransportList = new List<bool>
+    List<bool> useSqlTransportList = new()
     {
         true,
         false
     };
-    List<bool> useStorageSessionList = new List<bool>
+    List<bool> useStorageSessionList = new()
     {
         true,
         false
     };
-    List<bool> useSqlTransportConnectionList = new List<bool>
+    List<bool> useSqlTransportConnectionList = new()
     {
         true,
         false

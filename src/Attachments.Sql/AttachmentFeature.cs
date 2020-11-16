@@ -18,7 +18,7 @@ class AttachmentFeature :
         pipeline.Register(new SendRegistration(connectionFactory, persister, settings.TimeToKeep));
         if (context.Settings.PurgeOnStartup())
         {
-            context.RegisterStartupTask(builder => new PurgeTask(persister, settings.ConnectionFactory));
+            context.RegisterStartupTask(_ => new PurgeTask(persister, settings.ConnectionFactory));
         }
 
         if (settings.RunCleanTask)
@@ -29,7 +29,7 @@ class AttachmentFeature :
 
     static Cleaner CreateCleaner(AttachmentSettings settings, IPersister persister, IBuilder builder)
     {
-        return new Cleaner(async token =>
+        return new(async token =>
             {
                 using var connection = await settings.ConnectionFactory();
                 await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);

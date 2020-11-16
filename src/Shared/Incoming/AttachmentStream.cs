@@ -23,14 +23,14 @@ namespace NServiceBus.Attachments
         Stream,
         IAttachment
     {
-        static Dictionary<string, string> emptyDictionary = new Dictionary<string, string>();
+        static Dictionary<string, string> emptyDictionary = new();
 
         /// <summary>
         /// An empty <see cref="AttachmentStream"/> that contains a "default" name and empty <see cref="MemoryStream"/> as content.
         /// </summary>
         public static AttachmentStream Empty()
         {
-            return new AttachmentStream("default", new MemoryStream(), 0, emptyDictionary);
+            return new("default", new MemoryStream(), 0, emptyDictionary);
         }
 
         Stream inner;

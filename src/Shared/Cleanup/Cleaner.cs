@@ -24,7 +24,7 @@ class Cleaner :
     {
         var cleanupFailures = 0;
         timer.Start(
-            callback: async (utcTime, token) =>
+            callback: async (_, token) =>
             {
                 await cleanup(token);
                 cleanupFailures = 0;

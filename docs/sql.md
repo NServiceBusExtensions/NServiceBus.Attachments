@@ -22,7 +22,7 @@ Two settings are required as part of the default usage:
 ```cs
 configuration.EnableAttachments(
     fileShare: "networkSharePath",
-    timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
+    timeToKeep: _ => TimeSpan.FromDays(7));
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L9-L15' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-enableattachments-1'></a>
@@ -42,7 +42,7 @@ configuration.EnableAttachments(
             throw;
         }
     },
-    timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
+    timeToKeep: _ => TimeSpan.FromDays(7));
 ```
 <sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L14-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
@@ -309,7 +309,7 @@ class HandlerFactory :
 class HandlerFactoryAsync :
     IHandleMessages<MyMessage>
 {
-    static HttpClient httpClient = new HttpClient();
+    static HttpClient httpClient = new();
 
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
@@ -328,7 +328,7 @@ class HandlerFactoryAsync :
 class HandlerFactoryAsync :
     IHandleMessages<MyMessage>
 {
-    static HttpClient httpClient = new HttpClient();
+    static HttpClient httpClient = new();
 
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {

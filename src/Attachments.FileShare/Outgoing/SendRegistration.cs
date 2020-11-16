@@ -9,7 +9,7 @@ class SendRegistration :
             stepId: $"{AssemblyHelper.Name}Send",
             behavior: typeof(SendBehavior),
             description: "Saves the payload into the shared location",
-            factoryMethod: builder => new SendBehavior(persister, timeToKeep))
+            factoryMethod: _ => new SendBehavior(persister, timeToKeep))
     {
         InsertAfter("MutateOutgoingMessages");
         InsertBefore("ApplyTimeToBeReceived");

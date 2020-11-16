@@ -24,7 +24,7 @@ namespace NServiceBus.Attachments.Sql
 
         static Exception ThrowNotFound(string messageId, string name)
         {
-            return new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}");
+            return new($"Could not find attachment. MessageId:{messageId}, Name:{name}");
         }
     }
 }

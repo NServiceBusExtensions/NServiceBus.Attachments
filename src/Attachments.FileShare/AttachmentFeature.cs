@@ -19,7 +19,7 @@ class AttachmentFeature :
         pipeline.Register(new SendRegistration(persister, settings.TimeToKeep));
         if (context.Settings.PurgeOnStartup())
         {
-            context.RegisterStartupTask(builder => new PurgeTask(persister));
+            context.RegisterStartupTask(_ => new PurgeTask(persister));
         }
         if (settings.RunCleanTask)
         {
@@ -29,7 +29,7 @@ class AttachmentFeature :
 
     static Cleaner CreateCleaner(IPersister persister, IBuilder builder)
     {
-        return new Cleaner(token =>
+        return new(token =>
             {
                 persister.CleanupItemsOlderThan(DateTime.UtcNow, token);
                 return Task.CompletedTask;

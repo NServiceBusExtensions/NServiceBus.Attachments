@@ -10,8 +10,8 @@ public class AttachmentCleanerTests
     {
         var criticalActionTriggered = false;
         var timer = new FakeTimer();
-        var cleaner = new TestableCleaner(token => Task.CompletedTask,
-            (m, e) => criticalActionTriggered = true,  TimeSpan.Zero, timer);
+        var cleaner = new TestableCleaner(_ => Task.CompletedTask,
+            (_, _) => criticalActionTriggered = true,  TimeSpan.Zero, timer);
 
         await cleaner.Start();
 
@@ -37,8 +37,9 @@ public class AttachmentCleanerTests
     {
         var criticalActionTriggered = false;
         var timer = new FakeTimer();
-        var cleaner = new TestableCleaner(token => Task.CompletedTask,
-            (m, e) => criticalActionTriggered = true, TimeSpan.Zero, timer);
+        var cleaner = new TestableCleaner(
+            _ => Task.CompletedTask,
+            (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
 
         await cleaner.Start();
 

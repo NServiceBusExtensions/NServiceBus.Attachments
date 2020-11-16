@@ -28,7 +28,7 @@ public class Outgoing
     class HandlerFactoryAsync :
         IHandleMessages<MyMessage>
     {
-        static HttpClient httpClient = new HttpClient();
+        static HttpClient httpClient = new();
 
         public Task Handle(MyMessage message, IMessageHandlerContext context)
         {

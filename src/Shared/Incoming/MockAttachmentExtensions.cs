@@ -21,7 +21,7 @@ static class MockAttachmentExtensions
 
     public static AttachmentBytes ToAttachmentBytes(this MockAttachment attachment)
     {
-        return new AttachmentBytes(attachment.Name, attachment.Bytes, attachment.Metadata);
+        return new(attachment.Name, attachment.Bytes, attachment.Metadata);
     }
 
     public static AttachmentString ToAttachmentString(this MockAttachment attachment, Encoding? encoding)

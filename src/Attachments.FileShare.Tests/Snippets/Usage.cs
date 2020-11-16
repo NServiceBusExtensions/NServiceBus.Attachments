@@ -10,7 +10,7 @@ public class Usage
 
         configuration.EnableAttachments(
             fileShare: "networkSharePath",
-            timeToKeep: messageTimeToBeReceived => TimeSpan.FromDays(7));
+            timeToKeep: _ => TimeSpan.FromDays(7));
 
         #endregion
 

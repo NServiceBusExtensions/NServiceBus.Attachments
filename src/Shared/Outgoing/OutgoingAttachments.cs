@@ -16,8 +16,8 @@ using NServiceBus.Attachments;
 class OutgoingAttachments :
     IOutgoingAttachments
 {
-    [NonSerialized] public Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
-    public List<Duplicate> Duplicates = new List<Duplicate>();
+    [NonSerialized] public Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
+    public List<Duplicate> Duplicates = new();
 
     public bool HasPendingAttachments => Inner.Any() ||
                                          DuplicateIncomingAttachments ||

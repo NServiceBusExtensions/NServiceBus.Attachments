@@ -14,7 +14,7 @@ class ReceiveRegistration :
             stepId: $"{AssemblyHelper.Name}Receive",
             behavior: typeof(ReceiveBehavior),
             description: "Copies the shared data back to the logical messages",
-            factoryMethod: builder => new ReceiveBehavior(connectionFactory, persister, useTransport, useSynchronizedStorage))
+            factoryMethod: _ => new ReceiveBehavior(connectionFactory, persister, useTransport, useSynchronizedStorage))
     {
     }
 }

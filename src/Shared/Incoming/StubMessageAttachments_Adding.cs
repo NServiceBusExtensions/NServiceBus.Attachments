@@ -13,8 +13,8 @@ namespace NServiceBus.Attachments
 {
     public partial class StubMessageAttachments
     {
-        Dictionary<string, MockAttachment> currentAttachments = new Dictionary<string, MockAttachment>(StringComparer.OrdinalIgnoreCase);
-        Dictionary<string, Dictionary<string, MockAttachment>> attachments = new Dictionary<string, Dictionary<string, MockAttachment>>(StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, MockAttachment> currentAttachments = new(StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, Dictionary<string, MockAttachment>> attachments = new(StringComparer.OrdinalIgnoreCase);
 
         /// <inheritdoc />
         public void AddAttachment(string payload, Encoding? encoding, IDictionary<string, string>? metadata = null)

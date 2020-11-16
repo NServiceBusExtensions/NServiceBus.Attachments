@@ -9,7 +9,7 @@ static class FileHelpers
     static int bufferSize = 1024 * 64;
     public static FileStream OpenWrite(string path)
     {
-        return new FileStream(
+        return new(
             path: path,
             mode: FileMode.CreateNew,
             access: FileAccess.Write,
@@ -20,7 +20,7 @@ static class FileHelpers
 
     public static StreamWriter BuildLeaveOpenWriter(this Stream input, Encoding? encoding)
     {
-        return new StreamWriter(input, encoding.Default(), 1024, leaveOpen: true);
+        return new(input, encoding.Default(), 1024, leaveOpen: true);
     }
 
     public static void PurgeDirectory(string directory)

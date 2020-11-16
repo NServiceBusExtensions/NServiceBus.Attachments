@@ -10,7 +10,7 @@ using Xunit;
 
 public class IntegrationTests: IDisposable
 {
-    ManualResetEvent resetEvent = new ManualResetEvent(false);
+    ManualResetEvent resetEvent = new(false);
 
     [Fact]
     public async Task Run()

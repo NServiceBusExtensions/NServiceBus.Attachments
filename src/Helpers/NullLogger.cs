@@ -5,7 +5,7 @@ public class NullLogger :
     ILoggerFactory,
     ILog
 {
-    public static NullLogger Instance = new NullLogger();
+    public static NullLogger Instance = new();
 
     public ILog GetLogger(Type type)
     {
