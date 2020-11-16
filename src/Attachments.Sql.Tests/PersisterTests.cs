@@ -340,8 +340,9 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream());
-        await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
+        await persister.SaveStream(connection, null, "theMessageId1", "theName1", defaultTestDate, GetStream());
+        await persister.SaveStream(connection, null, "theMessageId1", "theName2", defaultTestDate, GetStream());
+        await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate, GetStream());
         await persister.DeleteAttachments("theMessageId1", connection, null);
         var result = persister.ReadAllInfo(connection, null);
         await Verifier.Verify(result);
