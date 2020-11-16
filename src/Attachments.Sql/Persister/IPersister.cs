@@ -95,6 +95,11 @@ namespace NServiceBus.Attachments.Sql
         IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Deletes attachments for message.
+        /// </summary>
+        Task DeleteAttachments(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Reads all <see cref="AttachmentString"/>s for an attachment.
         /// </summary>
         IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, Encoding? encoding, CancellationToken cancellation = default);
