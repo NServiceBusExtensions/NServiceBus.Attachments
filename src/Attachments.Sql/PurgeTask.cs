@@ -6,7 +6,8 @@ using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
 
-class PurgeTask: FeatureStartupTask
+class PurgeTask :
+    FeatureStartupTask
 {
     IPersister persister;
     Func<Task<DbConnection>> connectionFactory;
