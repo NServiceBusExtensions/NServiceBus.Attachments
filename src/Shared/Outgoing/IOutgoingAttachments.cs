@@ -43,18 +43,18 @@ namespace NServiceBus.Attachments
         void Add(string name, Stream stream, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
-        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// Add an attachment with the default name of `default` to the current outgoing pipeline.
         /// </summary>
         void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
             where T : Stream;
 
         /// <summary>
-        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// Add an attachment with the default name of `default` to the current outgoing pipeline.
         /// </summary>
         void Add(Func<Stream> streamFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
-        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// Add an attachment with the default name of `default` to the current outgoing pipeline.
         /// </summary>
         void Add(Stream stream, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
@@ -83,7 +83,7 @@ namespace NServiceBus.Attachments
         void AddString(string name, string value, Encoding? encoding = null, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
-        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// Add an attachment with the default name of `default` to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
@@ -91,7 +91,7 @@ namespace NServiceBus.Attachments
         void AddString(string value, Encoding? encoding = null, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
-        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// Add an attachment with the default name of `default` to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
@@ -107,7 +107,7 @@ namespace NServiceBus.Attachments
         void AddBytes(string name, Func<Task<byte[]>> bytesFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
-        /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
+        /// Add an attachment with the default name of `default` to the current outgoing pipeline.
         /// </summary>
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
@@ -115,7 +115,7 @@ namespace NServiceBus.Attachments
         void AddBytes(Func<byte[]> byteFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
         /// <summary>
-        /// Save an attachment with the default name of <see cref="string.Empty"/>.
+        /// Save an attachment with the default name of `default`.
         /// </summary>
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
