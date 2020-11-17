@@ -29,6 +29,7 @@ class ReceiveBehavior :
         var state = BuildState(context);
         context.Extensions.Set(state);
         return next();
+
     }
 
     SqlAttachmentState BuildState(IInvokeHandlerContext context)

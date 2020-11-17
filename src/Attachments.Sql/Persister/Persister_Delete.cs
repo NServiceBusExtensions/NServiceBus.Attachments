@@ -18,5 +18,16 @@ namespace NServiceBus.Attachments.Sql
             command.CommandText = $"delete from {table}";
             await command.ExecuteNonQueryAsync(cancellation);
         }
+
+        public virtual async Task DeleteAttachments(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNull(connection, nameof(connection));
+            using var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = $@"
+delete from {table} where MessageIdLower = lower(@MessageId)";
+            command.AddParameter("MessageId", messageId);
+            await command.ExecuteNonQueryAsync(cancellation);
+        }
     }
 }

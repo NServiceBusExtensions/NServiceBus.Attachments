@@ -334,6 +334,20 @@ public class PersisterTests
         await Verifier.Verify(result);
     }
 
+    [Fact]
+    public async Task DeleteAttachments()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        await persister.SaveStream(connection, null, "theMessageId1", "theName1", defaultTestDate, GetStream());
+        await persister.SaveStream(connection, null, "theMessageId1", "theName2", defaultTestDate, GetStream());
+        await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate, GetStream());
+        await persister.DeleteAttachments("theMessageId1", connection, null);
+        var result = persister.ReadAllInfo(connection, null);
+        await Verifier.Verify(result);
+    }
+
     static Stream GetStream(byte content = 5)
     {
         var stream = new MemoryStream();
