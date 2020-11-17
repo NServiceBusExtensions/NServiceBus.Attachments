@@ -107,9 +107,9 @@ public class IntegrationTests : IDisposable
             transport.Transactions(transactionMode);
         }
         var endpoint = await Endpoint.Start(configuration);
-        await SendStartMessage(endpoint);
+        var startMessageId = await SendStartMessage(endpoint);
 
-        var timeout = TimeSpan.FromSeconds(30);
+        var timeout = TimeSpan.FromSeconds(300);
         if (!HandlerEvent.WaitOne(timeout))
         {
             throw new Exception("TimedOut");
@@ -118,6 +118,19 @@ public class IntegrationTests : IDisposable
         if (!SagaEvent.WaitOne(timeout))
         {
             throw new Exception("TimedOut");
+        }
+
+        if (useSqlTransportConnection &&
+            useSqlTransport &&
+            transactionMode != TransportTransactionMode.None)
+        {
+            await using var connection = new SqlConnection(Connection.ConnectionString);
+            await connection.OpenAsync();
+            var persister = new Persister("Attachments");
+            await foreach (var _ in persister.ReadAllMessageInfo(connection, null, startMessageId))
+            {
+                throw new Exception("Expected attachments to be cleaned");
+            }
         }
 
         await endpoint.Stop();
@@ -149,15 +162,18 @@ public class IntegrationTests : IDisposable
         }
     }
 
-    static Task SendStartMessage(IEndpointInstance endpoint)
+    static async Task<string> SendStartMessage(IEndpointInstance endpoint)
     {
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
+        var messageId = Guid.NewGuid().ToString();
+        sendOptions.SetMessageId(messageId);
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
         attachment.Add("second", GetStream);
         attachment.Add("withMetadata", GetStream, metadata: new Dictionary<string, string> {{"key", "value"}});
-        return endpoint.Send(new SendMessage(), sendOptions);
+        await endpoint.Send(new SendMessage(), sendOptions);
+        return messageId;
     }
 
     static Stream GetStream()
