@@ -24,7 +24,7 @@ class StorageAccessor
             return false;
         }
 
-        connection = (DbConnection) connectionProperty!.GetValue(storageSession);
+        connection = (DbConnection?) connectionProperty!.GetValue(storageSession);
         return connection != null;
     }
 
@@ -42,11 +42,11 @@ class StorageAccessor
             return false;
         }
 
-        transaction = (DbTransaction) transactionProperty!.GetValue(storageSession);
+        transaction = (DbTransaction?) transactionProperty!.GetValue(storageSession);
         return transaction != null;
     }
 
-    static PropertyInfo GetProperty(SynchronizedStorageSession storageSession, string name)
+    static PropertyInfo? GetProperty(SynchronizedStorageSession storageSession, string name)
     {
         return storageSession
             .GetType()

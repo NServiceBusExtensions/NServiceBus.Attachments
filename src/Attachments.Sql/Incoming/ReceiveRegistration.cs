@@ -7,9 +7,11 @@ using NServiceBus.Pipeline;
 class ReceiveRegistration :
     RegisterStep
 {
-    public ReceiveRegistration(Func<Task<DbConnection>> connectionFactory,
+    public ReceiveRegistration(
+        Func<Task<DbConnection>> connectionFactory,
         IPersister persister,
-        bool useTransport, bool useSynchronizedStorage)
+        bool useTransport,
+        bool useSynchronizedStorage)
         : base(
             stepId: $"{AssemblyHelper.Name}Receive",
             behavior: typeof(ReceiveBehavior),
