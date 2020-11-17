@@ -147,6 +147,7 @@ This approach attempts to use the transport transaction using the following step
  * Attempt to retrieve an instance of [Transaction](https://docs.microsoft.com/en-us/dotnet/api/system.transactions.transaction) from the `TransportTransaction`. If it exists, use it in [SqlConnection.EnlistTransaction](https://docs.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlconnection.enlisttransaction) with an instance of [SqlConnection](https://docs.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlconnection) retrieved by the `connectionFactory`. Then use that [SqlConnection](https://docs.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlconnection) for all SQL operations in the current pipeline.
  * Attempt to retrieve an instance of [SqlTransaction](https://docs.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqltransaction) from the `TransportTransaction`. If it exists, use it for all SQL operations in the current pipeline.
  * Attempt to retrieve an instance of [SqlConnection](https://docs.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlconnection) from the `TransportTransaction`. If it exists, use it for all SQL operations in the current pipeline.
+ * Any attachments associated with a message send will be deleted after message processing.
 
 
 ## Installation

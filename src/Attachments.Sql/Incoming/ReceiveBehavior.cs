@@ -2,7 +2,6 @@
 using System.Data.Common;
 using System.Threading.Tasks;
 using System.Transactions;
-using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 using NServiceBus.Transport;
@@ -25,40 +24,12 @@ class ReceiveBehavior :
         storageAccessor = new StorageAccessor();
     }
 
-    public override async Task Invoke(IInvokeHandlerContext context, Func<Task> next)
+    public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
         var state = BuildState(context);
         context.Extensions.Set(state);
-        await next();
-        await TryCleanup(context, state);
-    }
+        return next();
 
-    async Task TryCleanup(IInvokeHandlerContext context, SqlAttachmentState state)
-    {
-        if (!context.MessageHeaders.TryGetValue(Headers.MessageIntent, out var messageIntent))
-        {
-            return;
-        }
-
-        if (messageIntent != "Send")
-        {
-            return;
-        }
-
-        if (state.Transaction != null)
-        {
-            using var connectionFromState = await state.GetConnection();
-            connectionFromState.EnlistTransaction(state.Transaction);
-            await persister.DeleteAttachments(context.MessageId, connectionFromState, null);
-            return;
-        }
-
-        if (state.DbTransaction != null)
-        {
-            await persister.DeleteAttachments(context.MessageId, state.DbTransaction.Connection, state.DbTransaction);
-        }
-
-        //if there is no transaction then dont cleanup
     }
 
     SqlAttachmentState BuildState(IInvokeHandlerContext context)
