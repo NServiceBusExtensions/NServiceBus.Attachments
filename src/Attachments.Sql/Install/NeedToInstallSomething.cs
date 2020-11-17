@@ -6,11 +6,11 @@ using NServiceBus.Settings;
 class NeedToInstallSomething :
     INeedToInstallSomething
 {
-    AttachmentSettings settings;
+    AttachmentSettings? settings;
 
     public NeedToInstallSomething(ReadOnlySettings settings)
     {
-        this.settings = settings.GetOrDefault<AttachmentSettings>();
+        this.settings = settings.GetOrDefault<AttachmentSettings?>();
     }
 
     public async Task Install(string identity)

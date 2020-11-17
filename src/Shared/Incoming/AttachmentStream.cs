@@ -35,9 +35,9 @@ namespace NServiceBus.Attachments
 
         Stream inner;
 #if NETSTANDARD2_0
-        IDisposable[] cleanups;
+        IDisposable[]? cleanups;
         #else
-        IAsyncDisposable[] cleanups;
+        IAsyncDisposable[]? cleanups;
 #endif
 
         /// <summary>

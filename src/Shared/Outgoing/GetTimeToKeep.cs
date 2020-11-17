@@ -15,7 +15,7 @@ namespace NServiceBus.Attachments
 
     static class TimeToKeepEx
     {
-        public static Func<TimeSpan?, TimeSpan>? ToFunc(this GetTimeToKeep timeToKeep)
+        public static Func<TimeSpan?, TimeSpan>? ToFunc(this GetTimeToKeep? timeToKeep)
         {
             if (timeToKeep == null)
             {
