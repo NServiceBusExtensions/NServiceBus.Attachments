@@ -1,5 +1,4 @@
-﻿using System;
-using NServiceBus.Pipeline;
+﻿using NServiceBus.Pipeline;
 using NServiceBus.Settings;
 using NServiceBus.Transport;
 

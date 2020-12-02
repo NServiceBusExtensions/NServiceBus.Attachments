@@ -15,8 +15,8 @@ static class MockAttachmentExtensions
     public static AttachmentStream ToAttachmentStream(this MockAttachment attachment)
     {
         var bytes = attachment.Bytes;
-        var stream = new MemoryStream(bytes);
-        return new AttachmentStream(attachment.Name, stream, bytes.LongLength, attachment.Metadata, stream);
+        MemoryStream stream = new(bytes);
+        return new(attachment.Name, stream, bytes.LongLength, attachment.Metadata, stream);
     }
 
     public static AttachmentBytes ToAttachmentBytes(this MockAttachment attachment)
@@ -27,6 +27,6 @@ static class MockAttachmentExtensions
     public static AttachmentString ToAttachmentString(this MockAttachment attachment, Encoding? encoding)
     {
         var value = encoding.Default().GetString(attachment.Bytes);
-        return new AttachmentString(attachment.Name, value, attachment.Metadata);
+        return new(attachment.Name, value, attachment.Metadata);
     }
 }

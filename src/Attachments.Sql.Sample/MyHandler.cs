@@ -11,7 +11,7 @@ class MyHandler :
         Console.WriteLine("Hello from MyHandler. SendMessage");
         var incomingAttachments = context.Attachments();
         var attachment = await incomingAttachments.GetString("foo");
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         sendOptions.RouteToThisEndpoint();
         var outgoingAttachments = sendOptions.Attachments();
         outgoingAttachments.AddString("bar", attachment);

@@ -7,9 +7,9 @@ public class AsyncTimerTests
     [Fact]
     public async Task It_calls_error_callback()
     {
-        var errorCallbackInvoked = new TaskCompletionSource<bool>();
+        TaskCompletionSource<bool> errorCallbackInvoked = new();
 
-        var timer = new AsyncTimer();
+        AsyncTimer timer = new();
         timer.Start(
             callback: (_, _) => throw new("Simulated!"),
             interval: TimeSpan.Zero,
@@ -22,18 +22,18 @@ public class AsyncTimerTests
     [Fact]
     public async Task It_continues_to_run_after_an_error()
     {
-        var callbackInvokedAfterError = new TaskCompletionSource<bool>();
+        TaskCompletionSource<bool> callbackInvokedAfterError = new();
 
         var fail = true;
         var exceptionThrown = false;
-        var timer = new AsyncTimer();
+        AsyncTimer timer = new();
         timer.Start(
             callback: (_, _) =>
             {
                 if (fail)
                 {
                     fail = false;
-                    throw new Exception("Simulated!");
+                    throw new("Simulated!");
                 }
 
                 Assert.True(exceptionThrown);
@@ -50,9 +50,9 @@ public class AsyncTimerTests
     [Fact]
     public async Task Stop_cancels_token_while_waiting()
     {
-        var timer = new AsyncTimer();
+        AsyncTimer timer = new();
         var waitCancelled = false;
-        var delayStarted = new TaskCompletionSource<bool>();
+        TaskCompletionSource<bool> delayStarted = new();
 
         timer.Start(
             callback: (_, _) => throw new("Simulated!"),
@@ -114,10 +114,10 @@ public class AsyncTimerTests
     [Fact]
     public async Task Stop_waits_for_callback_to_complete()
     {
-        var timer = new AsyncTimer();
+        AsyncTimer timer = new();
 
-        var callbackCompleted = new TaskCompletionSource<bool>();
-        var callbackTaskStarted = new TaskCompletionSource<bool>();
+        TaskCompletionSource<bool> callbackCompleted = new();
+        TaskCompletionSource<bool> callbackTaskStarted = new();
 
         timer.Start(
             callback: (_, _) =>

@@ -7,7 +7,7 @@ static class SqlSanitizer
 
     public static string Sanitize(string unquotedIdentifier)
     {
-        var builder = new StringBuilder();
+        StringBuilder builder = new();
         if (!string.IsNullOrEmpty(quotePrefix))
         {
             builder.Append(quotePrefix);

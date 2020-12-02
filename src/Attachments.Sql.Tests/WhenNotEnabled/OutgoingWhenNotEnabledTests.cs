@@ -16,7 +16,7 @@ public class OutgoingWhenNotEnabledTests
     [Fact]
     public async Task Run()
     {
-        var configuration = new EndpointConfiguration("SqlOutgoingWhenNotEnabledTests");
+        EndpointConfiguration configuration = new("SqlOutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var endpoint = await Endpoint.Start(configuration);
@@ -29,7 +29,7 @@ public class OutgoingWhenNotEnabledTests
 
     static Task SendStartMessageWithAttachment(IEndpointInstance endpoint)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
@@ -38,8 +38,8 @@ public class OutgoingWhenNotEnabledTests
 
     static Stream GetStream()
     {
-        var stream = new MemoryStream();
-        var streamWriter = new StreamWriter(stream);
+        MemoryStream stream = new();
+        StreamWriter streamWriter = new(stream);
         streamWriter.Write("sdflgkndkjfgn");
         streamWriter.Flush();
         stream.Position = 0;

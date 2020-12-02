@@ -19,7 +19,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
     [Fact]
     public async Task Run()
     {
-        var configuration = new EndpointConfiguration("SqlIncomingWhenNotEnabledTests");
+        EndpointConfiguration configuration = new("SqlIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.RegisterComponents(components => components.RegisterSingleton(this));

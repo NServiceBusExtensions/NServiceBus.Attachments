@@ -21,7 +21,7 @@ class ReceiveBehavior :
         this.persister = persister;
         this.useTransport = useTransport;
         this.useSynchronizedStorage = useSynchronizedStorage;
-        storageAccessor = new StorageAccessor();
+        storageAccessor = new();
     }
 
     public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
@@ -41,11 +41,11 @@ class ReceiveBehavior :
             {
                 if (storageAccessor.TryGetTransaction(session, out var transaction))
                 {
-                    return new SqlAttachmentState(transaction, persister);
+                    return new(transaction, persister);
                 }
                 if (storageAccessor.TryGetConnection(session, out var connection))
                 {
-                    return new SqlAttachmentState(connection, persister);
+                    return new(connection, persister);
                 }
             }
         }
@@ -55,17 +55,17 @@ class ReceiveBehavior :
             {
                 if (transportTransaction.TryGet<Transaction>(out var transaction))
                 {
-                    return new SqlAttachmentState(transaction, connectionBuilder, persister);
+                    return new(transaction, connectionBuilder, persister);
                 }
 
                 if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out DbTransaction dbTransaction))
                 {
-                    return new SqlAttachmentState(dbTransaction, persister);
+                    return new(dbTransaction, persister);
                 }
 
                 if (transportTransaction.TryGet("System.Data.SqlClient.SqlConnection", out DbConnection connection))
                 {
-                    return new SqlAttachmentState(connection, persister);
+                    return new(connection, persister);
                 }
             }
             else
@@ -74,6 +74,6 @@ class ReceiveBehavior :
             }
         }
 
-        return new SqlAttachmentState(connectionBuilder, persister);
+        return new(connectionBuilder, persister);
     }
 }

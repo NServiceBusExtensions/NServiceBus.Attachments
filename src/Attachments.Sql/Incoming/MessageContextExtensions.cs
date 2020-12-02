@@ -1,5 +1,4 @@
-﻿using System;
-using NServiceBus.Attachments.Sql;
+﻿using NServiceBus.Attachments.Sql;
 
 namespace NServiceBus
 {

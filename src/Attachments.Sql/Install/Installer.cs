@@ -41,7 +41,7 @@ namespace NServiceBus.Attachments.Sql
         public static string GetTableSql()
         {
             using var stream = AssemblyHelper.Current.GetManifestResourceStream("Table.sql")!;
-            using var streamReader = new StreamReader(stream);
+            using StreamReader streamReader = new(stream);
             return streamReader.ReadToEnd();
         }
     }

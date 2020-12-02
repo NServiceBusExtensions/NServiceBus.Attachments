@@ -63,7 +63,7 @@ namespace NServiceBus
             Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
             Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
             var settings = configuration.GetSettings();
-            var attachments = new AttachmentSettings(connectionFactory, timeToKeep);
+            AttachmentSettings attachments = new(connectionFactory, timeToKeep);
             return SetAttachments(configuration, settings, attachments);
         }
 

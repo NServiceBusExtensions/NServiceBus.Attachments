@@ -18,7 +18,7 @@ public class PersisterTests
     static Persister GetPersister([CallerMemberName] string? path = null)
     {
         var fileShare = Path.GetFullPath($"attachments/{path}");
-        var persister = new Persister(fileShare);
+        Persister persister = new(fileShare);
         Directory.CreateDirectory(fileShare);
         persister.DeleteAllAttachments();
         return persister;
@@ -29,7 +29,7 @@ public class PersisterTests
     {
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream());
-        var memoryStream = new MemoryStream();
+        MemoryStream memoryStream = new();
         await persister.CopyTo("theMessageId", "theName", memoryStream);
 
         memoryStream.Position = 0;
@@ -155,7 +155,7 @@ public class PersisterTests
 
     static byte[] ToBytes(Stream stream)
     {
-        using var memoryStream = new MemoryStream();
+        using MemoryStream memoryStream = new();
         stream.CopyTo(memoryStream);
         return memoryStream.ToArray();
     }
@@ -202,7 +202,7 @@ public class PersisterTests
     {
         var persister = GetPersister();
         var expected = "¡™£¢∞§¶•ªº–≠";
-        var encoding = new UTF8Encoding(true);
+        UTF8Encoding encoding = new(true);
         await persister.SaveString("theMessageId", "theName", defaultTestDate, expected, encoding, metadata);
         var result = await persister.GetString("theMessageId", "theName", encoding);
         var attachmentBytes = await persister.GetBytes("theMessageId", "theName");
@@ -246,13 +246,13 @@ public class PersisterTests
         var persister = GetPersister();
         await persister.SaveStream("theMessageId1", "theName", defaultTestDate, GetStream());
         await persister.SaveStream("theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
-        persister.CleanupItemsOlderThan(new DateTime(2001, 1, 1, 1, 1, 1));
+        persister.CleanupItemsOlderThan(new(2001, 1, 1, 1, 1, 1));
         await Verifier.Verify(persister.ReadAllInfo());
     }
 
     static Stream GetStream(byte content = 5)
     {
-        var stream = new MemoryStream();
+        MemoryStream stream = new();
         stream.WriteByte(content);
         stream.Position = 0;
         return stream;

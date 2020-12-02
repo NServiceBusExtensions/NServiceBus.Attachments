@@ -57,7 +57,7 @@ public class IntegrationTests : IDisposable
             shouldPerformNestedConnection = false;
         }
         var endpointName = "SqlIntegrationTests";
-        var configuration = new EndpointConfiguration(endpointName);
+        EndpointConfiguration configuration = new(endpointName);
         var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
         if (useStorageSession)
         {
@@ -124,9 +124,9 @@ public class IntegrationTests : IDisposable
             useSqlTransport &&
             transactionMode != TransportTransactionMode.None)
         {
-            await using var connection = new SqlConnection(Connection.ConnectionString);
+            await using SqlConnection connection = new(Connection.ConnectionString);
             await connection.OpenAsync();
-            var persister = new Persister("Attachments");
+            Persister persister = new("Attachments");
             await foreach (var _ in persister.ReadAllMessageInfo(connection, null, startMessageId))
             {
                 throw new("Expected attachments to be cleaned");
@@ -156,7 +156,7 @@ public class IntegrationTests : IDisposable
     {
         if (shouldPerformNestedConnection)
         {
-            using var connection = new SqlConnection(Connection.ConnectionString);
+            using SqlConnection connection = new(Connection.ConnectionString);
             connection.Open();
             Console.WriteLine(connection.ServerVersion);
         }
@@ -164,7 +164,7 @@ public class IntegrationTests : IDisposable
 
     static async Task<string> SendStartMessage(IEndpointInstance endpoint)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         sendOptions.RouteToThisEndpoint();
         var messageId = Guid.NewGuid().ToString();
         sendOptions.SetMessageId(messageId);
@@ -178,8 +178,8 @@ public class IntegrationTests : IDisposable
 
     static Stream GetStream()
     {
-        var stream = new MemoryStream();
-        var streamWriter = new StreamWriter(stream);
+        MemoryStream stream = new();
+        StreamWriter streamWriter = new(stream);
         streamWriter.Write("content");
         streamWriter.Flush();
         stream.Position = 0;

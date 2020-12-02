@@ -4,12 +4,12 @@ public static class SqlHelper
 {
     public static void EnsureDatabaseExists(string connectionString)
     {
-        var builder = new SqlConnectionStringBuilder(connectionString);
+        SqlConnectionStringBuilder builder = new(connectionString);
         var database = builder.InitialCatalog;
 
         var masterConnection = connectionString.Replace(builder.InitialCatalog, "master");
 
-        using var connection = new SqlConnection(masterConnection);
+        using SqlConnection connection = new(masterConnection);
         connection.Open();
 
         using var command = connection.CreateCommand();

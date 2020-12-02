@@ -16,7 +16,7 @@ public class Usage
         configuration.EnableAttachments(
             connectionFactory: async () =>
             {
-                var connection = new SqlConnection(connectionString);
+                SqlConnection connection = new(connectionString);
                 try
                 {
                     await connection.OpenAsync().ConfigureAwait(false);
@@ -109,7 +109,7 @@ public class Usage
         var attachments = configuration.EnableAttachments(
             connectionFactory: OpenConnection,
             timeToKeep: TimeToKeep.Default);
-        attachments.UseTable(new Table("CustomAttachmentsTableName", "dbo"));
+        attachments.UseTable(new("CustomAttachmentsTableName", "dbo"));
 
         #endregion
     }
@@ -118,7 +118,7 @@ public class Usage
 
     async Task<DbConnection> OpenConnection()
     {
-        var connection = new SqlConnection(connectionString);
+        SqlConnection connection = new(connectionString);
         try
         {
             await connection.OpenAsync().ConfigureAwait(false);

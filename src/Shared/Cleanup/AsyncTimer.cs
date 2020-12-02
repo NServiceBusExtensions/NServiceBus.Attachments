@@ -7,7 +7,7 @@ class AsyncTimer :
 {
     public void Start(Func<DateTime, CancellationToken, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, CancellationToken, Task> delayStrategy)
     {
-        tokenSource = new CancellationTokenSource();
+        tokenSource = new();
         var token = tokenSource.Token;
 
         task = Task.Run(async () =>

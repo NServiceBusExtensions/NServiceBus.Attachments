@@ -176,9 +176,9 @@ namespace NServiceBus.Attachments.Sql
             var metadata = MetadataSerializer.Deserialize(metadataString);
             if (disposeConnection)
             {
-                return new AttachmentStream(name, sqlStream, length, metadata, command, reader, command.Connection);
+                return new(name, sqlStream, length, metadata, command, reader, command.Connection);
             }
-            return new AttachmentStream(name, sqlStream, length, metadata, command, reader);
+            return new(name, sqlStream, length, metadata, command, reader);
         }
 
         DbCommand CreateGetDataCommand(string messageId, string name, DbConnection connection, DbTransaction? transaction)

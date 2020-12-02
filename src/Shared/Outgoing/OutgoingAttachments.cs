@@ -40,7 +40,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Inner.Add(
             name,
-            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            new(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
             {
                 AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name)
             });
@@ -62,7 +62,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(streamFactory, nameof(streamFactory));
         Inner.Add(
             name,
-            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            new(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
             {
                 StreamFactory = streamFactory.WrapFuncInCheck(name),
             });
@@ -74,7 +74,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(stream, nameof(stream));
         Inner.Add(
             name,
-            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            new(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
             {
                 StreamInstance = stream
             });
@@ -98,11 +98,7 @@ class OutgoingAttachments :
     public void DuplicateIncoming(string incomingName, string? outgoingName = null)
     {
         Guard.AgainstNull(incomingName, nameof(incomingName));
-        Duplicates.Add(new Duplicate
-        (
-            from: incomingName,
-            to: outgoingName
-        ));
+        Duplicates.Add(new(from: incomingName, to: outgoingName));
     }
 
     public void AddBytes(string name, Func<byte[]> bytesFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
@@ -111,7 +107,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
         Inner.Add(
             name,
-            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            new(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
             {
                 BytesFactory = bytesFactory.WrapFuncInCheck(name)
             });
@@ -123,7 +119,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(bytes, nameof(bytes));
         Inner.Add(
             name,
-            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            new(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
             {
                 BytesInstance = bytes,
             });
@@ -140,7 +136,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(value, nameof(value));
         Inner.Add(
             name,
-            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), encoding)
+            new(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), encoding)
             {
                 StringInstance = value,
             });
@@ -157,7 +153,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(bytesFactory, nameof(bytesFactory));
         Inner.Add(
             name,
-            new Outgoing(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
+            new(metadata, timeToKeep, cleanup.WrapCleanupInCheck(name), null)
             {
                 AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name)
             });

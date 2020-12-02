@@ -25,7 +25,7 @@ namespace NServiceBus.Attachments.Sql
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
-                var info = new AttachmentInfo(
+                AttachmentInfo info = new(
                     messageId: messageId,
                     name: reader.GetString(1),
                     expiry: reader.GetDateTime(2),
@@ -68,7 +68,7 @@ namespace NServiceBus.Attachments.Sql
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
-                var info = new AttachmentInfo(
+                AttachmentInfo info = new(
                     messageId: reader.GetString(1),
                     name: reader.GetString(2),
                     expiry: reader.GetDateTime(3),
@@ -82,7 +82,7 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
-            var list = new ConcurrentBag<AttachmentInfo>();
+            ConcurrentBag<AttachmentInfo> list = new();
             await ReadAllInfo(connection, transaction,
                     info =>
                     {

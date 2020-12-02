@@ -23,7 +23,7 @@ public class PersisterTests
 
     public PersisterTests()
     {
-        persister = new Persister("MessageAttachments");
+        persister = new("MessageAttachments");
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
-        var memoryStream = new MemoryStream();
+        MemoryStream memoryStream = new();
         await persister.CopyTo("theMessageId", "theName", connection, null, memoryStream);
 
         memoryStream.Position = 0;
@@ -255,7 +255,7 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var expected = "¡™£¢∞§¶•ªº–≠";
-        var encoding = new UTF8Encoding(true);
+        UTF8Encoding encoding = new(true);
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, expected, encoding, metadata);
         var result = await persister.GetString("theMessageId", "theName", connection, null, encoding);
         Trace.Write(result);
@@ -311,7 +311,7 @@ public class PersisterTests
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
         await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
-        var list = new List<AttachmentInfo>();
+        List<AttachmentInfo> list = new();
         await persister.ReadAllMessageInfo(connection, null, "theMessageId",
             info =>
             {
@@ -329,7 +329,7 @@ public class PersisterTests
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream());
         await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
-        await persister.CleanupItemsOlderThan(connection, null, new DateTime(2001, 1, 1, 1, 1, 1));
+        await persister.CleanupItemsOlderThan(connection, null, new(2001, 1, 1, 1, 1, 1));
         var result = persister.ReadAllInfo(connection, null);
         await Verifier.Verify(result);
     }

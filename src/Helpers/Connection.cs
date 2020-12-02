@@ -31,14 +31,14 @@ public static class Connection
 
     public static DbConnection OpenConnection()
     {
-        var connection = new SqlConnection(ConnectionString);
+        SqlConnection connection = new(ConnectionString);
         connection.Open();
         return connection;
     }
 
     public static async Task<DbConnection> OpenAsyncConnection(CancellationToken cancellation = default)
     {
-        var connection = new SqlConnection(ConnectionString);
+        SqlConnection connection = new(ConnectionString);
         await connection.OpenAsync(cancellation);
         return connection;
     }

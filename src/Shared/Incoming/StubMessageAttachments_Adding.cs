@@ -47,7 +47,7 @@ namespace NServiceBus.Attachments
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstNull(bytes, nameof(bytes));
             currentAttachments.Add(name,
-                new MockAttachment
+                new
                 (
                     name: name,
                     bytes: bytes,
@@ -77,7 +77,7 @@ namespace NServiceBus.Attachments
             }
 
             attachmentsForMessage.Add(name,
-                new MockAttachment
+                new
                 (
                     name: name,
                     bytes: bytes,

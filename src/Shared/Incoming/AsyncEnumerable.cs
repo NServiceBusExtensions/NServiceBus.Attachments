@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +28,7 @@ class AsyncEnumerable<T> : IAsyncEnumerable<T>, IAsyncEnumerator<T>
     public ValueTask<bool> MoveNextAsync()
     {
         var moveNext = inner != null && inner.MoveNext();
-        return new ValueTask<bool>(moveNext);
+        return new(moveNext);
     }
 
     public T Current

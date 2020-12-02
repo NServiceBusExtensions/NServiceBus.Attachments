@@ -12,7 +12,7 @@ class Program
             SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
         }
 
-        var configuration = new EndpointConfiguration("Attachments.Sql.Sample");
+        EndpointConfiguration configuration = new("Attachments.Sql.Sample");
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         configuration.UsePersistence<LearningPersistence>();
@@ -30,7 +30,7 @@ class Program
 
     static Task SendMessage(IEndpointInstance endpoint)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         sendOptions.RouteToThisEndpoint();
         var attachments = sendOptions.Attachments();
         attachments.AddString(name: "foo", value: "content");

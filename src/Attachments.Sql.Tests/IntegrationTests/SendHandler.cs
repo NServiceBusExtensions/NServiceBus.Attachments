@@ -14,7 +14,7 @@ class SendHandler :
 
     public async Task Handle(SendMessage message, IMessageHandlerContext context)
     {
-        var replyOptions = new SendOptions();
+        SendOptions replyOptions = new();
         replyOptions.RouteToThisEndpoint();
         var attachment = await context.Attachments().GetBytes("withMetadata");
         Assert.Equal("value", attachment.Metadata!["key"]);

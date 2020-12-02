@@ -30,7 +30,7 @@ configuration.EnableAttachments(
 configuration.EnableAttachments(
     connectionFactory: async () =>
     {
-        var connection = new SqlConnection(connectionString);
+        SqlConnection connection = new(connectionString);
         try
         {
             await connection.OpenAsync().ConfigureAwait(false);
@@ -57,7 +57,7 @@ Extract out the connection factory to a helper method
 ```cs
 async Task<DbConnection> OpenConnection()
 {
-    var connection = new SqlConnection(connectionString);
+    SqlConnection connection = new(connectionString);
     try
     {
         await connection.OpenAsync().ConfigureAwait(false);
@@ -198,7 +198,7 @@ The default table name and schema is `dbo.MessageAttachments`. It can be changed
 var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
-attachments.UseTable(new Table("CustomAttachmentsTableName", "dbo"));
+attachments.UseTable(new("CustomAttachmentsTableName", "dbo"));
 ```
 <sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L107-L114' title='Snippet source file'>snippet source</a> | <a href='#snippet-usetablename' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
@@ -275,7 +275,7 @@ class HandlerFactory :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -292,7 +292,7 @@ class HandlerFactory :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -333,7 +333,7 @@ class HandlerFactoryAsync :
 
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -377,7 +377,7 @@ class HandlerInstance :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         var attachments = sendOptions.Attachments();
         var stream = File.OpenRead("FilePath.txt");
         attachments.Add(
@@ -687,7 +687,7 @@ public class Handler :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var options = new SendOptions();
+        SendOptions options = new();
         var attachments = options.Attachments();
         attachments.Add("theName", () => File.OpenRead("aFilePath"));
         return context.Send(new OtherMessage(), options);
@@ -726,8 +726,8 @@ public async Task TestOutgoingAttachments()
 public async Task TestOutgoingAttachments()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
-    var handler = new Handler();
+    TestableMessageHandlerContext context = new();
+    Handler handler = new();
 
     //Act
     await handler.Handle(new MyMessage(), context);
@@ -762,8 +762,8 @@ context.InjectAttachmentsInstance(mockMessageAttachments);
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L17-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
-var context = new TestableMessageHandlerContext();
-var mockMessageAttachments = new MyMessageAttachments();
+TestableMessageHandlerContext context = new();
+MyMessageAttachments mockMessageAttachments = new();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
 <sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L17-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Start of snippet'>anchor</a></sup>
@@ -826,7 +826,8 @@ public class Handler :
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L46-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'></a>
 ```cs
-public class Handler : IHandleMessages<MyMessage>
+public class Handler :
+    IHandleMessages<MyMessage>
 {
     public async Task Handle(MyMessage message, IMessageHandlerContext context)
     {
@@ -835,7 +836,7 @@ public class Handler : IHandleMessages<MyMessage>
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L46-L57' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L46-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -864,9 +865,9 @@ public async Task TestIncomingAttachment()
 public async Task TestIncomingAttachment()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
-    var handler = new Handler();
-    var mockMessageAttachments = new CustomMockMessageAttachments();
+    TestableMessageHandlerContext context = new();
+    Handler handler = new();
+    CustomMockMessageAttachments mockMessageAttachments = new();
     context.InjectAttachmentsInstance(mockMessageAttachments);
 
     //Act
@@ -876,6 +877,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L59-L77' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L60-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 <!-- endInclude -->

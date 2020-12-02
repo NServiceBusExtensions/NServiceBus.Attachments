@@ -3,7 +3,7 @@ using System.Text;
 
 static class IoExtensions
 {
-    public static readonly Encoding Utf8NoBOM = new UTF8Encoding(false, true);
+    public static readonly UTF8Encoding Utf8NoBOM = new(false, true);
 
     public static Encoding Default(this Encoding? value)
     {
@@ -17,8 +17,8 @@ static class IoExtensions
 
     public static byte[] ToBytes(this string value, Encoding encoding)
     {
-        using var stream = new MemoryStream();
-        using var writer = new StreamWriter(stream, encoding);
+        using MemoryStream stream = new();
+        using StreamWriter writer = new(stream, encoding);
         writer.Write(value);
         writer.Flush();
         stream.Position = 0;
