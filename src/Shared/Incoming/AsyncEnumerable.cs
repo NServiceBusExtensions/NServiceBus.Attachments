@@ -41,7 +41,7 @@ class AsyncEnumerable<T> : IAsyncEnumerable<T>, IAsyncEnumerator<T>
                 return inner.Current;
             }
 
-            throw new Exception();
+            throw new();
         }
     }
 }

@@ -112,12 +112,12 @@ public class IntegrationTests : IDisposable
         var timeout = TimeSpan.FromSeconds(300);
         if (!HandlerEvent.WaitOne(timeout))
         {
-            throw new Exception("TimedOut");
+            throw new("TimedOut");
         }
 
         if (!SagaEvent.WaitOne(timeout))
         {
-            throw new Exception("TimedOut");
+            throw new("TimedOut");
         }
 
         if (useSqlTransportConnection &&
@@ -129,7 +129,7 @@ public class IntegrationTests : IDisposable
             var persister = new Persister("Attachments");
             await foreach (var _ in persister.ReadAllMessageInfo(connection, null, startMessageId))
             {
-                throw new Exception("Expected attachments to be cleaned");
+                throw new("Expected attachments to be cleaned");
             }
         }
 

@@ -134,6 +134,6 @@ class SendBehavior :
             return;
         }
 
-        throw new Exception("No matching way to handle outgoing.");
+        throw new("No matching way to handle outgoing.");
     }
 }

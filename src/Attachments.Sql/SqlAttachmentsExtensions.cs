@@ -27,7 +27,7 @@ namespace NServiceBus
             var dbConnection = connectionFactory();
             if (dbConnection.State == ConnectionState.Open)
             {
-                throw new Exception("This overload of EnableAttachments expects `Func<DbConnection> connectionFactory` to return a un-opened DbConnection.");
+                throw new("This overload of EnableAttachments expects `Func<DbConnection> connectionFactory` to return a un-opened DbConnection.");
             }
             return EnableAttachments(configuration,
                 connectionFactory: async () =>

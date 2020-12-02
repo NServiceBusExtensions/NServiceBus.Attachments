@@ -70,7 +70,7 @@ class ReceiveBehavior :
             }
             else
             {
-                throw new Exception($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
+                throw new($"{nameof(AttachmentSettings.UseTransportConnectivity)} was configured but no {nameof(TransportTransaction)} could be found");
             }
         }
 

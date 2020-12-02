@@ -190,7 +190,7 @@ namespace NServiceBus.Attachments
                 return attachment.Bytes;
             }
 
-            throw new Exception($"Cant find an attachment: {name}");
+            throw new($"Cant find an attachment: {name}");
         }
 
         MockAttachment GetAttachmentForMessage(string messageId, string name)
@@ -201,7 +201,7 @@ namespace NServiceBus.Attachments
                 return attachment;
             }
 
-            throw new Exception($"Cant find an attachment: {name}");
+            throw new($"Cant find an attachment: {name}");
         }
 
         Dictionary<string, MockAttachment> GetAttachmentsForMessage(string messageId)
@@ -211,7 +211,7 @@ namespace NServiceBus.Attachments
                 return attachmentsForMessage;
             }
 
-            throw new Exception($"Cant find an attachment: {messageId}");
+            throw new($"Cant find an attachment: {messageId}");
         }
 
         MockAttachment GetCurrentMessageAttachment(string name)
@@ -221,7 +221,7 @@ namespace NServiceBus.Attachments
                 return attachment;
             }
 
-            throw new Exception($"Cant find an attachment: {name}");
+            throw new($"Cant find an attachment: {name}");
         }
 
         static BinaryWriter BuildWriter(Stream target, Encoding? encoding)

@@ -21,7 +21,7 @@ static class NsbExtensions
         {
             return incomingMessage;
         }
-        throw new Exception("Expected IncomingPhysicalMessage to exist.");
+        throw new("Expected IncomingPhysicalMessage to exist.");
     }
 
     public static string IncomingMessageId(this IOutgoingLogicalMessageContext context)

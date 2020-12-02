@@ -14,7 +14,7 @@ class AttachmentFeature :
         var settings = readOnlySettings.Get<AttachmentSettings>();
 
         var pipeline = context.Pipeline;
-        var persister = new Persister(settings.FileShare);
+        Persister persister = new(settings.FileShare);
         pipeline.Register(new ReceiveRegistration(persister));
         pipeline.Register(new SendRegistration(persister, settings.TimeToKeep));
         if (context.Settings.PurgeOnStartup())

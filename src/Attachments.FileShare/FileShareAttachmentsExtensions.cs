@@ -20,7 +20,7 @@ namespace NServiceBus
             Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
             Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
             var settings = configuration.GetSettings();
-            var attachments = new AttachmentSettings(fileShare, timeToKeep);
+            AttachmentSettings attachments = new(fileShare, timeToKeep);
             settings.Set(attachments);
             configuration.EnableFeature<AttachmentFeature>();
             configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();

@@ -314,7 +314,7 @@ class HandlerFactoryAsync :
 
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -358,7 +358,7 @@ class HandlerInstance :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var sendOptions = new SendOptions();
+        SendOptions sendOptions = new();
         var attachments = sendOptions.Attachments();
         var stream = File.OpenRead("FilePath.txt");
         attachments.Add(
@@ -624,8 +624,8 @@ class HandlerProcessStreamsForMessage :
             action: async stream =>
             {
                 // Use the attachment stream. in this example copy to a file
-                using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(fileToCopyTo);
+                await using var toCopyTo = File.Create($"{stream.Name}.txt");
+                await stream.CopyToAsync(toCopyTo);
             });
     }
 }
@@ -672,7 +672,7 @@ public class Handler :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        var options = new SendOptions();
+        SendOptions options = new();
         var attachments = options.Attachments();
         attachments.Add("theName", () => File.OpenRead("aFilePath"));
         return context.Send(new OtherMessage(), options);
@@ -704,8 +704,8 @@ public class Handler :
 public async Task TestOutgoingAttachments()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
-    var handler = new Handler();
+    TestableMessageHandlerContext context = new();
+    Handler handler = new();
 
     //Act
     await handler.Handle(new MyMessage(), context);
@@ -755,8 +755,8 @@ To mock or verify incoming attachments is it necessary to inject a instance of `
 <!-- snippet: InjectAttachmentsInstance -->
 <a id='snippet-injectattachmentsinstance'></a>
 ```cs
-var context = new TestableMessageHandlerContext();
-var mockMessageAttachments = new MyMessageAttachments();
+TestableMessageHandlerContext context = new();
+MyMessageAttachments mockMessageAttachments = new();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L17-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
@@ -845,9 +845,9 @@ public class Handler : IHandleMessages<MyMessage>
 public async Task TestIncomingAttachment()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
-    var handler = new Handler();
-    var mockMessageAttachments = new CustomMockMessageAttachments();
+    TestableMessageHandlerContext context = new();
+    Handler handler = new();
+    CustomMockMessageAttachments mockMessageAttachments = new();
     context.InjectAttachmentsInstance(mockMessageAttachments);
 
     //Act

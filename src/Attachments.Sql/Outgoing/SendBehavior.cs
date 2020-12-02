@@ -91,7 +91,7 @@ class SendBehavior :
         {
             if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
             {
-                throw new Exception("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
+                throw new("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
             }
 
             await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
@@ -179,6 +179,6 @@ class SendBehavior :
             return;
         }
 
-        throw new Exception("No matching way to handle outgoing.");
+        throw new("No matching way to handle outgoing.");
     }
 }

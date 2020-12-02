@@ -57,7 +57,7 @@ namespace NServiceBus.Attachments.FileShare
                 return;
             }
 
-            throw new Exception($"Could not find attachment. MessageId:{messageId}, Path:{path}");
+            throw new($"Could not find attachment. MessageId:{messageId}, Path:{path}");
         }
 
         static void ThrowIfFileNotFound(string path, string messageId, string name)
@@ -67,7 +67,7 @@ namespace NServiceBus.Attachments.FileShare
                 return;
             }
 
-            throw new Exception($"Could not find attachment. MessageId:{messageId}, Name:{name}, Path:{path}");
+            throw new($"Could not find attachment. MessageId:{messageId}, Name:{name}, Path:{path}");
         }
 
         static void ThrowIfDirectoryExists(string path, string messageId, string name)
@@ -77,7 +77,7 @@ namespace NServiceBus.Attachments.FileShare
                 return;
             }
 
-            throw new Exception($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
+            throw new($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
         }
 
         static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory, CancellationToken cancellation = default)

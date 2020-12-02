@@ -50,7 +50,7 @@ static class FileHelpers
 
     public static void Copy(string sourceDirectory, string targetDirectory)
     {
-        CopyAll(new DirectoryInfo(sourceDirectory), new DirectoryInfo(targetDirectory));
+        CopyAll(new(sourceDirectory), new(targetDirectory));
     }
 
     public static void CopyAll(DirectoryInfo source, DirectoryInfo target)

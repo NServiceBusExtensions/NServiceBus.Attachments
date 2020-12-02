@@ -19,7 +19,7 @@ class UsedWhenNotEnabledBehavior :
     {
         if (context.Extensions.TryGet<IOutgoingAttachments>(out _))
         {
-            throw new Exception(Text);
+            throw new(Text);
         }
 
         return next();

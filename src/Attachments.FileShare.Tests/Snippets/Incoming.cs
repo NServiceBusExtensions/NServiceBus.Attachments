@@ -58,8 +58,8 @@ public class Incoming
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    using var fileToCopyTo = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(fileToCopyTo);
+                    await using var toCopyTo = File.Create($"{stream.Name}.txt");
+                    await stream.CopyToAsync(toCopyTo);
                 });
         }
     }

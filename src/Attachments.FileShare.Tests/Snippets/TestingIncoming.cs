@@ -16,8 +16,8 @@ class IncomingAttachment
     {
         #region InjectAttachmentsInstance
 
-        var context = new TestableMessageHandlerContext();
-        var mockMessageAttachments = new MyMessageAttachments();
+        TestableMessageHandlerContext context = new();
+        MyMessageAttachments mockMessageAttachments = new();
         context.InjectAttachmentsInstance(mockMessageAttachments);
 
         #endregion
@@ -63,9 +63,9 @@ public class TestingIncoming
     public async Task TestIncomingAttachment()
     {
         //Arrange
-        var context = new TestableMessageHandlerContext();
-        var handler = new Handler();
-        var mockMessageAttachments = new CustomMockMessageAttachments();
+        TestableMessageHandlerContext context = new();
+        Handler handler = new();
+        CustomMockMessageAttachments mockMessageAttachments = new();
         context.InjectAttachmentsInstance(mockMessageAttachments);
 
         //Act

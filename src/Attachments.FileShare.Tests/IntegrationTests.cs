@@ -8,14 +8,15 @@ using NServiceBus;
 using NServiceBus.Attachments.FileShare;
 using Xunit;
 
-public class IntegrationTests: IDisposable
+public class IntegrationTests :
+    IDisposable
 {
     ManualResetEvent resetEvent = new(false);
 
     [Fact]
     public async Task Run()
     {
-        var configuration = new EndpointConfiguration("FileShareIntegrationTests");
+        EndpointConfiguration configuration = new("FileShareIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.RegisterComponents(components => components.RegisterSingleton(resetEvent));

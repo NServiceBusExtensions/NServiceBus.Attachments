@@ -22,7 +22,7 @@ namespace NServiceBus.Attachments.FileShare
             ThrowIfFileNotFound(dataFile, messageId, name);
             var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-            return new AttachmentBytes(name, bytes, metadata);
+            return new(name, bytes, metadata);
         }
 
         /// <inheritdoc />
@@ -35,7 +35,7 @@ namespace NServiceBus.Attachments.FileShare
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
             var allText = File.ReadAllText(dataFile, encoding.Default());
-            return new AttachmentString(name, allText, metadata);
+            return new(name, allText, metadata);
         }
 
         /// <inheritdoc />
@@ -59,7 +59,7 @@ namespace NServiceBus.Attachments.FileShare
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-                yield return new AttachmentBytes(attachmentName, bytes, metadata);
+                yield return new(attachmentName, bytes, metadata);
             }
         }
 
@@ -77,7 +77,7 @@ namespace NServiceBus.Attachments.FileShare
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 var allText = File.ReadAllText(dataFile, encoding);
-                yield return new AttachmentString(attachmentName, allText, metadata);
+                yield return new(attachmentName, allText, metadata);
             }
         }
 
@@ -94,7 +94,7 @@ namespace NServiceBus.Attachments.FileShare
                 var attachmentName = Directory.GetParent(dataFile).Name;
                 using var read = FileHelpers.OpenRead(dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-                yield return new AttachmentStream(attachmentName, read, read.Length, metadata);
+                yield return new(attachmentName, read, read.Length, metadata);
             }
         }
 
@@ -108,7 +108,7 @@ namespace NServiceBus.Attachments.FileShare
             ThrowIfFileNotFound(dataFile, messageId, name);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
             var read = FileHelpers.OpenRead(dataFile);
-            return new AttachmentStream(name, read, read.Length, metadata);
+            return new(name, read, read.Length, metadata);
         }
     }
 }

@@ -17,18 +17,18 @@ public class AttachmentCleanerTests
 
         for (var i = 0; i < 9; i++)
         {
-            timer.OnError(new Exception("Simulated!"));
+            timer.OnError(new("Simulated!"));
         }
 
         Assert.False(criticalActionTriggered);
 
         //Trigger the 10th time
-        timer.OnError(new Exception("Simulated!"));
+        timer.OnError(new("Simulated!"));
         Assert.True(criticalActionTriggered);
         criticalActionTriggered = false;
 
         //Trigger again -- the counter should be reset
-        timer.OnError(new Exception("Simulated!"));
+        timer.OnError(new("Simulated!"));
         Assert.False(criticalActionTriggered);
     }
 
@@ -51,7 +51,7 @@ public class AttachmentCleanerTests
             }
             else
             {
-                timer.OnError(new Exception("Simulated!"));
+                timer.OnError(new("Simulated!"));
             }
         }
 

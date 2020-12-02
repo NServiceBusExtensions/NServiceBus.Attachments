@@ -52,7 +52,7 @@ namespace NServiceBus.Attachments.FileShare
                 }
                 var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-                yield return new AttachmentInfo(
+                yield return new(
                     messageId: messageId,
                     name: Path.GetFileName(attachmentDirectory),
                     expiry: ParseExpiry(Path.GetFileNameWithoutExtension(expiryFile)),

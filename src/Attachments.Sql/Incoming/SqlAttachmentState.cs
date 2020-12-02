@@ -45,7 +45,7 @@ class SqlAttachmentState
         }
         catch (Exception exception)
         {
-            throw new Exception("Provided ConnectionFactory threw an exception", exception);
+            throw new("Provided ConnectionFactory threw an exception", exception);
         }
     }
 }

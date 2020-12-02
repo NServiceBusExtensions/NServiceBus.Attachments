@@ -1,5 +1,4 @@
-﻿using System;
-using NServiceBus.Attachments.FileShare;
+﻿using NServiceBus.Attachments.FileShare;
 
 namespace NServiceBus
 {
@@ -25,7 +24,7 @@ namespace NServiceBus
             {
                 return new MessageAttachments(context.MessageId, state.Persister);
             }
-            throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(FileShareAttachmentsExtensions.EnableAttachments)}().");
+            throw new($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(FileShareAttachmentsExtensions.EnableAttachments)}().");
         }
     }
 }

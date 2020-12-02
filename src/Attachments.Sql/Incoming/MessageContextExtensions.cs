@@ -37,7 +37,7 @@ namespace NServiceBus
                 }
                 return new MessageAttachmentsFromSqlFactory(state.GetConnection, context.MessageId, state.Persister);
             }
-            throw new Exception($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(SqlAttachmentsExtensions.EnableAttachments)}().");
+            throw new($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(SqlAttachmentsExtensions.EnableAttachments)}().");
         }
     }
 }
