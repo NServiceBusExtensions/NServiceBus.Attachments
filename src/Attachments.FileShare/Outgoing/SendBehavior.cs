@@ -39,30 +39,31 @@ class SendBehavior :
             return;
         }
 
+        List<string> attachmentNames = new();
+
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
         foreach (var item in inner)
         {
             var name = item.Key;
+            attachmentNames.Add(name);
             var outgoing = item.Value;
             await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
         }
+
         if (duplicateIncoming)
         {
-            await persister.Duplicate(context.IncomingMessageId(), context.MessageId);
+            var names = await persister.Duplicate(context.IncomingMessageId(), context.MessageId);
+            attachmentNames.AddRange(names);
         }
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
-            if (duplicate.To == null)
-            {
-                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId);
-            }
-            else
-            {
-                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To);
-            }
+            attachmentNames.Add(duplicate.To);
+            await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To);
         }
+
+        context.Headers.Add("Attachments", string.Join(", ", attachmentNames));
     }
 
     async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)

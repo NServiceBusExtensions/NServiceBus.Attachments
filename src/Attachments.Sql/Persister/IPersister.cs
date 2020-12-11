@@ -45,6 +45,11 @@ namespace NServiceBus.Attachments.Sql
         IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, CancellationToken cancellation = default);
 
         /// <summary>
+        /// Reads the names for all attachments of a specific message.
+        /// </summary>
+        IAsyncEnumerable<(Guid,string)> ReadAllMessageNames(DbConnection connection, DbTransaction? transaction, string messageId, CancellationToken cancellation = default);
+
+        /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments.
         /// </summary>
         Task ReadAllInfo(DbConnection connection, DbTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default);
@@ -87,7 +92,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies all attachments to a different message.
         /// </summary>
-        Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default);
+        Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads all <see cref="AttachmentBytes"/>s for an attachment.

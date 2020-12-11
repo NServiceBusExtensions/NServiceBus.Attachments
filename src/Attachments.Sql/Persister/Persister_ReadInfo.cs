@@ -37,6 +37,24 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
+        public virtual async IAsyncEnumerable<(Guid, string)> ReadAllMessageNames(
+            DbConnection connection,
+            DbTransaction? transaction,
+            string messageId,
+            [EnumeratorCancellation] CancellationToken cancellation = default)
+        {
+            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+            Guard.AgainstNull(connection, nameof(connection));
+            using var command = GetReadInfoCommand(connection, transaction, messageId);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
+            while (await reader.ReadAsync(cancellation))
+            {
+                cancellation.ThrowIfCancellationRequested();
+                yield return (reader.GetGuid(0), reader.GetString(1));
+            }
+        }
+
+        /// <inheritdoc />
         public virtual async IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(
             DbConnection connection,
             DbTransaction? transaction,
@@ -107,6 +125,21 @@ from {table}";
             return command;
         }
 
+        DbCommand GetReadNamesCommand(DbConnection connection, DbTransaction? transaction, string messageId)
+        {
+            var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = $@"
+select
+    Id,
+    Name
+from {table}
+where
+    MessageIdLower = lower(@MessageId)";
+            command.AddParameter("MessageId", messageId);
+
+            return command;
+        }
         DbCommand GetReadInfoCommand(DbConnection connection, DbTransaction? transaction, string messageId)
         {
             var command = connection.CreateCommand();

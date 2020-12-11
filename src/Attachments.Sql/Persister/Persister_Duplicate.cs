@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,13 +11,21 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual async Task Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
+        public virtual async Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
             Guard.AgainstNull(connection, nameof(connection));
             using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
-            await command.ExecuteNonQueryAsync(cancellation);
+            using var reader = await command.ExecuteSequentialReader(cancellation);
+            List<string> names = new();
+            while (await reader.ReadAsync(cancellation))
+            {
+                cancellation.ThrowIfCancellationRequested();
+                names.Add(reader.GetString(0));
+            }
+
+            return names;
         }
 
         /// <inheritdoc />
@@ -57,6 +66,7 @@ insert into {table}
     Data,
     Metadata
 )
+output inserted.Name
 select
     @TargetMessageId,
     Name,

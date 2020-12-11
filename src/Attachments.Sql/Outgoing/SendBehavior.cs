@@ -83,10 +83,13 @@ class SendBehavior :
 
     async Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
+        List<string> attachmentNames = new();
         foreach (var outgoing in outgoingAttachments.Inner)
         {
+            attachmentNames.Add(outgoing.Key);
             await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing.Value, outgoing.Key);
         }
+
         if (outgoingAttachments.DuplicateIncomingAttachments)
         {
             if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
@@ -94,20 +97,18 @@ class SendBehavior :
                 throw new("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
             }
 
-            await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
+            var names = await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
+            attachmentNames.AddRange(names);
         }
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
-            if (duplicate.To == null)
-            {
-                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, connection, transaction, context.MessageId);
-            }
-            else
-            {
-                await persister.Duplicate(context.IncomingMessageId(), duplicate.From, connection, transaction, context.MessageId, duplicate.To);
-            }
+            var incomingMessageId = context.IncomingMessageId();
+            attachmentNames.Add(duplicate.To);
+            await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
         }
+
+        context.Headers.Add("Attachments", string.Join(", ", attachmentNames));
     }
 
     async Task ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)

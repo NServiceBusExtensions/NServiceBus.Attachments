@@ -39,6 +39,11 @@ namespace NServiceBus.Attachments.FileShare
         IAsyncEnumerable<AttachmentInfo> ReadAllInfo(CancellationToken cancellation = default);
 
         /// <summary>
+        /// Reads the names for all attachments of a specific message.
+        /// </summary>
+        IEnumerable<string> ReadAllMessageNames(string messageId);
+
+        /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
         /// </summary>
         IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(string messageId, CancellationToken cancellation = default);
@@ -76,7 +81,7 @@ namespace NServiceBus.Attachments.FileShare
         /// <summary>
         /// Copies attachments to a different message.
         /// </summary>
-        Task Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default);
+        Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads an <see cref="AttachmentBytes"/> for an attachment.

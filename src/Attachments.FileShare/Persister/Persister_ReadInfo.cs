@@ -30,6 +30,13 @@ namespace NServiceBus.Attachments.FileShare
         }
 
         /// <inheritdoc />
+        public virtual IEnumerable<string> ReadAllMessageNames(string messageId)
+        {
+            var messageDirectory = GetMessageDirectory(messageId);
+            return Directory.EnumerateDirectories(messageDirectory).Select(Path.GetFileName);
+        }
+
+        /// <inheritdoc />
         public virtual IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(
             string messageId,
             CancellationToken cancellation = default)

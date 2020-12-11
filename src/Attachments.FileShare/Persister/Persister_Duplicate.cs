@@ -1,4 +1,7 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.FileShare
@@ -9,14 +12,15 @@ namespace NServiceBus.Attachments.FileShare
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual Task Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default)
+        public virtual Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
             var sourceDirectory = GetMessageDirectory(sourceMessageId);
             var targetDirectory = GetMessageDirectory(targetMessageId);
             FileHelpers.Copy(sourceDirectory, targetDirectory);
-            return Task.CompletedTask;
+            List<string> names = new(Directory.EnumerateDirectories(targetDirectory).Select(Path.GetFileName));
+            return Task.FromResult<IReadOnlyCollection<string>>(names);
         }
 
         /// <inheritdoc />

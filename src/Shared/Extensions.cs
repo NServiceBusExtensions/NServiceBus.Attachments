@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
-static class IoExtensions
+static class Extensions
 {
     public static readonly UTF8Encoding Utf8NoBOM = new(false, true);
 
@@ -13,6 +15,17 @@ static class IoExtensions
         }
 
         return value;
+    }
+
+    public static async Task<List<T>> ToAsyncList<T>(this IAsyncEnumerable<T> enumerable)
+    {
+        List<T> list = new();
+        await foreach (var item in enumerable)
+        {
+            list.Add(item);
+        }
+
+        return list;
     }
 
     public static byte[] ToBytes(this string value, Encoding encoding)

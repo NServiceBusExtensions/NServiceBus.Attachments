@@ -173,6 +173,15 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task ReadAllMessageNames()
+    {
+        var persister = GetPersister();
+        await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata);
+        await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata);
+        await Verifier.Verify(persister.ReadAllMessageNames("theMessageId"));
+    }
+
+    [Fact]
     public async Task ReadAllMessageInfo()
     {
         var persister = GetPersister();
@@ -236,8 +245,9 @@ public class PersisterTests
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
-        await Verifier.Verify(persister.ReadAllInfo());
+        var names = await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
+        var allInfo = await persister.ReadAllInfo().ToAsyncList();
+        await Verifier.Verify(new {names, allInfo});
     }
 
     [Fact]
