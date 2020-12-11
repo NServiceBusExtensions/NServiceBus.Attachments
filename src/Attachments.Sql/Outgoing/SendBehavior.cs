@@ -84,11 +84,11 @@ class SendBehavior :
 
     async Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
-        List<(Guid, string)> attachments = new();
+        Dictionary<Guid, string> attachments = new();
         foreach (var outgoing in outgoingAttachments.Inner)
         {
             var guid = await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing.Value, outgoing.Key);
-            attachments.Add((guid, outgoing.Key));
+            attachments.Add(guid, outgoing.Key);
         }
 
         if (outgoingAttachments.DuplicateIncomingAttachments)
@@ -99,17 +99,20 @@ class SendBehavior :
             }
 
             var names = await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
-            attachments.AddRange(names);
+            foreach (var name in names)
+            {
+                attachments.Add(name.Item1, name.Item2);
+            }
         }
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
             var incomingMessageId = context.IncomingMessageId();
             var guid = await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
-            attachments.Add((guid, duplicate.To));
+            attachments.Add(guid, duplicate.To);
         }
 
-        context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x=> $"{x.Item1}: {x.Item2}")));
+        context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x=> $"{x.Key}: {x.Value}")));
     }
 
     async Task<Guid> ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
