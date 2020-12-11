@@ -20,19 +20,19 @@ namespace NServiceBus.Attachments.Sql
         /// Saves <paramref name="stream"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
+        Task<Guid> SaveStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Saves <paramref name="bytes"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveBytes(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
+        Task<Guid> SaveBytes(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Saves <paramref name="value"/> as an attachment.
         /// </summary>
         /// <exception cref="TaskCanceledException">If <paramref name="cancellation"/> is <see cref="CancellationToken.IsCancellationRequested"/>.</exception>
-        Task SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
+        Task<Guid> SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding, IReadOnlyDictionary<string, string>? metadata, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads the <see cref="AttachmentInfo"/> for all attachments of a specific message.
@@ -82,17 +82,17 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Copies an attachment to a different message.
         /// </summary>
-        Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default);
+        Task<Guid> Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copies an attachment to a different message.
         /// </summary>
-        Task Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, string targetName, CancellationToken cancellation = default);
+        Task<Guid> Duplicate(string sourceMessageId, string name, DbConnection connection, DbTransaction? transaction, string targetMessageId, string targetName, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copies all attachments to a different message.
         /// </summary>
-        Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default);
+        Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, DbConnection connection, DbTransaction? transaction, string targetMessageId, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads all <see cref="AttachmentBytes"/>s for an attachment.

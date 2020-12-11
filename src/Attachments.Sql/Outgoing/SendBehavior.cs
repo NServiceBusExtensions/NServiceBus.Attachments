@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
@@ -83,11 +84,11 @@ class SendBehavior :
 
     async Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
-        List<string> attachmentNames = new();
+        List<(Guid, string)> attachments = new();
         foreach (var outgoing in outgoingAttachments.Inner)
         {
-            attachmentNames.Add(outgoing.Key);
-            await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing.Value, outgoing.Key);
+            var guid = await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing.Value, outgoing.Key);
+            attachments.Add((guid, outgoing.Key));
         }
 
         if (outgoingAttachments.DuplicateIncomingAttachments)
@@ -98,35 +99,35 @@ class SendBehavior :
             }
 
             var names = await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
-            attachmentNames.AddRange(names);
+            attachments.AddRange(names);
         }
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
             var incomingMessageId = context.IncomingMessageId();
-            attachmentNames.Add(duplicate.To);
-            await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
+            var guid = await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
+            attachments.Add((guid, duplicate.To));
         }
 
-        context.Headers.Add("Attachments", string.Join(", ", attachmentNames));
+        context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x=> $"{x.Item1}: {x.Item2}")));
     }
 
-    async Task ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
+    async Task<Guid> ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
         using (stream)
         {
-            await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata);
+            return await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata);
         }
     }
 
-    async Task ProcessAttachment(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name)
+    async Task<Guid> ProcessAttachment(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name)
     {
         var outgoingStreamTimeToKeep = outgoing.TimeToKeep ?? endpointTimeToKeep;
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
         var expiry = DateTime.UtcNow.Add(timeToKeep);
         try
         {
-            await Process(connection, transaction, messageId, outgoing, name, expiry);
+            return await Process(connection, transaction, messageId, outgoing, name, expiry);
         }
         finally
         {
@@ -134,50 +135,45 @@ class SendBehavior :
         }
     }
 
-    async Task Process(DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
+    async Task<Guid> Process(DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
     {
+        var metadata = outgoing.Metadata;
         if (outgoing.AsyncStreamFactory != null)
         {
             var stream = await outgoing.AsyncStreamFactory();
-            await ProcessStream(connection, transaction, messageId, name, expiry, stream, outgoing.Metadata);
-            return;
+            return await ProcessStream(connection, transaction, messageId, name, expiry, stream, metadata);
+
         }
 
         if (outgoing.StreamFactory != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata);
-            return;
+            return await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory(), metadata);
         }
 
         if (outgoing.StreamInstance != null)
         {
-            await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata);
-            return;
+            return await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance, metadata);
         }
 
         if (outgoing.AsyncBytesFactory != null)
         {
             var bytes = await outgoing.AsyncBytesFactory();
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, outgoing.Metadata);
-            return;
+            return await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, metadata);
         }
 
         if (outgoing.BytesFactory != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata);
-            return;
+            return await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), metadata);
         }
 
         if (outgoing.BytesInstance != null)
         {
-            await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata);
-            return;
+            return await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, metadata);
         }
 
         if (outgoing.StringInstance != null)
         {
-            await persister.SaveString(connection, transaction, messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, outgoing.Metadata);
-            return;
+            return await persister.SaveString(connection, transaction, messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, metadata);
         }
 
         throw new("No matching way to handle outgoing.");

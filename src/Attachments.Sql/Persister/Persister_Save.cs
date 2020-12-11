@@ -14,7 +14,7 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual Task SaveStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+        public virtual Task<Guid> SaveStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -25,7 +25,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual Task SaveBytes(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+        public virtual Task<Guid> SaveBytes(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -36,7 +36,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual Task SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+        public virtual Task<Guid> SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -47,7 +47,7 @@ namespace NServiceBus.Attachments.Sql
             return Save(connection, transaction, messageId, name, expiry, value.ToBytes(encoding), metadata, cancellation);
         }
 
-        async Task Save(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+        async Task<Guid> Save(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
             using var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -60,6 +60,7 @@ insert into {table}
     Data,
     Metadata
 )
+output inserted.ID
 values
 (
     @MessageId,
@@ -75,7 +76,7 @@ values
             command.AddBinary("Data", stream);
 
             // Send the data to the server asynchronously
-            await command.ExecuteNonQueryAsync(cancellation);
+            return (Guid) await command.ExecuteScalarAsync(cancellation);
         }
     }
 }

@@ -1,7 +1,13 @@
 {
   names: [
-    theName1,
-    theName2
+    {
+      Item1: Guid_1,
+      Item2: theName1
+    },
+    {
+      Item1: Guid_2,
+      Item2: theName2
+    }
   ],
   allInfo: [
     {
