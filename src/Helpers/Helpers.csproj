@@ -5,6 +5,6 @@
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.4.4" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.51" PrivateAssets="All" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.52" PrivateAssets="All" />
   </ItemGroup>
 </Project>
