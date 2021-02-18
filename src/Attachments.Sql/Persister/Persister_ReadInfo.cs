@@ -101,12 +101,15 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             ConcurrentBag<AttachmentInfo> list = new();
-            await ReadAllInfo(connection, transaction,
-                    info =>
-                    {
-                        list.Add(info);
-                        return Task.CompletedTask;
-                    }, cancellation);
+            await ReadAllInfo(
+                connection,
+                transaction,
+                info =>
+                {
+                    list.Add(info);
+                    return Task.CompletedTask;
+                },
+                cancellation);
             return list;
         }
 
