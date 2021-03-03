@@ -140,6 +140,7 @@ namespace NServiceBus.Attachments
         {
             throw new NotImplementedException();
         }
+
         public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
             return inner.ReadAsync(buffer, cancellationToken);
