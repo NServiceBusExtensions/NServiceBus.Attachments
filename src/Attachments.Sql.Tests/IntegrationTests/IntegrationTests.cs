@@ -44,6 +44,7 @@ public class IntegrationTests : IDisposable
             //TODO: should detect this a runtime and throw an better exception
             return;
         }
+
         if (useSqlTransport && !useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
         {
             // this scenario is not supported by netcore
@@ -51,11 +52,13 @@ public class IntegrationTests : IDisposable
             //TODO: should detect this a runtime and throw a better exception
             return;
         }
+
         if (useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
         {
             // so a nested connection will cause DTC
             shouldPerformNestedConnection = false;
         }
+
         var endpointName = "SqlIntegrationTests";
         EndpointConfiguration configuration = new(endpointName);
         var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
@@ -63,11 +66,9 @@ public class IntegrationTests : IDisposable
         {
             attachments.UseSynchronizedStorageSessionConnectivity();
         }
+
         configuration.RegisterComponents(
-            registration: configureComponents =>
-            {
-                configureComponents.RegisterSingleton(this);
-            });
+            registration: configureComponents => { configureComponents.RegisterSingleton(this); });
         if (useSqlPersistence)
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
@@ -106,6 +107,7 @@ public class IntegrationTests : IDisposable
             var transport = configuration.UseTransport<LearningTransport>();
             transport.Transactions(transactionMode);
         }
+
         var endpoint = await Endpoint.Start(configuration);
         var startMessageId = await SendStartMessage(endpoint);
 
@@ -171,6 +173,7 @@ public class IntegrationTests : IDisposable
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
         attachment.Add("second", GetStream);
+        attachment.Add("dir/inDir", GetStream);
         attachment.Add("withMetadata", GetStream, metadata: new Dictionary<string, string> {{"key", "value"}});
         await endpoint.Send(new SendMessage(), sendOptions);
         return messageId;

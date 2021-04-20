@@ -85,3 +85,4 @@ Fody/.DS_Store
 *.userprefs
 *.jtconfig
 *.bak
+src/temp/

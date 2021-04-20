@@ -29,10 +29,7 @@ namespace NServiceBus.Attachments
         {
             Guard.AgainstNullOrEmpty(directory, nameof(directory));
             Guard.AgainstEmpty(nameForDefault, nameof(nameForDefault));
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            Directory.CreateDirectory(directory);
 
             return attachments.ProcessStreams(
                 async stream =>
@@ -43,7 +40,11 @@ namespace NServiceBus.Attachments
                         name = nameForDefault;
                     }
 
-                    using var fileStream = File.Create(Path.Combine(directory, name));
+                    var file = Path.Combine(directory, name);
+                    var fileDirectory = Path.GetDirectoryName(file)!;
+                    Directory.CreateDirectory(fileDirectory);
+                    File.Delete(file);
+                    using var fileStream = File.Create(file);
                     await stream.CopyToAsync(fileStream, 4096, cancellation);
                 },
                 cancellation);
