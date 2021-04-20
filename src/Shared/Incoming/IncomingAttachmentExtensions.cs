@@ -40,6 +40,7 @@ namespace NServiceBus.Attachments
                         name = nameForDefault;
                     }
 
+                    name = name.TrimStart('\\', '/');
                     var file = Path.Combine(directory, name);
                     var fileDirectory = Path.GetDirectoryName(file)!;
                     Directory.CreateDirectory(fileDirectory);
