@@ -17,7 +17,7 @@ class AttachmentFeature :
         pipeline.Register(new ReceiveRegistration(connectionFactory, persister, settings.UseTransport, settings.UseSynchronizedStorage));
         if (settings.UseTransport)
         {
-            pipeline.Register(new PhysicalBehaviorRegistration(connectionFactory, persister));
+            pipeline.Register(new DeleteBehaviorRegistration(connectionFactory, persister));
         }
 
         pipeline.Register(new SendRegistration(connectionFactory, persister, settings.TimeToKeep));
