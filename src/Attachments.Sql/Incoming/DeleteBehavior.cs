@@ -27,37 +27,37 @@ class DeleteBehavior :
 
         if (!context.MessageHeaders.TryGetValue(Headers.MessageIntent, out var intent))
         {
-            log.DebugFormat("Did not delete attachments for {0} since there is no message intent", context.MessageId);
+            log.Debug($"Did not delete attachments for {context.MessageId} since there is no message intent");
             return;
         }
 
         if (intent != "Send" && intent != "Reply")
         {
-            log.DebugFormat("Did not delete attachments for {0} since intent is {1}", context.MessageId, intent);
+            log.Debug($"Did not delete attachments for {context.MessageId} since intent is {intent}");
             return;
         }
 
         if (!context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
         {
-            log.DebugFormat("Did not delete attachments for {0} since there is no TransportTransaction", context.MessageId);
+            log.Debug($"Did not delete attachments for {context.MessageId} since there is no TransportTransaction");
             return;
         }
 
         if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out DbTransaction dbTransaction))
         {
-            log.DebugFormat("Deleting attachments for {0} using System.Data.SqlClient.SqlTransaction", context.MessageId);
-            await persister.DeleteAttachments(context.MessageId, dbTransaction.Connection, dbTransaction);
+            var count = await persister.DeleteAttachments(context.MessageId, dbTransaction.Connection, dbTransaction);
+            log.Debug($"Deleted {count} attachments for {context.MessageId} using System.Data.SqlClient.SqlTransaction");
             return;
         }
 
         if (transportTransaction.TryGet<Transaction>(out var transaction))
         {
-            log.DebugFormat("Deleting attachments for {0} using Transactions.Transaction", context.MessageId);
             using var connection = await connectionBuilder();
             connection.EnlistTransaction(transaction);
-            await persister.DeleteAttachments(context.MessageId, connection, null);
+            var count = await persister.DeleteAttachments(context.MessageId, connection, null);
+            log.Debug($"Deleting {count} attachments for {context.MessageId} using Transactions.Transaction");
         }
 
-        log.DebugFormat("Did not delete attachments for {0} since there is no Transactions.Transaction or System.Data.SqlClient.SqlTransaction", context.MessageId);
+        log.Debug($"Did not delete attachments for {context.MessageId} since there is no Transactions.Transaction or System.Data.SqlClient.SqlTransaction");
     }
 }

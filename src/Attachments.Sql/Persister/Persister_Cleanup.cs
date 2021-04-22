@@ -11,18 +11,21 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual async Task CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
+        public virtual async Task<int> CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using var command = connection.CreateCommand();
             command.Transaction = transaction;
-            command.CommandText = $"delete from {table} where expiry < @date";
+            command.CommandText = $@"
+delete from {table} where expiry < @date
+select @@ROWCOUNT";
             command.AddParameter("date", dateTime);
-            await command.ExecuteNonQueryAsync(cancellation);
+
+            return (int)await command.ExecuteScalarAsync(cancellation);
         }
 
         /// <inheritdoc />
-        public virtual async Task PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
+        public virtual async Task<int> PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(connection, nameof(connection));
             using var command = connection.CreateCommand();
@@ -38,8 +41,9 @@ begin
 
 delete from {table}
 
-end";
-            await command.ExecuteNonQueryAsync(cancellation);
+end
+select @@ROWCOUNT";
+            return (int)await command.ExecuteScalarAsync(cancellation);
         }
     }
 }

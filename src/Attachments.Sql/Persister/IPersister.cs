@@ -62,17 +62,17 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Deletes all attachments.
         /// </summary>
-        Task DeleteAllAttachments(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+        Task<int> DeleteAllAttachments(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes attachments older than <paramref name="dateTime"/>.
         /// </summary>
-        Task CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default);
+        Task<int> CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default);
 
         /// <summary>
         /// Deletes all items.
         /// </summary>
-        Task PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+        Task<int> PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Copies an attachment to <paramref name="target"/>.
@@ -102,7 +102,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Deletes attachments for message.
         /// </summary>
-        Task DeleteAttachments(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
+        Task<int> DeleteAttachments(string messageId, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default);
 
         /// <summary>
         /// Reads all <see cref="AttachmentString"/>s for an attachment.

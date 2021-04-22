@@ -3,10 +3,13 @@ using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.ObjectBuilder;
 using NServiceBus.Attachments.Sql;
+using NServiceBus.Logging;
 
 class AttachmentFeature :
     Feature
 {
+    static ILog log = LogManager.GetLogger("AttachmentFeature");
+
     protected override void Setup(FeatureConfigurationContext context)
     {
         var settings = context.Settings.Get<AttachmentSettings>();
@@ -37,7 +40,8 @@ class AttachmentFeature :
         return new(async token =>
             {
                 using var connection = await settings.ConnectionFactory();
-                await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
+                var count = await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
+                log.Debug($"Deleted {count} attachments during startup");
             },
             criticalError: builder.Build<CriticalError>().Raise,
             frequencyToRunCleanup: TimeSpan.FromHours(1),

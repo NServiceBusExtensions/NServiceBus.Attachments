@@ -1,7 +1,10 @@
-[
-  {
-    MessageId: theMessageId2,
-    Name: theName,
-    Expiry: DateTime_1
-  }
-]
+﻿{
+  cleanupCount: 1,
+  result: [
+    {
+      MessageId: theMessageId2,
+      Name: theName,
+      Expiry: DateTime_1
+    }
+  ]
+}

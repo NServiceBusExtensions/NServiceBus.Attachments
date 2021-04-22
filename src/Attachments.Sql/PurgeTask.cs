@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
+using NServiceBus.Logging;
 
 class PurgeTask :
     FeatureStartupTask
 {
+    static ILog log = LogManager.GetLogger("AttachmentPurgeTask");
     IPersister persister;
     Func<Task<DbConnection>> connectionFactory;
 
@@ -21,7 +23,8 @@ class PurgeTask :
     protected override async Task OnStart(IMessageSession session)
     {
         using var connection = await connectionFactory();
-        await persister.PurgeItems(connection, null, CancellationToken.None);
+        var count = await persister.PurgeItems(connection, null, CancellationToken.None);
+        log.DebugFormat($"Deleted {count} attachments");
     }
 
     protected override Task OnStop(IMessageSession session)

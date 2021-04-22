@@ -13,7 +13,7 @@ using Xunit;
 public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
-    Dictionary<string, string> metadata = new() { { "key", "value" } };
+    Dictionary<string, string> metadata = new() {{"key", "value"}};
     Persister persister;
 
     static PersisterTests()
@@ -68,7 +68,7 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        var name = new string('a',255);
+        var name = new string('a', 255);
         await persister.SaveStream(connection, null, "theMessageId", name, defaultTestDate, GetStream());
         byte[] bytes = await persister.GetBytes("theMessageId", name, connection, null);
         Assert.Equal(5, bytes[0]);
@@ -92,6 +92,7 @@ public class PersisterTests
             });
         Assert.Equal(1, count);
     }
+
     [Fact]
     public async Task ProcessStreamMultiple()
     {
@@ -298,7 +299,7 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
-        await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId","theName2");
+        await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId", "theName2");
         var result = persister.ReadAllInfo(connection, null);
         await Verifier.Verify(result);
     }
@@ -351,9 +352,28 @@ public class PersisterTests
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId1", "theName", defaultTestDate, GetStream());
         await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
-        await persister.CleanupItemsOlderThan(connection, null, new(2001, 1, 1, 1, 1, 1));
-        var result = persister.ReadAllInfo(connection, null);
-        await Verifier.Verify(result);
+        var cleanupCount = await persister.CleanupItemsOlderThan(connection, null, new(2001, 1, 1, 1, 1, 1));
+        var result = await persister.ReadAllInfo(connection, null);
+        await Verifier.Verify(new {cleanupCount, result});
+    }
+
+    [Fact]
+    public async Task PurgeItems()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        await persister.SaveStream(connection, null, "theMessageId1", "theName1", defaultTestDate, GetStream());
+        await persister.SaveStream(connection, null, "theMessageId1", "theName2", defaultTestDate, GetStream());
+        await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate, GetStream());
+        var purgeCount = await persister.PurgeItems(connection, null);
+        var result = await persister.ReadAllInfo(connection, null);
+        await Verifier.Verify(
+            new
+            {
+                result,
+                purgeCount
+            });
     }
 
     [Fact]
@@ -365,9 +385,14 @@ public class PersisterTests
         await persister.SaveStream(connection, null, "theMessageId1", "theName1", defaultTestDate, GetStream());
         await persister.SaveStream(connection, null, "theMessageId1", "theName2", defaultTestDate, GetStream());
         await persister.SaveStream(connection, null, "theMessageId2", "theName", defaultTestDate, GetStream());
-        await persister.DeleteAttachments("theMessageId1", connection, null);
-        var result = persister.ReadAllInfo(connection, null);
-        await Verifier.Verify(result);
+        var deleteCount = await persister.DeleteAttachments("theMessageId1", connection, null);
+        var result = await persister.ReadAllInfo(connection, null);
+        await Verifier.Verify(
+            new
+            {
+                result,
+                deleteCount
+            });
     }
 
     static Stream GetStream(byte content = 5)
