@@ -80,11 +80,6 @@ With the DataBus the only interaction is via byte arrays. NServiceBus.Attachment
 [Full Docs](/docs/fileshare.md)
 
 
-## Security contact information
-
-To report a security vulnerability, use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
-
-
 ## Icon
 
 [Gecko](https://thenounproject.com/term/gecko/258949/) designed by [Alex Podolsky](https://thenounproject.com/alphatoster/) from [The Noun Project](https://thenounproject.com/).
