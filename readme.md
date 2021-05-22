@@ -54,8 +54,7 @@ Support is available via a [Tidelift Subscription](https://tidelift.com/subscrip
     * [Memory usage](#memory-usage)
     * [Variety of data APIs](#variety-of-data-apis)
   * [SQL](#sql)
-  * [FileShare](#fileshare)
-  * [Security contact information](#security-contact-information)<!-- endToc -->
+  * [FileShare](#fileshare)<!-- endToc -->
 
 
 ## NuGet packages
@@ -94,11 +93,6 @@ With the DataBus the only interaction is via byte arrays. NServiceBus.Attachment
 ## FileShare
 
 [Full Docs](/docs/fileshare.md)
-
-
-## Security contact information
-
-To report a security vulnerability, use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
 
 
 ## Icon
