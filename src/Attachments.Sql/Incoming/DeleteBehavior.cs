@@ -25,28 +25,37 @@ class DeleteBehavior :
     {
         await next();
 
-        if (!context.MessageHeaders.TryGetValue(Headers.MessageIntent, out var intent))
+        var id = context.MessageId;
+        var headers = context.MessageHeaders;
+
+        if (!headers.ContainsKey("Attachments"))
         {
-            log.Debug($"Did not delete attachments for {context.MessageId} since there is no message intent");
+            log.Debug($"Did not delete attachments for {id} since there is no 'Attachments' header");
+            return;
+        }
+
+        if (!headers.TryGetValue(Headers.MessageIntent, out var intent))
+        {
+            log.Debug($"Did not delete attachments for {id} since there is no message intent");
             return;
         }
 
         if (intent != "Send" && intent != "Reply")
         {
-            log.Debug($"Did not delete attachments for {context.MessageId} since intent is {intent}");
+            log.Debug($"Did not delete attachments for {id} since intent is {intent}");
             return;
         }
 
         if (!context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
         {
-            log.Debug($"Did not delete attachments for {context.MessageId} since there is no TransportTransaction");
+            log.Debug($"Did not delete attachments for {id} since there is no TransportTransaction");
             return;
         }
 
         if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out DbTransaction dbTransaction))
         {
-            var count = await persister.DeleteAttachments(context.MessageId, dbTransaction.Connection, dbTransaction);
-            log.Debug($"Deleted {count} attachments for {context.MessageId} using System.Data.SqlClient.SqlTransaction");
+            var count = await persister.DeleteAttachments(id, dbTransaction.Connection, dbTransaction);
+            log.Debug($"Deleted {count} attachments for {id} using System.Data.SqlClient.SqlTransaction");
             return;
         }
 
@@ -54,10 +63,10 @@ class DeleteBehavior :
         {
             using var connection = await connectionBuilder();
             connection.EnlistTransaction(transaction);
-            var count = await persister.DeleteAttachments(context.MessageId, connection, null);
-            log.Debug($"Deleting {count} attachments for {context.MessageId} using Transactions.Transaction");
+            var count = await persister.DeleteAttachments(id, connection, null);
+            log.Debug($"Deleting {count} attachments for {id} using Transactions.Transaction");
         }
 
-        log.Debug($"Did not delete attachments for {context.MessageId} since there is no Transactions.Transaction or System.Data.SqlClient.SqlTransaction");
+        log.Debug($"Did not delete attachments for {id} since there is no Transactions.Transaction or System.Data.SqlClient.SqlTransaction");
     }
 }
