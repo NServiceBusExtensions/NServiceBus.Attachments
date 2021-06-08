@@ -33,7 +33,6 @@ class SendBehavior :
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
         var inner = outgoingAttachments.Inner;
-        var duplicateIncoming = outgoingAttachments.DuplicateIncomingAttachments;
         if (!outgoingAttachments.HasPendingAttachments)
         {
             return;
@@ -51,7 +50,7 @@ class SendBehavior :
             await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
         }
 
-        if (duplicateIncoming)
+        if (outgoingAttachments.DuplicateIncomingAttachments)
         {
             var names = await persister.Duplicate(context.IncomingMessageId(), context.MessageId);
             attachmentNames.AddRange(names);
