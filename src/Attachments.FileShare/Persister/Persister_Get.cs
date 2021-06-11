@@ -56,7 +56,7 @@ namespace NServiceBus.Attachments.FileShare
             {
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
-                var attachmentName = Directory.GetParent(dataFile)!.Name;
+                var attachmentName = Directory.GetParent(dataFile).Name;
                 var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 yield return new(attachmentName, bytes, metadata);
@@ -74,7 +74,7 @@ namespace NServiceBus.Attachments.FileShare
             {
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
-                var attachmentName = Directory.GetParent(dataFile)!.Name;
+                var attachmentName = Directory.GetParent(dataFile).Name;
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 var allText = File.ReadAllText(dataFile, encoding);
                 yield return new(attachmentName, allText, metadata);
@@ -91,7 +91,7 @@ namespace NServiceBus.Attachments.FileShare
             {
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
-                var attachmentName = Directory.GetParent(dataFile)!.Name;
+                var attachmentName = Directory.GetParent(dataFile).Name;
                 using var read = FileHelpers.OpenRead(dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 yield return new(attachmentName, read, read.Length, metadata);

@@ -21,7 +21,7 @@ namespace NServiceBus.Attachments.FileShare
             {
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
-                var attachmentName = Directory.GetParent(dataFile)!.Name;
+                var attachmentName = Directory.GetParent(dataFile).Name;
                 var read = FileHelpers.OpenRead(dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 using AttachmentStream attachment = new(attachmentName, read, read.Length, metadata);
