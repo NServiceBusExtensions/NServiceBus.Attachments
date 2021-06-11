@@ -22,7 +22,7 @@ namespace NServiceBus.Attachments.FileShare
                 var expiry = ParseExpiry(Path.GetFileNameWithoutExtension(expiryFile));
                 if (expiry > dateTime)
                 {
-                    Directory.GetParent(expiryFile).Delete(true);
+                    Directory.GetParent(expiryFile)!.Delete(true);
                 }
             }
         }
@@ -37,7 +37,7 @@ namespace NServiceBus.Attachments.FileShare
                     return;
                 }
 
-                Directory.GetParent(expiryFile).Delete(true);
+                Directory.GetParent(expiryFile)!.Delete(true);
             }
         }
     }
