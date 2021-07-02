@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 static class Extensions
 {
-    public static readonly UTF8Encoding Utf8WithBOM = new(true, false);
+    public static readonly UTF8Encoding Utf8NoBOM = new(false, true);
 
     public static Encoding Default(this Encoding? value)
     {
         if (value == null)
         {
-            return Utf8WithBOM;
+            return Utf8NoBOM;
         }
 
         return value;
