@@ -171,7 +171,7 @@ public class PersisterTests
         await foreach (var attachment in persister.GetStrings("theMessageId", connection, null))
         {
             Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
-            Assert.True(attachment.Value == "a" || attachment.Value == "b");
+            Assert.True(attachment.Value == "a" || attachment.Value == "b", attachment.Value);
             Interlocked.Increment(ref count);
         }
 
