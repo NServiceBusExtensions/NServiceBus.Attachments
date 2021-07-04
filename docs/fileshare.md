@@ -44,7 +44,7 @@ configuration.EnableAttachments(
     },
     timeToKeep: _ => TimeSpan.FromDays(7));
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L14-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L16-L35' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -68,7 +68,7 @@ configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L35-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L37-L43' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -94,7 +94,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L46-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L48-L55' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -308,7 +308,7 @@ class HandlerProcessStream :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L7-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstream-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L8-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstream-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -355,7 +355,7 @@ class HandlerProcessStreams :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L28-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L29-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -391,7 +391,7 @@ class HandlerCopyTo :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L71-L84' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L72-L85' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -431,7 +431,7 @@ class HandlerGetStream :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L101-L116' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L102-L117' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -469,7 +469,7 @@ class HandlerGetBytes :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L86-L99' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L87-L100' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -518,7 +518,7 @@ class HandlerProcessStreamsForMessage :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L49-L69' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L50-L70' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be helpful in a saga that is operating in a [Scatter-Gather](https://www.enterpriseintegrationpatterns.com/patterns/messaging/BroadcastAggregate.html) mode. So instead of storing all binaries inside the saga persister, the saga can instead store the message ids and then, at a latter point in time, access those attachments.
@@ -633,7 +633,7 @@ TestableMessageHandlerContext context = new();
 MyMessageAttachments mockMessageAttachments = new();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L17-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L18-L24' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The implementation of `IMessageHandlerContext` can be a custom coded mock or constructed using any of the popular mocking/assertion frameworks.
@@ -672,7 +672,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L29-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L30-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Putting these parts together allows a handler, using incoming attachments, to be tested.
@@ -703,7 +703,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L46-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L47-L59' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -744,6 +744,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L60-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L61-L79' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 <!-- endInclude -->

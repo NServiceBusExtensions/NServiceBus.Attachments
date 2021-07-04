@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using NServiceBus;
+// ReSharper disable UnusedVariable
 
 public class Incoming
 {

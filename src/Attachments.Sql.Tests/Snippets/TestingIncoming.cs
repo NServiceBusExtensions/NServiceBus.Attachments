@@ -9,6 +9,7 @@ using NServiceBus.Attachments.Sql;
 using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
 using Xunit;
+// ReSharper disable UnusedVariable
 
 class IncomingAttachment
 {
