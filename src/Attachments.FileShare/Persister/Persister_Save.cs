@@ -17,7 +17,6 @@ namespace NServiceBus.Attachments.FileShare
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(stream, nameof(stream));
             return Save(messageId, name, expiry, metadata, fileStream => stream.CopyToAsync(fileStream, 4096, cancellation), cancellation);
         }
 
@@ -26,7 +25,6 @@ namespace NServiceBus.Attachments.FileShare
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(bytes, nameof(bytes));
             return Save(messageId, name, expiry, metadata, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation), cancellation);
         }
 
@@ -35,7 +33,6 @@ namespace NServiceBus.Attachments.FileShare
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(value, nameof(value));
             return Save(
                 messageId,
                 name,

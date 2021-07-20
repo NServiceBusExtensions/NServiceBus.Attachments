@@ -16,8 +16,6 @@ namespace NServiceBus
             string fileShare,
             GetTimeToKeep timeToKeep)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
             Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
             var settings = configuration.GetSettings();
             AttachmentSettings attachments = new(fileShare, timeToKeep);

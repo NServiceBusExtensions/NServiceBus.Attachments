@@ -18,8 +18,6 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(connection, nameof(connection));
-            Guard.AgainstNull(action, nameof(action));
             using var command = GetReadInfoCommand(connection, transaction, messageId);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
@@ -44,7 +42,6 @@ namespace NServiceBus.Attachments.Sql
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = GetReadInfoCommand(connection, transaction, messageId);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
@@ -62,7 +59,6 @@ namespace NServiceBus.Attachments.Sql
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = GetReadInfoCommand(connection, transaction, messageId);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
@@ -79,8 +75,6 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual async Task ReadAllInfo(DbConnection connection, DbTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(connection, nameof(connection));
-            Guard.AgainstNull(action, nameof(action));
             using var command = GetReadInfosCommand(connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))

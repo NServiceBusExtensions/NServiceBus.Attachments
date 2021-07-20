@@ -19,7 +19,6 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(connection, nameof(connection));
             encoding = encoding.Default();
             using var command = CreateGetDataCommand(messageId, name, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
@@ -40,7 +39,6 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = CreateGetDataCommand(messageId, name, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             if (await reader.ReadAsync(cancellation))
@@ -66,7 +64,6 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(connection, nameof(connection));
             DbCommand? command = null;
             DbDataReader? reader = null;
             try
@@ -114,7 +111,6 @@ namespace NServiceBus.Attachments.Sql
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = CreateGetDatasCommand(messageId, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
@@ -136,7 +132,6 @@ namespace NServiceBus.Attachments.Sql
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = CreateGetDatasCommand(messageId, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
@@ -153,7 +148,6 @@ namespace NServiceBus.Attachments.Sql
         public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, Encoding? encoding = null, [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(connection, nameof(connection));
             encoding = encoding.Default();
             using var command = CreateGetDatasCommand(messageId, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);

@@ -13,7 +13,6 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual async Task<int> CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $@"
@@ -27,7 +26,6 @@ select @@ROWCOUNT";
         /// <inheritdoc />
         public virtual async Task<int> PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $@"

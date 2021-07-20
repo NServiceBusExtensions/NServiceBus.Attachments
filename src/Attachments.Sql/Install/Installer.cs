@@ -26,8 +26,6 @@ namespace NServiceBus.Attachments.Sql
         /// </summary>
         public static async Task CreateTable(DbConnection connection, Table table, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(connection, nameof(connection));
-            Guard.AgainstNull(table, nameof(table));
             using var command = connection.CreateCommand();
             command.CommandText = GetTableSql();
             command.AddParameter("schema", table.Schema);

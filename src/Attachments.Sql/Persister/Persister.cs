@@ -18,7 +18,6 @@ namespace NServiceBus.Attachments.Sql
         /// </summary>
         public Persister(Table table)
         {
-            Guard.AgainstNull(table, nameof(table));
             this.table = table;
         }
 

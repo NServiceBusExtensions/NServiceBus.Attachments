@@ -14,8 +14,6 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task ProcessStreams(string messageId, DbConnection connection, DbTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(connection, nameof(connection));
-            Guard.AgainstNull(action, nameof(action));
             using var command = CreateGetDatasCommand(messageId, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
@@ -38,8 +36,6 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(connection, nameof(connection));
-            Guard.AgainstNull(action, nameof(action));
             using var command = CreateGetDataCommand(messageId, name, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             if (!await reader.ReadAsync(cancellation))

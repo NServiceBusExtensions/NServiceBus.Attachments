@@ -27,7 +27,6 @@ namespace NServiceBus.Attachments
         /// </summary>
         public void AddAttachment(string name, string payload, Encoding? encoding, IDictionary<string, string>? metadata = null)
         {
-            Guard.AgainstNull(payload, nameof(payload));
             AddAttachment(name, payload.ToBytes(encoding.Default()), metadata);
         }
 
@@ -45,7 +44,6 @@ namespace NServiceBus.Attachments
         public void AddAttachment(string name, byte[] bytes, IDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(bytes, nameof(bytes));
             currentAttachments.Add(name,
                 new
                 (
@@ -70,7 +68,6 @@ namespace NServiceBus.Attachments
         public void AddAttachmentForMessage(string messageId, string name, byte[] bytes, IDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(bytes, nameof(bytes));
             if (!attachments.TryGetValue(messageId, out var attachmentsForMessage))
             {
                 attachments[messageId] = attachmentsForMessage = new Dictionary<string, MockAttachment>();

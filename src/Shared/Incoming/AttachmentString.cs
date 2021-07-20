@@ -43,7 +43,6 @@ namespace NServiceBus.Attachments
         public AttachmentString(string name, string value, IReadOnlyDictionary<string, string>? metadata = null)
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(value, nameof(value));
             metadata ??= MetadataSerializer.EmptyMetadata;
 
             Name = name;

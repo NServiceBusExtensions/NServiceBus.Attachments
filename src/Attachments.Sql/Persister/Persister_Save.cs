@@ -16,32 +16,26 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual Task<Guid> SaveStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(stream, nameof(stream));
             return Save(connection, transaction, messageId, name, expiry, stream, metadata, cancellation);
         }
 
         /// <inheritdoc />
         public virtual Task<Guid> SaveBytes(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(bytes, nameof(bytes));
             return Save(connection, transaction, messageId, name, expiry, bytes, metadata, cancellation);
         }
 
         /// <inheritdoc />
         public virtual Task<Guid> SaveString(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(connection, nameof(connection));
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(value, nameof(value));
             Guard.AgainstLongAttachmentName(name);
             encoding = encoding.Default();
             return Save(connection, transaction, messageId, name, expiry, value.ToBytes(encoding), metadata, cancellation);

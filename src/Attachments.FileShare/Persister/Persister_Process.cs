@@ -14,7 +14,6 @@ namespace NServiceBus.Attachments.FileShare
         public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNull(action, nameof(action));
             var messageDirectory = GetMessageDirectory(messageId);
             ThrowIfDirectoryNotFound(messageDirectory, messageId);
             foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
@@ -34,7 +33,6 @@ namespace NServiceBus.Attachments.FileShare
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(action, nameof(action));
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             ThrowIfDirectoryNotFound(attachmentDirectory, messageId);
             cancellation.ThrowIfCancellationRequested();

@@ -21,9 +21,6 @@ namespace NServiceBus
             Func<DbConnection> connectionFactory,
             GetTimeToKeep timeToKeep)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
-            Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
             var dbConnection = connectionFactory();
             if (dbConnection.State == ConnectionState.Open)
             {
@@ -59,9 +56,6 @@ namespace NServiceBus
             Func<Task<DbConnection>> connectionFactory,
             GetTimeToKeep timeToKeep)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(timeToKeep, nameof(timeToKeep));
-            Guard.AgainstNull(connectionFactory, nameof(connectionFactory));
             var settings = configuration.GetSettings();
             AttachmentSettings attachments = new(connectionFactory, timeToKeep);
             return SetAttachments(configuration, settings, attachments);

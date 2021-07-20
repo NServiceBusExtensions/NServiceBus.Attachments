@@ -61,9 +61,6 @@ namespace NServiceBus.Attachments
             )
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(inner, nameof(inner));
-            Guard.AgainstNull(metadata, nameof(metadata));
-            Guard.AgainstNull(cleanups, nameof(cleanups));
             this.inner = inner;
             this.cleanups = cleanups;
             Name = name;

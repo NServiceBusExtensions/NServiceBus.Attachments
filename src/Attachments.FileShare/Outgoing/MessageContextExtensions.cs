@@ -31,7 +31,6 @@ namespace NServiceBus
 
         static IOutgoingAttachments GetAttachments(this ExtendableOptions options)
         {
-            Guard.AgainstNull(options, nameof(options));
             var contextBag = options.GetExtensions();
             // check the context for a IOutgoingAttachments in case a mocked instance is injected for testing
             if (contextBag.TryGet<IOutgoingAttachments>(out var attachments))

@@ -14,7 +14,6 @@ namespace NServiceBus.Attachments.FileShare
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(target, nameof(target));
             var attachmentDirectory = GetAttachmentDirectory(messageId, name);
             var dataFile = GetDataFile(attachmentDirectory);
             ThrowIfFileNotFound(dataFile, messageId, name);

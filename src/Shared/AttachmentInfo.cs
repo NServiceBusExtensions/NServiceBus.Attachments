@@ -40,7 +40,6 @@ namespace NServiceBus.Attachments
         {
             Guard.AgainstNullOrEmpty(messageId,nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstNull(metadata, nameof(metadata));
             MessageId = messageId;
             Name = name;
             Expiry = expiry;

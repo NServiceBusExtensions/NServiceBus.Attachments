@@ -16,7 +16,6 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
             using var reader = await command.ExecuteSequentialReader(cancellation);
             List<(Guid, string)> names = new();
@@ -37,7 +36,6 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(targetName, nameof(targetName));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
             return (Guid)await command.ExecuteScalarAsync(cancellation);
         }
@@ -49,7 +47,6 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            Guard.AgainstNull(connection, nameof(connection));
             using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
             return (Guid) await command.ExecuteScalarAsync(cancellation);
         }

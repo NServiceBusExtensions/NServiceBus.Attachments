@@ -43,7 +43,6 @@ namespace NServiceBus.Attachments.Sql
         /// </summary>
         public void UseTable(Table table)
         {
-            Guard.AgainstNull(table, nameof(table));
             Table = table;
         }
 
