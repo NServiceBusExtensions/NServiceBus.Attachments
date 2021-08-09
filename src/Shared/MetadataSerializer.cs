@@ -29,7 +29,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public static string? Serialize(IReadOnlyDictionary<string, string>? instance)
         {
-            if (instance == null)
+            if (instance is null)
             {
                 return null;
             }
@@ -42,7 +42,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public static IReadOnlyDictionary<string, string> Deserialize(string? json)
         {
-            if (json == null)
+            if (json is null)
             {
                 return EmptyMetadata;
             }

@@ -93,7 +93,7 @@ namespace NServiceBus.Attachments
         {
             base.Dispose(disposing);
             inner.Dispose();
-            if (cleanups != null)
+            if (cleanups is not null)
             {
                 foreach (var disposable in cleanups)
                 {
@@ -106,7 +106,7 @@ namespace NServiceBus.Attachments
         {
             base.Dispose(disposing);
             inner.Dispose();
-            if (cleanups != null)
+            if (cleanups is not null)
             {
                 foreach (var disposable in cleanups)
                 {
@@ -119,7 +119,7 @@ namespace NServiceBus.Attachments
         {
             await base.DisposeAsync();
             await inner.DisposeAsync();
-            if (cleanups != null)
+            if (cleanups is not null)
             {
                 foreach (var cleanup in cleanups)
                 {

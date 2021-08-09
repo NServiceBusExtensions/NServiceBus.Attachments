@@ -87,11 +87,11 @@ namespace NServiceBus.Attachments.Sql
             catch (Exception)
             {
 #if NETSTANDARD2_1
-                if (reader != null)
+                if (reader is not null)
                 {
                     await reader.DisposeAsync();
                 }
-                if (command != null)
+                if (command is not null)
                 {
                     await command.DisposeAsync();
                 }

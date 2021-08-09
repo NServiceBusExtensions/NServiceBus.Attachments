@@ -15,7 +15,7 @@ static class Guard
 
     public static void AgainstEmpty(string? value, string argumentName)
     {
-        if (value == null)
+        if (value is null)
         {
             return;
         }
@@ -65,7 +65,7 @@ static class Guard
 
     public static Action? WrapCleanupInCheck(this Action? cleanup, string attachmentName)
     {
-        if (cleanup == null)
+        if (cleanup is null)
         {
             return null;
         }
@@ -110,7 +110,7 @@ static class Guard
 
     public static void ThrowIfNullReturned(object? value)
     {
-        if (value == null)
+        if (value is null)
         {
             throw new("Provided delegate returned a null.");
         }
@@ -118,19 +118,19 @@ static class Guard
 
     public static void ThrowIfNullReturned(string? messageId, string? attachmentName, object? value)
     {
-        if (value == null)
+        if (value is null)
         {
-            if (attachmentName != null && messageId != null)
+            if (attachmentName != null && messageId is not null)
             {
                 throw new($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachmentName}'.");
             }
 
-            if (attachmentName != null)
+            if (attachmentName is not null)
             {
                 throw new($"Provided delegate returned a null. Attachment: '{attachmentName}'.");
             }
 
-            if (messageId != null)
+            if (messageId is not null)
             {
                 throw new($"Provided delegate returned a null. MessageId: '{messageId}'.");
             }

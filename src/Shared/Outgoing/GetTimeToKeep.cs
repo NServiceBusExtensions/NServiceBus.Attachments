@@ -17,7 +17,7 @@ namespace NServiceBus.Attachments
     {
         public static Func<TimeSpan?, TimeSpan>? ToFunc(this GetTimeToKeep? timeToKeep)
         {
-            if (timeToKeep == null)
+            if (timeToKeep is null)
             {
                 return null;
             }

@@ -35,7 +35,7 @@ namespace NServiceBus.Attachments
                 async stream =>
                 {
                     var name = stream.Name;
-                    if (name == "default" && nameForDefault != null)
+                    if (name == "default" && nameForDefault is not null)
                     {
                         name = nameForDefault;
                     }

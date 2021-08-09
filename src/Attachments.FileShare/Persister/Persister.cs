@@ -102,7 +102,7 @@ namespace NServiceBus.Attachments.FileShare
             IReadOnlyDictionary<string, string>? metadata,
             CancellationToken cancellation = default)
         {
-            if (metadata == null)
+            if (metadata is null)
             {
                 return;
             }

@@ -90,45 +90,45 @@ class SendBehavior :
 
     async Task Process(string messageId, Outgoing outgoing, string name, DateTime expiry)
     {
-        if (outgoing.AsyncStreamFactory != null)
+        if (outgoing.AsyncStreamFactory is not null)
         {
             var stream = await outgoing.AsyncStreamFactory();
             await ProcessStream(messageId, name, expiry, stream, outgoing.Metadata);
             return;
         }
 
-        if (outgoing.StreamFactory != null)
+        if (outgoing.StreamFactory is not null)
         {
             await ProcessStream(messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata);
             return;
         }
 
-        if (outgoing.StreamInstance != null)
+        if (outgoing.StreamInstance is not null)
         {
             await ProcessStream(messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata);
             return;
         }
 
-        if (outgoing.AsyncBytesFactory != null)
+        if (outgoing.AsyncBytesFactory is not null)
         {
             var bytes = await outgoing.AsyncBytesFactory();
             await persister.SaveBytes(messageId, name, expiry, bytes, outgoing.Metadata);
             return;
         }
 
-        if (outgoing.BytesFactory != null)
+        if (outgoing.BytesFactory is not null)
         {
             await persister.SaveBytes(messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata);
             return;
         }
 
-        if (outgoing.BytesInstance != null)
+        if (outgoing.BytesInstance is not null)
         {
             await persister.SaveBytes(messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata);
             return;
         }
 
-        if (outgoing.StringInstance != null)
+        if (outgoing.StringInstance is not null)
         {
             await persister.SaveString(messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, outgoing.Metadata);
             return;

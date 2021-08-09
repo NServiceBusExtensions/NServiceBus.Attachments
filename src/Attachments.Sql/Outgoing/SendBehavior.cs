@@ -45,7 +45,7 @@ class SendBehavior :
 
         if (context.Extensions.TryGet<SqlAttachmentState>(out var state))
         {
-            if (state.Transaction != null)
+            if (state.Transaction is not null)
             {
                 using var connectionFromState = await state.GetConnection();
                 connectionFromState.EnlistTransaction(state.Transaction);
@@ -53,13 +53,13 @@ class SendBehavior :
                 return;
             }
 
-            if (state.DbTransaction != null)
+            if (state.DbTransaction is not null)
             {
                 await ProcessOutgoing(timeToBeReceived, state.DbTransaction.Connection, state.DbTransaction, context, outgoingAttachments);
                 return;
             }
 
-            if (state.DbConnection != null)
+            if (state.DbConnection is not null)
             {
                 await ProcessOutgoing(timeToBeReceived, state.DbConnection, null, context, outgoingAttachments);
                 return;
@@ -141,40 +141,40 @@ class SendBehavior :
     async Task<Guid> Process(DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
     {
         var metadata = outgoing.Metadata;
-        if (outgoing.AsyncStreamFactory != null)
+        if (outgoing.AsyncStreamFactory is not null)
         {
             var stream = await outgoing.AsyncStreamFactory();
             return await ProcessStream(connection, transaction, messageId, name, expiry, stream, metadata);
 
         }
 
-        if (outgoing.StreamFactory != null)
+        if (outgoing.StreamFactory is not null)
         {
             return await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamFactory(), metadata);
         }
 
-        if (outgoing.StreamInstance != null)
+        if (outgoing.StreamInstance is not null)
         {
             return await ProcessStream(connection, transaction, messageId, name, expiry, outgoing.StreamInstance, metadata);
         }
 
-        if (outgoing.AsyncBytesFactory != null)
+        if (outgoing.AsyncBytesFactory is not null)
         {
             var bytes = await outgoing.AsyncBytesFactory();
             return await persister.SaveBytes(connection, transaction, messageId, name, expiry, bytes, metadata);
         }
 
-        if (outgoing.BytesFactory != null)
+        if (outgoing.BytesFactory is not null)
         {
             return await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesFactory(), metadata);
         }
 
-        if (outgoing.BytesInstance != null)
+        if (outgoing.BytesInstance is not null)
         {
             return await persister.SaveBytes(connection, transaction, messageId, name, expiry, outgoing.BytesInstance, metadata);
         }
 
-        if (outgoing.StringInstance != null)
+        if (outgoing.StringInstance is not null)
         {
             return await persister.SaveString(connection, transaction, messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, metadata);
         }

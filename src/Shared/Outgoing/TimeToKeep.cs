@@ -20,7 +20,7 @@ namespace NServiceBus.Attachments
         /// </summary>
         public static TimeSpan Default(TimeSpan? messageTimeToBeReceived)
         {
-            if (messageTimeToBeReceived == null)
+            if (messageTimeToBeReceived is null)
             {
                 return TimeSpan.FromDays(10);
             }

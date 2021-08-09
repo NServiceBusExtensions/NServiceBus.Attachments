@@ -27,7 +27,7 @@ namespace NServiceBus.Attachments
             Guard.FileExists(file, nameof(file));
             Guard.AgainstEmpty(name, nameof(name));
 
-            if (name == null)
+            if (name is null)
             {
                 attachments.Add(() => File.OpenRead(file));
                 return;

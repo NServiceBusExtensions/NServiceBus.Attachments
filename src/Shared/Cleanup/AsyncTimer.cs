@@ -34,7 +34,7 @@ class AsyncTimer :
 
     public Task Stop()
     {
-        if (tokenSource == null)
+        if (tokenSource is null)
         {
             return Task.CompletedTask;
         }

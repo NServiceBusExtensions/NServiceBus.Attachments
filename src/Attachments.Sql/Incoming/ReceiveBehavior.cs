@@ -37,7 +37,7 @@ class ReceiveBehavior :
         if (useSynchronizedStorage)
         {
             var session = context.SynchronizedStorageSession;
-            if (session != null)
+            if (session is not null)
             {
                 if (storageAccessor.TryGetTransaction(session, out var transaction))
                 {

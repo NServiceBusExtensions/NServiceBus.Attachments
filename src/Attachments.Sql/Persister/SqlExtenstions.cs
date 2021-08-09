@@ -21,7 +21,7 @@ static class SqlExtensions
         var parameter = command.CreateParameter();
         parameter.DbType = DbType.String;
         parameter.ParameterName = name;
-        if (value == null)
+        if (value is null)
         {
             parameter.Value = DBNull.Value;
         }

@@ -21,15 +21,15 @@ namespace NServiceBus
 
             if (contextBag.TryGet<SqlAttachmentState>(out var state))
             {
-                if (state.Transaction != null)
+                if (state.Transaction is not null)
                 {
                     return new MessageAttachmentsFromTransaction(state.Transaction, state.GetConnection, context.MessageId, state.Persister);
                 }
-                if (state.DbTransaction != null)
+                if (state.DbTransaction is not null)
                 {
                     return new MessageAttachmentsFromDbTransaction(state.DbTransaction, context.MessageId, state.Persister);
                 }
-                if (state.DbConnection != null)
+                if (state.DbConnection is not null)
                 {
                     return new MessageAttachmentsFromDbConnection(state.DbConnection, context.MessageId, state.Persister);
                 }

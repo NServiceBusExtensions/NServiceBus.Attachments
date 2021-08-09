@@ -35,7 +35,7 @@ class AsyncEnumerable<T> : IAsyncEnumerable<T>, IAsyncEnumerator<T>
     {
         get
         {
-            if (inner != null)
+            if (inner is not null)
             {
                 return inner.Current;
             }

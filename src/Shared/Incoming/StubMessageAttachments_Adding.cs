@@ -85,7 +85,7 @@ namespace NServiceBus.Attachments
 
         static IReadOnlyDictionary<string, string> BuildMetadata(IDictionary<string, string>? metadata)
         {
-            if (metadata == null)
+            if (metadata is null)
             {
                 return new Dictionary<string, string>();
             }

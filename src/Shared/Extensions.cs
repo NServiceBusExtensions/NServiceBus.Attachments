@@ -9,7 +9,7 @@ static class Extensions
 
     public static Encoding Default(this Encoding? value)
     {
-        if (value == null)
+        if (value is null)
         {
             return Utf8NoBOM;
         }

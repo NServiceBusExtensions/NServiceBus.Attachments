@@ -17,7 +17,7 @@ public static class Connection
         }
 
         var connectionEnvironmentVariable = Environment.GetEnvironmentVariable("attachmentconnection");
-        if (connectionEnvironmentVariable != null)
+        if (connectionEnvironmentVariable is not null)
         {
             ConnectionString = connectionEnvironmentVariable;
             IsUsingEnvironmentVariable = true;

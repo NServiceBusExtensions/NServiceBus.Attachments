@@ -6,7 +6,7 @@
     public Duplicate(string from, string? to)
     {
         From = from;
-        if (to == null)
+        if (to is null)
         {
             To = from;
         }
