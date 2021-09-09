@@ -421,7 +421,7 @@ class HandlerProcessStream :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L7-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstream' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L8-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstream' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-processstream-1'></a>
 ```cs
 class HandlerProcessStream :
@@ -468,7 +468,7 @@ class HandlerProcessStreams :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L28-L46' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L29-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-processstreams-1'></a>
 ```cs
 class HandlerProcessStreams :
@@ -510,7 +510,7 @@ class HandlerCopyTo :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L69-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L70-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-copyto-1'></a>
 ```cs
 class HandlerCopyTo :
@@ -548,7 +548,7 @@ class HandlerGetStream :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L99-L114' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L100-L115' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-getstream-1'></a>
 ```cs
 class HandlerGetStream :
@@ -588,7 +588,7 @@ class HandlerGetBytes :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L84-L97' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L85-L98' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-getbytes-1'></a>
 ```cs
 class HandlerGetBytes :
@@ -630,7 +630,7 @@ class HandlerProcessStreamsForMessage :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L48-L67' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Incoming.cs#L49-L68' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-processstreamsformessage-1'></a>
 ```cs
 class HandlerProcessStreamsForMessage :
@@ -759,7 +759,7 @@ TestableMessageHandlerContext context = new();
 MyMessageAttachments mockMessageAttachments = new();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L17-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L18-L24' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
 TestableMessageHandlerContext context = new();
@@ -789,7 +789,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L29-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L30-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
@@ -823,7 +823,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L46-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L47-L59' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'></a>
 ```cs
 public class Handler :
@@ -858,7 +858,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L60-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L61-L79' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincoming-1'></a>
 ```cs
 [Fact]
