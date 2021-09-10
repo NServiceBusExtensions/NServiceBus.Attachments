@@ -19,6 +19,7 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
+            stream.MoveToStart();
             return Save(connection, transaction, messageId, name, expiry, stream, metadata, cancellation);
         }
 

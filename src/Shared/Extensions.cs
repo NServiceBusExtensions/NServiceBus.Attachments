@@ -27,6 +27,14 @@ static class Extensions
 
         return list;
     }
+    
+    public static void MoveToStart(this Stream stream)
+    {
+        if (stream.CanSeek)
+        {
+            stream.Position = 0;
+        }
+    }
 
     public static byte[] ToBytes(this string value, Encoding encoding)
     {
