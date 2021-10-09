@@ -12,7 +12,7 @@ public static class Connection
     {
         if (Environment.GetEnvironmentVariable("APPVEYOR") == "True")
         {
-            ConnectionString = @"Server=(local)\SQL2017;Database=master;User ID=sa;Password=Password12!";
+            ConnectionString = @"Server=(local)\SQL2019;Database=master;User ID=sa;Password=Password12!";
             return;
         }
 
