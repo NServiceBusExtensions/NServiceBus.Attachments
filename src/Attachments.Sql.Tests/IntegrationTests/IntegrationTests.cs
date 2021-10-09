@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
