@@ -1,6 +1,4 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-using System.Collections.Generic;
-
 namespace NServiceBus.Attachments
 #if FileShare
     .FileShare

@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-
-static class Extensions
+﻿static class Extensions
 {
     public static readonly UTF8Encoding Utf8NoBOM = new(false, true);
 
