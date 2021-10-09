@@ -142,7 +142,7 @@ public class IntegrationTests : IDisposable
     static Task RunSqlScripts(string endpointName, Func<DbConnection> connectionBuilder)
     {
         var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-        var scriptDir = Path.Combine(baseDir!, "NServiceBus.Persistence.Sql", "MsSqlServer");
+        var scriptDir = Path.Combine(baseDir, "NServiceBus.Persistence.Sql", "MsSqlServer");
 
         return ScriptRunner.Install(
             sqlDialect: new SqlDialect.MsSqlServer(),

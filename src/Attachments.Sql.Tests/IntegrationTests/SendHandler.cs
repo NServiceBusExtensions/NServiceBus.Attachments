@@ -20,7 +20,7 @@ class SendHandler :
         replyOptions.RouteToThisEndpoint();
         var incomingAttachments = context.Attachments();
         var attachment = await incomingAttachments.GetBytes("withMetadata");
-        Assert.Equal("value", attachment.Metadata!["key"]);
+        Assert.Equal("value", attachment.Metadata["key"]);
         Assert.NotNull(attachment);
 
         var directory = Path.Combine(VerifyTests.AttributeReader.GetSolutionDirectory(), "temp");
