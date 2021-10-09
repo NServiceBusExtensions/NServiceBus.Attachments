@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Text;
-// ReSharper disable once RedundantUsingDirective
+﻿// ReSharper disable once RedundantUsingDirective
 using NServiceBus.Attachments;
 
 #if FileShare

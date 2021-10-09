@@ -1,12 +1,8 @@
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
 static class FileHelpers
 {
     static FileOptions fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
     static int bufferSize = 1024 * 64;
+
     public static FileStream OpenWrite(string path)
     {
         return new(
@@ -75,7 +71,7 @@ static class FileHelpers
     {
         using var fileStream = OpenRead(dataFile);
         var bytes = new byte[fileStream.Length];
-        await fileStream.ReadAsync(bytes, 0, (int) fileStream.Length, cancellation);
+        await fileStream.ReadAsync(bytes, 0, (int)fileStream.Length, cancellation);
         return bytes;
     }
 }

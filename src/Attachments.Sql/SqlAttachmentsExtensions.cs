@@ -1,7 +1,5 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.Common;
-using System.Threading.Tasks;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Configuration.AdvancedExtensibility;
 using NServiceBus.Settings;

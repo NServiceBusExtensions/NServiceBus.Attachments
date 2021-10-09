@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace NServiceBus.Attachments
+﻿namespace NServiceBus.Attachments
 #if FileShare
     .FileShare
 #endif

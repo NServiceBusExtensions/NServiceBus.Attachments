@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Common;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 

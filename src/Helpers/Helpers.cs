@@ -1,5 +1,4 @@
-﻿using System.IO;
-using NServiceBus;
+﻿using NServiceBus;
 
 public static class Helpers
 {

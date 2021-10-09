@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace NServiceBus.Attachments.FileShare
+﻿namespace NServiceBus.Attachments.FileShare
 #if Raw
     .Raw
 #endif

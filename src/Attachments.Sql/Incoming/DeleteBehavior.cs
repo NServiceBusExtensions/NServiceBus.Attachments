@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.Common;
-using System.Threading.Tasks;
+﻿using System.Data.Common;
 using System.Transactions;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;

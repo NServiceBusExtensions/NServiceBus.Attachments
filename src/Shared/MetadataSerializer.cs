@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using Serializer = System.Text.Json.JsonSerializer;
+﻿using Serializer = System.Text.Json.JsonSerializer;
 
 namespace NServiceBus.Attachments
 #if FileShare

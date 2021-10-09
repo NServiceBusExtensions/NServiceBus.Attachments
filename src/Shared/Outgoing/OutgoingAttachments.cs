@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-#if FileShare
+﻿#if FileShare
 using NServiceBus.Attachments.FileShare;
 #elif Sql
 using NServiceBus.Attachments.Sql;

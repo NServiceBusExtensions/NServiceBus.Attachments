@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using NServiceBus;
+﻿using NServiceBus;
 using NServiceBus.Attachments.FileShare;
 using Xunit;
 
@@ -58,7 +52,7 @@ public class IntegrationTests :
         public async Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             var withAttachment = await context.Attachments().GetBytes("withMetadata");
-            Assert.Equal("value", withAttachment.Metadata!["key"]);
+            Assert.Equal("value", withAttachment.Metadata["key"]);
             ReplyOptions replyOptions = new();
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.Add(() =>

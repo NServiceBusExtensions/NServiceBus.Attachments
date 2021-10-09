@@ -1,5 +1,4 @@
-﻿using System;
-using NServiceBus;
+﻿using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.ObjectBuilder;
 using NServiceBus.Attachments.Sql;

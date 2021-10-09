@@ -1,10 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NServiceBus.Attachments
+﻿namespace NServiceBus.Attachments
 #if FileShare
     .FileShare
 #endif

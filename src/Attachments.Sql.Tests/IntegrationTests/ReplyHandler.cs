@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
-using NServiceBus;
+﻿using NServiceBus;
 
 class ReplyHandler :
     IHandleMessages<ReplyMessage>

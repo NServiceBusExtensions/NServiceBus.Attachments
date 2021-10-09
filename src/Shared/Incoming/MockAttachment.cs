@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-class MockAttachment
+﻿class MockAttachment
 {
     public string Name;
     public byte[] Bytes;

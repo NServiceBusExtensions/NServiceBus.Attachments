@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-class AsyncEnumerable<T> : IAsyncEnumerable<T>, IAsyncEnumerator<T>
+﻿class AsyncEnumerable<T> : IAsyncEnumerable<T>, IAsyncEnumerator<T>
 {
     IEnumerator<T>? inner;
 

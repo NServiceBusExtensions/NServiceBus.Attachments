@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NServiceBus.Attachments.Sql
+﻿namespace NServiceBus.Attachments.Sql
 #if Raw
     .Raw
 #endif

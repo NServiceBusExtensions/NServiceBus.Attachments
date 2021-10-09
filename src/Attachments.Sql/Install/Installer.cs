@@ -1,7 +1,4 @@
 ﻿using System.Data.Common;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw

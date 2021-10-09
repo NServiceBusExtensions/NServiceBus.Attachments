@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using NServiceBus.Attachments.FileShare;
+﻿using NServiceBus.Attachments.FileShare;
 using NServiceBus.Pipeline;
 
 class ReceiveBehavior :

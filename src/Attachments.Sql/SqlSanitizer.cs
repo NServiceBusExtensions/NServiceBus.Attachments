@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-static class SqlSanitizer
+﻿static class SqlSanitizer
 {
     static string quoteSuffix = "]";
     static string quotePrefix = "[";

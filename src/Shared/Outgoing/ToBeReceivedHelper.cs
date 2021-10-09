@@ -1,5 +1,4 @@
-﻿using System;
-using NServiceBus.DeliveryConstraints;
+﻿using NServiceBus.DeliveryConstraints;
 using NServiceBus.Extensibility;
 using NServiceBus.Performance.TimeToBeReceived;
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-
-static class Guard
+﻿static class Guard
 {
     public static void FileExists(string? path, string argumentName)
     {

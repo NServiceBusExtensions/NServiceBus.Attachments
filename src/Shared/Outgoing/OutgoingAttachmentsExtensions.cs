@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace NServiceBus.Attachments
+﻿namespace NServiceBus.Attachments
 #if FileShare
     .FileShare
 #endif

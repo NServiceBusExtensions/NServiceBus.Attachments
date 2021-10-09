@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using NServiceBus.Attachments.Sql;
+﻿using NServiceBus.Attachments.Sql;
 using NServiceBus.Installation;
 using NServiceBus.Settings;
 

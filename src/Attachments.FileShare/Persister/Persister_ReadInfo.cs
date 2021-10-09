@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-
-namespace NServiceBus.Attachments.FileShare
+﻿namespace NServiceBus.Attachments.FileShare
 #if Raw
     .Raw
 #endif
