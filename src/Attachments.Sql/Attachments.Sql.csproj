@@ -12,7 +12,7 @@
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="All" />
     <PackageReference Include="Fody" Version="6.5.3" PrivateAssets="all" />
     <PackageReference Include="NServiceBus" Version="7.5.0" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.59" PrivateAssets="All" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.60" PrivateAssets="all" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" Condition="$(Configuration) == 'Release'" />
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" Condition="$(TargetFramework) == 'netstandard2.0'" />
