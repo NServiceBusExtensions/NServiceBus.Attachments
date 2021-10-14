@@ -7,6 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Attachments.FileShare\Attachments.FileShare.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.60" PrivateAssets="all" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.61" PrivateAssets="All" />
   </ItemGroup>
 </Project>
