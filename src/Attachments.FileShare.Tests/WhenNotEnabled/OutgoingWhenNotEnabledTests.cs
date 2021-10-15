@@ -8,7 +8,7 @@ public class OutgoingWhenNotEnabledTests
     [Fact]
     public async Task Run()
     {
-        EndpointConfiguration configuration = new("FileShareOutgoingWhenNotEnabledTests");
+        var configuration = new EndpointConfiguration("FileShareOutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var endpoint = await Endpoint.Start(configuration);

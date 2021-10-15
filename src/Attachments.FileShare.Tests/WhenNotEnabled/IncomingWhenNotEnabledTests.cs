@@ -11,7 +11,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
     [Fact]
     public async Task Run()
     {
-        EndpointConfiguration configuration = new("FileShareIncomingWhenNotEnabledTests");
+        var configuration = new EndpointConfiguration("FileShareIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.RegisterComponents(components => components.RegisterSingleton(this));
         configuration.UseTransport<LearningTransport>();

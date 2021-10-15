@@ -10,7 +10,7 @@ public class IntegrationTests :
     [Fact]
     public async Task Run()
     {
-        EndpointConfiguration configuration = new("FileShareIntegrationTests");
+        var configuration = new EndpointConfiguration("FileShareIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         configuration.RegisterComponents(components => components.RegisterSingleton(resetEvent));

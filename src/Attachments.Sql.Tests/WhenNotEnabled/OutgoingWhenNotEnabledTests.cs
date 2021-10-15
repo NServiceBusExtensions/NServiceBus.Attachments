@@ -13,7 +13,7 @@ public class OutgoingWhenNotEnabledTests
     [Fact]
     public async Task Run()
     {
-        EndpointConfiguration configuration = new("SqlOutgoingWhenNotEnabledTests");
+        var configuration = new EndpointConfiguration("SqlOutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
         var endpoint = await Endpoint.Start(configuration);

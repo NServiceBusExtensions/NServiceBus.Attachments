@@ -10,7 +10,7 @@ class Program
             SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
         }
 
-        EndpointConfiguration configuration = new("Attachments.Sql.Sample");
+        var configuration = new EndpointConfiguration("Attachments.Sql.Sample");
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         configuration.UsePersistence<LearningPersistence>();

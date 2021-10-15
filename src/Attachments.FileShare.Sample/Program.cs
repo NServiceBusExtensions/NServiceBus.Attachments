@@ -6,7 +6,7 @@ if (!Connection.IsUsingEnvironmentVariable)
     SqlHelper.EnsureDatabaseExists(Connection.ConnectionString);
 }
 
-EndpointConfiguration configuration = new("Attachments.FileShare.Sample");
+var configuration = new EndpointConfiguration("Attachments.FileShare.Sample");
 configuration.EnableInstallers();
 configuration.UsePersistence<LearningPersistence>();
 configuration.UseTransport<LearningTransport>();

@@ -55,7 +55,7 @@ public class IntegrationTests : IDisposable
         }
 
         var endpointName = "SqlIntegrationTests";
-        EndpointConfiguration configuration = new(endpointName);
+        var configuration = new EndpointConfiguration(endpointName);
         var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
         if (useStorageSession)
         {
