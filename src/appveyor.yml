@@ -1,6 +1,4 @@
 image: Visual Studio 2022
-skip_commits:
-  message: /doco|Merge pull request.*/
 init:
 - net start MSSQL$SQL2019
 build_script:
