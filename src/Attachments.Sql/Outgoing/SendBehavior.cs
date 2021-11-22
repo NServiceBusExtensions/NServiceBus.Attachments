@@ -42,7 +42,7 @@ class SendBehavior :
         {
             if (state.Transaction is not null)
             {
-                using var connectionFromState = await state.GetConnection();
+                await using var connectionFromState = await state.GetConnection();
                 connectionFromState.EnlistTransaction(state.Transaction);
                 await ProcessOutgoing(timeToBeReceived, connectionFromState, null, context, outgoingAttachments);
                 return;
@@ -50,7 +50,7 @@ class SendBehavior :
 
             if (state.DbTransaction is not null)
             {
-                await ProcessOutgoing(timeToBeReceived, state.DbTransaction.Connection, state.DbTransaction, context, outgoingAttachments);
+                await ProcessOutgoing(timeToBeReceived, state.DbTransaction.Connection!, state.DbTransaction, context, outgoingAttachments);
                 return;
             }
 
@@ -60,21 +60,21 @@ class SendBehavior :
                 return;
             }
 
-            using var connection = await state.GetConnection();
+            await using var connection = await state.GetConnection();
             await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
             return;
         }
 
-        using var connectionFromFactory = await connectionFactory();
+        await using var connectionFromFactory = await connectionFactory();
         //TODO: should this be done ?
         if (context.TryReadTransaction(out var transaction))
         {
             connectionFromFactory.EnlistTransaction(transaction);
         }
 
-        using var dbTransaction = connectionFromFactory.BeginTransaction();
+        await using var dbTransaction = await connectionFromFactory.BeginTransactionAsync();
         await ProcessOutgoing(timeToBeReceived, connectionFromFactory, dbTransaction, context, outgoingAttachments);
-        dbTransaction.Commit();
+        await dbTransaction.CommitAsync();
     }
 
     async Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
@@ -112,7 +112,7 @@ class SendBehavior :
 
     async Task<Guid> ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
-        using (stream)
+        await using (stream)
         {
             return await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata);
         }

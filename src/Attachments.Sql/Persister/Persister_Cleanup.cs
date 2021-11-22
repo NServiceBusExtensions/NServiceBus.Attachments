@@ -10,20 +10,21 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual async Task<int> CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
-            using var command = connection.CreateCommand();
+            await using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $@"
 delete from {table} where expiry < @date
 select @@ROWCOUNT";
             command.AddParameter("date", dateTime);
 
-            return (int)await command.ExecuteScalarAsync(cancellation);
+            var result = await command.ExecuteScalarAsync(cancellation);
+            return (int)result!;
         }
 
         /// <inheritdoc />
         public virtual async Task<int> PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
         {
-            using var command = connection.CreateCommand();
+            await using var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = $@"
 if exists (
@@ -38,7 +39,7 @@ delete from {table}
 
 end
 select @@ROWCOUNT";
-            return (int)await command.ExecuteScalarAsync(cancellation);
+            return (int)(await command.ExecuteScalarAsync(cancellation))!;
         }
     }
 }

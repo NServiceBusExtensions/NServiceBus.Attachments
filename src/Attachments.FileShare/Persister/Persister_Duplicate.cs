@@ -13,7 +13,7 @@
             var sourceDirectory = GetMessageDirectory(sourceMessageId);
             var targetDirectory = GetMessageDirectory(targetMessageId);
             FileHelpers.Copy(sourceDirectory, targetDirectory);
-            List<string> names = new(Directory.EnumerateDirectories(targetDirectory).Select(Path.GetFileName));
+            var names = new List<string>(Directory.EnumerateDirectories(targetDirectory).Select(s => Path.GetFileName(s)!));
             return Task.FromResult<IReadOnlyCollection<string>>(names);
         }
 

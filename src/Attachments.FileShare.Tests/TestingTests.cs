@@ -11,7 +11,7 @@ public class TestingTests
     {
         TestableMessageHandlerContext context = new();
         OutgoingAttachmentsHandler handler = new();
-        await handler.Handle(new AMessage(), context);
+        await handler.Handle(new(), context);
         var attachments = context.SentMessages
             .Single()
             .Options
@@ -41,7 +41,7 @@ public class TestingTests
         IncomingAttachmentHandler handler = new();
         CustomMockMessageAttachments mockMessageAttachments = new();
         context.InjectAttachmentsInstance(mockMessageAttachments);
-        await handler.Handle(new AMessage(), context);
+        await handler.Handle(new(), context);
         Assert.True(mockMessageAttachments.GetBytesWasCalled);
     }
 

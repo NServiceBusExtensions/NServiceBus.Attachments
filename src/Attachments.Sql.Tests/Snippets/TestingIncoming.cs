@@ -64,7 +64,7 @@ public class TestingIncoming
         context.InjectAttachmentsInstance(mockMessageAttachments);
 
         //Act
-        await handler.Handle(new MyMessage(), context);
+        await handler.Handle(new(), context);
 
         //Assert
         Assert.True(mockMessageAttachments.GetBytesWasCalled);

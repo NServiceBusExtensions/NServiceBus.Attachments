@@ -65,7 +65,7 @@
             Guard.AgainstNullOrEmpty(name, nameof(name));
             if (!attachments.TryGetValue(messageId, out var attachmentsForMessage))
             {
-                attachments[messageId] = attachmentsForMessage = new Dictionary<string, MockAttachment>();
+                attachments[messageId] = attachmentsForMessage = new();
             }
 
             attachmentsForMessage.Add(name,

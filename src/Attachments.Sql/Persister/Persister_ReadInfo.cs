@@ -12,8 +12,8 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            using var command = GetReadInfoCommand(connection, transaction, messageId);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = GetReadInfoCommand(connection, transaction, messageId);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
@@ -36,8 +36,8 @@ namespace NServiceBus.Attachments.Sql
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            using var command = GetReadInfoCommand(connection, transaction, messageId);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = GetReadInfoCommand(connection, transaction, messageId);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
@@ -53,12 +53,12 @@ namespace NServiceBus.Attachments.Sql
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            using var command = GetReadInfoCommand(connection, transaction, messageId);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = GetReadInfoCommand(connection, transaction, messageId);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();
-                yield return new AttachmentInfo(
+                yield return new(
                     messageId: messageId,
                     name: reader.GetString(1),
                     expiry: reader.GetDateTime(2),
@@ -69,8 +69,8 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual async Task ReadAllInfo(DbConnection connection, DbTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
-            using var command = GetReadInfosCommand(connection, transaction);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = GetReadInfosCommand(connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             while (await reader.ReadAsync(cancellation))
             {
                 cancellation.ThrowIfCancellationRequested();

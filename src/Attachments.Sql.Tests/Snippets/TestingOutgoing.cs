@@ -30,7 +30,7 @@ public class TestingOutgoing
         Handler handler = new();
 
         //Act
-        await handler.Handle(new MyMessage(), context);
+        await handler.Handle(new(), context);
 
         // Assert
         var sentMessage = context.SentMessages.Single();

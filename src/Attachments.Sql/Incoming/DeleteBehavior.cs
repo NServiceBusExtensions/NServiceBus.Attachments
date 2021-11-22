@@ -52,14 +52,14 @@ class DeleteBehavior :
 
         if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out DbTransaction dbTransaction))
         {
-            var count = await persister.DeleteAttachments(id, dbTransaction.Connection, dbTransaction);
+            var count = await persister.DeleteAttachments(id, dbTransaction.Connection!, dbTransaction);
             log.Debug($"Deleted {count} attachments for {id} using System.Data.SqlClient.SqlTransaction");
             return;
         }
 
         if (transportTransaction.TryGet<Transaction>(out var transaction))
         {
-            using var connection = await connectionBuilder();
+            await using var connection = await connectionBuilder();
             connection.EnlistTransaction(transaction);
             var count = await persister.DeleteAttachments(id, connection, null);
             log.Debug($"Deleting {count} attachments for {id} using Transactions.Transaction");

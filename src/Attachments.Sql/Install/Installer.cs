@@ -23,7 +23,7 @@ namespace NServiceBus.Attachments.Sql
         /// </summary>
         public static async Task CreateTable(DbConnection connection, Table table, CancellationToken cancellation = default)
         {
-            using var command = connection.CreateCommand();
+            await using var command = connection.CreateCommand();
             command.CommandText = GetTableSql();
             command.AddParameter("schema", table.Schema);
             command.AddParameter("table", table.TableName);

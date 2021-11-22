@@ -27,7 +27,7 @@
         public virtual IEnumerable<string> ReadAllMessageNames(string messageId)
         {
             var messageDirectory = GetMessageDirectory(messageId);
-            return Directory.EnumerateDirectories(messageDirectory).Select(Path.GetFileName);
+            return Directory.EnumerateDirectories(messageDirectory).Select(x => Path.GetFileName(x)!);
         }
 
         /// <inheritdoc />

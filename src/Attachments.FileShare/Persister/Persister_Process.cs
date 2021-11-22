@@ -18,7 +18,7 @@
                 var attachmentName = Directory.GetParent(dataFile)!.Name;
                 var read = FileHelpers.OpenRead(dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-                using AttachmentStream attachment = new(attachmentName, read, read.Length, metadata);
+                await using AttachmentStream attachment = new(attachmentName, read, read.Length, metadata);
                 await action(attachment);
             }
         }
@@ -35,7 +35,7 @@
             ThrowIfFileNotFound(dataFile, messageId, name);
             var read = FileHelpers.OpenRead(dataFile);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-            using AttachmentStream attachment = new(name, read, read.Length, metadata);
+            await using AttachmentStream attachment = new(name, read, read.Length, metadata);
             await action(attachment);
         }
     }

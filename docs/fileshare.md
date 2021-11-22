@@ -386,7 +386,7 @@ class HandlerCopyTo :
     public async Task Handle(MyMessage message, IMessageHandlerContext context)
     {
         var attachments = context.Attachments();
-        using var fileToCopyTo = File.Create("FilePath.txt");
+        await using var fileToCopyTo = File.Create("FilePath.txt");
         await attachments.CopyTo("attachment1", fileToCopyTo);
     }
 }
@@ -575,7 +575,7 @@ public async Task TestOutgoingAttachments()
     Handler handler = new();
 
     //Act
-    await handler.Handle(new MyMessage(), context);
+    await handler.Handle(new(), context);
 
     // Assert
     var sentMessage = context.SentMessages.Single();
@@ -597,7 +597,7 @@ public async Task TestOutgoingAttachments()
     Handler handler = new();
 
     //Act
-    await handler.Handle(new MyMessage(), context);
+    await handler.Handle(new(), context);
 
     // Assert
     var sentMessage = context.SentMessages.Single();
@@ -719,7 +719,7 @@ public async Task TestIncomingAttachment()
     context.InjectAttachmentsInstance(mockMessageAttachments);
 
     //Act
-    await handler.Handle(new MyMessage(), context);
+    await handler.Handle(new(), context);
 
     //Assert
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
@@ -738,7 +738,7 @@ public async Task TestIncomingAttachment()
     context.InjectAttachmentsInstance(mockMessageAttachments);
 
     //Act
-    await handler.Handle(new MyMessage(), context);
+    await handler.Handle(new(), context);
 
     //Assert
     Assert.True(mockMessageAttachments.GetBytesWasCalled);

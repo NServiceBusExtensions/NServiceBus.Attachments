@@ -28,11 +28,7 @@ namespace NServiceBus.Attachments
         }
 
         Stream inner;
-#if NETSTANDARD2_0
-        IDisposable[]? cleanups;
-        #else
         IAsyncDisposable[]? cleanups;
-#endif
 
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -47,11 +43,7 @@ namespace NServiceBus.Attachments
             Stream inner,
             long length,
             IReadOnlyDictionary<string, string> metadata,
-#if NETSTANDARD2_0
-            params IDisposable[] cleanups
-#else
             params IAsyncDisposable[] cleanups
-#endif
             )
         {
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -82,20 +74,6 @@ namespace NServiceBus.Attachments
             return inner.ReadAsync(buffer, offset, count, cancellation);
         }
 
-#if NETSTANDARD2_0
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            inner.Dispose();
-            if (cleanups is not null)
-            {
-                foreach (var disposable in cleanups)
-                {
-                    disposable.Dispose();
-                }
-            }
-        }
-#else
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -146,7 +124,6 @@ namespace NServiceBus.Attachments
         {
             inner.CopyTo(destination, bufferSize);
         }
-#endif
 
         public override int ReadByte()
         {

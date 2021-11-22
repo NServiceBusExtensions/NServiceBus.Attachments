@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.FileShare</AssemblyName>
     <PackageName>NServiceBus.Attachments.FileShare</PackageName>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net6</TargetFrameworks>
     <DefineConstants>$(DefineConstants);FileShare</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -13,8 +13,6 @@
     <PackageReference Include="ProjectDefaults" Version="1.0.61" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" Condition="$(Configuration) == 'Release'" />
     <PackageReference Include="System.Text.Json" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" Condition="$(TargetFramework) == 'netstandard2.0'" />
-    <PackageReference Include="Nullable" Version="1.3.0" Condition="$(TargetFramework) == 'netstandard2.0'" PrivateAssets="all" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>

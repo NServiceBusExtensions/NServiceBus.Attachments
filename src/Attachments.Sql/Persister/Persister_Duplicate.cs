@@ -12,8 +12,8 @@ namespace NServiceBus.Attachments.Sql
         {
             Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
-            using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             List<(Guid, string)> names = new();
             while (await reader.ReadAsync(cancellation))
             {
@@ -32,8 +32,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(targetName, nameof(targetName));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
-            return (Guid)await command.ExecuteScalarAsync(cancellation);
+            await using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
+            return (Guid)(await command.ExecuteScalarAsync(cancellation))!;
         }
 
         /// <inheritdoc />
@@ -43,8 +43,8 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
-            return (Guid) await command.ExecuteScalarAsync(cancellation);
+            await using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
+            return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
         }
 
         DbCommand CreateGetDuplicateCommand(string sourceMessageId, string targetMessageId, DbConnection connection, DbTransaction? transaction)

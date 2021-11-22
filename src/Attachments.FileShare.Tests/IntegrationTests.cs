@@ -76,7 +76,7 @@ public class IntegrationTests :
 
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
-            using MemoryStream memoryStream = new();
+            await using MemoryStream memoryStream = new();
             var incomingAttachment = context.Attachments();
             await incomingAttachment.CopyTo(memoryStream);
             memoryStream.Position = 0;

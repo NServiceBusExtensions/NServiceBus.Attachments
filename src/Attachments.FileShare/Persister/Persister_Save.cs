@@ -34,7 +34,7 @@
                 metadata,
                 async fileStream =>
                 {
-                    using var writer = fileStream.BuildLeaveOpenWriter(encoding);
+                    await using var writer = fileStream.BuildLeaveOpenWriter(encoding);
                     await writer.WriteAsync(value);
                 },
                 cancellation);
@@ -57,12 +57,12 @@
             var dataFile = Path.Combine(attachmentDirectory, "data");
             expiry = expiry.ToUniversalTime();
             var expiryFile = Path.Combine(attachmentDirectory, $"{expiry:yyyy-MM-ddTHHmm}.expiry");
-            using (File.Create(expiryFile))
+            await using (File.Create(expiryFile))
             {
             }
             await WriteMetadata(attachmentDirectory, metadata, cancellation);
 
-            using var fileStream = FileHelpers.OpenWrite(dataFile);
+            await using var fileStream = FileHelpers.OpenWrite(dataFile);
             await action(fileStream);
         }
     }

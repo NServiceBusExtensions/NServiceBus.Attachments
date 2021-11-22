@@ -75,7 +75,7 @@ public class Incoming
         public async Task Handle(MyMessage message, IMessageHandlerContext context)
         {
             var attachments = context.Attachments();
-            using var fileToCopyTo = File.Create("FilePath.txt");
+            await using var fileToCopyTo = File.Create("FilePath.txt");
             await attachments.CopyTo("attachment1", fileToCopyTo);
         }
     }

@@ -85,7 +85,7 @@
                 cancellation.ThrowIfCancellationRequested();
                 var dataFile = GetDataFile(attachmentDirectory);
                 var attachmentName = Directory.GetParent(dataFile)!.Name;
-                using var read = FileHelpers.OpenRead(dataFile);
+                await using var read = FileHelpers.OpenRead(dataFile);
                 var metadata = await ReadMetadata(attachmentDirectory, cancellation);
                 yield return new(attachmentName, read, read.Length, metadata);
             }

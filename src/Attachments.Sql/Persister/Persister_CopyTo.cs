@@ -13,14 +13,14 @@ namespace NServiceBus.Attachments.Sql
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-            using var reader = await command.ExecuteSequentialReader(cancellation);
+            await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+            await using var reader = await command.ExecuteSequentialReader(cancellation);
             if (!await reader.ReadAsync(cancellation))
             {
                 throw ThrowNotFound(messageId, name);
             }
 
-            using var data = reader.GetStream(2);
+            await using var data = reader.GetStream(2);
             await data.CopyToAsync(target, 81920, cancellation);
         }
     }

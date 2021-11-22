@@ -19,7 +19,7 @@ class PurgeTask :
 
     protected override async Task OnStart(IMessageSession session)
     {
-        using var connection = await connectionFactory();
+        await using var connection = await connectionFactory();
         var count = await persister.PurgeItems(connection, null, CancellationToken.None);
         log.DebugFormat($"Deleted {count} attachments");
     }
