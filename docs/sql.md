@@ -44,7 +44,7 @@ configuration.EnableAttachments(
     },
     timeToKeep: _ => TimeSpan.FromDays(7));
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L14-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L13-L32' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -55,7 +55,7 @@ Extract out the connection factory to a helper method
 <!-- snippet: OpenConnection -->
 <a id='snippet-openconnection'></a>
 ```cs
-async Task<DbConnection> OpenConnection()
+async Task<SqlConnection> OpenConnection()
 {
     SqlConnection connection = new(connectionString);
     try
@@ -70,7 +70,7 @@ async Task<DbConnection> OpenConnection()
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L117-L134' title='Snippet source file'>snippet source</a> | <a href='#snippet-openconnection' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L116-L133' title='Snippet source file'>snippet source</a> | <a href='#snippet-openconnection' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Also uses the `NServiceBus.Attachments.Sql.TimeToKeep.Default` method for attachment cleanup.
@@ -91,7 +91,7 @@ configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L35-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L34-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -114,7 +114,7 @@ var attachments = configuration.EnableAttachments(
     TimeToKeep.Default);
 attachments.UseSynchronizedStorageSessionConnectivity();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L70-L77' title='Snippet source file'>snippet source</a> | <a href='#snippet-usesynchronizedstoragesessionconnectivity' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L69-L76' title='Snippet source file'>snippet source</a> | <a href='#snippet-usesynchronizedstoragesessionconnectivity' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This approach attempts to use the SynchronizedStorageSession using the following steps:
@@ -138,7 +138,7 @@ var attachments = configuration.EnableAttachments(
     TimeToKeep.Default);
 attachments.UseTransportConnectivity();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L58-L65' title='Snippet source file'>snippet source</a> | <a href='#snippet-usetransportconnectivity' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L57-L64' title='Snippet source file'>snippet source</a> | <a href='#snippet-usetransportconnectivity' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This approach attempts to use the transport transaction using the following steps:
@@ -165,7 +165,7 @@ var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L82-L89' title='Snippet source file'>snippet source</a> | <a href='#snippet-executeatstartup' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L81-L88' title='Snippet source file'>snippet source</a> | <a href='#snippet-executeatstartup' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 NOTE: Note that this is also a valid approach for higher level environments.
@@ -184,7 +184,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.DisableInstaller();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L94-L102' title='Snippet source file'>snippet source</a> | <a href='#snippet-disableinstaller' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L93-L101' title='Snippet source file'>snippet source</a> | <a href='#snippet-disableinstaller' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -200,7 +200,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.UseTable(new("CustomAttachmentsTableName", "dbo"));
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L107-L114' title='Snippet source file'>snippet source</a> | <a href='#snippet-usetablename' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L106-L113' title='Snippet source file'>snippet source</a> | <a href='#snippet-usetablename' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -227,7 +227,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L46-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L45-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 

@@ -1,11 +1,11 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 
 class DeleteBehaviorRegistration :
     RegisterStep
 {
-    public DeleteBehaviorRegistration(Func<Task<DbConnection>> connectionBuilder, IPersister persister)
+    public DeleteBehaviorRegistration(Func<Task<SqlConnection>> connectionBuilder, IPersister persister)
         : base(
             stepId: $"{AssemblyHelper.Name}DeleteBehavior",
             behavior: typeof(DeleteBehavior),

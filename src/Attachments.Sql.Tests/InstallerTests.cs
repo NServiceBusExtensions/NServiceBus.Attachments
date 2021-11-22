@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 using VerifyXunit;
 using Xunit;
@@ -19,7 +19,7 @@ public class InstallerTests
         TableExists("[dbo].[MessageAttachments]", connection);
     }
 
-    static void TableExists(string tableName, DbConnection connection)
+    static void TableExists(string tableName, SqlConnection connection)
     {
         using var command = connection.CreateCommand();
         command.CommandText = $@"

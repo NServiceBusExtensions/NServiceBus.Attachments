@@ -1,16 +1,16 @@
-﻿using System.Data.Common;
-using System.Transactions;
+﻿using System.Transactions;
+using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
 class MessageAttachmentsFromTransaction :
     IMessageAttachments
 {
     Transaction transaction;
-    Func<Task<DbConnection>> connectionFactory;
+    Func<Task<SqlConnection>> connectionFactory;
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromTransaction(Transaction transaction, Func<Task<DbConnection>> connectionFactory, string messageId, IPersister persister)
+    public MessageAttachmentsFromTransaction(Transaction transaction, Func<Task<SqlConnection>> connectionFactory, string messageId, IPersister persister)
     {
         this.transaction = transaction;
         this.connectionFactory = connectionFactory;
@@ -24,7 +24,7 @@ class MessageAttachmentsFromTransaction :
         await persister.CopyTo(messageId, "default", connection, null, target, cancellation);
     }
 
-    private async Task<DbConnection> GetConnection()
+    private async Task<SqlConnection> GetConnection()
     {
         var connection = await connectionFactory();
         connection.EnlistTransaction(transaction);

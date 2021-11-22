@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
@@ -9,9 +9,9 @@ class PurgeTask :
 {
     static ILog log = LogManager.GetLogger("AttachmentPurgeTask");
     IPersister persister;
-    Func<Task<DbConnection>> connectionFactory;
+    Func<Task<SqlConnection>> connectionFactory;
 
-    public PurgeTask(IPersister persister, Func<Task<DbConnection>> connectionFactory)
+    public PurgeTask(IPersister persister, Func<Task<SqlConnection>> connectionFactory)
     {
         this.persister = persister;
         this.connectionFactory = connectionFactory;

@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Data.Common;
+using Microsoft.Data.SqlClient;
 
 static class SqlExtensions
 {
@@ -13,7 +13,7 @@ static class SqlExtensions
         return dataReader.GetString(index);
     }
 
-    public static void AddParameter(this DbCommand command, string name, string? value)
+    public static void AddParameter(this SqlCommand command, string name, string? value)
     {
         var parameter = command.CreateParameter();
         parameter.DbType = DbType.String;
@@ -30,7 +30,7 @@ static class SqlExtensions
         command.Parameters.Add(parameter);
     }
 
-    public static void AddBinary(this DbCommand command, string name, object value)
+    public static void AddBinary(this SqlCommand command, string name, object value)
     {
         var parameter = command.CreateParameter();
         parameter.ParameterName = name;
@@ -39,7 +39,7 @@ static class SqlExtensions
         command.Parameters.Add(parameter);
     }
 
-    public static void AddParameter(this DbCommand command, string name, DateTime value)
+    public static void AddParameter(this SqlCommand command, string name, DateTime value)
     {
         var parameter = command.CreateParameter();
         parameter.ParameterName = name;
@@ -50,7 +50,7 @@ static class SqlExtensions
 
     // The reader needs to be executed with SequentialAccess to enable network streaming
     // Otherwise ReadAsync will buffer the entire BLOB in memory which can cause scalability issues or OutOfMemoryExceptions
-    public static Task<DbDataReader> ExecuteSequentialReader(this DbCommand command, CancellationToken cancellation = default)
+    public static Task<SqlDataReader> ExecuteSequentialReader(this SqlCommand command, CancellationToken cancellation = default)
     {
         return command.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellation);
     }

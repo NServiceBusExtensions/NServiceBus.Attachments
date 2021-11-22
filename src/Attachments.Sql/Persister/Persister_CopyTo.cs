@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
@@ -8,7 +8,7 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual async Task CopyTo(string messageId, string name, DbConnection connection, DbTransaction? transaction, Stream target, CancellationToken cancellation = default)
+        public virtual async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Stream target, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));

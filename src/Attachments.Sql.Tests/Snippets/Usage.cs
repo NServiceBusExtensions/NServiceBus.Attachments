@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 // ReSharper disable UnusedVariable
@@ -116,7 +115,7 @@ public class Usage
 
     #region OpenConnection
 
-    async Task<DbConnection> OpenConnection()
+    async Task<SqlConnection> OpenConnection()
     {
         SqlConnection connection = new(connectionString);
         try

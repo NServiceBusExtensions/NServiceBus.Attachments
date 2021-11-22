@@ -1,41 +1,41 @@
-﻿using System.Data.Common;
-using System.Transactions;
+﻿using System.Transactions;
+using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState
 {
-    Func<Task<DbConnection>>? connectionFactory;
+    Func<Task<SqlConnection>>? connectionFactory;
     public IPersister Persister;
     public Transaction? Transaction;
-    public DbTransaction? DbTransaction;
-    public DbConnection? DbConnection;
+    public SqlTransaction? SqlTransaction;
+    public SqlConnection? SqlConnection;
 
-    public SqlAttachmentState(DbConnection connection, IPersister persister)
+    public SqlAttachmentState(SqlConnection connection, IPersister persister)
     {
-        DbConnection = connection;
+        SqlConnection = connection;
         Persister = persister;
     }
 
-    public SqlAttachmentState(DbTransaction transaction, IPersister persister)
+    public SqlAttachmentState(SqlTransaction transaction, IPersister persister)
     {
-        DbTransaction = transaction;
+        SqlTransaction = transaction;
         Persister = persister;
     }
 
-    public SqlAttachmentState(Transaction transaction, Func<Task<DbConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Transaction transaction, Func<Task<SqlConnection>> connectionFactory, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         Transaction = transaction;
         Persister = persister;
     }
 
-    public SqlAttachmentState(Func<Task<DbConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Func<Task<SqlConnection>> connectionFactory, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         Persister = persister;
     }
 
-    public Task<DbConnection> GetConnection()
+    public Task<SqlConnection> GetConnection()
     {
         try
         {

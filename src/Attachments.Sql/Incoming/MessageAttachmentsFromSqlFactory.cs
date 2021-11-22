@@ -1,14 +1,14 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
 class MessageAttachmentsFromSqlFactory :
     IMessageAttachments
 {
-    Func<Task<DbConnection>> connectionFactory;
+    Func<Task<SqlConnection>> connectionFactory;
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromSqlFactory(Func<Task<DbConnection>> connectionFactory, string messageId, IPersister persister)
+    public MessageAttachmentsFromSqlFactory(Func<Task<SqlConnection>> connectionFactory, string messageId, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         this.messageId = messageId;

@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
@@ -8,7 +8,7 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual async Task ProcessStreams(string messageId, DbConnection connection, DbTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             await using var command = CreateGetDatasCommand(messageId, connection, transaction);
@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async Task ProcessStream(string messageId, string name, DbConnection connection, DbTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));

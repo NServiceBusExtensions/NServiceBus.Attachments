@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
@@ -8,7 +8,7 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual async Task<AttachmentString> GetString(string messageId, string name, DbConnection connection, DbTransaction? transaction, Encoding? encoding = null, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentString> GetString(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -28,7 +28,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
+        public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -50,16 +50,16 @@ namespace NServiceBus.Attachments.Sql
         public virtual async Task<AttachmentStream> GetStream(
             string messageId,
             string name,
-            DbConnection connection,
-            DbTransaction? transaction,
+            SqlConnection connection,
+            SqlTransaction? transaction,
             bool disposeConnectionOnStreamDispose,
             CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             Guard.AgainstNullOrEmpty(name, nameof(name));
             Guard.AgainstLongAttachmentName(name);
-            DbCommand? command = null;
-            DbDataReader? reader = null;
+            SqlCommand? command = null;
+            SqlDataReader? reader = null;
             try
             {
                 command = CreateGetDataCommand(messageId, name, connection, transaction);
@@ -90,8 +90,8 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(
             string messageId,
-            DbConnection connection,
-            DbTransaction? transaction,
+            SqlConnection connection,
+            SqlTransaction? transaction,
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -111,8 +111,8 @@ namespace NServiceBus.Attachments.Sql
         /// <inheritdoc />
         public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(
             string messageId,
-            DbConnection connection,
-            DbTransaction? transaction,
+            SqlConnection connection,
+            SqlTransaction? transaction,
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
@@ -129,7 +129,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, DbConnection connection, DbTransaction? transaction, Encoding? encoding = null, [EnumeratorCancellation] CancellationToken cancellation = default)
+        public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, [EnumeratorCancellation] CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             encoding = encoding.Default();
@@ -146,7 +146,7 @@ namespace NServiceBus.Attachments.Sql
             }
         }
 
-        static AttachmentStream InnerGetStream(string name, DbDataReader reader, DbCommand command, bool disposeConnection)
+        static AttachmentStream InnerGetStream(string name, SqlDataReader reader, SqlCommand command, bool disposeConnection)
         {
             var length = reader.GetInt64(0);
             var metadataString = reader.GetStringOrNull(1);
@@ -159,7 +159,7 @@ namespace NServiceBus.Attachments.Sql
             return new(name, sqlStream, length, metadata, command, reader);
         }
 
-        DbCommand CreateGetDataCommand(string messageId, string name, DbConnection connection, DbTransaction? transaction)
+        SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -177,7 +177,7 @@ where
             return command;
         }
 
-        DbCommand CreateGetDatasCommand(string messageId, DbConnection connection, DbTransaction? transaction)
+        SqlCommand CreateGetDatasCommand(string messageId, SqlConnection connection, SqlTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;

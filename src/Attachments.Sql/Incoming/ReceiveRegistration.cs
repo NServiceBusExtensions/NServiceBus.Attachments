@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 
@@ -6,7 +6,7 @@ class ReceiveRegistration :
     RegisterStep
 {
     public ReceiveRegistration(
-        Func<Task<DbConnection>> connectionFactory,
+        Func<Task<SqlConnection>> connectionFactory,
         IPersister persister,
         bool useTransport,
         bool useSynchronizedStorage)

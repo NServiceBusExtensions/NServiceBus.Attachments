@@ -1,5 +1,5 @@
-﻿using System.Data.Common;
-using System.Transactions;
+﻿using System.Transactions;
+using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 using NServiceBus.Transport;
@@ -7,13 +7,13 @@ using NServiceBus.Transport;
 class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
-    Func<Task<DbConnection>> connectionBuilder;
+    Func<Task<SqlConnection>> connectionBuilder;
     IPersister persister;
     bool useTransport;
     bool useSynchronizedStorage;
     StorageAccessor storageAccessor;
 
-    public ReceiveBehavior(Func<Task<DbConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
+    public ReceiveBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;
@@ -56,12 +56,12 @@ class ReceiveBehavior :
                     return new(transaction, connectionBuilder, persister);
                 }
 
-                if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out DbTransaction dbTransaction))
+                if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out SqlTransaction dbTransaction))
                 {
                     return new(dbTransaction, persister);
                 }
 
-                if (transportTransaction.TryGet("System.Data.SqlClient.SqlConnection", out DbConnection connection))
+                if (transportTransaction.TryGet("System.Data.SqlClient.SqlConnection", out SqlConnection connection))
                 {
                     return new(connection, persister);
                 }

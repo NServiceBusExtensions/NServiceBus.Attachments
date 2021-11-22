@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Data.Common;
+using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Configuration.AdvancedExtensibility;
 using NServiceBus.Settings;
@@ -16,13 +16,13 @@ namespace NServiceBus
         /// </summary>
         public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
-            Func<DbConnection> connectionFactory,
+            Func<SqlConnection> connectionFactory,
             GetTimeToKeep timeToKeep)
         {
             var dbConnection = connectionFactory();
             if (dbConnection.State == ConnectionState.Open)
             {
-                throw new("This overload of EnableAttachments expects `Func<DbConnection> connectionFactory` to return a un-opened DbConnection.");
+                throw new("This overload of EnableAttachments expects `Func<SqlConnection> connectionFactory` to return a un-opened SqlConnection.");
             }
             return EnableAttachments(configuration,
                 connectionFactory: async () =>
@@ -47,7 +47,7 @@ namespace NServiceBus
         /// </summary>
         public static AttachmentSettings EnableAttachments(
             this EndpointConfiguration configuration,
-            Func<Task<DbConnection>> connectionFactory,
+            Func<Task<SqlConnection>> connectionFactory,
             GetTimeToKeep timeToKeep)
         {
             var settings = configuration.GetSettings();

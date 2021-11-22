@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
@@ -68,7 +67,7 @@ public class IntegrationTests : IDisposable
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
 
-            static DbConnection connectionBuilder() => new SqlConnection(Connection.ConnectionString);
+            static SqlConnection connectionBuilder() => new(Connection.ConnectionString);
             await RunSqlScripts(endpointName, connectionBuilder);
             persistence.SqlDialect<SqlDialect.MsSqlServer>();
             persistence.DisableInstaller();
@@ -133,7 +132,7 @@ public class IntegrationTests : IDisposable
         await endpoint.Stop();
     }
 
-    static Task RunSqlScripts(string endpointName, Func<DbConnection> connectionBuilder)
+    static Task RunSqlScripts(string endpointName, Func<SqlConnection> connectionBuilder)
     {
         var baseDir = AppDomain.CurrentDomain.BaseDirectory;
         var scriptDir = Path.Combine(baseDir, "NServiceBus.Persistence.Sql", "MsSqlServer");

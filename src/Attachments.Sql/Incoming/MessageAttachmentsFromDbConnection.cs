@@ -1,14 +1,14 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromDbConnection :
+class MessageAttachmentsFromSqlConnection :
     IMessageAttachments
 {
-    DbConnection connection;
+    SqlConnection connection;
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromDbConnection(DbConnection connection, string messageId, IPersister persister)
+    public MessageAttachmentsFromSqlConnection(SqlConnection connection, string messageId, IPersister persister)
     {
         this.connection = connection;
         this.messageId = messageId;

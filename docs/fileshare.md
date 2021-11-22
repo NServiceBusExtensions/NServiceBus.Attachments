@@ -44,7 +44,7 @@ configuration.EnableAttachments(
     },
     timeToKeep: _ => TimeSpan.FromDays(7));
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L14-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L13-L32' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -68,7 +68,7 @@ configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L35-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L34-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -94,7 +94,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L46-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L45-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 

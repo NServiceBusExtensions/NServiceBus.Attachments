@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Transport;
 
 namespace NServiceBus.Attachments.Sql
@@ -8,20 +8,20 @@ namespace NServiceBus.Attachments.Sql
     /// </summary>
     public partial class AttachmentSettings
     {
-        internal Func<Task<DbConnection>> ConnectionFactory;
+        internal Func<Task<SqlConnection>> ConnectionFactory;
         internal Table Table = "MessageAttachments";
         internal bool InstallerDisabled;
         internal bool UseTransport;
         internal bool UseSynchronizedStorage;
 
-        internal AttachmentSettings(Func<Task<DbConnection>> connectionFactory, GetTimeToKeep timeToKeep)
+        internal AttachmentSettings(Func<Task<SqlConnection>> connectionFactory, GetTimeToKeep timeToKeep)
         {
             TimeToKeep = timeToKeep;
             ConnectionFactory = connectionFactory;
         }
 
         /// <summary>
-        /// Use the ambient <see cref="TransportTransaction"/> to obtain a <see cref="DbConnection"/> or <see cref="DbTransaction"/>.
+        /// Use the ambient <see cref="TransportTransaction"/> to obtain a <see cref="SqlConnection"/> or <see cref="SqlTransaction"/>.
         /// </summary>
         public void UseTransportConnectivity()
         {
@@ -29,7 +29,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <summary>
-        /// Use the ambient <see cref="IMessageHandlerContext.SynchronizedStorageSession"/> to obtain a <see cref="DbConnection"/> or <see cref="DbTransaction"/>.
+        /// Use the ambient <see cref="IMessageHandlerContext.SynchronizedStorageSession"/> to obtain a <see cref="SqlConnection"/> or <see cref="SqlTransaction"/>.
         /// </summary>
         public void UseSynchronizedStorageSessionConnectivity()
         {

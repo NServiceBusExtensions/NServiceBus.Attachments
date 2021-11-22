@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
     {
         //TODO: remove?
         /// <inheritdoc />
-        public virtual async Task ReadAllMessageInfo(DbConnection connection, DbTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
             await using var command = GetReadInfoCommand(connection, transaction, messageId);
@@ -30,8 +30,8 @@ namespace NServiceBus.Attachments.Sql
 
         /// <inheritdoc />
         public virtual async IAsyncEnumerable<(Guid, string)> ReadAllMessageNames(
-            DbConnection connection,
-            DbTransaction? transaction,
+            SqlConnection connection,
+            SqlTransaction? transaction,
             string messageId,
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
@@ -47,8 +47,8 @@ namespace NServiceBus.Attachments.Sql
 
         /// <inheritdoc />
         public virtual async IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(
-            DbConnection connection,
-            DbTransaction? transaction,
+            SqlConnection connection,
+            SqlTransaction? transaction,
             string messageId,
             [EnumeratorCancellation] CancellationToken cancellation = default)
         {
@@ -67,7 +67,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async Task ReadAllInfo(DbConnection connection, DbTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
+        public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
         {
             await using var command = GetReadInfosCommand(connection, transaction);
             await using var reader = await command.ExecuteSequentialReader(cancellation);
@@ -86,7 +86,7 @@ namespace NServiceBus.Attachments.Sql
         }
 
         /// <inheritdoc />
-        public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
+        public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
         {
             ConcurrentBag<AttachmentInfo> list = new();
             await ReadAllInfo(
@@ -101,7 +101,7 @@ namespace NServiceBus.Attachments.Sql
             return list;
         }
 
-        DbCommand GetReadInfosCommand(DbConnection connection, DbTransaction? transaction)
+        SqlCommand GetReadInfosCommand(SqlConnection connection, SqlTransaction? transaction)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -116,7 +116,7 @@ from {table}";
             return command;
         }
 
-        DbCommand GetReadNamesCommand(DbConnection connection, DbTransaction? transaction, string messageId)
+        SqlCommand GetReadNamesCommand(SqlConnection connection, SqlTransaction? transaction, string messageId)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -131,7 +131,7 @@ where
 
             return command;
         }
-        DbCommand GetReadInfoCommand(DbConnection connection, DbTransaction? transaction, string messageId)
+        SqlCommand GetReadInfoCommand(SqlConnection connection, SqlTransaction? transaction, string messageId)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;

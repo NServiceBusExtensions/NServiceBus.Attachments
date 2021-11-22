@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
@@ -8,7 +8,7 @@ namespace NServiceBus.Attachments.Sql
     public partial class Persister
     {
         /// <inheritdoc />
-        public virtual async Task<int> CleanupItemsOlderThan(DbConnection connection, DbTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
+        public virtual async Task<int> CleanupItemsOlderThan(SqlConnection connection, SqlTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
         {
             await using var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -22,7 +22,7 @@ select @@ROWCOUNT";
         }
 
         /// <inheritdoc />
-        public virtual async Task<int> PurgeItems(DbConnection connection, DbTransaction? transaction, CancellationToken cancellation = default)
+        public virtual async Task<int> PurgeItems(SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
         {
             await using var command = connection.CreateCommand();
             command.Transaction = transaction;

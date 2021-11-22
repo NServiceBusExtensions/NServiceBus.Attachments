@@ -1,15 +1,15 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<Task<DbConnection>> connectionFactory;
+    Func<Task<SqlConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Func<Task<DbConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
@@ -48,15 +48,15 @@ class SendBehavior :
                 return;
             }
 
-            if (state.DbTransaction is not null)
+            if (state.SqlTransaction is not null)
             {
-                await ProcessOutgoing(timeToBeReceived, state.DbTransaction.Connection!, state.DbTransaction, context, outgoingAttachments);
+                await ProcessOutgoing(timeToBeReceived, state.SqlTransaction.Connection!, state.SqlTransaction, context, outgoingAttachments);
                 return;
             }
 
-            if (state.DbConnection is not null)
+            if (state.SqlConnection is not null)
             {
-                await ProcessOutgoing(timeToBeReceived, state.DbConnection, null, context, outgoingAttachments);
+                await ProcessOutgoing(timeToBeReceived, state.SqlConnection, null, context, outgoingAttachments);
                 return;
             }
 
@@ -72,12 +72,12 @@ class SendBehavior :
             connectionFromFactory.EnlistTransaction(transaction);
         }
 
-        await using var dbTransaction = await connectionFromFactory.BeginTransactionAsync();
+        await using var dbTransaction = (SqlTransaction) await connectionFromFactory.BeginTransactionAsync();
         await ProcessOutgoing(timeToBeReceived, connectionFromFactory, dbTransaction, context, outgoingAttachments);
         await dbTransaction.CommitAsync();
     }
 
-    async Task ProcessOutgoing(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
+    async Task ProcessOutgoing(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
         Dictionary<Guid, string> attachments = new();
         foreach (var outgoing in outgoingAttachments.Inner)
@@ -110,7 +110,7 @@ class SendBehavior :
         context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x=> $"{x.Key}: {x.Value}")));
     }
 
-    async Task<Guid> ProcessStream(DbConnection connection, DbTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
+    async Task<Guid> ProcessStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
         await using (stream)
         {
@@ -118,7 +118,7 @@ class SendBehavior :
         }
     }
 
-    async Task<Guid> ProcessAttachment(TimeSpan? timeToBeReceived, DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name)
+    async Task<Guid> ProcessAttachment(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction? transaction, string messageId, Outgoing outgoing, string name)
     {
         var outgoingStreamTimeToKeep = outgoing.TimeToKeep ?? endpointTimeToKeep;
         var timeToKeep = outgoingStreamTimeToKeep(timeToBeReceived);
@@ -133,7 +133,7 @@ class SendBehavior :
         }
     }
 
-    async Task<Guid> Process(DbConnection connection, DbTransaction? transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
+    async Task<Guid> Process(SqlConnection connection, SqlTransaction? transaction, string messageId, Outgoing outgoing, string name, DateTime expiry)
     {
         var metadata = outgoing.Metadata;
         if (outgoing.AsyncStreamFactory is not null)

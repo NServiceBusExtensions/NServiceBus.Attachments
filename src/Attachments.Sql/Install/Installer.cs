@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
@@ -13,7 +13,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>
-        public static Task CreateTable(DbConnection connection, CancellationToken cancellation = default)
+        public static Task CreateTable(SqlConnection connection, CancellationToken cancellation = default)
         {
             return CreateTable(connection, "MessageAttachments", cancellation);
         }
@@ -21,7 +21,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Create the attachments storage table.
         /// </summary>
-        public static async Task CreateTable(DbConnection connection, Table table, CancellationToken cancellation = default)
+        public static async Task CreateTable(SqlConnection connection, Table table, CancellationToken cancellation = default)
         {
             await using var command = connection.CreateCommand();
             command.CommandText = GetTableSql();

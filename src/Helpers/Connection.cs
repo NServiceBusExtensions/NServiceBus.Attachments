@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
 public static class Connection
 {
@@ -26,22 +25,22 @@ public static class Connection
 
     public static bool IsUsingEnvironmentVariable;
 
-    public static DbConnection OpenConnection()
+    public static SqlConnection OpenConnection()
     {
         SqlConnection connection = new(ConnectionString);
         connection.Open();
         return connection;
     }
 
-    public static async Task<DbConnection> OpenAsyncConnection(CancellationToken cancellation = default)
+    public static async Task<SqlConnection> OpenAsyncConnection(CancellationToken cancellation = default)
     {
         SqlConnection connection = new(ConnectionString);
         await connection.OpenAsync(cancellation);
         return connection;
     }
 
-    public static DbConnection NewConnection()
+    public static SqlConnection NewConnection()
     {
-        return new SqlConnection(ConnectionString);
+        return new(ConnectionString);
     }
 }

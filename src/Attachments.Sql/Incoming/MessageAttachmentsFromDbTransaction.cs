@@ -1,14 +1,14 @@
-﻿using System.Data.Common;
+﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromDbTransaction :
+class MessageAttachmentsFromSqlTransaction :
     IMessageAttachments
 {
-    DbTransaction transaction;
+    SqlTransaction transaction;
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromDbTransaction(DbTransaction transaction, string messageId, IPersister persister)
+    public MessageAttachmentsFromSqlTransaction(SqlTransaction transaction, string messageId, IPersister persister)
     {
         this.transaction = transaction;
         this.messageId = messageId;

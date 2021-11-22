@@ -1,5 +1,5 @@
-﻿using System.Data.Common;
-using System.Transactions;
+﻿using System.Transactions;
+using Microsoft.Data.SqlClient;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Logging;
@@ -10,10 +10,10 @@ class DeleteBehavior :
     Behavior<IIncomingPhysicalMessageContext>
 {
     static ILog log = LogManager.GetLogger("AttachmentDeleteBehavior");
-    Func<Task<DbConnection>> connectionBuilder;
+    Func<Task<SqlConnection>> connectionBuilder;
     IPersister persister;
 
-    public DeleteBehavior(Func<Task<DbConnection>> connectionBuilder, IPersister persister)
+    public DeleteBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;
@@ -50,7 +50,7 @@ class DeleteBehavior :
             return;
         }
 
-        if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out DbTransaction dbTransaction))
+        if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out SqlTransaction dbTransaction))
         {
             var count = await persister.DeleteAttachments(id, dbTransaction.Connection!, dbTransaction);
             log.Debug($"Deleted {count} attachments for {id} using System.Data.SqlClient.SqlTransaction");
