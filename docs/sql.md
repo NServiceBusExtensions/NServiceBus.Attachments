@@ -284,7 +284,7 @@ class HandlerFactory :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L6-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactory' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L5-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactory' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-outgoingfactory-1'></a>
 ```cs
 class HandlerFactory :
@@ -301,7 +301,7 @@ class HandlerFactory :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Outgoing.cs#L6-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactory-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Outgoing.cs#L5-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactory-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: OutgoingFactoryAsync -->
@@ -323,7 +323,7 @@ class HandlerFactoryAsync :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L24-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactoryasync' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L23-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactoryasync' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-outgoingfactoryasync-1'></a>
 ```cs
 class HandlerFactoryAsync :
@@ -342,7 +342,7 @@ class HandlerFactoryAsync :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Outgoing.cs#L24-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactoryasync-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Outgoing.cs#L23-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoingfactoryasync-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -369,7 +369,7 @@ class HandlerInstance :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L44-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoinginstance' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Outgoing.cs#L43-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoinginstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-outgoinginstance-1'></a>
 ```cs
 class HandlerInstance :
@@ -388,7 +388,7 @@ class HandlerInstance :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Outgoing.cs#L44-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoinginstance-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Outgoing.cs#L43-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-outgoinginstance-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -679,7 +679,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L7-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoinghandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L6-L20' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoinghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testoutgoinghandler-1'></a>
 ```cs
 public class Handler :
@@ -694,7 +694,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L7-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoinghandler-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L6-L20' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoinghandler-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestOutgoing -->
@@ -719,7 +719,7 @@ public async Task TestOutgoingAttachments()
     Assert.True(attachments.HasPendingAttachments);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L23-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L22-L43' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testoutgoing-1'></a>
 ```cs
 [Fact]
@@ -741,7 +741,7 @@ public async Task TestOutgoingAttachments()
     Assert.True(attachments.HasPendingAttachments);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L23-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L22-L43' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -759,14 +759,14 @@ TestableMessageHandlerContext context = new();
 MyMessageAttachments mockMessageAttachments = new();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L11-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
 TestableMessageHandlerContext context = new();
 MyMessageAttachments mockMessageAttachments = new();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L11-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The implementation of `IMessageHandlerContext` can be a custom coded mock or constructed using any of the popular mocking/assertion frameworks.
@@ -789,7 +789,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L24-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L23-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
@@ -805,7 +805,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L24-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L23-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Putting these parts together allows a handler, using incoming attachments, to be tested.
@@ -823,7 +823,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L41-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L40-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'></a>
 ```cs
 public class Handler :
@@ -836,7 +836,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L41-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L40-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -858,7 +858,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L55-L73' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L54-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincoming-1'></a>
 ```cs
 [Fact]
@@ -877,6 +877,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L55-L73' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L54-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 <!-- endInclude -->
