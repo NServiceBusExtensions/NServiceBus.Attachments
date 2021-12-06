@@ -1,6 +1,5 @@
 ﻿using NServiceBus;
 using NServiceBus.Attachments.FileShare;
-using Xunit;
 
 public class IntegrationTests :
     IDisposable

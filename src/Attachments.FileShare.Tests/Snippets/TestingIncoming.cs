@@ -2,7 +2,6 @@
 using NServiceBus.Attachments.FileShare;
 using NServiceBus.Attachments.FileShare.Testing;
 using NServiceBus.Testing;
-using Xunit;
 // ReSharper disable UnusedVariable
 
 class IncomingAttachment
@@ -186,7 +185,7 @@ class MyMessageAttachments :
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding,  CancellationToken cancellation = default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }

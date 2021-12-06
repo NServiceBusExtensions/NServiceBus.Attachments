@@ -121,7 +121,7 @@ namespace NServiceBus.Attachments.Sql
         /// <summary>
         /// Reads an <see cref="AttachmentStream"/> for an attachment.
         /// </summary>
-        Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction,  bool disposeConnectionOnStreamDispose, CancellationToken cancellation = default);
+        Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation = default);
 
         /// <summary>
         /// Processes all attachments for <paramref name="messageId"/> by passing them to <paramref name="action"/>.

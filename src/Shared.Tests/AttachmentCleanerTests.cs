@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-public class AttachmentCleanerTests
+﻿public class AttachmentCleanerTests
 {
     [Fact]
     public async Task If_triggers_critical_action_after_10_failures()
@@ -8,7 +6,7 @@ public class AttachmentCleanerTests
         var criticalActionTriggered = false;
         FakeTimer timer = new();
         TestableCleaner cleaner = new(_ => Task.CompletedTask,
-            (_, _) => criticalActionTriggered = true,  TimeSpan.Zero, timer);
+            (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
 
         await cleaner.Start();
 

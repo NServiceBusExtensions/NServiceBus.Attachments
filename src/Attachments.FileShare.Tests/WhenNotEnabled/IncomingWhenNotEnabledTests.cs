@@ -1,6 +1,4 @@
 ﻿using NServiceBus;
-using VerifyXunit;
-using Xunit;
 
 [UsesVerify]
 public class IncomingWhenNotEnabledTests : IDisposable

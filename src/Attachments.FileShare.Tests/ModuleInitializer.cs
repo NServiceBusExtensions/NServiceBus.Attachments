@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using NServiceBus.Logging;
-using VerifyTests;
 
 public static class ModuleInitializer
 {

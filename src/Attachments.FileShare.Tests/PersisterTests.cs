@@ -1,6 +1,4 @@
 ﻿using NServiceBus.Attachments.FileShare;
-using VerifyXunit;
-using Xunit;
 
 [UsesVerify]
 public class PersisterTests

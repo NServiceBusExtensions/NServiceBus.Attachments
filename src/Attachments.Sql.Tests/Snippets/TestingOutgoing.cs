@@ -1,6 +1,5 @@
 ﻿using NServiceBus;
 using NServiceBus.Testing;
-using Xunit;
 
 public class TestingOutgoing
 {

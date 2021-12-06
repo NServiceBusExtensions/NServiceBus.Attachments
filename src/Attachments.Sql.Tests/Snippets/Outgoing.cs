@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using NServiceBus;
+﻿using NServiceBus;
 
 public class Outgoing
 {

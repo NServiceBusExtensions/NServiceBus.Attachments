@@ -2,7 +2,6 @@
 using NServiceBus.Attachments.FileShare;
 using NServiceBus.Attachments.FileShare.Testing;
 using NServiceBus.Testing;
-using Xunit;
 
 public class TestingTests
 {

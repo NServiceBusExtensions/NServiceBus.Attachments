@@ -2,7 +2,6 @@
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
-using Xunit;
 
 public class IntegrationTests : IDisposable
 {
