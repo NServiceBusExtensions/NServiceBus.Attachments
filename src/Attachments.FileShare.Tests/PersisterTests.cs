@@ -160,7 +160,7 @@ public class PersisterTests
             expiry: defaultTestDate,
             stream: GetStream(),
             metadata: metadata);
-        await Verifier.Verify(persister.ReadAllInfo());
+        await Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class PersisterTests
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        await Verifier.Verify(persister.ReadAllMessageNames("theMessageId"));
+        await Verify(persister.ReadAllMessageNames("theMessageId"));
     }
 
     [Fact]
@@ -178,7 +178,7 @@ public class PersisterTests
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        await Verifier.Verify(persister.ReadAllMessageInfo("theMessageId"));
+        await Verify(persister.ReadAllMessageInfo("theMessageId"));
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class PersisterTests
     {
         var persister = GetPersister();
         await persister.SaveBytes("theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
-        await Verifier.Verify(persister.ReadAllInfo());
+        await Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -194,7 +194,7 @@ public class PersisterTests
     {
         var persister = GetPersister();
         await persister.SaveString("theMessageId", "theName", defaultTestDate, "foo", null, metadata);
-        await Verifier.Verify(persister.ReadAllInfo());
+        await Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -217,7 +217,7 @@ public class PersisterTests
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId", "theName2");
-        await Verifier.Verify(persister.ReadAllInfo());
+        await Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -227,7 +227,7 @@ public class PersisterTests
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId");
-        await Verifier.Verify(persister.ReadAllInfo());
+        await Verify(persister.ReadAllInfo());
     }
 
     [Fact]
@@ -238,7 +238,7 @@ public class PersisterTests
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         var names = await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
         var allInfo = await persister.ReadAllInfo().ToAsyncList();
-        await Verifier.Verify(new {names, allInfo});
+        await Verify(new {names, allInfo});
     }
 
     [Fact]
@@ -248,7 +248,7 @@ public class PersisterTests
         await persister.SaveStream("theMessageId1", "theName", defaultTestDate, GetStream());
         await persister.SaveStream("theMessageId2", "theName", defaultTestDate.AddYears(2), GetStream());
         persister.CleanupItemsOlderThan(new(2001, 1, 1, 1, 1, 1));
-        await Verifier.Verify(persister.ReadAllInfo());
+        await Verify(persister.ReadAllInfo());
     }
 
     static Stream GetStream(byte content = 5)

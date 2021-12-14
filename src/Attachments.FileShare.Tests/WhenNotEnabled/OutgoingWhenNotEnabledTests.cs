@@ -12,7 +12,7 @@ public class OutgoingWhenNotEnabledTests
         var endpoint = await Endpoint.Start(configuration);
 
         var exception = await Assert.ThrowsAsync<Exception>(() => SendStartMessageWithAttachment(endpoint));
-        await Verifier.Verify(exception.Message);
+        await Verify(exception.Message);
         await endpoint.Stop();
     }
 

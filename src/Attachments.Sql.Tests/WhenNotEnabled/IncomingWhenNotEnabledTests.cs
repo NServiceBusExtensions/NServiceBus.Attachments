@@ -24,7 +24,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
         await endpoint.Stop();
 
         Assert.NotNull(Exception);
-        await Verifier.Verify(Exception!.Message);
+        await Verify(Exception!.Message);
     }
 
     class Handler :
