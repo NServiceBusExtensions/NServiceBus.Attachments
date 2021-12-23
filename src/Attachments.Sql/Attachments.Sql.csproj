@@ -10,7 +10,7 @@
     <EmbeddedResource Include="Table.sql" LogicalName="Table.sql" />
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="All" />
     <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
-    <PackageReference Include="NServiceBus" Version="7.5.0" />
+    <PackageReference Include="NServiceBus" Version="7.6.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="4.0.0" />
     <PackageReference Include="ProjectDefaults" Version="1.0.63" PrivateAssets="all" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" Condition="$(Configuration) == 'Release'" />
