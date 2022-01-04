@@ -22,7 +22,7 @@
 
         return list;
     }
-    
+
     public static void MoveToStart(this Stream stream)
     {
         if (stream.CanSeek)

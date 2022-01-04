@@ -20,7 +20,7 @@ public static class Connection
             return;
         }
 
-        ConnectionString = "Data Source=.;Database=NServiceBusAttachmentsTests; Integrated Security=True;Max Pool Size=100;TrustServerCertificate=True";
+        ConnectionString = "Data Source=.;Database=NServiceBusAttachmentsTests;Integrated Security=True;Max Pool Size=100;TrustServerCertificate=True";
     }
 
     public static bool IsUsingEnvironmentVariable;

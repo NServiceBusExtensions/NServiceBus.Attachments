@@ -102,7 +102,7 @@ public class PersisterTests
         await foreach (var attachment in persister.GetStreams("theMessageId"))
         {
             var array = ToBytes(attachment);
-            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(attachment.Name is "theName1" or "theName2");
             Assert.True(array[0] == 1 || array[0] == 2);
             Interlocked.Increment(ref count);
         }
@@ -119,7 +119,7 @@ public class PersisterTests
         await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
         await foreach (var attachment in persister.GetBytes("theMessageId"))
         {
-            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
+            Assert.True(attachment.Name is "theName1" or "theName2");
             Assert.True(attachment.Bytes[0] == 1 || attachment.Bytes[0] == 2);
             Interlocked.Increment(ref count);
         }
@@ -136,8 +136,8 @@ public class PersisterTests
         await persister.SaveString("theMessageId", "theName2", defaultTestDate, "b", null, metadata);
         await foreach (var attachment in persister.GetStrings("theMessageId"))
         {
-            Assert.True(attachment.Name == "theName1" || attachment.Name == "theName2");
-            Assert.True(attachment.Value == "a" || attachment.Value == "b", attachment.Value);
+            Assert.True(attachment.Name is "theName1" or "theName2");
+            Assert.True(attachment.Value is "a" or "b", attachment.Value);
             Interlocked.Increment(ref count);
         }
 
