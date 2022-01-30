@@ -155,7 +155,6 @@ public class IntegrationTests : IDisposable
         {
             using SqlConnection connection = new(Connection.ConnectionString);
             connection.Open();
-            Console.WriteLine(connection.ServerVersion);
         }
     }
 
