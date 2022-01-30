@@ -1,14 +1,14 @@
 ﻿namespace NServiceBus.Attachments.FileShare
 #if Raw
-    .Raw
+.Raw
 #endif
+;
+
+public partial class Persister
 {
-    public partial class Persister
+    /// <inheritdoc />
+    public virtual void DeleteAllAttachments()
     {
-        /// <inheritdoc />
-        public virtual void DeleteAllAttachments()
-        {
-            FileHelpers.PurgeDirectory(fileShare);
-        }
+        FileHelpers.PurgeDirectory(fileShare);
     }
 }

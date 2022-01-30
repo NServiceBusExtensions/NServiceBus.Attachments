@@ -1,27 +1,27 @@
 ﻿namespace NServiceBus.Attachments.Sql
 #if Raw
-    .Raw
+.Raw
 #endif
+;
+
+/// <summary>
+/// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
+/// </summary>
+public partial class Persister :
+    IPersister
 {
+    Table table;
+
     /// <summary>
-    /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
+    /// Instantiate a new instance of <see cref="Persister"/>.
     /// </summary>
-    public partial class Persister :
-        IPersister
+    public Persister(Table table)
     {
-        Table table;
+        this.table = table;
+    }
 
-        /// <summary>
-        /// Instantiate a new instance of <see cref="Persister"/>.
-        /// </summary>
-        public Persister(Table table)
-        {
-            this.table = table;
-        }
-
-        static Exception ThrowNotFound(string messageId, string name)
-        {
-            return new($"Could not find attachment. MessageId:{messageId}, Name:{name}");
-        }
+    static Exception ThrowNotFound(string messageId, string name)
+    {
+        return new($"Could not find attachment. MessageId:{messageId}, Name:{name}");
     }
 }

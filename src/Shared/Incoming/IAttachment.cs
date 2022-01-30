@@ -1,17 +1,17 @@
 ﻿namespace NServiceBus.Attachments
 #if FileShare
-    .FileShare
+.FileShare
 #endif
 #if Sql
-    .Sql
+.Sql
 #endif
 #if Raw
-    .Raw
+.Raw
 #endif
+;
+
+public interface IAttachment
 {
-    public interface IAttachment
-    {
-        string Name { get; }
-        IReadOnlyDictionary<string, string> Metadata { get; }
-    }
+    string Name { get; }
+    IReadOnlyDictionary<string, string> Metadata { get; }
 }

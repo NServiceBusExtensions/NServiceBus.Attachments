@@ -4,18 +4,18 @@
 #elif Sql
 .Sql.Testing
 #endif
+;
+
+/// <summary>
+/// Attachment testing helpers
+/// </summary>
+public static class MockAttachmentHelper
 {
     /// <summary>
-    /// Attachment testing helpers
+    /// Inject an instance of <see cref="IMessageAttachments"/> into a <see cref="IMessageHandlerContext"/> to allow it to be mocked and asserted against.
     /// </summary>
-    public static class MockAttachmentHelper
+    public static void InjectAttachmentsInstance(this IMessageHandlerContext context, IMessageAttachments messageAttachments)
     {
-        /// <summary>
-        /// Inject an instance of <see cref="IMessageAttachments"/> into a <see cref="IMessageHandlerContext"/> to allow it to be mocked and asserted against.
-        /// </summary>
-        public static void InjectAttachmentsInstance(this IMessageHandlerContext context, IMessageAttachments messageAttachments)
-        {
-            context.Extensions.Set(messageAttachments);
-        }
+        context.Extensions.Set(messageAttachments);
     }
 }

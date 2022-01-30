@@ -1,50 +1,50 @@
 ﻿namespace NServiceBus.Attachments
 #if FileShare
-    .FileShare
+.FileShare
 #endif
 #if Sql
-    .Sql
+.Sql
 #endif
 #if Raw
-    .Raw
+.Raw
 #endif
+;
+
+/// <summary>
+/// Extensions for <see cref="IMessageAttachments"/>.
+/// </summary>
+public static class IncomingAttachmentExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IMessageAttachments"/>.
+    /// Copies all attachments for the current message to <paramref name="directory"/>.
     /// </summary>
-    public static class IncomingAttachmentExtensions
+    public static Task CopyToDirectory(
+        this IMessageAttachments attachments,
+        string directory,
+        string? nameForDefault = default,
+        CancellationToken cancellation = default)
     {
-        /// <summary>
-        /// Copies all attachments for the current message to <paramref name="directory"/>.
-        /// </summary>
-        public static Task CopyToDirectory(
-            this IMessageAttachments attachments,
-            string directory,
-            string? nameForDefault = default,
-            CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullOrEmpty(directory, nameof(directory));
-            Guard.AgainstEmpty(nameForDefault, nameof(nameForDefault));
-            Directory.CreateDirectory(directory);
+        Guard.AgainstNullOrEmpty(directory, nameof(directory));
+        Guard.AgainstEmpty(nameForDefault, nameof(nameForDefault));
+        Directory.CreateDirectory(directory);
 
-            return attachments.ProcessStreams(
-                async stream =>
+        return attachments.ProcessStreams(
+            async stream =>
+            {
+                var name = stream.Name;
+                if (name == "default" && nameForDefault is not null)
                 {
-                    var name = stream.Name;
-                    if (name == "default" && nameForDefault is not null)
-                    {
-                        name = nameForDefault;
-                    }
+                    name = nameForDefault;
+                }
 
-                    name = name.TrimStart('\\', '/');
-                    var file = Path.Combine(directory, name);
-                    var fileDirectory = Path.GetDirectoryName(file)!;
-                    Directory.CreateDirectory(fileDirectory);
-                    File.Delete(file);
-                    await using var fileStream = File.Create(file);
-                    await stream.CopyToAsync(fileStream, 4096, cancellation);
-                },
-                cancellation);
-        }
+                name = name.TrimStart('\\', '/');
+                var file = Path.Combine(directory, name);
+                var fileDirectory = Path.GetDirectoryName(file)!;
+                Directory.CreateDirectory(fileDirectory);
+                File.Delete(file);
+                await using var fileStream = File.Create(file);
+                await stream.CopyToAsync(fileStream, 4096, cancellation);
+            },
+            cancellation);
     }
 }

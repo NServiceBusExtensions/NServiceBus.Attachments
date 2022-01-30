@@ -2,109 +2,109 @@
 
 namespace NServiceBus.Attachments.FileShare
 #if Raw
-    .Raw
+.Raw
 #endif
+;
+
+/// <summary>
+/// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
+/// </summary>
+public partial class Persister :
+    IPersister
 {
+    string fileShare;
+
     /// <summary>
-    /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
+    /// Instantiate a new instance of <see cref="Persister"/>.
     /// </summary>
-    public partial class Persister :
-        IPersister
+    public Persister(string fileShare)
     {
-        string fileShare;
+        Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
+        this.fileShare = fileShare;
+    }
 
-        /// <summary>
-        /// Instantiate a new instance of <see cref="Persister"/>.
-        /// </summary>
-        public Persister(string fileShare)
+    string GetAttachmentDirectory(string messageId, string name)
+    {
+        var messageDirectory = GetMessageDirectory(messageId);
+        return Path.Combine(messageDirectory, name);
+    }
+
+    string GetMessageDirectory(string messageId)
+    {
+        return Path.Combine(fileShare, messageId);
+    }
+
+    DateTime ParseExpiry(string value)
+    {
+        return DateTime.ParseExact(value, dateTimeFormat, null, DateTimeStyles.AdjustToUniversal);
+    }
+
+    string dateTimeFormat = "yyyy-MM-ddTHHmm";
+
+    static string GetDataFile(string attachmentDirectory)
+    {
+        return Path.Combine(attachmentDirectory, "data");
+    }
+
+    static void ThrowIfDirectoryNotFound(string path, string messageId)
+    {
+        if (Directory.Exists(path))
         {
-            Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
-            this.fileShare = fileShare;
+            return;
         }
 
-        string GetAttachmentDirectory(string messageId, string name)
+        throw new($"Could not find attachment. MessageId:{messageId}, Path:{path}");
+    }
+
+    static void ThrowIfFileNotFound(string path, string messageId, string name)
+    {
+        if (File.Exists(path))
         {
-            var messageDirectory = GetMessageDirectory(messageId);
-            return Path.Combine(messageDirectory, name);
+            return;
         }
 
-        string GetMessageDirectory(string messageId)
+        throw new($"Could not find attachment. MessageId:{messageId}, Name:{name}, Path:{path}");
+    }
+
+    static void ThrowIfDirectoryExists(string path, string messageId, string name)
+    {
+        if (!Directory.Exists(path))
         {
-            return Path.Combine(fileShare, messageId);
+            return;
         }
 
-        DateTime ParseExpiry(string value)
+        throw new($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
+    }
+
+    static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory, CancellationToken cancellation = default)
+    {
+        var metadataFile = GetMetadataFile(attachmentDirectory);
+        if (!File.Exists(metadataFile))
         {
-            return DateTime.ParseExact(value, dateTimeFormat, null, DateTimeStyles.AdjustToUniversal);
+            return MetadataSerializer.EmptyMetadata;
         }
 
-        string dateTimeFormat = "yyyy-MM-ddTHHmm";
+        await using var stream = FileHelpers.OpenRead(metadataFile);
+        return await MetadataSerializer.Deserialize(stream, cancellation);
+    }
 
-        static string GetDataFile(string attachmentDirectory)
+    static string GetMetadataFile(string attachmentDirectory)
+    {
+        return Path.Combine(attachmentDirectory, "metadata.json");
+    }
+
+    static async Task WriteMetadata(
+        string attachmentDirectory,
+        IReadOnlyDictionary<string, string>? metadata,
+        CancellationToken cancellation = default)
+    {
+        if (metadata is null)
         {
-            return Path.Combine(attachmentDirectory, "data");
+            return;
         }
 
-        static void ThrowIfDirectoryNotFound(string path, string messageId)
-        {
-            if (Directory.Exists(path))
-            {
-                return;
-            }
-
-            throw new($"Could not find attachment. MessageId:{messageId}, Path:{path}");
-        }
-
-        static void ThrowIfFileNotFound(string path, string messageId, string name)
-        {
-            if (File.Exists(path))
-            {
-                return;
-            }
-
-            throw new($"Could not find attachment. MessageId:{messageId}, Name:{name}, Path:{path}");
-        }
-
-        static void ThrowIfDirectoryExists(string path, string messageId, string name)
-        {
-            if (!Directory.Exists(path))
-            {
-                return;
-            }
-
-            throw new($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
-        }
-
-        static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory, CancellationToken cancellation = default)
-        {
-            var metadataFile = GetMetadataFile(attachmentDirectory);
-            if (!File.Exists(metadataFile))
-            {
-                return MetadataSerializer.EmptyMetadata;
-            }
-
-            await using var stream = FileHelpers.OpenRead(metadataFile);
-            return await MetadataSerializer.Deserialize(stream, cancellation);
-        }
-
-        static string GetMetadataFile(string attachmentDirectory)
-        {
-            return Path.Combine(attachmentDirectory, "metadata.json");
-        }
-
-        static async Task WriteMetadata(
-            string attachmentDirectory,
-            IReadOnlyDictionary<string, string>? metadata,
-            CancellationToken cancellation = default)
-        {
-            if (metadata is null)
-            {
-                return;
-            }
-
-            var metadataFile = GetMetadataFile(attachmentDirectory);
-            await using var stream = FileHelpers.OpenWrite(metadataFile);
-            await MetadataSerializer.Serialize(stream, metadata, cancellation);
-        }
+        var metadataFile = GetMetadataFile(attachmentDirectory);
+        await using var stream = FileHelpers.OpenWrite(metadataFile);
+        await MetadataSerializer.Serialize(stream, metadata, cancellation);
     }
 }

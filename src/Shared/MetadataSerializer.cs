@@ -2,69 +2,69 @@
 
 namespace NServiceBus.Attachments
 #if FileShare
-    .FileShare
+.FileShare
 #elif Sql
-    .Sql
+.Sql
 #endif
 #if Raw
-    .Raw
+.Raw
 #endif
+;
+
+/// <summary>
+/// Converts a dictionary of metadata to/from json.
+/// </summary>
+public static class MetadataSerializer
 {
     /// <summary>
-    /// Converts a dictionary of metadata to/from json.
+    /// An empty <see cref="IReadOnlyDictionary{TKey,TValue}"/>
     /// </summary>
-    public static class MetadataSerializer
+    public readonly static IReadOnlyDictionary<string, string> EmptyMetadata = new Dictionary<string, string>();
+
+    /// <summary>
+    /// Serialize <paramref name="instance"/> to json.
+    /// </summary>
+    public static string? Serialize(IReadOnlyDictionary<string, string>? instance)
     {
-        /// <summary>
-        /// An empty <see cref="IReadOnlyDictionary{TKey,TValue}"/>
-        /// </summary>
-        public readonly static IReadOnlyDictionary<string, string> EmptyMetadata = new Dictionary<string, string>();
-
-        /// <summary>
-        /// Serialize <paramref name="instance"/> to json.
-        /// </summary>
-        public static string? Serialize(IReadOnlyDictionary<string, string>? instance)
+        if (instance is null)
         {
-            if (instance is null)
-            {
-                return null;
-            }
-
-            return Serializer.Serialize(instance);
+            return null;
         }
 
-        /// <summary>
-        /// Deserialize <paramref name="json"/> to a <see cref="IReadOnlyDictionary{TKey,TValue}"/>.
-        /// </summary>
-        public static IReadOnlyDictionary<string, string> Deserialize(string? json)
-        {
-            if (json is null)
-            {
-                return EmptyMetadata;
-            }
+        return Serializer.Serialize(instance);
+    }
 
-            return Serializer.Deserialize<Dictionary<string, string>>(json)!;
+    /// <summary>
+    /// Deserialize <paramref name="json"/> to a <see cref="IReadOnlyDictionary{TKey,TValue}"/>.
+    /// </summary>
+    public static IReadOnlyDictionary<string, string> Deserialize(string? json)
+    {
+        if (json is null)
+        {
+            return EmptyMetadata;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public static async Task<IReadOnlyDictionary<string, string>> Deserialize(
-            Stream stream,
-            CancellationToken cancellation = default)
-        {
-            return (await Serializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancellation))!;
-        }
+        return Serializer.Deserialize<Dictionary<string, string>>(json)!;
+    }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public static Task Serialize(
-            Stream stream,
-            IReadOnlyDictionary<string, string> metadata,
-            CancellationToken cancellation = default)
-        {
-            return Serializer.SerializeAsync(stream, metadata, cancellationToken: cancellation);
-        }
+    /// <summary>
+    ///
+    /// </summary>
+    public static async Task<IReadOnlyDictionary<string, string>> Deserialize(
+        Stream stream,
+        CancellationToken cancellation = default)
+    {
+        return (await Serializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancellation))!;
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public static Task Serialize(
+        Stream stream,
+        IReadOnlyDictionary<string, string> metadata,
+        CancellationToken cancellation = default)
+    {
+        return Serializer.SerializeAsync(stream, metadata, cancellationToken: cancellation);
     }
 }

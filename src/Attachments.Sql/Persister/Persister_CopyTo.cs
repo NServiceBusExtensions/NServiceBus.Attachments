@@ -2,26 +2,26 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-    .Raw
+.Raw
 #endif
-{
-    public partial class Persister
-    {
-        /// <inheritdoc />
-        public virtual async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Stream target, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-            Guard.AgainstNullOrEmpty(name, nameof(name));
-            Guard.AgainstLongAttachmentName(name);
-            await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-            await using var reader = await command.ExecuteSequentialReader(cancellation);
-            if (!await reader.ReadAsync(cancellation))
-            {
-                throw ThrowNotFound(messageId, name);
-            }
+;
 
-            await using var data = reader.GetStream(2);
-            await data.CopyToAsync(target, 81920, cancellation);
+public partial class Persister
+{
+    /// <inheritdoc />
+    public virtual async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Stream target, CancellationToken cancellation = default)
+    {
+        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstLongAttachmentName(name);
+        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        await using var reader = await command.ExecuteSequentialReader(cancellation);
+        if (!await reader.ReadAsync(cancellation))
+        {
+            throw ThrowNotFound(messageId, name);
         }
+
+        await using var data = reader.GetStream(2);
+        await data.CopyToAsync(target, 81920, cancellation);
     }
 }
