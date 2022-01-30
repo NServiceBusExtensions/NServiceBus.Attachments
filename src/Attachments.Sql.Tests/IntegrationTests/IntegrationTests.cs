@@ -136,7 +136,9 @@ public class IntegrationTests : IDisposable
         var baseDir = AppDomain.CurrentDomain.BaseDirectory;
         var scriptDir = Path.Combine(baseDir, "NServiceBus.Persistence.Sql", "MsSqlServer");
 
+#pragma warning disable CS0618
         return ScriptRunner.Install(
+#pragma warning restore CS0618
             sqlDialect: new SqlDialect.MsSqlServer(),
             tablePrefix: endpointName + "_",
             connectionBuilder: connectionBuilder,
