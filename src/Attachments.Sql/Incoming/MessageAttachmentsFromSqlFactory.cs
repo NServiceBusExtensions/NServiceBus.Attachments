@@ -71,13 +71,13 @@ class MessageAttachmentsFromSqlFactory :
 
     public async Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
-        await using var connection = await connectionFactory();
+        var connection = await connectionFactory();
         return await persister.GetStream(messageId, "default", connection, null, true, cancellation);
     }
 
     public async Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
     {
-        await using var connection = await connectionFactory();
+        var connection = await connectionFactory();
         return await persister.GetStream(messageId, name, connection, null, true, cancellation);
     }
 
@@ -137,13 +137,13 @@ class MessageAttachmentsFromSqlFactory :
 
     public async Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
     {
-        await using var connection = await connectionFactory();
+        var connection = await connectionFactory();
         return await persister.GetStream(messageId, "default", connection, null, true, cancellation);
     }
 
     public async Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
-        await using var connection = await connectionFactory();
+        var connection = await connectionFactory();
         return await persister.GetStream(messageId, name, connection, null, true, cancellation);
     }
 

@@ -21,6 +21,7 @@ class MySaga :
     {
         var incomingAttachment = context.Attachments();
         await using var stream = await incomingAttachment.GetStream();
+        Assert.True(stream.CanRead);
         Debug.WriteLine(stream);
         integrationTests.SagaEvent.Set();
     }
