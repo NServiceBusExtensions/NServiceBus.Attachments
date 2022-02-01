@@ -1,6 +1,6 @@
 # <img src="/src/icon.png" height="25px"> NServiceBus.Attachments
 
-[![Build status](https://ci.appveyor.com/api/projects/status/6483bemehfuowaa2/branch/master?svg=true)](https://ci.appveyor.com/project/SimonCropp/nservicebus-attachments)
+[![Build status](https://ci.appveyor.com/api/projects/status/6483bemehfuowaa2/branch/main?svg=true)](https://ci.appveyor.com/project/SimonCropp/nservicebus-attachments)
 [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.FileShare.svg?label=Attachments.FileShare)](https://www.nuget.org/packages/NServiceBus.Attachments.FileShare/)
 [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.FileShare.Raw.svg?label=Attachments.FileShare.Raw)](https://www.nuget.org/packages/NServiceBus.Attachments.FileShare.Raw/)
 [![NuGet Status](https://img.shields.io/nuget/v/NServiceBus.Attachments.Sql.svg?label=Attachments.Sql)](https://www.nuget.org/packages/NServiceBus.Attachments.Sql/)
