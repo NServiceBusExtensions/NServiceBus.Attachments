@@ -57,7 +57,7 @@ With the DataBus all binary data is read every message received. This is irrespe
 
 ### Memory usage
 
-With the DataBus all data items are place into byte arrays. This means that memory need to be allocated to store those arrays on either reading or writing. With NServiceBus.Attachments data can be streamed and processed in an async manner. This can significantly decrease the memory pressure on an endpoint.
+With the DataBus all data items are placed into byte arrays. This means that memory need to be allocated to store those arrays on either reading or writing. With NServiceBus.Attachments data can be streamed and processed in an async manner. This can significantly decrease the memory pressure on an endpoint.
 
 
 ### Variety of data APIs
