@@ -55,6 +55,22 @@ public class AttachmentStream :
         Metadata = metadata;
     }
 
+    /// <summary>
+    /// Initialises a new instance of <see cref="AttachmentStream"/>.
+    /// </summary>
+    /// <param name="name">The name of the attachment.</param>
+    /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
+    /// <param name="length">The length of <paramref name="inner"/>.</param>
+    /// <param name="metadata">The attachment metadata.</param>
+    /// <param name="cleanups">Any extra <see cref="IAsyncDisposable"/>s to cleanup.</param>
+    public AttachmentStream(
+        string name,
+        Stream inner,
+        IReadOnlyDictionary<string, string> metadata
+    ) : this(name, inner, inner.Length, metadata, inner)
+    {
+    }
+
     public override void EndWrite(IAsyncResult asyncResult)
     {
         inner.EndWrite(asyncResult);
