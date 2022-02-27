@@ -66,8 +66,8 @@ public class AttachmentStream :
     public AttachmentStream(
         string name,
         Stream inner,
-        IReadOnlyDictionary<string, string> metadata
-    ) : this(name, inner, inner.Length, metadata, inner)
+        IReadOnlyDictionary<string, string>? metadata = null
+    ) : this(name, inner, inner.Length, metadata ?? new Dictionary<string, string>(), inner)
     {
     }
 
