@@ -86,3 +86,5 @@ Fody/.DS_Store
 *.jtconfig
 *.bak
 src/temp/
+
+src/.idea/
