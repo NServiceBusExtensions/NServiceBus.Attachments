@@ -1,8 +1,8 @@
 ﻿namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 /// <summary>
 /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
@@ -13,7 +13,7 @@ public partial class Persister :
     Table table;
 
     /// <summary>
-    /// Instantiate a new instance of <see cref="Persister"/>.
+    /// Instantiate a new instance of <see cref="Persister" />.
     /// </summary>
     public Persister(Table table)
     {

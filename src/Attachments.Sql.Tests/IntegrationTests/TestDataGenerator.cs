@@ -8,23 +8,27 @@ public class TestDataGenerator :
         TransportTransactionMode.None,
         TransportTransactionMode.ReceiveOnly,
         TransportTransactionMode.SendsAtomicWithReceive,
-        TransportTransactionMode.TransactionScope,
+        TransportTransactionMode.TransactionScope
     };
+
     List<bool> useSqlPersistenceList = new()
     {
         true,
         false
     };
+
     List<bool> useSqlTransportList = new()
     {
         true,
         false
     };
+
     List<bool> useStorageSessionList = new()
     {
         true,
         false
     };
+
     List<bool> useSqlTransportConnectionList = new()
     {
         true,
@@ -63,5 +67,8 @@ public class TestDataGenerator :
         }
     }
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

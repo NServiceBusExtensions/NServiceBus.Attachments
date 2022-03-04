@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {

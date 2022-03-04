@@ -24,6 +24,7 @@ public static class SqlAttachmentsExtensions
         {
             throw new("This overload of EnableAttachments expects `Func<SqlConnection> connectionFactory` to return a un-opened SqlConnection.");
         }
+
         return EnableAttachments(configuration,
             connectionFactory: async () =>
             {

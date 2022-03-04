@@ -24,7 +24,7 @@ class MessageAttachmentsFromTransaction :
         await persister.CopyTo(messageId, "default", connection, null, target, cancellation);
     }
 
-    private async Task<SqlConnection> GetConnection()
+    async Task<SqlConnection> GetConnection()
     {
         var connection = await connectionFactory();
         connection.EnlistTransaction(transaction);

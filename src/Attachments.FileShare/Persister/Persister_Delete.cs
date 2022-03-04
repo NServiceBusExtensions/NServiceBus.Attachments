@@ -1,8 +1,8 @@
 ﻿namespace NServiceBus.Attachments.FileShare
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {

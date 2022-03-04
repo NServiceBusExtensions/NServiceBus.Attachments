@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {
@@ -34,7 +34,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
         await using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
-        return (Guid)(await command.ExecuteScalarAsync(cancellation))!;
+        return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
     }
 
     /// <inheritdoc />

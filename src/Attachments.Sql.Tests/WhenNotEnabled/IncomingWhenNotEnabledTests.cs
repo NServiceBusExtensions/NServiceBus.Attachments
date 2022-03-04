@@ -36,6 +36,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
         {
             this.incomingWhenNotEnabledTests = incomingWhenNotEnabledTests;
         }
+
         public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
             try

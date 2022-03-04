@@ -15,6 +15,7 @@
         {
             return;
         }
+
         if (string.IsNullOrWhiteSpace(value))
         {
             throw new ArgumentNullException(argumentName);
@@ -99,7 +100,7 @@
             var task = func.EvaluateAndCheck(attachmentName);
             ThrowIfNullReturned(null, attachmentName, task);
             var value = await task;
-            ThrowIfNullReturned(null,attachmentName, value);
+            ThrowIfNullReturned(null, attachmentName, value);
             return value;
         };
     }

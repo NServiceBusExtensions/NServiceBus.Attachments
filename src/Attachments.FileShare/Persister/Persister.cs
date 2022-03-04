@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.FileShare
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 /// <summary>
 /// Raw access to manipulating attachments outside of the context of the NServiceBus pipeline.
@@ -15,7 +15,7 @@ public partial class Persister :
     string fileShare;
 
     /// <summary>
-    /// Instantiate a new instance of <see cref="Persister"/>.
+    /// Instantiate a new instance of <see cref="Persister" />.
     /// </summary>
     public Persister(string fileShare)
     {

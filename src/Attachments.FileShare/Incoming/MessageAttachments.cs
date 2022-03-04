@@ -64,12 +64,12 @@ class MessageAttachments :
 
     public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, "default",cancellation);
+        return persister.GetStream(messageId, "default", cancellation);
     }
 
     public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, name,cancellation);
+        return persister.GetStream(messageId, name, cancellation);
     }
 
     public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
@@ -119,11 +119,11 @@ class MessageAttachments :
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, "default",cancellation);
+        return persister.GetStream(messageId, "default", cancellation);
     }
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
-        return persister.GetStream(messageId, name,cancellation);
+        return persister.GetStream(messageId, name, cancellation);
     }
 }

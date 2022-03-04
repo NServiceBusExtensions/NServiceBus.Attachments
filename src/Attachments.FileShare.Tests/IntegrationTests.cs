@@ -31,7 +31,7 @@ public class IntegrationTests :
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
-        attachment.Add("withMetadata", GetStream, metadata: new Dictionary<string, string> { { "key", "value" } });
+        attachment.Add("withMetadata", GetStream, metadata: new Dictionary<string, string> {{"key", "value"}});
         return endpoint.Send(new SendMessage(), sendOptions);
     }
 

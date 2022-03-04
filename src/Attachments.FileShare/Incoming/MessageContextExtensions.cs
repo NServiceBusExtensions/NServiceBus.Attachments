@@ -8,7 +8,7 @@ namespace NServiceBus;
 public static partial class FileShareAttachmentsMessageContextExtensions
 {
     /// <summary>
-    /// Provides an instance of <see cref="IMessageAttachments"/> for reading attachments.
+    /// Provides an instance of <see cref="IMessageAttachments" /> for reading attachments.
     /// </summary>
     public static IMessageAttachments Attachments(this IMessageHandlerContext context)
     {
@@ -23,6 +23,7 @@ public static partial class FileShareAttachmentsMessageContextExtensions
         {
             return new MessageAttachments(context.MessageId, state.Persister);
         }
+
         throw new($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(FileShareAttachmentsExtensions.EnableAttachments)}().");
     }
 }

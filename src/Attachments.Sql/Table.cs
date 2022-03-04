@@ -1,8 +1,8 @@
 ﻿namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 /// <summary>
 /// Represents a table and schema.
@@ -10,8 +10,8 @@
 public class Table
 {
     /// <summary>
-    /// Instantiates a new <see cref="Table"/>.
-    /// <paramref name="tableName"/> and <paramref name="schema"/> should be non sanitized.
+    /// Instantiates a new <see cref="Table" />.
+    /// <paramref name="tableName" /> and <paramref name="schema" /> should be non sanitized.
     /// </summary>
     public Table(string tableName, string schema = "dbo") :
         this(tableName, schema, true)
@@ -19,7 +19,7 @@ public class Table
     }
 
     /// <summary>
-    /// Instantiates a new <see cref="Table"/>.
+    /// Instantiates a new <see cref="Table" />.
     /// </summary>
     public Table(string tableName, string schema, bool sanitize)
     {
@@ -52,13 +52,19 @@ public class Table
     public string Schema { get; }
 
     /// <summary>
-    /// Converts a string into a <see cref="Table"/>.
+    /// Converts a string into a <see cref="Table" />.
     /// Assumes and un-sanitized table string with no schema.
     /// </summary>
-    public static implicit operator Table(string table) => new(table);
+    public static implicit operator Table(string table)
+    {
+        return new(table);
+    }
 
     /// <summary>
-    /// Returns <see cref="FullTableName"/>.
+    /// Returns <see cref="FullTableName" />.
     /// </summary>
-    public override string ToString() => FullTableName;
+    public override string ToString()
+    {
+        return FullTableName;
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using NServiceBus;
 
-public class ReplyMessage:IMessage
+public class ReplyMessage : IMessage
 {
 }

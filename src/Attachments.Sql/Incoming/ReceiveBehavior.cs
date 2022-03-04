@@ -27,7 +27,6 @@ class ReceiveBehavior :
         var state = BuildState(context);
         context.Extensions.Set(state);
         return next();
-
     }
 
     SqlAttachmentState BuildState(IInvokeHandlerContext context)
@@ -41,12 +40,14 @@ class ReceiveBehavior :
                 {
                     return new(transaction, persister);
                 }
+
                 if (storageAccessor.TryGetConnection(session, out var connection))
                 {
                     return new(connection, persister);
                 }
             }
         }
+
         if (useTransport)
         {
             if (context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))

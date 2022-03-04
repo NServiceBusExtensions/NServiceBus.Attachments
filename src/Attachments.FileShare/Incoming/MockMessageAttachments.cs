@@ -9,7 +9,7 @@ public partial class MockMessageAttachments
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentStream> GetStream(string name , CancellationToken cancellation = default)
+    public virtual Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
     {
         return Task.FromResult(AttachmentStream.Empty());
     }

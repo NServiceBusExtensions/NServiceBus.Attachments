@@ -1,4 +1,5 @@
 ﻿using NServiceBus;
+
 // ReSharper disable UnusedVariable
 
 public class Incoming

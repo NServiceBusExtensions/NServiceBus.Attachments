@@ -6,7 +6,7 @@ namespace NServiceBus;
 public static partial class SqlAttachmentsMessageContextExtensions
 {
     /// <summary>
-    /// Provides an instance of <see cref="IOutgoingAttachments"/> for writing attachments.
+    /// Provides an instance of <see cref="IOutgoingAttachments" /> for writing attachments.
     /// </summary>
     public static IOutgoingAttachments Attachments(this PublishOptions options)
     {
@@ -14,7 +14,7 @@ public static partial class SqlAttachmentsMessageContextExtensions
     }
 
     /// <summary>
-    /// Provides an instance of <see cref="IOutgoingAttachments"/> for writing attachments.
+    /// Provides an instance of <see cref="IOutgoingAttachments" /> for writing attachments.
     /// </summary>
     public static IOutgoingAttachments Attachments(this SendOptions options)
     {
@@ -22,7 +22,7 @@ public static partial class SqlAttachmentsMessageContextExtensions
     }
 
     /// <summary>
-    /// Provides an instance of <see cref="IOutgoingAttachments"/> for writing attachments.
+    /// Provides an instance of <see cref="IOutgoingAttachments" /> for writing attachments.
     /// </summary>
     public static IOutgoingAttachments Attachments(this ReplyOptions options)
     {

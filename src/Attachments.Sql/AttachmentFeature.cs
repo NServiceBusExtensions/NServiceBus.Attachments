@@ -1,8 +1,8 @@
 ﻿using NServiceBus;
-using NServiceBus.Features;
-using NServiceBus.ObjectBuilder;
 using NServiceBus.Attachments.Sql;
+using NServiceBus.Features;
 using NServiceBus.Logging;
+using NServiceBus.ObjectBuilder;
 
 class AttachmentFeature :
     Feature

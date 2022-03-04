@@ -1,8 +1,8 @@
 ﻿namespace NServiceBus.Attachments.FileShare
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {
@@ -61,6 +61,7 @@ public partial class Persister
         await using (File.Create(expiryFile))
         {
         }
+
         await WriteMetadata(attachmentDirectory, metadata, cancellation);
 
         await using var fileStream = FileHelpers.OpenWrite(dataFile);

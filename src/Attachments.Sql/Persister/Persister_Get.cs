@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {
@@ -25,6 +25,7 @@ public partial class Persister
             var bytes = (byte[]) reader[2];
             return new(name, encoding.GetString(bytes), metadata);
         }
+
         throw ThrowNotFound(messageId, name);
     }
 
@@ -44,6 +45,7 @@ public partial class Persister
 
             return new(name, bytes, metadata);
         }
+
         throw ThrowNotFound(messageId, name);
     }
 
@@ -80,10 +82,12 @@ public partial class Persister
             {
                 await reader.DisposeAsync();
             }
+
             if (command is not null)
             {
                 await command.DisposeAsync();
             }
+
             throw;
         }
     }
@@ -157,6 +161,7 @@ public partial class Persister
         {
             return new(name, sqlStream, length, metadata, command, reader, command.Connection!);
         }
+
         return new(name, sqlStream, length, metadata, command, reader);
     }
 

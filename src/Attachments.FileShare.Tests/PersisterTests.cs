@@ -4,7 +4,7 @@
 public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
-    Dictionary<string, string> metadata = new() { { "key", "value" } };
+    Dictionary<string, string> metadata = new() {{"key", "value"}};
 
     static Persister GetPersister([CallerMemberName] string? path = null)
     {
@@ -31,7 +31,7 @@ public class PersisterTests
     public async Task GetBytes()
     {
         var persister = GetPersister();
-        await persister.SaveStream("theMessageId", "theName", defaultTestDate,GetStream(), metadata);
+        await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream(), metadata);
         byte[] bytes = await persister.GetBytes("theMessageId", "theName");
         Assert.Equal(5, bytes[0]);
     }

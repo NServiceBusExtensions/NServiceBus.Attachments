@@ -49,6 +49,6 @@ class StorageAccessor
     {
         return storageSession
             .GetType()
-            .GetProperty(name, BindingFlags.NonPublic |BindingFlags.Public | BindingFlags.Instance);
+            .GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
     }
 }

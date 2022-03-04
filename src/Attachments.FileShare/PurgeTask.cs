@@ -11,6 +11,7 @@ class PurgeTask :
     {
         this.persister = persister;
     }
+
     protected override Task OnStart(IMessageSession session)
     {
         persister.PurgeItems();

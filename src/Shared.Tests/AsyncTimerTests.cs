@@ -9,7 +9,10 @@
         timer.Start(
             callback: (_, _) => throw new("Simulated!"),
             interval: TimeSpan.Zero,
-            errorCallback: _ => { errorCallbackInvoked.SetResult(true); },
+            errorCallback: _ =>
+            {
+                errorCallbackInvoked.SetResult(true);
+            },
             delayStrategy: Task.Delay);
 
         Assert.True(await errorCallbackInvoked.Task);
@@ -37,7 +40,10 @@
                 return Task.CompletedTask;
             },
             interval: TimeSpan.Zero,
-            errorCallback: _ => { exceptionThrown = true; },
+            errorCallback: _ =>
+            {
+                exceptionThrown = true;
+            },
             delayStrategy: Task.Delay);
 
         Assert.True(await callbackInvokedAfterError.Task);

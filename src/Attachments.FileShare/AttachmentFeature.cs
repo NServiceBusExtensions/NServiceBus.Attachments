@@ -19,6 +19,7 @@ class AttachmentFeature :
         {
             context.RegisterStartupTask(_ => new PurgeTask(persister));
         }
+
         if (settings.RunCleanTask)
         {
             context.RegisterStartupTask(builder => CreateCleaner(persister, builder));

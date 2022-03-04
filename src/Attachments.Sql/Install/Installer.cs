@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 /// <summary>
 /// Used to take control over the storage table creation.

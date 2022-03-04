@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {
@@ -15,7 +15,7 @@ public partial class Persister
         command.Transaction = transaction;
         command.CommandText = $@"delete from {table}
 select @@ROWCOUNT";
-        return (int)(await command.ExecuteScalarAsync(cancellation))!;
+        return (int) (await command.ExecuteScalarAsync(cancellation))!;
     }
 
     public virtual async Task<int> DeleteAttachments(string messageId, SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
@@ -26,6 +26,6 @@ select @@ROWCOUNT";
 delete from {table} where MessageIdLower = lower(@MessageId)
 select @@ROWCOUNT";
         command.AddParameter("MessageId", messageId);
-        return (int)(await command.ExecuteScalarAsync(cancellation))!;
+        return (int) (await command.ExecuteScalarAsync(cancellation))!;
     }
 }

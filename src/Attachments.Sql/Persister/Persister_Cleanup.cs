@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {
@@ -19,7 +19,7 @@ select @@ROWCOUNT";
         command.AddParameter("date", dateTime);
 
         var result = await command.ExecuteScalarAsync(cancellation);
-        return (int)result!;
+        return (int) result!;
     }
 
     /// <inheritdoc />
@@ -40,6 +40,6 @@ delete from {table}
 
 end
 select @@ROWCOUNT";
-        return (int)(await command.ExecuteScalarAsync(cancellation))!;
+        return (int) (await command.ExecuteScalarAsync(cancellation))!;
     }
 }

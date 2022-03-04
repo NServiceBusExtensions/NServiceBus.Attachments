@@ -76,9 +76,9 @@ public class NullLogger :
     {
     }
 
-    public bool IsDebugEnabled{ get; } = false;
+    public bool IsDebugEnabled { get; } = false;
     public bool IsInfoEnabled { get; } = false;
-    public bool IsWarnEnabled { get; }= false;
-    public bool IsErrorEnabled { get; }= false;
-    public bool IsFatalEnabled { get; }= false;
+    public bool IsWarnEnabled { get; } = false;
+    public bool IsErrorEnabled { get; } = false;
+    public bool IsFatalEnabled { get; } = false;
 }

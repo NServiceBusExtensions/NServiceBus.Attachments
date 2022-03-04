@@ -2,9 +2,9 @@
 
 namespace NServiceBus.Attachments.Sql
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {
@@ -132,6 +132,7 @@ where
 
         return command;
     }
+
     SqlCommand GetReadInfoCommand(SqlConnection connection, SqlTransaction? transaction, string messageId)
     {
         var command = connection.CreateCommand();

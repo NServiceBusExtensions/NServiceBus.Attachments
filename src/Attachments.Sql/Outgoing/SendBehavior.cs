@@ -107,7 +107,7 @@ class SendBehavior :
             attachments.Add(guid, duplicate.To);
         }
 
-        context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x=> $"{x.Key}: {x.Value}")));
+        context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x => $"{x.Key}: {x.Value}")));
     }
 
     async Task<Guid> ProcessStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
@@ -140,7 +140,6 @@ class SendBehavior :
         {
             var stream = await outgoing.AsyncStreamFactory();
             return await ProcessStream(connection, transaction, messageId, name, expiry, stream, metadata);
-
         }
 
         if (outgoing.StreamFactory is not null)

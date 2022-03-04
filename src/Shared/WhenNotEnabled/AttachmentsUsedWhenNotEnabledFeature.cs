@@ -18,7 +18,7 @@ class AttachmentsUsedWhenNotEnabledFeature :
 
     protected override void Setup(FeatureConfigurationContext context)
     {
-        if (context.Settings.TryGet<AttachmentSettings>(out var _))
+        if (context.Settings.TryGet<AttachmentSettings>(out _))
         {
             return;
         }

@@ -3,6 +3,7 @@
 public class DbSetup
 {
     static bool init;
+
     public static void Setup()
     {
         if (init)

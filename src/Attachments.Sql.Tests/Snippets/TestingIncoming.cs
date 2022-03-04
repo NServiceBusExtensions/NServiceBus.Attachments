@@ -2,6 +2,7 @@
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
+
 // ReSharper disable UnusedVariable
 
 class IncomingAttachment
@@ -169,7 +170,7 @@ class MyMessageAttachments : IMessageAttachments
         throw new NotImplementedException();
     }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation =default)
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
     {
         throw new NotImplementedException();
     }

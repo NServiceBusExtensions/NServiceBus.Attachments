@@ -1,8 +1,8 @@
 ﻿namespace NServiceBus.Attachments.FileShare
 #if Raw
-.Raw
+    .Raw
 #endif
-;
+    ;
 
 public partial class Persister
 {
@@ -19,6 +19,7 @@ public partial class Persister
                 {
                     yield break;
                 }
+
                 yield return info;
             }
         }
@@ -52,6 +53,7 @@ public partial class Persister
             {
                 yield break;
             }
+
             var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
             yield return new(

@@ -5,4 +5,3 @@
     MySqlScripts = false,
     OracleScripts = false,
     PostgreSqlScripts = false)]
-

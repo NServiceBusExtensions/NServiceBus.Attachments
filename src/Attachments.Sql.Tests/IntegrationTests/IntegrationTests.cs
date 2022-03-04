@@ -61,12 +61,19 @@ public class IntegrationTests : IDisposable
         }
 
         configuration.RegisterComponents(
-            registration: configureComponents => { configureComponents.RegisterSingleton(this); });
+            registration: configureComponents =>
+            {
+                configureComponents.RegisterSingleton(this);
+            });
         if (useSqlPersistence)
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
 
-            static SqlConnection connectionBuilder() => new(Connection.ConnectionString);
+            static SqlConnection connectionBuilder()
+            {
+                return new(Connection.ConnectionString);
+            }
+
             await RunSqlScripts(endpointName, connectionBuilder);
             persistence.SqlDialect<SqlDialect.MsSqlServer>();
             persistence.DisableInstaller();

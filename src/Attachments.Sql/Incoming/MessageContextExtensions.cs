@@ -8,7 +8,7 @@ namespace NServiceBus;
 public static partial class SqlAttachmentsMessageContextExtensions
 {
     /// <summary>
-    /// Provides an instance of <see cref="IMessageAttachments"/> for reading attachments.
+    /// Provides an instance of <see cref="IMessageAttachments" /> for reading attachments.
     /// </summary>
     public static IMessageAttachments Attachments(this IMessageHandlerContext context)
     {

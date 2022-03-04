@@ -71,7 +71,7 @@ static class FileHelpers
     {
         await using var fileStream = OpenRead(dataFile);
         var bytes = new byte[fileStream.Length];
-        await fileStream.ReadAsync(bytes, 0, (int)fileStream.Length, cancellation);
+        await fileStream.ReadAsync(bytes, 0, (int) fileStream.Length, cancellation);
         return bytes;
     }
 }

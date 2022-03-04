@@ -2,6 +2,7 @@
 using NServiceBus.Attachments.FileShare;
 using NServiceBus.Attachments.FileShare.Testing;
 using NServiceBus.Testing;
+
 // ReSharper disable UnusedVariable
 
 class IncomingAttachment
