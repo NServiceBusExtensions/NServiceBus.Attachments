@@ -28,7 +28,7 @@ public partial class Persister
         var dataFile = GetDataFile(attachmentDirectory);
         ThrowIfFileNotFound(dataFile, messageId, name);
         var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-        var allText = File.ReadAllText(dataFile, encoding.Default());
+        var allText = await File.ReadAllTextAsync(dataFile, encoding.Default(), cancellation);
         return new(name, allText, metadata);
     }
 
@@ -70,7 +70,7 @@ public partial class Persister
             var dataFile = GetDataFile(attachmentDirectory);
             var attachmentName = Directory.GetParent(dataFile)!.Name;
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-            var allText = File.ReadAllText(dataFile, encoding);
+            var allText = await File.ReadAllTextAsync(dataFile, encoding, cancellation);
             yield return new(attachmentName, allText, metadata);
         }
     }
