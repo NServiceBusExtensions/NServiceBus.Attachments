@@ -7,15 +7,9 @@ public class PersisterTests
     Dictionary<string, string> metadata = new() {{"key", "value"}};
     Persister persister;
 
-    static PersisterTests()
-    {
-        DbSetup.Setup();
-    }
+    static PersisterTests() => DbSetup.Setup();
 
-    public PersisterTests()
-    {
-        persister = new("MessageAttachments");
-    }
+    public PersisterTests() => persister = new("MessageAttachments");
 
     [Fact]
     public async Task CopyTo()
