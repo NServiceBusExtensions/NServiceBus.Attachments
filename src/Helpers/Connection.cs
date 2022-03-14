@@ -39,8 +39,6 @@ public static class Connection
         return connection;
     }
 
-    public static SqlConnection NewConnection()
-    {
-        return new(ConnectionString);
-    }
+    public static SqlConnection NewConnection() =>
+        new(ConnectionString);
 }

@@ -15,13 +15,9 @@ public partial class Persister :
     /// <summary>
     /// Instantiate a new instance of <see cref="Persister" />.
     /// </summary>
-    public Persister(Table table)
-    {
+    public Persister(Table table) =>
         this.table = table;
-    }
 
-    static Exception ThrowNotFound(string messageId, string name)
-    {
-        return new($"Could not find attachment. MessageId:{messageId}, Name:{name}");
-    }
+    static Exception ThrowNotFound(string messageId, string name) =>
+        new($"Could not find attachment. MessageId:{messageId}, Name:{name}");
 }

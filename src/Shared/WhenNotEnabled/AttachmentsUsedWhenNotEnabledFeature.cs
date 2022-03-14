@@ -11,10 +11,8 @@ using NServiceBus.Attachments;
 class AttachmentsUsedWhenNotEnabledFeature :
     Feature
 {
-    public AttachmentsUsedWhenNotEnabledFeature()
-    {
+    public AttachmentsUsedWhenNotEnabledFeature() =>
         EnableByDefault();
-    }
 
     protected override void Setup(FeatureConfigurationContext context)
     {

@@ -5,10 +5,8 @@ class ReplyHandler :
 {
     IntegrationTests integrationTests;
 
-    public ReplyHandler(IntegrationTests integrationTests)
-    {
+    public ReplyHandler(IntegrationTests integrationTests) =>
         this.integrationTests = integrationTests;
-    }
 
     public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
     {

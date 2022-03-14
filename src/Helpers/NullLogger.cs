@@ -6,15 +6,11 @@ public class NullLogger :
 {
     public static NullLogger Instance = new();
 
-    public ILog GetLogger(Type type)
-    {
-        return Instance;
-    }
+    public ILog GetLogger(Type type) =>
+        Instance;
 
-    public ILog GetLogger(string name)
-    {
-        return Instance;
-    }
+    public ILog GetLogger(string name) =>
+        Instance;
 
     public void Debug(string message)
     {

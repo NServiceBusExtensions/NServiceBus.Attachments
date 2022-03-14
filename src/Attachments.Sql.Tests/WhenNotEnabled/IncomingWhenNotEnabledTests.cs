@@ -6,10 +6,8 @@ public class IncomingWhenNotEnabledTests : IDisposable
     public ManualResetEvent ResetEvent = new(false);
     public Exception? Exception;
 
-    static IncomingWhenNotEnabledTests()
-    {
+    static IncomingWhenNotEnabledTests() =>
         DbSetup.Setup();
-    }
 
     [Fact]
     public async Task Run()
@@ -32,10 +30,8 @@ public class IncomingWhenNotEnabledTests : IDisposable
     {
         IncomingWhenNotEnabledTests incomingWhenNotEnabledTests;
 
-        public Handler(IncomingWhenNotEnabledTests incomingWhenNotEnabledTests)
-        {
+        public Handler(IncomingWhenNotEnabledTests incomingWhenNotEnabledTests) =>
             this.incomingWhenNotEnabledTests = incomingWhenNotEnabledTests;
-        }
 
         public Task Handle(SendMessage message, IMessageHandlerContext context)
         {
@@ -61,8 +57,6 @@ public class IncomingWhenNotEnabledTests : IDisposable
     {
     }
 
-    public void Dispose()
-    {
+    public void Dispose() =>
         ResetEvent.Dispose();
-    }
 }

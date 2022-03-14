@@ -24,8 +24,6 @@ class PurgeTask :
         log.DebugFormat($"Deleted {count} attachments");
     }
 
-    protected override Task OnStop(IMessageSession session)
-    {
-        return Task.CompletedTask;
-    }
+    protected override Task OnStop(IMessageSession session) =>
+        Task.CompletedTask;
 }

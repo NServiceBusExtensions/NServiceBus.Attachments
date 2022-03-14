@@ -23,8 +23,6 @@ public partial class AttachmentSettings
     /// <summary>
     /// Disable the attachment cleanup task.
     /// </summary>
-    public void DisableCleanupTask()
-    {
+    public void DisableCleanupTask() =>
         RunCleanTask = false;
-    }
 }

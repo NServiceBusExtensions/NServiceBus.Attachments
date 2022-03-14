@@ -3,10 +3,8 @@
 [UsesVerify]
 public class OutgoingWhenNotEnabledTests
 {
-    static OutgoingWhenNotEnabledTests()
-    {
+    static OutgoingWhenNotEnabledTests() =>
         DbSetup.Setup();
-    }
 
     [Fact]
     public async Task Run()

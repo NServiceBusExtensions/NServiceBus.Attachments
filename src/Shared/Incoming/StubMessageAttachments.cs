@@ -20,10 +20,8 @@ public partial class StubMessageAttachments :
     /// <summary>
     /// Instantiate a new instance of <see cref="StubMessageAttachments"/>.
     /// </summary>
-    public StubMessageAttachments()
-    {
+    public StubMessageAttachments() =>
         messageId = Guid.NewGuid().ToString();
-    }
 
     /// <summary>
     /// Instantiate a new instance of <see cref="StubMessageAttachments"/>.
@@ -42,22 +40,16 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task CopyTo(Stream target, CancellationToken cancellation = default)
-    {
-        return CopyTo("default", target, cancellation);
-    }
+    public virtual Task CopyTo(Stream target, CancellationToken cancellation = default) =>
+        CopyTo("default", target, cancellation);
 
     /// <inheritdoc />
-    public virtual Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return InnerProcessStream(name, action);
-    }
+    public virtual Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        InnerProcessStream(name, action);
 
     /// <inheritdoc />
-    public virtual Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return ProcessStream("default", action, cancellation);
-    }
+    public virtual Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        ProcessStream("default", action, cancellation);
 
     /// <inheritdoc />
     public virtual async Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
@@ -70,10 +62,8 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
-    {
-        return GetString("default", encoding, cancellation);
-    }
+    public virtual Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default) =>
+        GetString("default", encoding, cancellation);
 
     /// <inheritdoc />
     public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
@@ -83,10 +73,8 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
-    {
-        return GetBytes("default", cancellation);
-    }
+    public virtual Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
+        GetBytes("default", cancellation);
 
     /// <inheritdoc />
     public virtual Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
@@ -105,10 +93,8 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
-    {
-        return CopyToForMessage(messageId, "default", target, cancellation);
-    }
+    public virtual Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default) =>
+        CopyToForMessage(messageId, "default", target, cancellation);
 
     /// <inheritdoc />
     public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
@@ -119,10 +105,8 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return ProcessStreamForMessage("default", messageId, action, cancellation);
-    }
+    public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        ProcessStreamForMessage("default", messageId, action, cancellation);
 
     /// <inheritdoc />
     public virtual async Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
@@ -136,16 +120,12 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
-    {
-        return GetBytesForMessage(messageId, "default", cancellation);
-    }
+    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
+        GetBytesForMessage(messageId, "default", cancellation);
 
     /// <inheritdoc />
-    public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
-    {
-        return GetStringForMessage(messageId, "default", encoding, cancellation);
-    }
+    public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
+        GetStringForMessage(messageId, "default", encoding, cancellation);
 
     /// <inheritdoc />
     public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
@@ -217,10 +197,8 @@ public partial class StubMessageAttachments :
         throw new($"Cant find an attachment: {name}");
     }
 
-    static BinaryWriter BuildWriter(Stream target, Encoding? encoding)
-    {
-        return new(target, encoding.Default(), leaveOpen: true);
-    }
+    static BinaryWriter BuildWriter(Stream target, Encoding? encoding) =>
+        new(target, encoding.Default(), leaveOpen: true);
 
     Task InnerProcessStream(string name, Func<AttachmentStream, Task> action)
     {

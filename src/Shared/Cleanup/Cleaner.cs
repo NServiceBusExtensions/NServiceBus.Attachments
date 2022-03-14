@@ -41,10 +41,8 @@ class Cleaner :
         return Task.CompletedTask;
     }
 
-    protected override Task OnStop(IMessageSession? session)
-    {
-        return timer.Stop();
-    }
+    protected override Task OnStop(IMessageSession? session) =>
+        timer.Stop();
 
     IAsyncTimer timer;
     Action<string, Exception> criticalError;

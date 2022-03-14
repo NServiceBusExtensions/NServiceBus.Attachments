@@ -6,10 +6,8 @@ class SendHandler :
 {
     IntegrationTests integrationTests;
 
-    public SendHandler(IntegrationTests integrationTests)
-    {
+    public SendHandler(IntegrationTests integrationTests) =>
         this.integrationTests = integrationTests;
-    }
 
     public async Task Handle(SendMessage message, IMessageHandlerContext context)
     {

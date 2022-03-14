@@ -20,10 +20,8 @@ public class IntegrationTests :
         await endpoint.Stop();
     }
 
-    public void Dispose()
-    {
+    public void Dispose() =>
         resetEvent.Dispose();
-    }
 
     static Task SendStartMessage(IEndpointInstance endpoint)
     {
@@ -68,10 +66,8 @@ public class IntegrationTests :
     {
         ManualResetEvent resetEvent;
 
-        public ReplyHandler(ManualResetEvent resetEvent)
-        {
+        public ReplyHandler(ManualResetEvent resetEvent) =>
             this.resetEvent = resetEvent;
-        }
 
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {

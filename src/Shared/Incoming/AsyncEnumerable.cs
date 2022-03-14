@@ -5,15 +5,11 @@
     public AsyncEnumerable()
     {
     }
-    public AsyncEnumerable(IEnumerable<T> inner)
-    {
+    public AsyncEnumerable(IEnumerable<T> inner) =>
         this.inner = inner.GetEnumerator();
-    }
 
-    public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
-    {
-        return this;
-    }
+    public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default) =>
+        this;
 
     public ValueTask DisposeAsync()
     {

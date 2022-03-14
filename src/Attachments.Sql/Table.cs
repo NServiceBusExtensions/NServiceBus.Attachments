@@ -55,16 +55,12 @@ public class Table
     /// Converts a string into a <see cref="Table" />.
     /// Assumes and un-sanitized table string with no schema.
     /// </summary>
-    public static implicit operator Table(string table)
-    {
-        return new(table);
-    }
+    public static implicit operator Table(string table) =>
+        new(table);
 
     /// <summary>
     /// Returns <see cref="FullTableName" />.
     /// </summary>
-    public override string ToString()
-    {
-        return FullTableName;
-    }
+    public override string ToString() =>
+        FullTableName;
 }

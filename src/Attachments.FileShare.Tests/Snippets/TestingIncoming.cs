@@ -76,118 +76,72 @@ public class TestingIncoming
 class MyMessageAttachments :
     IMessageAttachments
 {
-    public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
-    {
+    public Task<AttachmentStream> GetStream(CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
-    {
+    public Task CopyTo(string name, Stream target, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task CopyTo(Stream target, CancellationToken cancellation = default)
-    {
+    public Task CopyTo(Stream target, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
+    public Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
+    public Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
+    public Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
-    {
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
-    {
+    public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
-    {
+    public Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
-    {
+    public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
+    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
+    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
+    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
-    {
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
-    }
 }

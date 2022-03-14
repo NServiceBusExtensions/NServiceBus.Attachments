@@ -7,10 +7,8 @@ class NeedToInstallSomething :
 {
     AttachmentSettings? settings;
 
-    public NeedToInstallSomething(ReadOnlySettings settings)
-    {
+    public NeedToInstallSomething(ReadOnlySettings settings) =>
         this.settings = settings.GetOrDefault<AttachmentSettings?>();
-    }
 
     public async Task Install(string identity)
     {

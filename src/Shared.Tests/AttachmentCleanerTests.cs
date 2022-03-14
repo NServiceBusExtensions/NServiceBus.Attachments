@@ -61,24 +61,18 @@
         {
         }
 
-        public Task Start()
-        {
-            return OnStart(null);
-        }
+        public Task Start() =>
+            OnStart(null);
     }
 
     class FakeTimer :
         IAsyncTimer
     {
-        public Task Tick(DateTime utcTime, CancellationToken token)
-        {
-            return callback(utcTime, token);
-        }
+        public Task Tick(DateTime utcTime, CancellationToken token) =>
+            callback(utcTime, token);
 
-        public void OnError(Exception error)
-        {
+        public void OnError(Exception error) =>
             errorCallback(error);
-        }
 
         public void Start(Func<DateTime, CancellationToken, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, CancellationToken, Task> delayStrategy)
         {
@@ -86,10 +80,8 @@
             this.errorCallback = errorCallback;
         }
 
-        public Task Stop()
-        {
-            return Task.CompletedTask;
-        }
+        public Task Stop() =>
+            Task.CompletedTask;
 
         Func<DateTime, CancellationToken, Task> callback = null!;
         Action<Exception> errorCallback = null!;

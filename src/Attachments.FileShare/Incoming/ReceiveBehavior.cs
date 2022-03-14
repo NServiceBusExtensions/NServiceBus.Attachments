@@ -6,10 +6,8 @@ class ReceiveBehavior :
 {
     IPersister persister;
 
-    public ReceiveBehavior(IPersister persister)
-    {
+    public ReceiveBehavior(IPersister persister) =>
         this.persister = persister;
-    }
 
     public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {

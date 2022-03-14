@@ -29,22 +29,16 @@ public partial class Persister :
         return Path.Combine(messageDirectory, name);
     }
 
-    string GetMessageDirectory(string messageId)
-    {
-        return Path.Combine(fileShare, messageId);
-    }
+    string GetMessageDirectory(string messageId) =>
+        Path.Combine(fileShare, messageId);
 
-    DateTime ParseExpiry(string value)
-    {
-        return DateTime.ParseExact(value, dateTimeFormat, null, DateTimeStyles.AdjustToUniversal);
-    }
+    DateTime ParseExpiry(string value) =>
+        DateTime.ParseExact(value, dateTimeFormat, null, DateTimeStyles.AdjustToUniversal);
 
     string dateTimeFormat = "yyyy-MM-ddTHHmm";
 
-    static string GetDataFile(string attachmentDirectory)
-    {
-        return Path.Combine(attachmentDirectory, "data");
-    }
+    static string GetDataFile(string attachmentDirectory) =>
+        Path.Combine(attachmentDirectory, "data");
 
     static void ThrowIfDirectoryNotFound(string path, string messageId)
     {
@@ -88,10 +82,8 @@ public partial class Persister :
         return await MetadataSerializer.Deserialize(stream, cancellation);
     }
 
-    static string GetMetadataFile(string attachmentDirectory)
-    {
-        return Path.Combine(attachmentDirectory, "metadata.json");
-    }
+    static string GetMetadataFile(string attachmentDirectory) =>
+        Path.Combine(attachmentDirectory, "metadata.json");
 
     static async Task WriteMetadata(
         string attachmentDirectory,

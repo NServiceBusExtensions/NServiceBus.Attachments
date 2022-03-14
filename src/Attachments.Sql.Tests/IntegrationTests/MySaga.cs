@@ -6,16 +6,12 @@ class MySaga :
 {
     IntegrationTests integrationTests;
 
-    public MySaga(IntegrationTests integrationTests)
-    {
+    public MySaga(IntegrationTests integrationTests) =>
         this.integrationTests = integrationTests;
-    }
 
-    protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaData> mapper)
-    {
+    protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaData> mapper) =>
         mapper.ConfigureMapping<SendMessage>(msg => msg.MyId)
             .ToSaga(saga => saga.MyId);
-    }
 
     public async Task Handle(SendMessage message, IMessageHandlerContext context)
     {

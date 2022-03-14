@@ -15,118 +15,72 @@ class MessageAttachmentsFromSqlTransaction :
         this.persister = persister;
     }
 
-    public Task CopyTo(Stream target, CancellationToken cancellation = default)
-    {
-        return persister.CopyTo(messageId, "default", transaction.Connection!, transaction, target, cancellation);
-    }
+    public Task CopyTo(Stream target, CancellationToken cancellation = default) =>
+        persister.CopyTo(messageId, "default", transaction.Connection!, transaction, target, cancellation);
 
-    public Task CopyTo(string name, Stream target, CancellationToken cancellation = default)
-    {
-        return persister.CopyTo(messageId, name, transaction.Connection!, transaction, target, cancellation);
-    }
+    public Task CopyTo(string name, Stream target, CancellationToken cancellation = default) =>
+        persister.CopyTo(messageId, name, transaction.Connection!, transaction, target, cancellation);
 
-    public Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return persister.ProcessStream(messageId, "default", transaction.Connection!, transaction, action, cancellation);
-    }
+    public Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        persister.ProcessStream(messageId, "default", transaction.Connection!, transaction, action, cancellation);
 
-    public Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return persister.ProcessStream(messageId, name, transaction.Connection!, transaction, action, cancellation);
-    }
+    public Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        persister.ProcessStream(messageId, name, transaction.Connection!, transaction, action, cancellation);
 
-    public Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return persister.ProcessStreams(messageId, transaction.Connection!, transaction, action, cancellation);
-    }
+    public Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        persister.ProcessStreams(messageId, transaction.Connection!, transaction, action, cancellation);
 
-    public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default)
-    {
-        return persister.GetBytes(messageId, "default", transaction.Connection!, transaction, cancellation);
-    }
+    public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
+        persister.GetBytes(messageId, "default", transaction.Connection!, transaction, cancellation);
 
-    public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
-    {
-        return persister.GetBytes(messageId, name, transaction.Connection!, transaction, cancellation);
-    }
+    public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
+        persister.GetBytes(messageId, name, transaction.Connection!, transaction, cancellation);
 
-    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
-    {
-        return persister.GetString(messageId, "default", transaction.Connection!, transaction, encoding, cancellation);
-    }
+    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default) =>
+        persister.GetString(messageId, "default", transaction.Connection!, transaction, encoding, cancellation);
 
-    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
-    {
-        return persister.GetString(messageId, name, transaction.Connection!, transaction, encoding, cancellation);
-    }
+    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default) =>
+        persister.GetString(messageId, name, transaction.Connection!, transaction, encoding, cancellation);
 
-    public Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
-    {
-        return persister.GetStream(messageId, "default", transaction.Connection!, transaction, false, cancellation);
-    }
+    public Task<AttachmentStream> GetStream(CancellationToken cancellation = default) =>
+        persister.GetStream(messageId, "default", transaction.Connection!, transaction, false, cancellation);
 
-    public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
-    {
-        return persister.GetStream(messageId, name, transaction.Connection!, transaction, false, cancellation);
-    }
+    public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default) =>
+        persister.GetStream(messageId, name, transaction.Connection!, transaction, false, cancellation);
 
-    public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default)
-    {
-        return persister.CopyTo(messageId, "default", transaction.Connection!, transaction, target, cancellation);
-    }
+    public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default) =>
+        persister.CopyTo(messageId, "default", transaction.Connection!, transaction, target, cancellation);
 
-    public Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default)
-    {
-        return persister.CopyTo(messageId, name, transaction.Connection!, transaction, target, cancellation);
-    }
+    public Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default) =>
+        persister.CopyTo(messageId, name, transaction.Connection!, transaction, target, cancellation);
 
-    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return persister.ProcessStream(messageId, "default", transaction.Connection!, transaction, action, cancellation);
-    }
+    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        persister.ProcessStream(messageId, "default", transaction.Connection!, transaction, action, cancellation);
 
-    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return persister.ProcessStream(messageId, name, transaction.Connection!, transaction, action, cancellation);
-    }
+    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        persister.ProcessStream(messageId, name, transaction.Connection!, transaction, action, cancellation);
 
-    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
-    {
-        return persister.ProcessStreams(messageId, transaction.Connection!, transaction, action, cancellation);
-    }
+    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+        persister.ProcessStreams(messageId, transaction.Connection!, transaction, action, cancellation);
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default)
-    {
-        return persister.GetBytes(messageId, "default", transaction.Connection!, transaction, cancellation);
-    }
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
+        persister.GetBytes(messageId, "default", transaction.Connection!, transaction, cancellation);
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
-    {
-        return persister.GetBytes(messageId, name, transaction.Connection!, transaction, cancellation);
-    }
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+        persister.GetBytes(messageId, name, transaction.Connection!, transaction, cancellation);
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)
-    {
-        return persister.GetString(messageId, "default", transaction.Connection!, transaction, encoding, cancellation);
-    }
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
+        persister.GetString(messageId, "default", transaction.Connection!, transaction, encoding, cancellation);
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
-    {
-        return persister.GetString(messageId, name, transaction.Connection!, transaction, encoding, cancellation);
-    }
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default) =>
+        persister.GetString(messageId, name, transaction.Connection!, transaction, encoding, cancellation);
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
-    {
-        return persister.GetStream(messageId, "default", transaction.Connection!, transaction, false, cancellation);
-    }
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        persister.GetStream(messageId, "default", transaction.Connection!, transaction, false, cancellation);
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
-    {
-        return persister.GetStream(messageId, name, transaction.Connection!, transaction, false, cancellation);
-    }
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+        persister.GetStream(messageId, name, transaction.Connection!, transaction, false, cancellation);
 
-    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default)
-    {
-        return persister.ReadAllMessageInfo(transaction.Connection!, transaction, messageId, cancellation);
-    }
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default) =>
+        persister.ReadAllMessageInfo(transaction.Connection!, transaction, messageId, cancellation);
 }

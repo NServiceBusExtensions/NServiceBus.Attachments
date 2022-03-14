@@ -50,8 +50,6 @@ public class AttachmentString :
     }
 
 
-    public static implicit operator string(AttachmentString d)
-    {
-        return d.Value;
-    }
+    public static implicit operator string(AttachmentString d) =>
+        d.Value;
 }

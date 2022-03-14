@@ -45,10 +45,8 @@ class StorageAccessor
         return transaction != null;
     }
 
-    static PropertyInfo? GetProperty(SynchronizedStorageSession storageSession, string name)
-    {
-        return storageSession
+    static PropertyInfo? GetProperty(SynchronizedStorageSession storageSession, string name) =>
+        storageSession
             .GetType()
             .GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-    }
 }

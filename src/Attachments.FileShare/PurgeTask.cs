@@ -7,10 +7,8 @@ class PurgeTask :
 {
     IPersister persister;
 
-    public PurgeTask(IPersister persister)
-    {
+    public PurgeTask(IPersister persister) =>
         this.persister = persister;
-    }
 
     protected override Task OnStart(IMessageSession session)
     {
@@ -18,8 +16,6 @@ class PurgeTask :
         return Task.CompletedTask;
     }
 
-    protected override Task OnStop(IMessageSession session)
-    {
-        return Task.CompletedTask;
-    }
+    protected override Task OnStop(IMessageSession session) =>
+        Task.CompletedTask;
 }

@@ -34,9 +34,8 @@ class AttachmentFeature :
         }
     }
 
-    static Cleaner CreateCleaner(AttachmentSettings settings, IPersister persister, IBuilder builder)
-    {
-        return new(async token =>
+    static Cleaner CreateCleaner(AttachmentSettings settings, IPersister persister, IBuilder builder) =>
+        new(async token =>
             {
                 await using var connection = await settings.ConnectionFactory();
                 var count = await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
@@ -45,5 +44,4 @@ class AttachmentFeature :
             criticalError: builder.Build<CriticalError>().Raise,
             frequencyToRunCleanup: TimeSpan.FromHours(1),
             timer: new AsyncTimer());
-    }
 }

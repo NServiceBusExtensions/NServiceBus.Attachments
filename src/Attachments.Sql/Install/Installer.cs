@@ -14,10 +14,8 @@ public static class Installer
     /// <summary>
     /// Create the attachments storage table.
     /// </summary>
-    public static Task CreateTable(SqlConnection connection, CancellationToken cancellation = default)
-    {
-        return CreateTable(connection, "MessageAttachments", cancellation);
-    }
+    public static Task CreateTable(SqlConnection connection, CancellationToken cancellation = default) =>
+        CreateTable(connection, "MessageAttachments", cancellation);
 
     /// <summary>
     /// Create the attachments storage table.

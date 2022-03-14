@@ -3,10 +3,8 @@
 public partial class StubMessageAttachments
 {
     /// <inheritdoc />
-    public virtual Task<AttachmentStream> GetStream(CancellationToken cancellation = default)
-    {
-        return GetStream("default", cancellation);
-    }
+    public virtual Task<AttachmentStream> GetStream(CancellationToken cancellation = default) =>
+        GetStream("default", cancellation);
 
     /// <inheritdoc />
     public virtual Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default)
@@ -16,10 +14,8 @@ public partial class StubMessageAttachments
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default)
-    {
-        return GetStreamForMessage(messageId, "default", cancellation);
-    }
+    public virtual Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        GetStreamForMessage(messageId, "default", cancellation);
 
     /// <inheritdoc />
     public virtual Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default)

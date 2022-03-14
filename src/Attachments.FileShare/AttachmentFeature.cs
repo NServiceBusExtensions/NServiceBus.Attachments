@@ -26,9 +26,8 @@ class AttachmentFeature :
         }
     }
 
-    static Cleaner CreateCleaner(IPersister persister, IBuilder builder)
-    {
-        return new(token =>
+    static Cleaner CreateCleaner(IPersister persister, IBuilder builder) =>
+        new(token =>
             {
                 persister.CleanupItemsOlderThan(DateTime.UtcNow, token);
                 return Task.CompletedTask;
@@ -36,5 +35,4 @@ class AttachmentFeature :
             criticalError: builder.Build<CriticalError>().Raise,
             frequencyToRunCleanup: TimeSpan.FromHours(1),
             timer: new AsyncTimer());
-    }
 }

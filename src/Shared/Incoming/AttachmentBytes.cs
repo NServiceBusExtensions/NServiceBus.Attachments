@@ -47,8 +47,6 @@ public class AttachmentBytes :
         Metadata = metadata;
     }
 
-    public static implicit operator byte[](AttachmentBytes d)
-    {
-        return d.Bytes;
-    }
+    public static implicit operator byte[](AttachmentBytes d) =>
+        d.Bytes;
 }

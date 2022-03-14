@@ -13,26 +13,20 @@ public partial class StubMessageAttachments
     Dictionary<string, Dictionary<string, MockAttachment>> attachments = new(StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc />
-    public void AddAttachment(string payload, Encoding? encoding, IDictionary<string, string>? metadata = null)
-    {
+    public void AddAttachment(string payload, Encoding? encoding, IDictionary<string, string>? metadata = null) =>
         AddAttachment("default", payload, encoding, metadata);
-    }
 
     /// <summary>
     /// Adds a attachment that can then be used in a test.
     /// </summary>
-    public void AddAttachment(string name, string payload, Encoding? encoding, IDictionary<string, string>? metadata = null)
-    {
+    public void AddAttachment(string name, string payload, Encoding? encoding, IDictionary<string, string>? metadata = null) =>
         AddAttachment(name, payload.ToBytes(encoding.Default()), metadata);
-    }
 
     /// <summary>
     /// Adds a attachment that can then be used in a test.
     /// </summary>
-    public void AddAttachment(byte[] bytes, IDictionary<string, string>? metadata = null)
-    {
+    public void AddAttachment(byte[] bytes, IDictionary<string, string>? metadata = null) =>
         AddAttachment("default", bytes, metadata);
-    }
 
     /// <summary>
     /// Adds a attachment that can then be used in a test.
@@ -53,10 +47,8 @@ public partial class StubMessageAttachments
     /// <summary>
     /// Adds a attachment that can then be used in a test.
     /// </summary>
-    public void AddAttachmentForMessage(string messageId, byte[] bytes, IDictionary<string, string>? metadata = null)
-    {
+    public void AddAttachmentForMessage(string messageId, byte[] bytes, IDictionary<string, string>? metadata = null) =>
         AddAttachmentForMessage(messageId, "default", bytes, metadata);
-    }
 
     /// <summary>
     /// Adds a attachment that can then be used in a test.

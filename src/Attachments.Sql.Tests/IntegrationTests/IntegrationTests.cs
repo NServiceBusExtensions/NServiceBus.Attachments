@@ -9,21 +9,17 @@ public class IntegrationTests : IDisposable
     internal ManualResetEvent SagaEvent = new(false);
     bool shouldPerformNestedConnection = true;
 
-    static IntegrationTests()
-    {
+    static IntegrationTests() =>
         DbSetup.Setup();
-    }
 
     [Fact]
-    public Task AdHoc()
-    {
-        return RunSql(
+    public Task AdHoc() =>
+        RunSql(
             useSqlTransport: false,
             useSqlTransportConnection: false,
             useSqlPersistence: false,
             useStorageSession: false,
             transactionMode: TransportTransactionMode.SendsAtomicWithReceive);
-    }
 
     [Theory]
     [ClassData(typeof(TestDataGenerator))]

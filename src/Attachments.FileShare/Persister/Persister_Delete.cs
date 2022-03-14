@@ -7,8 +7,6 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual void DeleteAllAttachments()
-    {
+    public virtual void DeleteAllAttachments() =>
         FileHelpers.PurgeDirectory(fileShare);
-    }
 }

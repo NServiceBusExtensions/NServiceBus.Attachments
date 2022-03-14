@@ -23,8 +23,6 @@ static class NsbExtensions
         throw new("Expected IncomingPhysicalMessage to exist.");
     }
 
-    public static string IncomingMessageId(this IOutgoingLogicalMessageContext context)
-    {
-        return context.IncomingMessage().MessageId;
-    }
+    public static string IncomingMessageId(this IOutgoingLogicalMessageContext context) =>
+        context.IncomingMessage().MessageId;
 }

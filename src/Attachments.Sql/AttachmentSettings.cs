@@ -23,32 +23,24 @@ public partial class AttachmentSettings
     /// <summary>
     /// Use the ambient <see cref="TransportTransaction" /> to obtain a <see cref="SqlConnection" /> or <see cref="SqlTransaction" />.
     /// </summary>
-    public void UseTransportConnectivity()
-    {
+    public void UseTransportConnectivity() =>
         UseTransport = true;
-    }
 
     /// <summary>
     /// Use the ambient <see cref="IMessageHandlerContext.SynchronizedStorageSession" /> to obtain a <see cref="SqlConnection" /> or <see cref="SqlTransaction" />.
     /// </summary>
-    public void UseSynchronizedStorageSessionConnectivity()
-    {
+    public void UseSynchronizedStorageSessionConnectivity() =>
         UseSynchronizedStorage = true;
-    }
 
     /// <summary>
     /// Use a specific <paramref name="table" /> for attachments.
     /// </summary>
-    public void UseTable(Table table)
-    {
+    public void UseTable(Table table) =>
         Table = table;
-    }
 
     /// <summary>
     /// Disable the table creation installer.
     /// </summary>
-    public void DisableInstaller()
-    {
+    public void DisableInstaller() =>
         InstallerDisabled = true;
-    }
 }

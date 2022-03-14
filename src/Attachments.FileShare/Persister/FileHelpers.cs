@@ -3,21 +3,17 @@ static class FileHelpers
     static FileOptions fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
     static int bufferSize = 1024 * 64;
 
-    public static FileStream OpenWrite(string path)
-    {
-        return new(
+    public static FileStream OpenWrite(string path) =>
+        new(
             path: path,
             mode: FileMode.CreateNew,
             access: FileAccess.Write,
             share: FileShare.None,
             bufferSize: bufferSize,
             options: fileOptions);
-    }
 
-    public static StreamWriter BuildLeaveOpenWriter(this Stream input, Encoding? encoding)
-    {
-        return new(input, encoding.Default(), 1024, leaveOpen: true);
-    }
+    public static StreamWriter BuildLeaveOpenWriter(this Stream input, Encoding? encoding) =>
+        new(input, encoding.Default(), 1024, leaveOpen: true);
 
     public static void PurgeDirectory(string directory)
     {
@@ -27,16 +23,14 @@ static class FileHelpers
         }
     }
 
-    public static Stream OpenRead(string path)
-    {
-        return new FileStream(
+    public static Stream OpenRead(string path) =>
+        new FileStream(
             path: path,
             mode: FileMode.Open,
             access: FileAccess.Read,
             share: FileShare.Read,
             bufferSize: bufferSize,
             options: fileOptions);
-    }
 
     public static async Task CopyTo(Stream target, CancellationToken cancellation, string dataFile)
     {
@@ -44,10 +38,8 @@ static class FileHelpers
         await fileStream.CopyToAsync(target, bufferSize, cancellation);
     }
 
-    public static void Copy(string sourceDirectory, string targetDirectory)
-    {
+    public static void Copy(string sourceDirectory, string targetDirectory) =>
         CopyAll(new(sourceDirectory), new(targetDirectory));
-    }
 
     public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
     {

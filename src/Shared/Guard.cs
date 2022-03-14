@@ -38,10 +38,8 @@
         }
     }
 
-    public static Func<T> WrapFuncInCheck<T>(this Func<T> func, string name)
-    {
-        return () => func.EvaluateAndCheck(name);
-    }
+    public static Func<T> WrapFuncInCheck<T>(this Func<T> func, string name) =>
+        () => func.EvaluateAndCheck(name);
 
     static T EvaluateAndCheck<T>(this Func<T> func, string attachmentName)
     {
@@ -80,9 +78,8 @@
         };
     }
 
-    public static Func<Task<T>> WrapFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName)
-    {
-        return async () =>
+    public static Func<Task<T>> WrapFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName) =>
+        async () =>
         {
             var task = func.EvaluateAndCheck(attachmentName);
             ThrowIfNullReturned(null, attachmentName, task);
@@ -90,12 +87,10 @@
             ThrowIfNullReturned(null, attachmentName, value);
             return value;
         };
-    }
 
     public static Func<Task<Stream>> WrapStreamFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName)
-        where T : Stream
-    {
-        return async () =>
+        where T : Stream =>
+        async () =>
         {
             var task = func.EvaluateAndCheck(attachmentName);
             ThrowIfNullReturned(null, attachmentName, task);
@@ -103,7 +98,6 @@
             ThrowIfNullReturned(null, attachmentName, value);
             return value;
         };
-    }
 
     public static void ThrowIfNullReturned(object? value)
     {

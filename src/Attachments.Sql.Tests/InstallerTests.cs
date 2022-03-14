@@ -4,10 +4,8 @@ using NServiceBus.Attachments.Sql;
 [UsesVerify]
 public class InstallerTests
 {
-    static InstallerTests()
-    {
+    static InstallerTests() =>
         DbSetup.Setup();
-    }
 
     [Fact]
     public async Task Run()
