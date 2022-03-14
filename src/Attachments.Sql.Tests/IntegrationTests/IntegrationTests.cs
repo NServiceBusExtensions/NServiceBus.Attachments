@@ -26,7 +26,9 @@ public class IntegrationTests : IDisposable
     public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, bool useSqlPersistence, bool useStorageSession, TransportTransactionMode transactionMode)
     {
         // sql persistence connection spans the handler. so a nested connection will cause DTC
-        if (useSqlTransport && useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
+        if (useSqlTransport &&
+            useSqlPersistence &&
+            transactionMode == TransportTransactionMode.TransactionScope)
         {
             // this scenario is not supported. since useStorageSession=false means attachments
             // will open a nested connection rather than use reuse the storage session connection
@@ -34,7 +36,9 @@ public class IntegrationTests : IDisposable
             return;
         }
 
-        if (useSqlTransport && !useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
+        if (useSqlTransport &&
+            !useSqlPersistence &&
+            transactionMode == TransportTransactionMode.TransactionScope)
         {
             // this scenario is not supported by netcore
             // will cause a "This platform does not support distributed transactions."
@@ -42,7 +46,8 @@ public class IntegrationTests : IDisposable
             return;
         }
 
-        if (useSqlPersistence && transactionMode == TransportTransactionMode.TransactionScope)
+        if (useSqlPersistence &&
+            transactionMode == TransportTransactionMode.TransactionScope)
         {
             // so a nested connection will cause DTC
             shouldPerformNestedConnection = false;
