@@ -61,35 +61,14 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
-        SqlCommand? command = null;
-        SqlDataReader? reader = null;
-        try
+        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        await using var reader = await command.ExecuteSequentialReader(cancellation);
+        if (await reader.ReadAsync(cancellation))
         {
-            command = CreateGetDataCommand(messageId, name, connection, transaction);
-            reader = await command.ExecuteSequentialReader(cancellation);
-            if (!await reader.ReadAsync(cancellation))
-            {
-                await reader.DisposeAsync();
-                await command.DisposeAsync();
-                throw ThrowNotFound(messageId, name);
-            }
-
             return InnerGetStream(name, reader, command, disposeConnectionOnStreamDispose);
         }
-        catch (Exception)
-        {
-            if (reader is not null)
-            {
-                await reader.DisposeAsync();
-            }
 
-            if (command is not null)
-            {
-                await command.DisposeAsync();
-            }
-
-            throw;
-        }
+        throw ThrowNotFound(messageId, name);
     }
 
     /// <inheritdoc />
