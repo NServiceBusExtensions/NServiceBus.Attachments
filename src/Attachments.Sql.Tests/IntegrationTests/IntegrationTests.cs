@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿#if DEBUG
+
+using Microsoft.Data.SqlClient;
 using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
@@ -197,3 +199,5 @@ public class IntegrationTests : IDisposable
         SagaEvent.Dispose();
     }
 }
+
+#endif
