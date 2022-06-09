@@ -19,4 +19,7 @@
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <PackageReference Include="ProjectDefaults" Version="1.0.78" PrivateAssets="all" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="IntegrationTests\**" Condition=" '$(Configuration)' == 'Release' " />
+  </ItemGroup>
 </Project>
