@@ -53,9 +53,22 @@ public partial interface IMessageAttachments
     Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default);
 
     /// <summary>
+    /// Get a <see cref="MemoryStream"/>, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
+    /// </summary>
+    /// <remarks>
+    /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+    /// </remarks>
+    Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default);
+
+    /// <summary>
     /// Get a <see cref="byte"/> array, for the current message, the attachment of <paramref name="name"/>.
     /// </summary>
     Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default);
+
+    /// <summary>
+    /// Get a <see cref="MemoryStream"/>, for the current message, the attachment of <paramref name="name"/>.
+    /// </summary>
+    Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default);
 
     /// <summary>
     /// Get a <see cref="string"/>, for the current message, the attachment with the default name of <see cref="string.Empty"/>.
@@ -104,12 +117,28 @@ public partial interface IMessageAttachments
     Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default);
 
     /// <summary>
+    /// Get a <see cref="MemoryStream"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
+    /// </summary>
+    /// <remarks>
+    /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+    /// </remarks>
+    Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default);
+
+    /// <summary>
     /// Get a <see cref="byte"/> array, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
     /// </summary>
     /// <remarks>
     /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
     /// </remarks>
     Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default);
+
+    /// <summary>
+    /// Get a <see cref="MemoryStream"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
+    /// </summary>
+    /// <remarks>
+    /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+    /// </remarks>
+    Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default);
 
     /// <summary>
     /// Get a <see cref="string"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.

@@ -93,6 +93,11 @@ public interface IPersister
     Task<AttachmentStream> GetStream(string messageId, string name, CancellationToken cancellation = default);
 
     /// <summary>
+    /// Reads an <see cref="AttachmentStream" /> an attachment.
+    /// </summary>
+    Task<MemoryStream> GetMemoryStream(string messageId, string name, CancellationToken cancellation = default);
+
+    /// <summary>
     /// Processes all attachments for <paramref name="messageId" /> by passing them to <paramref name="action" />.
     /// </summary>
     Task ProcessStreams(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);

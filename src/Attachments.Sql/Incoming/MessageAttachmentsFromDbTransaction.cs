@@ -33,8 +33,14 @@ class MessageAttachmentsFromSqlTransaction :
     public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, "default", transaction.Connection!, transaction, cancellation);
 
+    public Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, "default", transaction.Connection!, transaction, cancellation);
+
     public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, name, transaction.Connection!, transaction, cancellation);
+
+    public Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, name, transaction.Connection!, transaction, cancellation);
 
     public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default) =>
         persister.GetString(messageId, "default", transaction.Connection!, transaction, encoding, cancellation);
@@ -66,8 +72,14 @@ class MessageAttachmentsFromSqlTransaction :
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, "default", transaction.Connection!, transaction, cancellation);
 
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, "default", transaction.Connection!, transaction, cancellation);
+
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, name, transaction.Connection!, transaction, cancellation);
+
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, name, transaction.Connection!, transaction, cancellation);
 
     public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
         persister.GetString(messageId, "default", transaction.Connection!, transaction, encoding, cancellation);

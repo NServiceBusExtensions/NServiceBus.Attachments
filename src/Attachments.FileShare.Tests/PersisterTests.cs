@@ -37,6 +37,15 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task GetMemoryStream()
+    {
+        var persister = GetPersister();
+        await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream(), metadata);
+        MemoryStream bytes = await persister.GetMemoryStream("theMessageId", "theName");
+        Assert.Equal(5, bytes.ReadByte());
+    }
+
+    [Fact]
     public async Task CaseInsensitiveRead()
     {
         var persister = GetPersister();

@@ -39,8 +39,14 @@ class MessageAttachments :
     public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, "default", cancellation);
 
+    public Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, "default", cancellation);
+
     public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, name, cancellation);
+
+    public Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, name, cancellation);
 
     public Task<AttachmentStream> GetStream(CancellationToken cancellation = default) =>
         persister.GetStream(messageId, "default", cancellation);
@@ -66,8 +72,14 @@ class MessageAttachments :
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, "default", cancellation);
 
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, "default", cancellation);
+
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, name, cancellation);
+
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, name, cancellation);
 
     public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
         persister.GetString(messageId, "default", encoding, cancellation);

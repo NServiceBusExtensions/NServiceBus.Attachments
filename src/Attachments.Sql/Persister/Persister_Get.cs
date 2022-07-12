@@ -50,6 +50,24 @@ public partial class Persister
     }
 
     /// <inheritdoc />
+    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
+    {
+        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstLongAttachmentName(name);
+        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        await using var reader = await command.ExecuteSequentialReader(cancellation);
+        if (await reader.ReadAsync(cancellation))
+        {
+            var bytes = (byte[]) reader[2];
+
+            return new(bytes);
+        }
+
+        throw ThrowNotFound(messageId, name);
+    }
+
+    /// <inheritdoc />
     public virtual async Task<AttachmentStream> GetStream(
         string messageId,
         string name,

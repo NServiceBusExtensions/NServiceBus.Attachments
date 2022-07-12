@@ -77,10 +77,21 @@ public partial class StubMessageAttachments :
         GetBytes("default", cancellation);
 
     /// <inheritdoc />
+    public virtual Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default) =>
+        GetMemoryStream("default", cancellation);
+
+    /// <inheritdoc />
     public virtual Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default)
     {
         var attachment = GetCurrentMessageAttachment(name);
         return Task.FromResult(attachment.ToAttachmentBytes());
+    }
+
+    /// <inheritdoc />
+    public virtual Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default)
+    {
+        var attachment = GetCurrentMessageAttachment(name);
+        return Task.FromResult(new MemoryStream(attachment.ToAttachmentBytes()));
     }
 
     /// <inheritdoc />
@@ -124,6 +135,10 @@ public partial class StubMessageAttachments :
         GetBytesForMessage(messageId, "default", cancellation);
 
     /// <inheritdoc />
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        GetMemoryStreamForMessage(messageId, "default", cancellation);
+
+    /// <inheritdoc />
     public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
         GetStringForMessage(messageId, "default", encoding, cancellation);
 
@@ -139,6 +154,13 @@ public partial class StubMessageAttachments :
     {
         var attachment = GetAttachmentForMessage(messageId, name);
         return Task.FromResult(attachment.ToAttachmentBytes());
+    }
+
+    /// <inheritdoc />
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
+    {
+        var attachment = GetAttachmentForMessage(messageId, name);
+        return Task.FromResult(new MemoryStream(attachment.ToAttachmentBytes()));
     }
 
     /// <inheritdoc />

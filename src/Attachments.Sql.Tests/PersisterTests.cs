@@ -37,6 +37,17 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task GetMemoryStream()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
+        var bytes = await persister.GetMemoryStream("theMessageId", "theName", connection, null);
+        Assert.Equal(5, bytes.ReadByte());
+    }
+
+    [Fact]
     public async Task CaseInsensitiveRead()
     {
         await using var connection = Connection.OpenConnection();

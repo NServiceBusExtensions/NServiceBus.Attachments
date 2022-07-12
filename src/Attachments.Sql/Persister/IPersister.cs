@@ -125,6 +125,11 @@ public interface IPersister
     Task<AttachmentStream> GetStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, bool disposeConnectionOnStreamDispose, CancellationToken cancellation = default);
 
     /// <summary>
+    /// Reads an <see cref="AttachmentStream" /> for an attachment.
+    /// </summary>
+    Task<MemoryStream> GetMemoryStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default);
+
+    /// <summary>
     /// Processes all attachments for <paramref name="messageId" /> by passing them to <paramref name="action" />.
     /// </summary>
     Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default);

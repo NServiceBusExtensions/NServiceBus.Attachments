@@ -20,6 +20,18 @@ public partial class Persister
     }
 
     /// <inheritdoc />
+    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, CancellationToken cancellation = default)
+    {
+        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(name, nameof(name));
+        var attachmentDirectory = GetAttachmentDirectory(messageId, name);
+        var dataFile = GetDataFile(attachmentDirectory);
+        ThrowIfFileNotFound(dataFile, messageId, name);
+        var bytes = await FileHelpers.ReadBytes(cancellation, dataFile);
+        return new(bytes);
+    }
+
+    /// <inheritdoc />
     public virtual async Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));

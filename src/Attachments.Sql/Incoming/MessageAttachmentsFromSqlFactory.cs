@@ -51,6 +51,12 @@ class MessageAttachmentsFromSqlFactory :
         return await persister.GetBytes(messageId, "default", connection, null, cancellation);
     }
 
+    public async Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default)
+    {
+        await using var connection = await connectionFactory();
+        return await persister.GetMemoryStream(messageId, "default", connection, null, cancellation);
+    }
+
     public async Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default)
     {
         await using var connection = await connectionFactory();
@@ -61,6 +67,12 @@ class MessageAttachmentsFromSqlFactory :
     {
         await using var connection = await connectionFactory();
         return await persister.GetBytes(messageId, name, connection, null, cancellation);
+    }
+
+    public async Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default)
+    {
+        await using var connection = await connectionFactory();
+        return await persister.GetMemoryStream(messageId, name, connection, null, cancellation);
     }
 
     public async Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default)
@@ -117,10 +129,22 @@ class MessageAttachmentsFromSqlFactory :
         return await persister.GetBytes(messageId, "default", connection, null, cancellation);
     }
 
+    public async Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default)
+    {
+        await using var connection = await connectionFactory();
+        return await persister.GetMemoryStream(messageId, "default", connection, null, cancellation);
+    }
+
     public async Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default)
     {
         await using var connection = await connectionFactory();
         return await persister.GetBytes(messageId, name, connection, null, cancellation);
+    }
+
+    public async Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default)
+    {
+        await using var connection = await connectionFactory();
+        return await persister.GetMemoryStream(messageId, name, connection, null, cancellation);
     }
 
     public async Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default)

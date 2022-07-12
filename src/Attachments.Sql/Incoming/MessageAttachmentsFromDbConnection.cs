@@ -33,8 +33,14 @@ class MessageAttachmentsFromSqlConnection :
     public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, "default", connection, null, cancellation);
 
+    public Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, "default", connection, null, cancellation);
+
     public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, name, connection, null, cancellation);
+
+    public Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, name, connection, null, cancellation);
 
     public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default) =>
         persister.GetString(messageId, "default", connection, null, encoding, cancellation);
@@ -66,8 +72,14 @@ class MessageAttachmentsFromSqlConnection :
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, "default", connection, null, cancellation);
 
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, "default", connection, null, cancellation);
+
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
         persister.GetBytes(messageId, name, connection, null, cancellation);
+
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+        persister.GetMemoryStream(messageId, name, connection, null, cancellation);
 
     public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
         persister.GetString(messageId, "default", connection, null, encoding, cancellation);

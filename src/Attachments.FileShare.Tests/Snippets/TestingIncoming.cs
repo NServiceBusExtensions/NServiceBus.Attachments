@@ -109,7 +109,13 @@ class MyMessageAttachments :
     public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
         throw new NotImplementedException();
 
+    public Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default) =>
+        throw new NotImplementedException();
+
     public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
+        throw new NotImplementedException();
+
+    public Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
 
     public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default) =>
@@ -136,7 +142,13 @@ class MyMessageAttachments :
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
 
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        throw new NotImplementedException();
+
     public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+        throw new NotImplementedException();
+
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
         throw new NotImplementedException();
 
     public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>

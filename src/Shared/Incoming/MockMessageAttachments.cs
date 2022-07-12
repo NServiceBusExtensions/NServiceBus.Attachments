@@ -60,10 +60,22 @@ public partial class MockMessageAttachments :
         Task.FromResult(AttachmentBytes.Empty);
 
     /// <summary>
+    /// <see cref="IMessageAttachments.GetMemoryStream(CancellationToken)"/>
+    /// </summary>
+    public virtual Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default) =>
+        Task.FromResult(new MemoryStream());
+
+    /// <summary>
     /// <see cref="IMessageAttachments.GetBytes(string,CancellationToken)"/>
     /// </summary>
     public virtual Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
         Task.FromResult(AttachmentBytes.Empty);
+
+    /// <summary>
+    /// <see cref="IMessageAttachments.GetMemoryStream(string,CancellationToken)"/>
+    /// </summary>
+    public virtual Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default) =>
+        Task.FromResult(new MemoryStream());
 
     /// <summary>
     /// <see cref="IMessageAttachments.GetString(Encoding,CancellationToken)"/>
@@ -114,10 +126,22 @@ public partial class MockMessageAttachments :
         Task.FromResult(AttachmentBytes.Empty);
 
     /// <summary>
+    /// <see cref="IMessageAttachments.GetMemoryStreamForMessage(string,CancellationToken)"/>
+    /// </summary>
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+        Task.FromResult(new MemoryStream());
+
+    /// <summary>
     /// <see cref="IMessageAttachments.GetBytesForMessage(string,string,CancellationToken)"/>
     /// </summary>
     public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
         Task.FromResult(AttachmentBytes.Empty);
+
+    /// <summary>
+    /// <see cref="IMessageAttachments.GetMemoryStreamForMessage(string,string,CancellationToken)"/>
+    /// </summary>
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+        Task.FromResult(new MemoryStream());
 
     /// <summary>
     /// <see cref="IMessageAttachments.GetStringForMessage(string,Encoding,CancellationToken)"/>
