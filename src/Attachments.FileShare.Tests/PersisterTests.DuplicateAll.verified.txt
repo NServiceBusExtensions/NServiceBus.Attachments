@@ -1,4 +1,4 @@
-{
+﻿{
   names: [
     theName1,
     theName2

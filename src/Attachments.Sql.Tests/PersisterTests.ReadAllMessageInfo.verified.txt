@@ -1,4 +1,4 @@
-[
+﻿[
   {
     MessageId: theMessageId,
     Name: theName1,
