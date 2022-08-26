@@ -9,7 +9,7 @@ using NServiceBus.Attachments;
 class OutgoingAttachments :
     IOutgoingAttachments
 {
-    [NonSerialized] public Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
+    internal Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
     public List<Duplicate> Duplicates = new();
 
     public bool HasPendingAttachments => Inner.Any() ||
