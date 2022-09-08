@@ -246,6 +246,18 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task LargeString()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var expected = new string('*', 100000);
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, expected, null, metadata);
+        var result = await persister.GetString("theMessageId", "theName", connection, null);
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
     public async Task SaveStringEncoding()
     {
         await using var connection = Connection.OpenConnection();
