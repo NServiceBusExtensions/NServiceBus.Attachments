@@ -127,9 +127,9 @@ public class IntegrationTests : IDisposable
             useSqlTransport &&
             transactionMode != TransportTransactionMode.None)
         {
-            await using SqlConnection connection = new(Connection.ConnectionString);
+            await using var connection = new SqlConnection(Connection.ConnectionString);
             await connection.OpenAsync();
-            Persister persister = new("Attachments");
+            var persister = new Persister("Attachments");
             await foreach (var _ in persister.ReadAllMessageInfo(connection, null, startMessageId))
             {
                 throw new("Expected attachments to be cleaned");
@@ -161,14 +161,14 @@ public class IntegrationTests : IDisposable
     {
         if (shouldPerformNestedConnection)
         {
-            using SqlConnection connection = new(Connection.ConnectionString);
+            using var connection = new SqlConnection(Connection.ConnectionString);
             connection.Open();
         }
     }
 
     static async Task<string> SendStartMessage(IEndpointInstance endpoint)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var messageId = Guid.NewGuid().ToString();
         sendOptions.SetMessageId(messageId);
@@ -183,8 +183,8 @@ public class IntegrationTests : IDisposable
 
     static Stream GetStream()
     {
-        MemoryStream stream = new();
-        StreamWriter streamWriter = new(stream);
+        var stream = new MemoryStream();
+        var streamWriter = new StreamWriter(stream);
         streamWriter.Write("content");
         streamWriter.Flush();
         stream.Position = 0;

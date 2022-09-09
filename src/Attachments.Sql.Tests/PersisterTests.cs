@@ -4,7 +4,8 @@
 public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
-    Dictionary<string, string> metadata = new() {{"key", "value"}};
+    Dictionary<string, string> metadata = new()
+        {{"key", "value"}};
     Persister persister;
 
     static PersisterTests() => DbSetup.Setup();
@@ -18,7 +19,7 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream());
-        MemoryStream memoryStream = new();
+        var memoryStream = new MemoryStream();
         await persister.CopyTo("theMessageId", "theName", connection, null, memoryStream);
 
         memoryStream.Position = 0;
@@ -264,7 +265,7 @@ public class PersisterTests
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         var expected = "¡™£¢∞§¶•ªº–≠";
-        UTF8Encoding encoding = new(true);
+        var encoding = new UTF8Encoding(true);
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, expected, encoding, metadata);
         var result = await persister.GetString("theMessageId", "theName", connection, null, encoding);
         Trace.Write(result);
@@ -320,7 +321,7 @@ public class PersisterTests
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
         await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
-        List<AttachmentInfo> list = new();
+        var list = new List<AttachmentInfo>();
         await persister.ReadAllMessageInfo(connection, null, "theMessageId",
             info =>
             {

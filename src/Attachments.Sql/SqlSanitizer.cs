@@ -5,7 +5,7 @@
 
     public static string Sanitize(string unquotedIdentifier)
     {
-        StringBuilder builder = new();
+        var builder = new StringBuilder();
         if (!string.IsNullOrEmpty(quotePrefix))
         {
             builder.Append(quotePrefix);

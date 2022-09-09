@@ -79,7 +79,7 @@ class SendBehavior :
 
     async Task ProcessOutgoing(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
-        Dictionary<Guid, string> attachments = new();
+        var attachments = new Dictionary<Guid, string>();
         foreach (var outgoing in outgoingAttachments.Inner)
         {
             var guid = await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing.Value, outgoing.Key);

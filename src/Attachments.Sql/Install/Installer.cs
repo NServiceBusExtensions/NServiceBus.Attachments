@@ -35,7 +35,7 @@ public static class Installer
     public static string GetTableSql()
     {
         using var stream = AssemblyHelper.Current.GetManifestResourceStream("Table.sql")!;
-        using StreamReader streamReader = new(stream);
+        using var streamReader = new StreamReader(stream);
         return streamReader.ReadToEnd();
     }
 }

@@ -4,9 +4,8 @@
     public async Task If_triggers_critical_action_after_10_failures()
     {
         var criticalActionTriggered = false;
-        FakeTimer timer = new();
-        TestableCleaner cleaner = new(_ => Task.CompletedTask,
-            (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
+        var timer = new FakeTimer();
+        var cleaner = new TestableCleaner(_ => Task.CompletedTask, (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
 
         await cleaner.Start();
 
@@ -31,10 +30,8 @@
     public async Task It_resets_the_failure_counter_after_successful_attempt()
     {
         var criticalActionTriggered = false;
-        FakeTimer timer = new();
-        TestableCleaner cleaner = new(
-            _ => Task.CompletedTask,
-            (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
+        var timer = new FakeTimer();
+        var cleaner = new TestableCleaner(_ => Task.CompletedTask, (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
 
         await cleaner.Start();
 

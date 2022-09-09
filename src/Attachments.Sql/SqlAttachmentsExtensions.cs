@@ -52,7 +52,7 @@ public static class SqlAttachmentsExtensions
         GetTimeToKeep timeToKeep)
     {
         var settings = configuration.GetSettings();
-        AttachmentSettings attachments = new(connectionFactory, timeToKeep);
+        var attachments = new AttachmentSettings(connectionFactory, timeToKeep);
         return SetAttachments(configuration, settings, attachments);
     }
 

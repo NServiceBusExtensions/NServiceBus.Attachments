@@ -11,7 +11,7 @@ class ReceiveBehavior :
 
     public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {
-        FileShareAttachmentState state = new(persister);
+        var state = new FileShareAttachmentState(persister);
         context.Extensions.Set(state);
         return next();
     }

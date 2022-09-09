@@ -4,12 +4,13 @@
 public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
-    Dictionary<string, string> metadata = new() {{"key", "value"}};
+    Dictionary<string, string> metadata = new()
+        {{"key", "value"}};
 
     static Persister GetPersister([CallerMemberName] string? path = null)
     {
         var fileShare = Path.GetFullPath($"attachments/{path}");
-        Persister persister = new(fileShare);
+        var persister = new Persister(fileShare);
         Directory.CreateDirectory(fileShare);
         persister.DeleteAllAttachments();
         return persister;
@@ -20,7 +21,7 @@ public class PersisterTests
     {
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream());
-        MemoryStream memoryStream = new();
+        var memoryStream = new MemoryStream();
         await persister.CopyTo("theMessageId", "theName", memoryStream);
 
         memoryStream.Position = 0;
@@ -41,7 +42,7 @@ public class PersisterTests
     {
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream(), metadata);
-        MemoryStream bytes = await persister.GetMemoryStream("theMessageId", "theName");
+        var bytes = await persister.GetMemoryStream("theMessageId", "theName");
         Assert.Equal(5, bytes.ReadByte());
     }
 
@@ -155,7 +156,7 @@ public class PersisterTests
 
     static byte[] ToBytes(Stream stream)
     {
-        using MemoryStream memoryStream = new();
+        using var memoryStream = new MemoryStream();
         stream.CopyTo(memoryStream);
         return memoryStream.ToArray();
     }
@@ -211,7 +212,7 @@ public class PersisterTests
     {
         var persister = GetPersister();
         var expected = "¡™£¢∞§¶•ªº–≠";
-        UTF8Encoding encoding = new(true);
+        var encoding = new UTF8Encoding(true);
         await persister.SaveString("theMessageId", "theName", defaultTestDate, expected, encoding, metadata);
         var result = await persister.GetString("theMessageId", "theName", encoding);
         var attachmentBytes = await persister.GetBytes("theMessageId", "theName");
@@ -262,7 +263,7 @@ public class PersisterTests
 
     static Stream GetStream(byte content = 5)
     {
-        MemoryStream stream = new();
+        var stream = new MemoryStream();
         stream.WriteByte(content);
         stream.Position = 0;
         return stream;

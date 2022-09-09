@@ -10,7 +10,7 @@ public class TestingOutgoing
     {
         public Task Handle(MyMessage message, IMessageHandlerContext context)
         {
-            SendOptions options = new();
+            var options = new SendOptions();
             var attachments = options.Attachments();
             attachments.Add("theName", () => File.OpenRead("aFilePath"));
             return context.Send(new OtherMessage(), options);
@@ -25,8 +25,8 @@ public class TestingOutgoing
     public async Task TestOutgoingAttachments()
     {
         //Arrange
-        TestableMessageHandlerContext context = new();
-        Handler handler = new();
+        var context = new TestableMessageHandlerContext();
+        var handler = new Handler();
 
         //Act
         await handler.Handle(new(), context);

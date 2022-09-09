@@ -16,7 +16,7 @@ public class Usage
         configuration.EnableAttachments(
             connectionFactory: async () =>
             {
-                SqlConnection connection = new(connectionString);
+                var connection = new SqlConnection(connectionString);
                 try
                 {
                     await connection.OpenAsync().ConfigureAwait(false);
@@ -118,7 +118,7 @@ public class Usage
 
     async Task<SqlConnection> OpenConnection()
     {
-        SqlConnection connection = new(connectionString);
+        var connection = new SqlConnection(connectionString);
         try
         {
             await connection.OpenAsync().ConfigureAwait(false);

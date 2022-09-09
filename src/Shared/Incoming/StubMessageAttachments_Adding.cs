@@ -35,8 +35,7 @@ public partial class StubMessageAttachments
     {
         Guard.AgainstNullOrEmpty(name, nameof(name));
         currentAttachments.Add(name,
-            new
-            (
+            new(
                 name: name,
                 bytes: bytes,
                 metadata: BuildMetadata(metadata),
@@ -62,8 +61,7 @@ public partial class StubMessageAttachments
         }
 
         attachmentsForMessage.Add(name,
-            new
-            (
+            new(
                 name: name,
                 bytes: bytes,
                 metadata: BuildMetadata(metadata),

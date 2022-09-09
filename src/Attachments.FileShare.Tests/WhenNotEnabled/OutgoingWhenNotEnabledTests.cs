@@ -18,7 +18,7 @@ public class OutgoingWhenNotEnabledTests
 
     static Task SendStartMessageWithAttachment(IEndpointInstance endpoint)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
@@ -27,8 +27,8 @@ public class OutgoingWhenNotEnabledTests
 
     static Stream GetStream()
     {
-        MemoryStream stream = new();
-        StreamWriter streamWriter = new(stream);
+        var stream = new MemoryStream();
+        var streamWriter = new StreamWriter(stream);
         streamWriter.Write("content");
         streamWriter.Flush();
         stream.Position = 0;

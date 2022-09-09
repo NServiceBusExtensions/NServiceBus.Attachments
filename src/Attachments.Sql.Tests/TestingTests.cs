@@ -8,8 +8,8 @@ public class TestingTests
     [Fact]
     public async Task OutgoingAttachments()
     {
-        TestableMessageHandlerContext context = new();
-        OutgoingAttachmentsHandler handler = new();
+        var context = new TestableMessageHandlerContext();
+        var handler = new OutgoingAttachmentsHandler();
         await handler.Handle(new(), context);
         var attachments = context.SentMessages
             .Single()
@@ -26,7 +26,7 @@ public class TestingTests
     {
         public Task Handle(AMessage message, IMessageHandlerContext context)
         {
-            SendOptions options = new();
+            var options = new SendOptions();
             var attachments = options.Attachments();
             attachments.Add("theName", () => File.OpenRead(""));
             return context.Send(new AMessage(), options);
@@ -36,9 +36,9 @@ public class TestingTests
     [Fact]
     public async Task IncomingAttachment()
     {
-        TestableMessageHandlerContext context = new();
-        IncomingAttachmentHandler handler = new();
-        CustomMockMessageAttachments mockMessageAttachments = new();
+        var context = new TestableMessageHandlerContext();
+        var handler = new IncomingAttachmentHandler();
+        var mockMessageAttachments = new CustomMockMessageAttachments();
         context.InjectAttachmentsInstance(mockMessageAttachments);
         await handler.Handle(new(), context);
         Assert.True(mockMessageAttachments.GetBytesWasCalled);

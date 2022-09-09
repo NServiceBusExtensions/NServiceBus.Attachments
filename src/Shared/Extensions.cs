@@ -14,7 +14,7 @@
 
     public static async Task<List<T>> ToAsyncList<T>(this IAsyncEnumerable<T> enumerable)
     {
-        List<T> list = new();
+        var list = new List<T>();
         await foreach (var item in enumerable)
         {
             list.Add(item);
@@ -33,8 +33,8 @@
 
     public static byte[] ToBytes(this string value, Encoding encoding)
     {
-        using MemoryStream stream = new();
-        using StreamWriter writer = new(stream, encoding);
+        using var stream = new MemoryStream();
+        using var writer = new StreamWriter(stream, encoding);
         writer.Write(value);
         writer.Flush();
         stream.Position = 0;

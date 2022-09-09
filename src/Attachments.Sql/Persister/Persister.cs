@@ -18,6 +18,5 @@ public partial class Persister :
     public Persister(Table table) =>
         this.table = table;
 
-    static Exception ThrowNotFound(string messageId, string name) =>
-        new($"Could not find attachment. MessageId:{messageId}, Name:{name}");
+    static Exception ThrowNotFound(string messageId, string name) => new($"Could not find attachment. MessageId:{messageId}, Name:{name}");
 }

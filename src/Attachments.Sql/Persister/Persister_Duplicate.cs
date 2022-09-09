@@ -15,7 +15,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
         await using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
         await using var reader = await command.ExecuteSequentialReader(cancellation);
-        List<(Guid, string)> names = new();
+        var names = new List<(Guid, string)>();
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();

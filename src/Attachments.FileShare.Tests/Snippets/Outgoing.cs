@@ -9,7 +9,7 @@ public class Outgoing
     {
         public Task Handle(MyMessage message, IMessageHandlerContext context)
         {
-            SendOptions sendOptions = new();
+            var sendOptions = new SendOptions();
             var attachments = sendOptions.Attachments();
             attachments.Add(
                 name: "attachment1",
@@ -29,7 +29,7 @@ public class Outgoing
 
         public Task Handle(MyMessage message, IMessageHandlerContext context)
         {
-            SendOptions sendOptions = new();
+            var sendOptions = new SendOptions();
             var attachments = sendOptions.Attachments();
             attachments.Add(
                 name: "attachment1",
@@ -47,7 +47,7 @@ public class Outgoing
     {
         public Task Handle(MyMessage message, IMessageHandlerContext context)
         {
-            SendOptions sendOptions = new();
+            var sendOptions = new SendOptions();
             var attachments = sendOptions.Attachments();
             var stream = File.OpenRead("FilePath.txt");
             attachments.Add(

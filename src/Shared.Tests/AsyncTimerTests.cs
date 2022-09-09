@@ -3,9 +3,9 @@
     [Fact]
     public async Task It_calls_error_callback()
     {
-        TaskCompletionSource<bool> errorCallbackInvoked = new();
+        var errorCallbackInvoked = new TaskCompletionSource<bool>();
 
-        AsyncTimer timer = new();
+        var timer = new AsyncTimer();
         timer.Start(
             callback: (_, _) => throw new("Simulated!"),
             interval: TimeSpan.Zero,
@@ -21,11 +21,11 @@
     [Fact]
     public async Task It_continues_to_run_after_an_error()
     {
-        TaskCompletionSource<bool> callbackInvokedAfterError = new();
+        var callbackInvokedAfterError = new TaskCompletionSource<bool>();
 
         var fail = true;
         var exceptionThrown = false;
-        AsyncTimer timer = new();
+        var timer = new AsyncTimer();
         timer.Start(
             callback: (_, _) =>
             {
@@ -52,9 +52,9 @@
     [Fact]
     public async Task Stop_cancels_token_while_waiting()
     {
-        AsyncTimer timer = new();
+        var timer = new AsyncTimer();
         var waitCancelled = false;
-        TaskCompletionSource<bool> delayStarted = new();
+        var delayStarted = new TaskCompletionSource<bool>();
 
         timer.Start(
             callback: (_, _) => throw new("Simulated!"),
@@ -116,10 +116,10 @@
     [Fact]
     public async Task Stop_waits_for_callback_to_complete()
     {
-        AsyncTimer timer = new();
+        var timer = new AsyncTimer();
 
-        TaskCompletionSource<bool> callbackCompleted = new();
-        TaskCompletionSource<bool> callbackTaskStarted = new();
+        var callbackCompleted = new TaskCompletionSource<bool>();
+        var callbackTaskStarted = new TaskCompletionSource<bool>();
 
         timer.Start(
             callback: (_, _) =>

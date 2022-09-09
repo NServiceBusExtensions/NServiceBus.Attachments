@@ -28,7 +28,7 @@ class Program
 
     static Task SendMessage(IEndpointInstance endpoint)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var attachments = sendOptions.Attachments();
         attachments.AddString(name: "foo", value: "content");

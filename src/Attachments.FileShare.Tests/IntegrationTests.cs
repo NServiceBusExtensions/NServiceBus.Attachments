@@ -25,7 +25,7 @@ public class IntegrationTests :
 
     static Task SendStartMessage(IEndpointInstance endpoint)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var attachment = sendOptions.Attachments();
         attachment.Add(GetStream);
@@ -35,8 +35,8 @@ public class IntegrationTests :
 
     static Stream GetStream()
     {
-        MemoryStream stream = new();
-        StreamWriter streamWriter = new(stream);
+        var stream = new MemoryStream();
+        var streamWriter = new StreamWriter(stream);
         streamWriter.Write("content");
         streamWriter.Flush();
         stream.Position = 0;
@@ -50,7 +50,7 @@ public class IntegrationTests :
         {
             var withAttachment = await context.Attachments().GetBytes("withMetadata");
             Assert.Equal("value", withAttachment.Metadata["key"]);
-            ReplyOptions replyOptions = new();
+            var replyOptions = new ReplyOptions();
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.Add(() =>
             {
@@ -71,7 +71,7 @@ public class IntegrationTests :
 
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
-            await using MemoryStream memoryStream = new();
+            await using var memoryStream = new MemoryStream();
             var incomingAttachment = context.Attachments();
             await incomingAttachment.CopyTo(memoryStream);
             memoryStream.Position = 0;

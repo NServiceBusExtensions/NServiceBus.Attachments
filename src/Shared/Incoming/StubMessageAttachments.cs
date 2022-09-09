@@ -219,8 +219,7 @@ public partial class StubMessageAttachments :
         throw new($"Cant find an attachment: {name}");
     }
 
-    static BinaryWriter BuildWriter(Stream target, Encoding? encoding) =>
-        new(target, encoding.Default(), leaveOpen: true);
+    static BinaryWriter BuildWriter(Stream target, Encoding? encoding) => new(target, encoding.Default(), leaveOpen: true);
 
     Task InnerProcessStream(string name, Func<AttachmentStream, Task> action)
     {

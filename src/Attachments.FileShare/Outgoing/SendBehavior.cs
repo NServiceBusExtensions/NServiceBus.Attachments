@@ -34,7 +34,7 @@ class SendBehavior :
             return;
         }
 
-        List<string> attachmentNames = new();
+        var attachmentNames = new List<string>();
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 

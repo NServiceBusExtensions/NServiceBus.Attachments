@@ -9,7 +9,7 @@ class MyHandler :
         Console.WriteLine("Hello from MyHandler. SendMessage");
         var incomingAttachments = context.Attachments();
         var attachment = await incomingAttachments.GetString("foo");
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var outgoingAttachments = sendOptions.Attachments();
         outgoingAttachments.AddString("bar", attachment);

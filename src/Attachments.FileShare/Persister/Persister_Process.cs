@@ -19,7 +19,7 @@ public partial class Persister
             var attachmentName = Directory.GetParent(dataFile)!.Name;
             var read = FileHelpers.OpenRead(dataFile);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-            await using AttachmentStream attachment = new(attachmentName, read, read.Length, metadata);
+            await using var attachment = new AttachmentStream(attachmentName, read, read.Length, metadata);
             await action(attachment);
         }
     }
@@ -36,7 +36,7 @@ public partial class Persister
         ThrowIfFileNotFound(dataFile, messageId, name);
         var read = FileHelpers.OpenRead(dataFile);
         var metadata = await ReadMetadata(attachmentDirectory, cancellation);
-        await using AttachmentStream attachment = new(name, read, read.Length, metadata);
+        await using var attachment = new AttachmentStream(name, read, read.Length, metadata);
         await action(attachment);
     }
 }

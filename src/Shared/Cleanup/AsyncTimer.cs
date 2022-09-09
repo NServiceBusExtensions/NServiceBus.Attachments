@@ -6,26 +6,28 @@
         tokenSource = new();
         var token = tokenSource.Token;
 
-        task = Task.Run(async () =>
-        {
-            while (!token.IsCancellationRequested)
+        task = Task.Run(
+            async () =>
             {
-                try
+                while (!token.IsCancellationRequested)
                 {
-                    var utcNow = DateTime.UtcNow;
-                    await delayStrategy(interval, token);
-                    await callback(utcNow, token);
+                    try
+                    {
+                        var utcNow = DateTime.UtcNow;
+                        await delayStrategy(interval, token);
+                        await callback(utcNow, token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // noop
+                    }
+                    catch (Exception ex)
+                    {
+                        errorCallback(ex);
+                    }
                 }
-                catch (OperationCanceledException)
-                {
-                    // noop
-                }
-                catch (Exception ex)
-                {
-                    errorCallback(ex);
-                }
-            }
-        }, CancellationToken.None);
+            },
+            CancellationToken.None);
     }
 
     public Task Stop()

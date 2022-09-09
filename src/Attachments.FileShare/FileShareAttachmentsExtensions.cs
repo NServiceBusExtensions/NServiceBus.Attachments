@@ -18,7 +18,7 @@ public static class FileShareAttachmentsExtensions
     {
         Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
         var settings = configuration.GetSettings();
-        AttachmentSettings attachments = new(fileShare, timeToKeep);
+        var attachments = new AttachmentSettings(fileShare, timeToKeep);
         settings.Set(attachments);
         configuration.EnableFeature<AttachmentFeature>();
         configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();

@@ -18,7 +18,7 @@ public partial class Persister
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
-            AttachmentInfo info = new(
+            var info = new AttachmentInfo(
                 messageId: messageId,
                 name: reader.GetString(1),
                 expiry: reader.GetDateTime(2),
@@ -75,7 +75,7 @@ public partial class Persister
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
-            AttachmentInfo info = new(
+            var info = new AttachmentInfo(
                 messageId: reader.GetString(1),
                 name: reader.GetString(2),
                 expiry: reader.GetDateTime(3),
@@ -89,7 +89,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
     {
-        ConcurrentBag<AttachmentInfo> list = new();
+        var list = new ConcurrentBag<AttachmentInfo>();
         await ReadAllInfo(
             connection,
             transaction,

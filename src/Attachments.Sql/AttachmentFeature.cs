@@ -15,7 +15,7 @@ class AttachmentFeature :
 
         var connectionFactory = settings.ConnectionFactory;
         var pipeline = context.Pipeline;
-        Persister persister = new(settings.Table);
+        var persister = new Persister(settings.Table);
         pipeline.Register(new ReceiveRegistration(connectionFactory, persister, settings.UseTransport, settings.UseSynchronizedStorage));
         if (settings.UseTransport)
         {
@@ -35,7 +35,8 @@ class AttachmentFeature :
     }
 
     static Cleaner CreateCleaner(AttachmentSettings settings, IPersister persister, IBuilder builder) =>
-        new(async token =>
+        new(
+            async token =>
             {
                 await using var connection = await settings.ConnectionFactory();
                 var count = await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);

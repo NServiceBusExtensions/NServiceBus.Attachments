@@ -27,18 +27,17 @@ public static class Connection
 
     public static SqlConnection OpenConnection()
     {
-        SqlConnection connection = new(ConnectionString);
+        var connection = new SqlConnection(ConnectionString);
         connection.Open();
         return connection;
     }
 
     public static async Task<SqlConnection> OpenAsyncConnection(CancellationToken cancellation = default)
     {
-        SqlConnection connection = new(ConnectionString);
+        var connection = new SqlConnection(ConnectionString);
         await connection.OpenAsync(cancellation);
         return connection;
     }
 
-    public static SqlConnection NewConnection() =>
-        new(ConnectionString);
+    public static SqlConnection NewConnection() => new(ConnectionString);
 }
