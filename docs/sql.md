@@ -30,7 +30,7 @@ configuration.EnableAttachments(
 configuration.EnableAttachments(
     connectionFactory: async () =>
     {
-        SqlConnection connection = new(connectionString);
+        var connection = new SqlConnection(connectionString);
         try
         {
             await connection.OpenAsync().ConfigureAwait(false);
@@ -57,7 +57,7 @@ Extract out the connection factory to a helper method
 ```cs
 async Task<SqlConnection> OpenConnection()
 {
-    SqlConnection connection = new(connectionString);
+    var connection = new SqlConnection(connectionString);
     try
     {
         await connection.OpenAsync().ConfigureAwait(false);
@@ -275,7 +275,7 @@ class HandlerFactory :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -292,7 +292,7 @@ class HandlerFactory :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -314,7 +314,7 @@ class HandlerFactoryAsync :
 
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -333,7 +333,7 @@ class HandlerFactoryAsync :
 
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
         attachments.Add(
             name: "attachment1",
@@ -358,7 +358,7 @@ class HandlerInstance :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
         var stream = File.OpenRead("FilePath.txt");
         attachments.Add(
@@ -377,7 +377,7 @@ class HandlerInstance :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions sendOptions = new();
+        var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
         var stream = File.OpenRead("FilePath.txt");
         attachments.Add(
@@ -672,7 +672,7 @@ public class Handler :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions options = new();
+        var options = new SendOptions();
         var attachments = options.Attachments();
         attachments.Add("theName", () => File.OpenRead("aFilePath"));
         return context.Send(new OtherMessage(), options);
@@ -687,7 +687,7 @@ public class Handler :
 {
     public Task Handle(MyMessage message, IMessageHandlerContext context)
     {
-        SendOptions options = new();
+        var options = new SendOptions();
         var attachments = options.Attachments();
         attachments.Add("theName", () => File.OpenRead("aFilePath"));
         return context.Send(new OtherMessage(), options);
@@ -704,8 +704,8 @@ public class Handler :
 public async Task TestOutgoingAttachments()
 {
     //Arrange
-    TestableMessageHandlerContext context = new();
-    Handler handler = new();
+    var context = new TestableMessageHandlerContext();
+    var handler = new Handler();
 
     //Act
     await handler.Handle(new(), context);
@@ -726,8 +726,8 @@ public async Task TestOutgoingAttachments()
 public async Task TestOutgoingAttachments()
 {
     //Arrange
-    TestableMessageHandlerContext context = new();
-    Handler handler = new();
+    var context = new TestableMessageHandlerContext();
+    var handler = new Handler();
 
     //Act
     await handler.Handle(new(), context);
@@ -755,15 +755,15 @@ To mock or verify incoming attachments is it necessary to inject a instance of `
 <!-- snippet: InjectAttachmentsInstance -->
 <a id='snippet-injectattachmentsinstance'></a>
 ```cs
-TestableMessageHandlerContext context = new();
-MyMessageAttachments mockMessageAttachments = new();
+var context = new TestableMessageHandlerContext();
+var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
 <sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
-TestableMessageHandlerContext context = new();
-MyMessageAttachments mockMessageAttachments = new();
+var context = new TestableMessageHandlerContext();
+var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
 <sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance-1' title='Start of snippet'>anchor</a></sup>
@@ -846,9 +846,9 @@ public class Handler :
 public async Task TestIncomingAttachment()
 {
     //Arrange
-    TestableMessageHandlerContext context = new();
-    Handler handler = new();
-    CustomMockMessageAttachments mockMessageAttachments = new();
+    var context = new TestableMessageHandlerContext();
+    var handler = new Handler();
+    var mockMessageAttachments = new CustomMockMessageAttachments();
     context.InjectAttachmentsInstance(mockMessageAttachments);
 
     //Act
@@ -865,9 +865,9 @@ public async Task TestIncomingAttachment()
 public async Task TestIncomingAttachment()
 {
     //Arrange
-    TestableMessageHandlerContext context = new();
-    Handler handler = new();
-    CustomMockMessageAttachments mockMessageAttachments = new();
+    var context = new TestableMessageHandlerContext();
+    var handler = new Handler();
+    var mockMessageAttachments = new CustomMockMessageAttachments();
     context.InjectAttachmentsInstance(mockMessageAttachments);
 
     //Act
