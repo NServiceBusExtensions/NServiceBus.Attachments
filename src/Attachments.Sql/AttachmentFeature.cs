@@ -17,9 +17,14 @@ class AttachmentFeature :
         var pipeline = context.Pipeline;
         var persister = new Persister(settings.Table);
         pipeline.Register(new ReceiveRegistration(connectionFactory, persister, settings.UseTransport, settings.UseSynchronizedStorage));
-        if (settings.UseTransport)
+
+        if (settings.RunEarlyCleanup)
         {
-            pipeline.Register(new DeleteBehaviorRegistration(connectionFactory, persister));
+            log.Debug("Did not register DeleteBehaviorRegistration since RunEarlyCleanup is not enabled.");
+            if (settings.UseTransport)
+            {
+                pipeline.Register(new DeleteBehaviorRegistration(connectionFactory, persister));
+            }
         }
 
         pipeline.Register(new SendRegistration(connectionFactory, persister, settings.TimeToKeep));

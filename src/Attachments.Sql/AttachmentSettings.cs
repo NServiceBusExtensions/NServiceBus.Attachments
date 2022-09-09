@@ -11,6 +11,7 @@ public partial class AttachmentSettings
     internal Func<Task<SqlConnection>> ConnectionFactory;
     internal Table Table = "MessageAttachments";
     internal bool InstallerDisabled;
+    internal bool RunEarlyCleanup = true;
     internal bool UseTransport;
     internal bool UseSynchronizedStorage;
 
@@ -43,4 +44,10 @@ public partial class AttachmentSettings
     /// </summary>
     public void DisableInstaller() =>
         InstallerDisabled = true;
+
+    /// <summary>
+    /// Disable the attachment on Send or Reply.
+    /// </summary>
+    public void DisableEarlyCleanup() =>
+        RunEarlyCleanup = false;
 }
