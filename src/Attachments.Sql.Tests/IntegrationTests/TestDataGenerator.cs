@@ -17,6 +17,12 @@ public class TestDataGenerator :
         false
     };
 
+    List<bool> runEarlyCleanupList = new()
+    {
+        true,
+        false
+    };
+
     List<bool> useSqlTransportList = new()
     {
         true,
@@ -47,19 +53,23 @@ public class TestDataGenerator :
                     {
                         foreach (var mode in transactionModes)
                         {
-                            if (!useSqlTransport && mode == TransportTransactionMode.TransactionScope)
+                            foreach (var runEarlyCleanup in runEarlyCleanupList)
                             {
-                                continue;
-                            }
+                                if (!useSqlTransport && mode == TransportTransactionMode.TransactionScope)
+                                {
+                                    continue;
+                                }
 
-                            yield return new object[]
-                            {
-                                useSqlTransport,
-                                useSqlTransportConnection,
-                                useSqlPersistence,
-                                useStorageSession,
-                                mode
-                            };
+                                yield return new object[]
+                                {
+                                    useSqlTransport,
+                                    useSqlTransportConnection,
+                                    useSqlPersistence,
+                                    useStorageSession,
+                                    mode,
+                                    runEarlyCleanup
+                                };
+                            }
                         }
                     }
                 }

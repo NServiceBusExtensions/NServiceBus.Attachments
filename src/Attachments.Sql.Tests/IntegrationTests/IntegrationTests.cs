@@ -19,11 +19,18 @@ public class IntegrationTests : IDisposable
             useSqlTransportConnection: false,
             useSqlPersistence: false,
             useStorageSession: false,
-            transactionMode: TransportTransactionMode.SendsAtomicWithReceive);
+            transactionMode: TransportTransactionMode.SendsAtomicWithReceive,
+            runEarlyCleanup: true);
 
     [Theory]
     [ClassData(typeof(TestDataGenerator))]
-    public async Task RunSql(bool useSqlTransport, bool useSqlTransportConnection, bool useSqlPersistence, bool useStorageSession, TransportTransactionMode transactionMode)
+    public async Task RunSql(
+        bool useSqlTransport,
+        bool useSqlTransportConnection,
+        bool useSqlPersistence,
+        bool useStorageSession,
+        TransportTransactionMode transactionMode,
+        bool runEarlyCleanup)
     {
         // sql persistence connection spans the handler. so a nested connection will cause DTC
         if (useSqlTransport &&
@@ -59,6 +66,11 @@ public class IntegrationTests : IDisposable
         if (useStorageSession)
         {
             attachments.UseSynchronizedStorageSessionConnectivity();
+        }
+
+        if (!runEarlyCleanup)
+        {
+            attachments.DisableEarlyCleanup();
         }
 
         configuration.RegisterComponents(
