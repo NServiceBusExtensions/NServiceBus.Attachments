@@ -99,6 +99,7 @@ public class IntegrationTests : IDisposable
             configuration.UsePersistence<LearningPersistence>();
         }
 
+        configuration.DisableRetries();
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         attachments.DisableCleanupTask();
