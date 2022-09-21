@@ -82,15 +82,15 @@ public class IntegrationTests : IDisposable
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
 
-            static SqlConnection connectionBuilder()
+            static SqlConnection ConnectionBuilder()
             {
                 return new(Connection.ConnectionString);
             }
 
-            await RunSqlScripts(endpointName, connectionBuilder);
+            await RunSqlScripts(endpointName, ConnectionBuilder);
             persistence.SqlDialect<SqlDialect.MsSqlServer>();
             persistence.DisableInstaller();
-            persistence.ConnectionBuilder(connectionBuilder);
+            persistence.ConnectionBuilder(ConnectionBuilder);
             var subscriptions = persistence.SubscriptionSettings();
             subscriptions.CacheFor(TimeSpan.FromMinutes(1));
         }
