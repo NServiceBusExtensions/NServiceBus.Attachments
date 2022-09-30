@@ -55,7 +55,7 @@ public class TestDataGenerator :
                         {
                             foreach (var runEarlyCleanup in runEarlyCleanupList)
                             {
-                                if (!useSqlTransport && mode == TransportTransactionMode.TransactionScope)
+                                if (!useSqlTransport && mode != TransportTransactionMode.SendsAtomicWithReceive)
                                 {
                                     continue;
                                 }
