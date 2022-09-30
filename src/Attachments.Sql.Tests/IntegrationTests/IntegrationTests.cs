@@ -125,7 +125,7 @@ public class IntegrationTests : IDisposable
         var endpoint = await Endpoint.Start(configuration);
         var startMessageId = await SendStartMessage(endpoint);
 
-        var timeout = TimeSpan.FromSeconds(300);
+        var timeout = TimeSpan.FromSeconds(10);
         if (!HandlerEvent.WaitOne(timeout))
         {
             throw new("TimedOut");
@@ -138,7 +138,8 @@ public class IntegrationTests : IDisposable
 
         if (useSqlTransportConnection &&
             useSqlTransport &&
-            transactionMode != TransportTransactionMode.None)
+            transactionMode != TransportTransactionMode.None &&
+            !runEarlyCleanup)
         {
             await using var connection = new SqlConnection(Connection.ConnectionString);
             await connection.OpenAsync();
