@@ -139,7 +139,7 @@ public class IntegrationTests : IDisposable
         if (useSqlTransportConnection &&
             useSqlTransport &&
             transactionMode != TransportTransactionMode.None &&
-            !runEarlyCleanup)
+            runEarlyCleanup)
         {
             await using var connection = new SqlConnection(Connection.ConnectionString);
             await connection.OpenAsync();
