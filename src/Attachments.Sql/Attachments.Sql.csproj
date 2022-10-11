@@ -9,7 +9,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Table.sql" LogicalName="Table.sql" />
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="All" />
-    <PackageReference Include="Fody" Version="6.6.3" PrivateAssets="all" />
+    <PackageReference Include="Fody" Version="6.6.4" PrivateAssets="all" />
     <PackageReference Include="NServiceBus" Version="7.8.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
     <PackageReference Include="ProjectDefaults" Version="1.0.80" PrivateAssets="all" />
