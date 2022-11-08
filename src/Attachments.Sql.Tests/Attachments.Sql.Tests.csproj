@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.80" PrivateAssets="all" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.82" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="IntegrationTests\**" Condition=" '$(Configuration)' == 'Release' " />
