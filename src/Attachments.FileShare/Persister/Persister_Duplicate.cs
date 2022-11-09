@@ -1,4 +1,5 @@
-﻿namespace NServiceBus.Attachments.FileShare
+﻿// ReSharper disable ConvertClosureToMethodGroup
+namespace NServiceBus.Attachments.FileShare
 #if Raw
     .Raw
 #endif
