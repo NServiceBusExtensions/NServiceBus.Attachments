@@ -11,7 +11,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<int> CleanupItemsOlderThan(SqlConnection connection, SqlTransaction? transaction, DateTime dateTime, CancellationToken cancellation = default)
     {
-        await using var command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText = $@"
 delete from {table} where expiry < @date
@@ -25,7 +25,7 @@ select @@ROWCOUNT";
     /// <inheritdoc />
     public virtual async Task<int> PurgeItems(SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
     {
-        await using var command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText = $@"
 if exists (

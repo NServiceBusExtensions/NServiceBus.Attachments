@@ -13,8 +13,8 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
-        await using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
-        await using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
+        using var reader = await command.ExecuteSequentialReader(cancellation);
         var names = new List<(Guid, string)>();
         while (await reader.ReadAsync(cancellation))
         {
@@ -33,7 +33,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(targetName, nameof(targetName));
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
-        await using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
+        using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
         return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
     }
 
@@ -44,7 +44,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
-        await using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
+        using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
         return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
     }
 

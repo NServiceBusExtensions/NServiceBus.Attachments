@@ -27,7 +27,11 @@ public class AttachmentStream :
         new("default", new MemoryStream(), 0, emptyDictionary);
 
     Stream inner;
+    #if NET48
+    IDisposable[]? cleanups;
+    #else
     IAsyncDisposable[]? cleanups;
+    #endif
 
     /// <summary>
     /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -42,7 +46,11 @@ public class AttachmentStream :
         Stream inner,
         long length,
         IReadOnlyDictionary<string, string> metadata,
+        #if NET48
+        params IDisposable[] cleanups
+        #else
         params IAsyncDisposable[] cleanups
+        #endif
     )
     {
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -87,10 +95,16 @@ public class AttachmentStream :
         {
             foreach (var disposable in cleanups)
             {
+                #if NET48
+                disposable.Dispose();
+                #else
                 disposable.DisposeAsync().GetAwaiter().GetResult();
+                #endif
             }
         }
     }
+
+#if NET6_0_OR_GREATER
 
     public override async ValueTask DisposeAsync()
     {
@@ -119,6 +133,7 @@ public class AttachmentStream :
 
     public override void CopyTo(Stream destination, int bufferSize) =>
         inner.CopyTo(destination, bufferSize);
+#endif
 
     public override int ReadByte() =>
         inner.ReadByte();

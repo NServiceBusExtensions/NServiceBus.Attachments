@@ -16,7 +16,7 @@ class MySaga :
     public async Task Handle(SendMessage message, IMessageHandlerContext context)
     {
         var incomingAttachment = context.Attachments();
-        await using var stream = await incomingAttachment.GetStream();
+        using var stream = await incomingAttachment.GetStream();
         integrationTests.SagaEvent.Set();
     }
 

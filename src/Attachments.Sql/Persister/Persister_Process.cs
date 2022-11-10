@@ -12,16 +12,16 @@ public partial class Persister
     public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        await using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        await using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var command = CreateGetDatasCommand(messageId, connection, transaction);
+        using var reader = await command.ExecuteSequentialReader(cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
             var name = reader.GetString(0);
             var length = reader.GetInt64(1);
             var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
-            await using var sqlStream = reader.GetStream(3);
-            await using var attachment = new AttachmentStream(name, sqlStream, length, metadata);
+            using var sqlStream = reader.GetStream(3);
+            using var attachment = new AttachmentStream(name, sqlStream, length, metadata);
             var task = action(attachment);
             Guard.ThrowIfNullReturned(messageId, null, task);
             await task;
@@ -34,8 +34,8 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
-        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        await using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        using var reader = await command.ExecuteSequentialReader(cancellation);
         if (!await reader.ReadAsync(cancellation))
         {
             throw ThrowNotFound(messageId, name);
@@ -43,8 +43,8 @@ public partial class Persister
 
         var length = reader.GetInt64(0);
         var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(1));
-        await using var sqlStream = reader.GetStream(2);
-        await using var attachment = new AttachmentStream(name, sqlStream, length, metadata);
+        using var sqlStream = reader.GetStream(2);
+        using var attachment = new AttachmentStream(name, sqlStream, length, metadata);
         var task = action(attachment);
         Guard.ThrowIfNullReturned(messageId, name, task);
         await task;

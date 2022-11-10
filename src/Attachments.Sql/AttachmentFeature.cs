@@ -43,7 +43,7 @@ class AttachmentFeature :
         new(
             async token =>
             {
-                await using var connection = await settings.ConnectionFactory();
+                using var connection = await settings.ConnectionFactory();
                 var count = await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
                 log.Debug($"Deleted {count} attachments during cleanup");
             },

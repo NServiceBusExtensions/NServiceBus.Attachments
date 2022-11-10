@@ -14,14 +14,14 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
-        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        await using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        using var reader = await command.ExecuteSequentialReader(cancellation);
         if (!await reader.ReadAsync(cancellation))
         {
             throw ThrowNotFound(messageId, name);
         }
 
-        await using var data = reader.GetStream(2);
+        using var data = reader.GetStream(2);
         await data.CopyToAsync(target, 81920, cancellation);
     }
 }

@@ -11,7 +11,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<int> DeleteAllAttachments(SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
     {
-        await using var command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText = $@"delete from {table}
 select @@ROWCOUNT";
@@ -20,7 +20,7 @@ select @@ROWCOUNT";
 
     public virtual async Task<int> DeleteAttachments(string messageId, SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
     {
-        await using var command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText = $@"
 delete from {table} where MessageIdLower = lower(@MessageId)

@@ -22,7 +22,7 @@ public static class Installer
     /// </summary>
     public static async Task CreateTable(SqlConnection connection, Table table, CancellationToken cancellation = default)
     {
-        await using var command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.CommandText = GetTableSql();
         command.AddParameter("schema", table.Schema);
         command.AddParameter("table", table.TableName);

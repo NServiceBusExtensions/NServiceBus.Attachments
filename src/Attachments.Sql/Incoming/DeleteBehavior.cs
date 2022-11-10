@@ -59,7 +59,7 @@ class DeleteBehavior :
 
         if (transportTransaction.TryGet<Transaction>(out var transaction))
         {
-            await using var connection = await connectionBuilder();
+            using var connection = await connectionBuilder();
             connection.EnlistTransaction(transaction);
             var count = await persister.DeleteAttachments(id, connection, null);
             log.Debug($"Deleting {count} attachments for {id} using Transactions.Transaction");

@@ -141,7 +141,7 @@ public class IntegrationTests : IDisposable
             transactionMode != TransportTransactionMode.None &&
             runEarlyCleanup)
         {
-            await using var connection = new SqlConnection(Connection.ConnectionString);
+            using var connection = new SqlConnection(Connection.ConnectionString);
             await connection.OpenAsync();
             var persister = new Persister("Attachments");
             await foreach (var _ in persister.ReadAllMessageInfo(connection, null, startMessageId))

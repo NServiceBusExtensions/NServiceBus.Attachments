@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.Sql.Raw</AssemblyName>
     <PackageName>NServiceBus.Attachments.Sql.Raw</PackageName>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);Sql;Raw</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -11,6 +11,7 @@
     <PackageReference Include="Fody" Version="6.6.4" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
     <PackageReference Include="ProjectDefaults" Version="1.0.82" PrivateAssets="all" />
+    <PackageReference Include="Nullable" Version="1.3.1" PrivateAssets="All" Condition="$(TargetFramework) == 'net48'" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" Condition="$(Configuration) == 'Release'" />
     <PackageReference Include="System.Text.Json" Version="7.0.0" />
 

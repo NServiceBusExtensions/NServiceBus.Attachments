@@ -10,7 +10,7 @@ public class InstallerTests
     [Fact]
     public async Task Run()
     {
-        await using var connection = await Connection.OpenAsyncConnection();
+        using var connection = await Connection.OpenAsyncConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         TableExists("[dbo].[MessageAttachments]", connection);
     }

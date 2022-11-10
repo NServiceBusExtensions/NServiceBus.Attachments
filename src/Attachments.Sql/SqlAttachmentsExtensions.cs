@@ -36,7 +36,7 @@ public static class SqlAttachmentsExtensions
                 }
                 catch
                 {
-                    await connection.DisposeAsync();
+                    connection.Dispose();
                     throw;
                 }
             },
