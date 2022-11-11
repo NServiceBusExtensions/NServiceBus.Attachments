@@ -19,7 +19,7 @@ public class AttachmentBytes :
     /// <summary>
     /// An empty <see cref="AttachmentBytes"/> that contains a "default" name a <see cref="Array.Empty{T}"/> of <see cref="byte"/>s as contents.
     /// </summary>
-    public static AttachmentBytes Empty = new(string.Empty, Array.Empty<byte>());
+    public static AttachmentBytes Empty = new();
 
     /// <summary>
     /// The attachment bytes.
@@ -31,6 +31,13 @@ public class AttachmentBytes :
 
     /// <inheritdoc />
     public string Name { get; }
+
+    private AttachmentBytes()
+    {
+        Metadata = MetadataSerializer.EmptyMetadata;
+        Name = string.Empty;
+        Bytes =  Array.Empty<byte>();
+    }
 
     /// <summary>
     /// Initialises a new instance of <see cref="AttachmentStream"/>.
