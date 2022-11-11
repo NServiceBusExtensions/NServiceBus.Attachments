@@ -11,7 +11,13 @@
 
         return value;
     }
-
+#if NET48
+    public static ValueTask DisposeAsync(this IDisposable disposable)
+    {
+        disposable.Dispose();
+        return default;
+    }
+#endif
     public static async Task<List<T>> ToAsyncList<T>(this IAsyncEnumerable<T> enumerable)
     {
         var list = new List<T>();

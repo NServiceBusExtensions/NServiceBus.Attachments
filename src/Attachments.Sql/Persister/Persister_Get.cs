@@ -156,10 +156,10 @@ public partial class Persister
         var metadata = MetadataSerializer.Deserialize(metadataString);
         if (disposeConnection)
         {
-            return new(name, sqlStream, length, metadata, command, reader, command.Connection!);
+            return new(name, sqlStream, length, metadata, command.DisposeAsync, reader.DisposeAsync, command.Connection!.DisposeAsync);
         }
 
-        return new(name, sqlStream, length, metadata, command, reader);
+        return new(name, sqlStream, length, metadata, command.DisposeAsync, reader.DisposeAsync);
     }
 
     SqlCommand CreateGetDataCommand(string messageId, string name, SqlConnection connection, SqlTransaction? transaction)

@@ -27,11 +27,7 @@ public class AttachmentStream :
         new("default", new MemoryStream(), 0, emptyDictionary);
 
     Stream inner;
-    #if NET48
-    IDisposable[]? cleanups;
-    #else
-    IAsyncDisposable[]? cleanups;
-    #endif
+    IEnumerable<Func<ValueTask>>? cleanups;
 
     /// <summary>
     /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -40,17 +36,13 @@ public class AttachmentStream :
     /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
     /// <param name="length">The length of <paramref name="inner"/>.</param>
     /// <param name="metadata">The attachment metadata.</param>
-    /// <param name="cleanups">Any extra <see cref="IAsyncDisposable"/>s to cleanup.</param>
+    /// <param name="cleanups">Any extra cleanups.</param>
     public AttachmentStream(
         string name,
         Stream inner,
         long length,
         IReadOnlyDictionary<string, string> metadata,
-        #if NET48
-        params IDisposable[] cleanups
-        #else
-        params IAsyncDisposable[] cleanups
-        #endif
+        params Func<ValueTask>[] cleanups
     )
     {
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -71,7 +63,7 @@ public class AttachmentStream :
         string name,
         Stream inner,
         IReadOnlyDictionary<string, string>? metadata = null
-    ) : this(name, inner, inner.Length, metadata ?? new Dictionary<string, string>(), inner)
+    ) : this(name, inner, inner.Length, metadata ?? new Dictionary<string, string>(), inner.DisposeAsync)
     {
     }
 
@@ -93,13 +85,9 @@ public class AttachmentStream :
         inner.Dispose();
         if (cleanups is not null)
         {
-            foreach (var disposable in cleanups)
+            foreach (var cleanup in cleanups)
             {
-                #if NET48
-                disposable.Dispose();
-                #else
-                disposable.DisposeAsync().GetAwaiter().GetResult();
-                #endif
+                cleanup().GetAwaiter().GetResult();
             }
         }
     }
@@ -114,7 +102,7 @@ public class AttachmentStream :
         {
             foreach (var cleanup in cleanups)
             {
-                await cleanup.DisposeAsync();
+                await cleanup();
             }
         }
     }

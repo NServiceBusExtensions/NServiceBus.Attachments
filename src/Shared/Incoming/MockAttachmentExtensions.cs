@@ -14,7 +14,7 @@ static class MockAttachmentExtensions
     {
         var bytes = attachment.Bytes;
         var stream = new MemoryStream(bytes);
-        return new(attachment.Name, stream, bytes.LongLength, attachment.Metadata, stream);
+        return new(attachment.Name, stream, bytes.LongLength, attachment.Metadata, stream.DisposeAsync);
     }
 
     public static AttachmentBytes ToAttachmentBytes(this MockAttachment attachment) => new(attachment.Name, attachment.Bytes, attachment.Metadata);
