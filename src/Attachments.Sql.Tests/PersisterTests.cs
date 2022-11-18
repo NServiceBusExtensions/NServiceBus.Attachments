@@ -264,12 +264,12 @@ public class PersisterTests
         using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        var w1252 = Encoding.GetEncoding(1252);
-        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample", w1252, metadata);
+        var encoding = Encoding.BigEndianUnicode;
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample", encoding, metadata);
 
         AttachmentString result = await persister.GetString("theMessageId", "theName", connection, null);
         var encodingName = result.Metadata["encoding"];
-        Assert.Equal(encodingName, w1252.WebName);
+        Assert.Equal(encodingName, encoding.WebName);
         Assert.Equal("Sample", result);
     }
 
@@ -279,12 +279,12 @@ public class PersisterTests
         using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        var w1252 = Encoding.GetEncoding(1252);
-        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample",w1252, metadata);
+        var encoding = Encoding.BigEndianUnicode;
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample", encoding, metadata);
 
         var result = await persister.GetString("theMessageId", "theName", connection, null, Encoding.BigEndianUnicode);
         var encodingName = result.Metadata["encoding"];
-        Assert.Equal(encodingName, w1252.WebName);
+        Assert.Equal(encodingName, encoding.WebName);
         Assert.Equal("Sample", result);
     }
 
