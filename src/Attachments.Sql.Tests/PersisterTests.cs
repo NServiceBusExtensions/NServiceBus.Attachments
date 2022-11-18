@@ -259,6 +259,19 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task DiffEncodingString()
+    {
+        using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var w1252 = Encoding.GetEncoding(1252);
+        var bytes = w1252.GetBytes("Sample");
+        await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, bytes, metadata);
+        var result = await persister.GetString("theMessageId", "theName", connection, null);
+        Assert.Equal("Sample", result);
+    }
+
+    [Fact]
     public async Task SaveStringEncoding()
     {
         using var connection = Connection.OpenConnection();

@@ -34,6 +34,8 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
         encoding = encoding.Default();
+        metadata ??= new Dictionary<string, string>();
+        metadata.Add("encoding", encoding.WebName);
         return Save(connection, transaction, messageId, name, expiry, value.ToBytes(encoding), metadata, cancellation);
     }
 
