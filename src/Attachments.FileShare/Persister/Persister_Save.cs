@@ -28,11 +28,13 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
+        encoding = encoding.Default();
+        var dictionary = MetadataSerializer.AppendEncoding(encoding, metadata);
         return Save(
             messageId,
             name,
             expiry,
-            metadata,
+            dictionary,
             async fileStream =>
             {
                 await using var writer = fileStream.BuildLeaveOpenWriter(encoding);

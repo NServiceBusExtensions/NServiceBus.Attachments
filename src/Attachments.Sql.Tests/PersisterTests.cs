@@ -259,6 +259,36 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task DiffEncoding()
+    {
+        using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var encoding = Encoding.BigEndianUnicode;
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample", encoding, metadata);
+
+        AttachmentString result = await persister.GetString("theMessageId", "theName", connection, null);
+        var encodingName = result.Metadata["encoding"];
+        Assert.Equal(encodingName, encoding.WebName);
+        Assert.Equal("Sample", result);
+    }
+
+    [Fact]
+    public async Task DiffEncodingOverride()
+    {
+        using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var encoding = Encoding.BigEndianUnicode;
+        await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample", encoding, metadata);
+
+        var result = await persister.GetString("theMessageId", "theName", connection, null, Encoding.BigEndianUnicode);
+        var encodingName = result.Metadata["encoding"];
+        Assert.Equal(encodingName, encoding.WebName);
+        Assert.Equal("Sample", result);
+    }
+
+    [Fact]
     public async Task SaveStringEncoding()
     {
         using var connection = Connection.OpenConnection();

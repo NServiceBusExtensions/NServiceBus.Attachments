@@ -4,6 +4,7 @@
     Name: theName,
     Expiry: DateTime_1,
     Metadata: {
+      encoding: utf-8,
       key: value
     }
   }

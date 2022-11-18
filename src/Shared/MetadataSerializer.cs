@@ -63,4 +63,35 @@ public static class MetadataSerializer
         IReadOnlyDictionary<string, string> metadata,
         CancellationToken cancellation = default) =>
         Serializer.SerializeAsync(stream, metadata, cancellationToken: cancellation);
+
+    internal static Dictionary<string, string> AppendEncoding(Encoding encoding, IReadOnlyDictionary<string, string>? metadata)
+    {
+        Dictionary<string, string> dictionary;
+        if (metadata == null)
+        {
+            dictionary = new();
+        }
+        else
+        {
+            dictionary = metadata.ToDictionary(_ => _.Key, _ => _.Value);
+        }
+
+        dictionary.Add("encoding", encoding.WebName);
+        return dictionary;
+    }
+
+    internal static Encoding GetEncoding(Encoding? encoding, IReadOnlyDictionary<string, string> metadata)
+    {
+        if (metadata.TryGetValue("encoding", out var encodingString))
+        {
+            return Encoding.GetEncoding(encodingString);
+        }
+
+        if (encoding == null)
+        {
+            return encoding.Default();
+        }
+
+        return encoding;
+    }
 }
