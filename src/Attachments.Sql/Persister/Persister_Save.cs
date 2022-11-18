@@ -34,9 +34,8 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(name, nameof(name));
         Guard.AgainstLongAttachmentName(name);
         encoding = encoding.Default();
-        metadata ??= new Dictionary<string, string>();
-        metadata.Add("encoding", encoding.WebName);
-        return Save(connection, transaction, messageId, name, expiry, value.ToBytes(encoding), metadata, cancellation);
+        var dictionary = MetadataSerializer.AppendEncoding(encoding, metadata);
+        return Save(connection, transaction, messageId, name, expiry, value.ToBytes(encoding), dictionary, cancellation);
     }
 
     async Task<Guid> Save(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)

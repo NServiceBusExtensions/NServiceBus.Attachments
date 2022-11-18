@@ -222,6 +222,30 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task DiffEncoding()
+    {
+        var persister = GetPersister();
+        var w1252 = Encoding.GetEncoding(1252);
+        await persister.SaveString("theMessageId", "theName", defaultTestDate, "Sample",w1252, metadata);
+        var result = await persister.GetString("theMessageId", "theName", null);
+        var encodingName = result.Metadata["encoding"];
+        Assert.Equal(encodingName, w1252.WebName);
+        Assert.Equal("Sample", result);
+    }
+
+    [Fact]
+    public async Task DiffEncodingOverride()
+    {
+        var persister = GetPersister();
+        var w1252 = Encoding.GetEncoding(1252);
+        await persister.SaveString("theMessageId", "theName", defaultTestDate, "Sample",w1252, metadata);
+        var result = await persister.GetString("theMessageId", "theName", Encoding.Latin1);
+        var encodingName = result.Metadata["encoding"];
+        Assert.Equal(encodingName, w1252.WebName);
+        Assert.Equal("Sample", result);
+    }
+
+    [Fact]
     public async Task DuplicateWithRename()
     {
         var persister = GetPersister();

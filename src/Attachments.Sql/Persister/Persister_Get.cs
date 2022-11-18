@@ -20,28 +20,13 @@ public partial class Persister
         {
             var metadataString = reader.GetStringOrNull(1);
             var metadata = MetadataSerializer.Deserialize(metadataString);
-            encoding = GetEncoding(encoding, metadata);
+            encoding = MetadataSerializer.GetEncoding(encoding, metadata);
             //TODO: read string directly
             var bytes = (byte[]) reader[2];
             return new(name, encoding.GetString(bytes), metadata);
         }
 
         throw ThrowNotFound(messageId, name);
-    }
-
-    static Encoding GetEncoding(Encoding? encoding, IDictionary<string, string> metadata)
-    {
-        if (metadata.TryGetValue("encoding", out var encodingString))
-        {
-            return Encoding.GetEncoding(encodingString);
-        }
-
-        if (encoding == null)
-        {
-            return encoding.Default();
-        }
-
-        return encoding;
     }
 
     /// <inheritdoc />
