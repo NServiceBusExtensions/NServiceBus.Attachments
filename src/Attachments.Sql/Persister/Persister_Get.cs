@@ -23,7 +23,9 @@ public partial class Persister
             encoding = MetadataSerializer.GetEncoding(encoding, metadata);
             //TODO: read string directly
             var bytes = (byte[]) reader[2];
-            return new(name, encoding.GetString(bytes), metadata);
+            using var memoryStream = new MemoryStream(bytes);
+            using var streamReader = new StreamReader(memoryStream, encoding, true);
+            return new(name, streamReader.ReadToEnd(), metadata);
         }
 
         throw ThrowNotFound(messageId, name);

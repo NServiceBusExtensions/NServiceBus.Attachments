@@ -282,7 +282,7 @@ public class PersisterTests
         var w1252 = Encoding.GetEncoding(1252);
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample",w1252, metadata);
 
-        AttachmentString result = await persister.GetString("theMessageId", "theName", connection, null, Encoding.BigEndianUnicode);
+        var result = await persister.GetString("theMessageId", "theName", connection, null, Encoding.BigEndianUnicode);
         var encodingName = result.Metadata["encoding"];
         Assert.Equal(encodingName, w1252.WebName);
         Assert.Equal("Sample", result);
