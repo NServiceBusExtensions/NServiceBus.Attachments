@@ -1,5 +1,4 @@
-﻿using NServiceBus;
-using NServiceBus.Attachments.FileShare;
+﻿using NServiceBus.Attachments.FileShare;
 using NServiceBus.Features;
 
 class PurgeTask :
@@ -10,12 +9,12 @@ class PurgeTask :
     public PurgeTask(IPersister persister) =>
         this.persister = persister;
 
-    protected override Task OnStart(IMessageSession session)
+    protected override Task OnStart(IMessageSession session, CancellationToken cancellation = default)
     {
-        persister.PurgeItems();
+        persister.PurgeItems(cancellation);
         return Task.CompletedTask;
     }
 
-    protected override Task OnStop(IMessageSession session) =>
+    protected override Task OnStop(IMessageSession session, CancellationToken cancellation = default) =>
         Task.CompletedTask;
 }

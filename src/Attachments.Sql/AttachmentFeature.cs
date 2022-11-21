@@ -1,8 +1,7 @@
-﻿using NServiceBus;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
 using NServiceBus.Logging;
-using NServiceBus.ObjectBuilder;
 
 class AttachmentFeature :
     Feature
@@ -35,11 +34,11 @@ class AttachmentFeature :
 
         if (settings.RunCleanTask)
         {
-            context.RegisterStartupTask(builder => CreateCleaner(settings, persister, builder));
+            context.RegisterStartupTask(services => CreateCleaner(settings, persister, services));
         }
     }
 
-    static Cleaner CreateCleaner(AttachmentSettings settings, IPersister persister, IBuilder builder) =>
+    static Cleaner CreateCleaner(AttachmentSettings settings, IPersister persister, IServiceProvider services) =>
         new(
             async token =>
             {
@@ -47,7 +46,7 @@ class AttachmentFeature :
                 var count = await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
                 log.Debug($"Deleted {count} attachments during cleanup");
             },
-            criticalError: builder.Build<CriticalError>().Raise,
+            criticalError: services.GetRequiredService<CriticalError>().Raise,
             frequencyToRunCleanup: TimeSpan.FromHours(1),
             timer: new AsyncTimer());
 }

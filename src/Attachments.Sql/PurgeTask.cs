@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
 using NServiceBus.Logging;
@@ -17,13 +16,13 @@ class PurgeTask :
         this.connectionFactory = connectionFactory;
     }
 
-    protected override async Task OnStart(IMessageSession session)
+    protected override async Task OnStart(IMessageSession session, CancellationToken cancellation = default)
     {
         using var connection = await connectionFactory();
         var count = await persister.PurgeItems(connection, null, CancellationToken.None);
         log.DebugFormat($"Deleted {count} attachments");
     }
 
-    protected override Task OnStop(IMessageSession session) =>
+    protected override Task OnStop(IMessageSession session, CancellationToken cancellation = default) =>
         Task.CompletedTask;
 }

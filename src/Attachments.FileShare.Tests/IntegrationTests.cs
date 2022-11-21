@@ -1,5 +1,4 @@
-﻿using NServiceBus;
-using NServiceBus.Attachments.FileShare;
+﻿using NServiceBus.Attachments.FileShare;
 
 public class IntegrationTests :
     IDisposable
@@ -12,7 +11,7 @@ public class IntegrationTests :
         var configuration = new EndpointConfiguration("FileShareIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        configuration.RegisterComponents(components => components.RegisterSingleton(resetEvent));
+        configuration.RegisterComponents(_ => _.AddSingleton(resetEvent));
         configuration.EnableAttachments(Path.GetFullPath("attachments/IntegrationTests"), TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);

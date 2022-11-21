@@ -1,6 +1,5 @@
 ﻿using System.Transactions;
 using Microsoft.Data.SqlClient;
-using NServiceBus;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Logging;
 using NServiceBus.Pipeline;

@@ -1,6 +1,4 @@
-﻿using NServiceBus;
-
-public class TestDataGenerator :
+﻿public class TestDataGenerator :
     IEnumerable<object[]>
 {
     List<TransportTransactionMode> transactionModes = new()

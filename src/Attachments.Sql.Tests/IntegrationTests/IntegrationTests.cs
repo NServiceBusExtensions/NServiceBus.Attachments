@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using NServiceBus;
+using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
 
@@ -76,7 +76,7 @@ public class IntegrationTests : IDisposable
         configuration.RegisterComponents(
             registration: configureComponents =>
             {
-                configureComponents.RegisterSingleton(this);
+                configureComponents.AddSingleton(this);
             });
         if (useSqlPersistence)
         {
@@ -168,7 +168,7 @@ public class IntegrationTests : IDisposable
             shouldInstallOutbox: false,
             shouldInstallSagas: true,
             shouldInstallSubscriptions: false,
-            shouldInstallTimeouts: false);
+            cancellationToken: default);
     }
 
     internal void PerformNestedConnection()
