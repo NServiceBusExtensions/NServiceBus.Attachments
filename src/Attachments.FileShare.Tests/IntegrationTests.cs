@@ -3,7 +3,7 @@
 public class IntegrationTests :
     IDisposable
 {
-    ManualResetEvent resetEvent = new(false);
+    static ManualResetEvent resetEvent = new(false);
 
     [Fact]
     public async Task Run()
@@ -63,11 +63,6 @@ public class IntegrationTests :
     class ReplyHandler :
         IHandleMessages<ReplyMessage>
     {
-        ManualResetEvent resetEvent;
-
-        public ReplyHandler(ManualResetEvent resetEvent) =>
-            this.resetEvent = resetEvent;
-
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
             await using var memoryStream = new MemoryStream();
