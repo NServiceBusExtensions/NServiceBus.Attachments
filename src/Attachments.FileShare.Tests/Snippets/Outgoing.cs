@@ -1,6 +1,4 @@
-﻿using NServiceBus;
-
-public class Outgoing
+﻿public class Outgoing
 {
     #region OutgoingFactory
 

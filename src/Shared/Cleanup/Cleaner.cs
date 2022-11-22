@@ -1,5 +1,4 @@
-﻿using NServiceBus;
-using NServiceBus.Features;
+﻿using NServiceBus.Features;
 using NServiceBus.Logging;
 
 class Cleaner :
@@ -7,7 +6,7 @@ class Cleaner :
 {
     public Cleaner(
         Func<CancellationToken, Task> cleanup,
-        Action<string, Exception> criticalError,
+        Action<string, Exception, CancellationToken> criticalError,
         TimeSpan frequencyToRunCleanup,
         IAsyncTimer timer)
     {
@@ -17,7 +16,7 @@ class Cleaner :
         this.criticalError = criticalError;
     }
 
-    protected override Task OnStart(IMessageSession? session)
+    protected override Task OnStart(IMessageSession? session, CancellationToken cancellation = default)
     {
         var cleanupFailures = 0;
         timer.Start(
@@ -33,7 +32,7 @@ class Cleaner :
                 cleanupFailures++;
                 if (cleanupFailures >= 10)
                 {
-                    criticalError("Failed to clean expired Attachment records after 10 consecutive unsuccessful attempts. The most likely cause of this is connectivity issues with the database.", exception);
+                    criticalError("Failed to clean expired Attachment records after 10 consecutive unsuccessful attempts. The most likely cause of this is connectivity issues with the database.", exception, default);
                     cleanupFailures = 0;
                 }
             },
@@ -41,11 +40,11 @@ class Cleaner :
         return Task.CompletedTask;
     }
 
-    protected override Task OnStop(IMessageSession? session) =>
+    protected override Task OnStop(IMessageSession session, CancellationToken cancellation = default) =>
         timer.Stop();
 
     IAsyncTimer timer;
-    Action<string, Exception> criticalError;
+    Action<string, Exception, CancellationToken> criticalError;
     Func<CancellationToken, Task> cleanup;
     TimeSpan frequencyToRunCleanup;
 

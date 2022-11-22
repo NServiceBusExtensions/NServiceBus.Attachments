@@ -1,4 +1,4 @@
-﻿using NServiceBus;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 [UsesVerify]
 public class IncomingWhenNotEnabledTests : IDisposable
@@ -15,7 +15,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
         var configuration = new EndpointConfiguration("SqlIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        configuration.RegisterComponents(components => components.RegisterSingleton(this));
+        configuration.RegisterComponents(_ => _.AddSingleton(this));
         var endpoint = await Endpoint.Start(configuration);
         await endpoint.SendLocal(new SendMessage());
         ResetEvent.WaitOne();

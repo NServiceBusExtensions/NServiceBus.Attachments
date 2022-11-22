@@ -1,7 +1,6 @@
-﻿using NServiceBus;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Attachments.FileShare;
 using NServiceBus.Features;
-using NServiceBus.ObjectBuilder;
 
 class AttachmentFeature :
     Feature
@@ -22,17 +21,17 @@ class AttachmentFeature :
 
         if (settings.RunCleanTask)
         {
-            context.RegisterStartupTask(builder => CreateCleaner(persister, builder));
+            context.RegisterStartupTask(services => CreateCleaner(persister, services));
         }
     }
 
-    static Cleaner CreateCleaner(IPersister persister, IBuilder builder) =>
+    static Cleaner CreateCleaner(IPersister persister, IServiceProvider services) =>
         new(token =>
             {
                 persister.CleanupItemsOlderThan(DateTime.UtcNow, token);
                 return Task.CompletedTask;
             },
-            criticalError: builder.Build<CriticalError>().Raise,
+            criticalError: services.GetRequiredService<CriticalError>().Raise,
             frequencyToRunCleanup: TimeSpan.FromHours(1),
             timer: new AsyncTimer());
 }

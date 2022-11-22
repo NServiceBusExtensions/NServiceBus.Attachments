@@ -5,7 +5,7 @@
     {
         var criticalActionTriggered = false;
         var timer = new FakeTimer();
-        var cleaner = new TestableCleaner(_ => Task.CompletedTask, (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
+        var cleaner = new TestableCleaner(_ => Task.CompletedTask, (_, _, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
 
         await cleaner.Start();
 
@@ -31,7 +31,7 @@
     {
         var criticalActionTriggered = false;
         var timer = new FakeTimer();
-        var cleaner = new TestableCleaner(_ => Task.CompletedTask, (_, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
+        var cleaner = new TestableCleaner(_ => Task.CompletedTask, (_, _, _) => criticalActionTriggered = true, TimeSpan.Zero, timer);
 
         await cleaner.Start();
 
@@ -53,7 +53,7 @@
     class TestableCleaner :
         Cleaner
     {
-        public TestableCleaner(Func<CancellationToken, Task> cleanup, Action<string, Exception> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
+        public TestableCleaner(Func<CancellationToken, Task> cleanup, Action<string, Exception, CancellationToken> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
             : base(cleanup, criticalError, frequencyToRunCleanup, timer)
         {
         }

@@ -1,10 +1,9 @@
-﻿using NServiceBus;
-using NServiceBus.Attachments.FileShare;
+﻿using NServiceBus.Attachments.FileShare;
 
 public class IntegrationTests :
     IDisposable
 {
-    ManualResetEvent resetEvent = new(false);
+    static ManualResetEvent resetEvent = new(false);
 
     [Fact]
     public async Task Run()
@@ -12,7 +11,7 @@ public class IntegrationTests :
         var configuration = new EndpointConfiguration("FileShareIntegrationTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        configuration.RegisterComponents(components => components.RegisterSingleton(resetEvent));
+        configuration.RegisterComponents(_ => _.AddSingleton(resetEvent));
         configuration.EnableAttachments(Path.GetFullPath("attachments/IntegrationTests"), TimeToKeep.Default);
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
@@ -64,11 +63,6 @@ public class IntegrationTests :
     class ReplyHandler :
         IHandleMessages<ReplyMessage>
     {
-        ManualResetEvent resetEvent;
-
-        public ReplyHandler(ManualResetEvent resetEvent) =>
-            this.resetEvent = resetEvent;
-
         public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
         {
             await using var memoryStream = new MemoryStream();

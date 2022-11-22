@@ -1,6 +1,4 @@
-﻿using NServiceBus;
-
-public static class Helpers
+﻿public static class Helpers
 {
     public static void PurgeDirectory(string directory)
     {

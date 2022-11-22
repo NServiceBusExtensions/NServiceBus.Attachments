@@ -1,6 +1,4 @@
-﻿using NServiceBus;
-
-[UsesVerify]
+﻿[UsesVerify]
 public class IncomingWhenNotEnabledTests : IDisposable
 {
     public ManualResetEvent ResetEvent = new(false);
@@ -11,7 +9,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
     {
         var configuration = new EndpointConfiguration("FileShareIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
-        configuration.RegisterComponents(components => components.RegisterSingleton(this));
+        configuration.RegisterComponents(_ => _.AddSingleton(this));
         configuration.UseTransport<LearningTransport>();
         var endpoint = await Endpoint.Start(configuration);
         await endpoint.SendLocal(new SendMessage());

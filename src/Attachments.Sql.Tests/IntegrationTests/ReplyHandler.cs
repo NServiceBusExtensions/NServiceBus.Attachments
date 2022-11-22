@@ -1,6 +1,4 @@
-﻿using NServiceBus;
-
-class ReplyHandler :
+﻿class ReplyHandler :
     IHandleMessages<ReplyMessage>
 {
     IntegrationTests integrationTests;

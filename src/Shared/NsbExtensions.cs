@@ -4,7 +4,7 @@ using NServiceBus.Transport;
 
 static class NsbExtensions
 {
-    public static bool PurgeOnStartup(this ReadOnlySettings settings)
+    public static bool PurgeOnStartup(this IReadOnlySettings settings)
     {
         if (settings.TryGet("Transport.PurgeOnStartup", out bool purgeOnStartup))
         {

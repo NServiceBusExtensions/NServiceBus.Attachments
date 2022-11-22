@@ -9,7 +9,7 @@ class StorageAccessor
     bool? hasTransactionProperty;
     PropertyInfo? transactionProperty;
 
-    public bool TryGetConnection(SynchronizedStorageSession storageSession, [NotNullWhen(true)] out SqlConnection? connection)
+    public bool TryGetConnection(ISynchronizedStorageSession storageSession, [NotNullWhen(true)] out SqlConnection? connection)
     {
         if (!hasConnectionProperty.HasValue)
         {
@@ -27,7 +27,7 @@ class StorageAccessor
         return connection != null;
     }
 
-    public bool TryGetTransaction(SynchronizedStorageSession storageSession, [NotNullWhen(true)] out SqlTransaction? transaction)
+    public bool TryGetTransaction(ISynchronizedStorageSession storageSession, [NotNullWhen(true)] out SqlTransaction? transaction)
     {
         if (!hasTransactionProperty.HasValue)
         {
@@ -45,7 +45,7 @@ class StorageAccessor
         return transaction != null;
     }
 
-    static PropertyInfo? GetProperty(SynchronizedStorageSession storageSession, string name) =>
+    static PropertyInfo? GetProperty(ISynchronizedStorageSession storageSession, string name) =>
         storageSession
             .GetType()
             .GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
