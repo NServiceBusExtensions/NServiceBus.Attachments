@@ -779,8 +779,7 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(
-        CancellationToken cancellation = default)
+    public override Task<AttachmentBytes> GetBytes()
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -789,14 +788,13 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L23-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L23-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(
-        CancellationToken cancellation = default)
+    public override Task<AttachmentBytes> GetBytes()
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -805,7 +803,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L23-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L23-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Putting these parts together allows a handler, using incoming attachments, to be tested.
@@ -823,7 +821,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L40-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L39-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'></a>
 ```cs
 public class Handler :
@@ -836,7 +834,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L40-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L39-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -858,7 +856,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L54-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L53-L71' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincoming-1'></a>
 ```cs
 [Fact]
@@ -877,6 +875,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L54-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L53-L71' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 <!-- endInclude -->

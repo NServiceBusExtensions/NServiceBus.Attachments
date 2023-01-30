@@ -26,19 +26,19 @@ public static partial class SqlAttachmentsMessageContextExtensions
 
         if (state.Transaction is not null)
         {
-            return new MessageAttachmentsFromTransaction(state.Transaction, state.GetConnection, context.MessageId, state.Persister);
+            return new MessageAttachmentsFromTransaction(state.Transaction, state.GetConnection, context.MessageId, state.Persister, context.CancellationToken);
         }
 
         if (state.SqlTransaction is not null)
         {
-            return new MessageAttachmentsFromSqlTransaction(state.SqlTransaction, context.MessageId, state.Persister);
+            return new MessageAttachmentsFromSqlTransaction(state.SqlTransaction, context.MessageId, state.Persister, context.CancellationToken);
         }
 
         if (state.SqlConnection is not null)
         {
-            return new MessageAttachmentsFromSqlConnection(state.SqlConnection, context.MessageId, state.Persister);
+            return new MessageAttachmentsFromSqlConnection(state.SqlConnection, context.MessageId, state.Persister, context.CancellationToken);
         }
 
-        return new MessageAttachmentsFromSqlFactory(state.GetConnection, context.MessageId, state.Persister);
+        return new MessageAttachmentsFromSqlFactory(state.GetConnection, context.MessageId, state.Persister, context.CancellationToken);
     }
 }

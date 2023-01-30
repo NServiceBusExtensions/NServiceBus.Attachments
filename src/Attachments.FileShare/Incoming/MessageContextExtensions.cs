@@ -21,7 +21,7 @@ public static partial class FileShareAttachmentsMessageContextExtensions
 
         if (contextBag.TryGet<FileShareAttachmentState>(out var state))
         {
-            return new MessageAttachments(context.MessageId, state.Persister);
+            return new MessageAttachments(context.MessageId, state.Persister, context.CancellationToken);
         }
 
         throw new($"Attachments used when not enabled. For example IMessageHandlerContext.{nameof(Attachments)}() was used but Attachments was not enabled via EndpointConfiguration.{nameof(FileShareAttachmentsExtensions.EnableAttachments)}().");
