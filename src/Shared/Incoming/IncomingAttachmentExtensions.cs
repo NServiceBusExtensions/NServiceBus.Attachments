@@ -44,7 +44,6 @@ public static class IncomingAttachmentExtensions
                 File.Delete(file);
                 using var fileStream = File.Create(file);
                 await stream.CopyToAsync(fileStream, 4096, cancellation);
-            },
-            cancellation);
+            });
     }
 }

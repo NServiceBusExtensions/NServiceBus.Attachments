@@ -25,8 +25,7 @@ public class TestingIncoming
     public class CustomMockMessageAttachments :
         MockMessageAttachments
     {
-        public override Task<AttachmentBytes> GetBytes(
-            CancellationToken cancellation = default)
+        public override Task<AttachmentBytes> GetBytes()
         {
             GetBytesWasCalled = true;
             return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -74,84 +73,84 @@ public class TestingIncoming
 
 class MyMessageAttachments : IMessageAttachments
 {
-    public Task CopyTo(string name, Stream target, CancellationToken cancellation = default) =>
+    public Task CopyTo(string name, Stream target) =>
         throw new NotImplementedException();
 
-    public Task CopyTo(Stream target, CancellationToken cancellation = default) =>
+    public Task CopyTo(Stream target) =>
         throw new NotImplementedException();
 
-    public Task ProcessStream(string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+    public Task ProcessStream(string name, Func<AttachmentStream, Task> action) =>
         throw new NotImplementedException();
 
-    public Task ProcessStream(Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+    public Task ProcessStream(Func<AttachmentStream, Task> action) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreams(Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+    public Task ProcessStreams(Func<AttachmentStream, Task> action) =>
         throw new NotImplementedException();
 
-    public IAsyncEnumerable<AttachmentInfo> GetMetadata(CancellationToken cancellation = default) =>
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata() =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytes(CancellationToken cancellation = default) =>
+    public Task<AttachmentBytes> GetBytes() =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytes(string name, CancellationToken cancellation = default) =>
+    public Task<AttachmentBytes> GetBytes(string name) =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStream(CancellationToken cancellation = default) =>
+    public Task<MemoryStream> GetMemoryStream() =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStream(string name, CancellationToken cancellation = default) =>
+    public Task<MemoryStream> GetMemoryStream(string name) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetString(Encoding? encoding, CancellationToken cancellation = default) =>
+    public Task<AttachmentString> GetString(Encoding? encoding) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetString(string name, Encoding? encoding, CancellationToken cancellation = default) =>
+    public Task<AttachmentString> GetString(string name, Encoding? encoding) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStream(CancellationToken cancellation = default) =>
+    public Task<AttachmentStream> GetStream() =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStream(string name, CancellationToken cancellation = default) =>
+    public Task<AttachmentStream> GetStream(string name) =>
         throw new NotImplementedException();
 
-    public Task CopyToForMessage(string messageId, string name, Stream target, CancellationToken cancellation = default) =>
+    public Task CopyToForMessage(string messageId, string name, Stream target) =>
         throw new NotImplementedException();
 
-    public Task CopyToForMessage(string messageId, Stream target, CancellationToken cancellation = default) =>
+    public Task CopyToForMessage(string messageId, Stream target) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action, CancellationToken cancellation = default) =>
+    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId, CancellationToken cancellation = default) =>
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId) =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name) =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, CancellationToken cancellation = default) =>
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default) =>
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId, CancellationToken cancellation = default) =>
+    public Task<AttachmentStream> GetStreamForMessage(string messageId) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, CancellationToken cancellation = default) =>
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name) =>
         throw new NotImplementedException();
 }
