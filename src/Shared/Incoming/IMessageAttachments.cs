@@ -146,7 +146,7 @@ public partial interface IMessageAttachments
     /// <remarks>
     /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
     /// </remarks>
-    Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding);
+    Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding = null);
 
     /// <summary>
     /// Get a <see cref="string"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
@@ -154,5 +154,5 @@ public partial interface IMessageAttachments
     /// <remarks>
     /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
     /// </remarks>
-    Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding);
+    Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding = null);
 }
