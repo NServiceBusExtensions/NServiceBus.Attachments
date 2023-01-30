@@ -17,6 +17,8 @@ namespace NServiceBus.Attachments
 public partial class MockMessageAttachments :
     IMessageAttachments
 {
+    public CancellationToken Cancellation { get; }
+
     /// <summary>
     /// <see cref="IMessageAttachments.CopyTo(string,Stream)"/>
     /// </summary>

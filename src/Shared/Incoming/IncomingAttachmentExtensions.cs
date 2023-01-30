@@ -21,8 +21,7 @@ public static class IncomingAttachmentExtensions
     public static Task CopyToDirectory(
         this IMessageAttachments attachments,
         string directory,
-        string? nameForDefault = default,
-        CancellationToken cancellation = default)
+        string? nameForDefault = default)
     {
         Guard.AgainstNullOrEmpty(directory, nameof(directory));
         Guard.AgainstEmpty(nameForDefault, nameof(nameForDefault));
@@ -43,7 +42,7 @@ public static class IncomingAttachmentExtensions
                 Directory.CreateDirectory(fileDirectory);
                 File.Delete(file);
                 using var fileStream = File.Create(file);
-                await stream.CopyToAsync(fileStream, 4096, cancellation);
+                await stream.CopyToAsync(fileStream, 4096, attachments.Cancellation);
             });
     }
 }

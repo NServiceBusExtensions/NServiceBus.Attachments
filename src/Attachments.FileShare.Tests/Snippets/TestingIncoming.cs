@@ -74,6 +74,8 @@ public class TestingIncoming
 class MyMessageAttachments :
     IMessageAttachments
 {
+    public CancellationToken Cancellation { get; }
+
     public Task<AttachmentStream> GetStream() =>
         throw new NotImplementedException();
 
