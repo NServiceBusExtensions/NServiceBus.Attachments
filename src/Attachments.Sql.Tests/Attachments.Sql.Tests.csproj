@@ -4,7 +4,7 @@
     <TargetFrameworks>net48;net7.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MarkdownSnippets.MsBuild" Version="24.5.1" PrivateAssets="all" />
+    <PackageReference Include="MarkdownSnippets.MsBuild" Version="24.5.1" Condition="$(TargetFramework) == 'net7.0'" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
     <PackageReference Include="Argon" Version="0.4.0" />
     <PackageReference Include="NServiceBus" Version="8.0.3" />
