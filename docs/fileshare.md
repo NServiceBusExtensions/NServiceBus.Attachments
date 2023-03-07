@@ -140,7 +140,7 @@ There are both async and sync variants.
 class HandlerFactory :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
@@ -157,7 +157,7 @@ class HandlerFactory :
 class HandlerFactory :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
@@ -179,7 +179,7 @@ class HandlerFactoryAsync :
 {
     static HttpClient httpClient = new();
 
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
@@ -198,7 +198,7 @@ class HandlerFactoryAsync :
 {
     static HttpClient httpClient = new();
 
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
@@ -223,7 +223,7 @@ In some cases an instance of a stream is already available in scope and as such 
 class HandlerInstance :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
@@ -242,7 +242,7 @@ class HandlerInstance :
 class HandlerInstance :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var sendOptions = new SendOptions();
         var attachments = sendOptions.Attachments();
@@ -274,7 +274,7 @@ Processes an attachment with a specific name.
 class HandlerProcessStream :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         await attachments.ProcessStream(
@@ -294,7 +294,7 @@ class HandlerProcessStream :
 class HandlerProcessStream :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         await attachments.ProcessStream(
@@ -322,7 +322,7 @@ Processes all attachments.
 class HandlerProcessStreams :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         return attachments.ProcessStreams(
@@ -341,7 +341,7 @@ class HandlerProcessStreams :
 class HandlerProcessStreams :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         await attachments.ProcessStreams(
@@ -369,7 +369,7 @@ Copy an attachment with a specific name to another stream.
 class HandlerCopyTo :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         await using var fileToCopyTo = File.Create("FilePath.txt");
@@ -383,7 +383,7 @@ class HandlerCopyTo :
 class HandlerCopyTo :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         using var fileToCopyTo = File.Create("FilePath.txt");
@@ -405,7 +405,7 @@ Get a stream for an attachment with a specific name.
 class HandlerGetStream :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         await using var stream = await attachments.GetStream("attachment1");
@@ -421,7 +421,7 @@ class HandlerGetStream :
 class HandlerGetStream :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         using var attachment = await attachments.GetStream("attachment1");
@@ -447,7 +447,7 @@ WARNING: This should only be used the the data size is know to be small as it ca
 class HandlerGetBytes :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         var bytes = await attachments.GetBytes("attachment1");
@@ -461,7 +461,7 @@ class HandlerGetBytes :
 class HandlerGetBytes :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         var bytes = await attachments.GetBytes("attachment1");
@@ -483,7 +483,7 @@ All of the above examples have companion methods that are suffixed with `ForMess
 class HandlerProcessStreamsForMessage :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         return attachments.ProcessStreamsForMessage(
@@ -503,7 +503,7 @@ class HandlerProcessStreamsForMessage :
 class HandlerProcessStreamsForMessage :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
         await attachments.ProcessStreamsForMessage(
@@ -537,7 +537,7 @@ The below examples also use the [NServiceBus.Testing](https://docs.particular.ne
 public class Handler :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var options = new SendOptions();
         var attachments = options.Attachments();
@@ -552,7 +552,7 @@ public class Handler :
 public class Handler :
     IHandleMessages<MyMessage>
 {
-    public Task Handle(MyMessage message, IMessageHandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var options = new SendOptions();
         var attachments = options.Attachments();
@@ -681,7 +681,7 @@ Putting these parts together allows a handler, using incoming attachments, to be
 public class Handler :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachment = context.Attachments();
         var bytes = await attachment.GetBytes();
@@ -694,7 +694,7 @@ public class Handler :
 public class Handler :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, IMessageHandlerContext context)
+    public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachment = context.Attachments();
         var bytes = await attachment.GetBytes();
