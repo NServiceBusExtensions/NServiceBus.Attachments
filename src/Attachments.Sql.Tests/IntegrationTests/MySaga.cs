@@ -11,7 +11,7 @@
         mapper.ConfigureMapping<SendMessage>(msg => msg.MyId)
             .ToSaga(saga => saga.MyId);
 
-    public async Task Handle(SendMessage message, IMessageHandlerContext context)
+    public async Task Handle(SendMessage message, HandlerContext context)
     {
         var incomingAttachment = context.Attachments();
         using var stream = await incomingAttachment.GetStream();

@@ -7,7 +7,7 @@ public class Incoming
     class HandlerProcessStream :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, IMessageHandlerContext context)
+        public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
             await attachments.ProcessStream(
@@ -28,7 +28,7 @@ public class Incoming
     class HandlerProcessStreams :
         IHandleMessages<MyMessage>
     {
-        public Task Handle(MyMessage message, IMessageHandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
             return attachments.ProcessStreams(
@@ -48,7 +48,7 @@ public class Incoming
     class HandlerProcessStreamsForMessage :
         IHandleMessages<MyMessage>
     {
-        public Task Handle(MyMessage message, IMessageHandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
             return attachments.ProcessStreamsForMessage(
@@ -69,7 +69,7 @@ public class Incoming
     class HandlerCopyTo :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, IMessageHandlerContext context)
+        public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
             await using var fileToCopyTo = File.Create("FilePath.txt");
@@ -84,7 +84,7 @@ public class Incoming
     class HandlerGetBytes :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, IMessageHandlerContext context)
+        public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
             var bytes = await attachments.GetBytes("attachment1");
@@ -99,7 +99,7 @@ public class Incoming
     class HandlerGetStream :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, IMessageHandlerContext context)
+        public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
             await using var stream = await attachments.GetStream("attachment1");

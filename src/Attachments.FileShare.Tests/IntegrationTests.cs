@@ -45,7 +45,7 @@ public class IntegrationTests :
     class SendHandler :
         IHandleMessages<SendMessage>
     {
-        public async Task Handle(SendMessage message, IMessageHandlerContext context)
+        public async Task Handle(SendMessage message, HandlerContext context)
         {
             var withAttachment = await context.Attachments().GetBytes("withMetadata");
             Assert.Equal("value", withAttachment.Metadata["key"]);
@@ -63,7 +63,7 @@ public class IntegrationTests :
     class ReplyHandler :
         IHandleMessages<ReplyMessage>
     {
-        public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
+        public async Task Handle(ReplyMessage message, HandlerContext context)
         {
             await using var memoryStream = new MemoryStream();
             var incomingAttachment = context.Attachments();

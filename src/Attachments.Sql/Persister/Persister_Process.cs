@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
@@ -29,7 +29,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, CancellationToken cancellation = default)
+    public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));

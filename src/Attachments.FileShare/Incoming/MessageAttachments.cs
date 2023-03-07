@@ -5,9 +5,9 @@ class MessageAttachments :
 {
     string messageId;
     IPersister persister;
-    public CancellationToken Cancellation { get; }
+    public Cancellation Cancellation { get; }
 
-    internal MessageAttachments(string messageId, IPersister persister, CancellationToken cancellation)
+    internal MessageAttachments(string messageId, IPersister persister, Cancellation cancellation)
     {
         this.messageId = messageId;
         this.persister = persister;

@@ -27,7 +27,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
         public Handler(IncomingWhenNotEnabledTests incomingWhenNotEnabledTests) =>
             this.incomingWhenNotEnabledTests = incomingWhenNotEnabledTests;
 
-        public Task Handle(SendMessage message, IMessageHandlerContext context)
+        public Task Handle(SendMessage message, HandlerContext context)
         {
             try
             {

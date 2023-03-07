@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual void CleanupItemsOlderThan(DateTime dateTime, CancellationToken cancellation = default)
+    public virtual void CleanupItemsOlderThan(DateTime dateTime, Cancellation cancellation = default)
     {
         foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))
         {
@@ -25,7 +25,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual void PurgeItems(CancellationToken cancellation = default)
+    public virtual void PurgeItems(Cancellation cancellation = default)
     {
         foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))
         {

@@ -8,7 +8,7 @@ class SendHandler :
     public SendHandler(IntegrationTests integrationTests) =>
         this.integrationTests = integrationTests;
 
-    public async Task Handle(SendMessage message, IMessageHandlerContext context)
+    public async Task Handle(SendMessage message, HandlerContext context)
     {
         var replyOptions = new SendOptions();
         replyOptions.RouteToThisEndpoint();

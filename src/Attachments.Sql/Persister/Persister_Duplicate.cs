@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
+    public virtual async Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -26,7 +26,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, string targetName, CancellationToken cancellation = default)
+    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, string targetName, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -38,7 +38,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, CancellationToken cancellation = default)
+    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));

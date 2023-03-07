@@ -6,7 +6,7 @@
     public ReplyHandler(IntegrationTests integrationTests) =>
         this.integrationTests = integrationTests;
 
-    public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
+    public async Task Handle(ReplyMessage message, HandlerContext context)
     {
         var incomingAttachment = context.Attachments();
 

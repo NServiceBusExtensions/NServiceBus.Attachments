@@ -8,7 +8,7 @@ class MessageAttachmentsFromSqlConnection :
     string messageId;
     IPersister persister;
 
-    public MessageAttachmentsFromSqlConnection(SqlConnection connection, string messageId, IPersister persister, CancellationToken cancellation)
+    public MessageAttachmentsFromSqlConnection(SqlConnection connection, string messageId, IPersister persister, Cancellation cancellation)
     {
         this.connection = connection;
         this.messageId = messageId;
@@ -16,7 +16,7 @@ class MessageAttachmentsFromSqlConnection :
         this.Cancellation = cancellation;
     }
 
-    public CancellationToken Cancellation { get; set; }
+    public Cancellation Cancellation { get; set; }
 
     public Task CopyTo(Stream target) =>
         persister.CopyTo(messageId, "default", connection, null, target, Cancellation);

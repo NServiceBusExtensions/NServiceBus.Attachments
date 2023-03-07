@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, CancellationToken cancellation = default)
+    public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -20,7 +20,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, CancellationToken cancellation = default)
+    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -32,7 +32,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, CancellationToken cancellation = default)
+    public virtual async Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -46,7 +46,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentStream> GetStream(string messageId, string name, CancellationToken cancellation = default)
+    public virtual Task<AttachmentStream> GetStream(string messageId, string name, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -54,7 +54,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, [EnumeratorCancellation] CancellationToken cancellation = default)
+    public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         var messageDirectory = GetMessageDirectory(messageId);
@@ -71,7 +71,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, Encoding? encoding = null, [EnumeratorCancellation] CancellationToken cancellation = default)
+    public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, Encoding? encoding = null, [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         var messageDirectory = GetMessageDirectory(messageId);
@@ -89,7 +89,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, [EnumeratorCancellation] CancellationToken cancellation = default)
+    public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         var messageDirectory = GetMessageDirectory(messageId);
@@ -108,7 +108,7 @@ public partial class Persister
     async Task<AttachmentStream> OpenAttachmentStream(
         string messageId,
         string name,
-        CancellationToken cancellation = default)
+        Cancellation cancellation = default)
     {
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);
         var dataFile = GetDataFile(attachmentDirectory);

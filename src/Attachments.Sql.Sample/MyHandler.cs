@@ -4,7 +4,7 @@ class MyHandler :
     IHandleMessages<SendMessage>,
     IHandleMessages<ReplyMessage>
 {
-    public async Task Handle(SendMessage message, IMessageHandlerContext context)
+    public async Task Handle(SendMessage message, HandlerContext context)
     {
         Console.WriteLine("Hello from MyHandler. SendMessage");
         var incomingAttachments = context.Attachments();
@@ -16,7 +16,7 @@ class MyHandler :
         await context.Send(new ReplyMessage(), sendOptions);
     }
 
-    public async Task Handle(ReplyMessage message, IMessageHandlerContext context)
+    public async Task Handle(ReplyMessage message, HandlerContext context)
     {
         var incomingAttachments = context.Attachments();
         var attachment = await incomingAttachments.GetString("bar");

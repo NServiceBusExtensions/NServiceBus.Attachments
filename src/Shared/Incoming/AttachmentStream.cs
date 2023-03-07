@@ -73,10 +73,10 @@ public class AttachmentStream :
     public override void Flush() =>
         inner.Flush();
 
-    public override Task FlushAsync(CancellationToken cancellation) =>
+    public override Task FlushAsync(Cancellation cancellation) =>
         inner.FlushAsync(cancellation);
 
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellation) =>
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, Cancellation cancellation) =>
         inner.ReadAsync(buffer, offset, count, cancellation);
 
     protected override void Dispose(bool disposing)
@@ -110,10 +110,10 @@ public class AttachmentStream :
     public override void Write(ReadOnlySpan<byte> buffer) =>
         throw new NotImplementedException();
 
-    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) =>
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) =>
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, Cancellation cancellation = default) =>
         inner.ReadAsync(buffer, cancellationToken);
 
     public override int Read(Span<byte> buffer) =>
@@ -159,7 +159,7 @@ public class AttachmentStream :
         base.Close();
     }
 
-    public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellation) =>
+    public override Task CopyToAsync(Stream destination, int bufferSize, Cancellation cancellation) =>
         inner.CopyToAsync(destination, bufferSize, cancellation);
 
     public override int EndRead(IAsyncResult asyncResult) =>
@@ -180,7 +180,7 @@ public class AttachmentStream :
     public override void Write(byte[] buffer, int offset, int count) =>
         throw new NotImplementedException();
 
-    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellation) =>
+    public override Task WriteAsync(byte[] buffer, int offset, int count, Cancellation cancellation) =>
         throw new NotImplementedException();
 
     public override void WriteByte(byte value) =>

@@ -32,7 +32,7 @@ static class FileHelpers
             bufferSize: bufferSize,
             options: fileOptions);
 
-    public static async Task CopyTo(Stream target, CancellationToken cancellation, string dataFile)
+    public static async Task CopyTo(Stream target, Cancellation cancellation, string dataFile)
     {
         await using var fileStream = OpenRead(dataFile);
         await fileStream.CopyToAsync(target, bufferSize, cancellation);
@@ -59,7 +59,7 @@ static class FileHelpers
         }
     }
 
-    public static async Task<byte[]> ReadBytes(CancellationToken cancellation, string dataFile)
+    public static async Task<byte[]> ReadBytes(Cancellation cancellation, string dataFile)
     {
         await using var fileStream = OpenRead(dataFile);
         var bytes = new byte[fileStream.Length];

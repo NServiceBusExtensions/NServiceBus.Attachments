@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+    public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -16,7 +16,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+    public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -24,7 +24,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task SaveString(string messageId, string? name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, CancellationToken cancellation = default)
+    public virtual Task SaveString(string messageId, string? name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -49,7 +49,7 @@ public partial class Persister
         DateTime expiry,
         IReadOnlyDictionary<string, string>? metadata,
         Func<FileStream, Task> action,
-        CancellationToken cancellation = default)
+        Cancellation cancellation = default)
     {
         name ??= "default";
 

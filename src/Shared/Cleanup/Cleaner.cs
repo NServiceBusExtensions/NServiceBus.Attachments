@@ -16,7 +16,7 @@ class Cleaner :
         this.criticalError = criticalError;
     }
 
-    protected override Task OnStart(IMessageSession? session, CancellationToken cancellation = default)
+    protected override Task OnStart(IMessageSession? session, Cancellation cancellation = default)
     {
         var cleanupFailures = 0;
         timer.Start(
@@ -40,7 +40,7 @@ class Cleaner :
         return Task.CompletedTask;
     }
 
-    protected override Task OnStop(IMessageSession session, CancellationToken cancellation = default) =>
+    protected override Task OnStop(IMessageSession session, Cancellation cancellation = default) =>
         timer.Stop();
 
     IAsyncTimer timer;

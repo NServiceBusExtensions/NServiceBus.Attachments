@@ -23,7 +23,7 @@ public class TestingTests
     public class OutgoingAttachmentsHandler :
         IHandleMessages<AMessage>
     {
-        public Task Handle(AMessage message, IMessageHandlerContext context)
+        public Task Handle(AMessage message, HandlerContext context)
         {
             var options = new SendOptions();
             var attachments = options.Attachments();
@@ -58,7 +58,7 @@ public class TestingTests
     public class IncomingAttachmentHandler :
         IHandleMessages<AMessage>
     {
-        public async Task Handle(AMessage message, IMessageHandlerContext context)
+        public async Task Handle(AMessage message, HandlerContext context)
         {
             var attachment = context.Attachments();
             var bytes = await attachment.GetBytes();

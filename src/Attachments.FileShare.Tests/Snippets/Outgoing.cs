@@ -5,7 +5,7 @@
     class HandlerFactory :
         IHandleMessages<MyMessage>
     {
-        public Task Handle(MyMessage message, IMessageHandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var sendOptions = new SendOptions();
             var attachments = sendOptions.Attachments();
@@ -25,7 +25,7 @@
     {
         static HttpClient httpClient = new();
 
-        public Task Handle(MyMessage message, IMessageHandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var sendOptions = new SendOptions();
             var attachments = sendOptions.Attachments();
@@ -43,7 +43,7 @@
     class HandlerInstance :
         IHandleMessages<MyMessage>
     {
-        public Task Handle(MyMessage message, IMessageHandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var sendOptions = new SendOptions();
             var attachments = sendOptions.Attachments();

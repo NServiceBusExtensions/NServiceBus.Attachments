@@ -7,9 +7,9 @@ class MessageAttachmentsFromSqlTransaction :
     SqlTransaction transaction;
     string messageId;
     IPersister persister;
-    public CancellationToken Cancellation { get; }
+    public Cancellation Cancellation { get; }
 
-    public MessageAttachmentsFromSqlTransaction(SqlTransaction transaction, string messageId, IPersister persister, CancellationToken cancellation)
+    public MessageAttachmentsFromSqlTransaction(SqlTransaction transaction, string messageId, IPersister persister, Cancellation cancellation)
     {
         this.transaction = transaction;
         this.messageId = messageId;

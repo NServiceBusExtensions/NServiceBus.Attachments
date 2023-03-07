@@ -8,7 +8,7 @@ namespace NServiceBus.Attachments.FileShare
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, string targetMessageId, CancellationToken cancellation = default)
+    public virtual Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, string targetMessageId, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -20,7 +20,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task Duplicate(string sourceMessageId, string name, string targetMessageId, string targetName, CancellationToken cancellation = default)
+    public virtual Task Duplicate(string sourceMessageId, string name, string targetMessageId, string targetName, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
@@ -35,7 +35,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task Duplicate(string sourceMessageId, string name, string targetMessageId, CancellationToken cancellation = default)
+    public virtual Task Duplicate(string sourceMessageId, string name, string targetMessageId, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
         Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));

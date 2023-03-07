@@ -14,13 +14,13 @@ public static class Installer
     /// <summary>
     /// Create the attachments storage table.
     /// </summary>
-    public static Task CreateTable(SqlConnection connection, CancellationToken cancellation = default) =>
+    public static Task CreateTable(SqlConnection connection, Cancellation cancellation = default) =>
         CreateTable(connection, "MessageAttachments", cancellation);
 
     /// <summary>
     /// Create the attachments storage table.
     /// </summary>
-    public static async Task CreateTable(SqlConnection connection, Table table, CancellationToken cancellation = default)
+    public static async Task CreateTable(SqlConnection connection, Table table, Cancellation cancellation = default)
     {
         using var command = connection.CreateCommand();
         command.CommandText = GetTableSql();

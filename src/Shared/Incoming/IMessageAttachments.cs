@@ -14,7 +14,7 @@ namespace NServiceBus.Attachments
 /// </summary>
 public partial interface IMessageAttachments
 {
-    public CancellationToken Cancellation { get; }
+    public Cancellation Cancellation { get; }
 
     /// <summary>
     /// Copy, for the current message, the attachment of <paramref name="name"/> to the <paramref name="target"/> <see cref="Stream"/>.

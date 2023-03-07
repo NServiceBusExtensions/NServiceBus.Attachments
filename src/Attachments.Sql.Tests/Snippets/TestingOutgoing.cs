@@ -7,7 +7,7 @@ public class TestingOutgoing
     public class Handler :
         IHandleMessages<MyMessage>
     {
-        public Task Handle(MyMessage message, IMessageHandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var options = new SendOptions();
             var attachments = options.Attachments();

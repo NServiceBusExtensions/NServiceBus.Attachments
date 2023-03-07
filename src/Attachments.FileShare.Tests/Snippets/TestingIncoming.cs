@@ -41,7 +41,7 @@ public class TestingIncoming
     public class Handler :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, IMessageHandlerContext context)
+        public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachment = context.Attachments();
             var bytes = await attachment.GetBytes();
@@ -74,7 +74,7 @@ public class TestingIncoming
 class MyMessageAttachments :
     IMessageAttachments
 {
-    public CancellationToken Cancellation { get; }
+    public Cancellation Cancellation { get; }
 
     public Task<AttachmentStream> GetStream() =>
         throw new NotImplementedException();

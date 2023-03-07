@@ -15,7 +15,7 @@
 public partial class StubMessageAttachments :
     IMessageAttachments
 {
-    public CancellationToken Cancellation { get; }
+    public Cancellation Cancellation { get; }
 
     string messageId;
 

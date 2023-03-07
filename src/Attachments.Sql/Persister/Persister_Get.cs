@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<AttachmentString> GetString(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, CancellationToken cancellation = default)
+    public virtual async Task<AttachmentString> GetString(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -32,7 +32,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
+    public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -52,7 +52,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
+    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -76,7 +76,7 @@ public partial class Persister
         SqlConnection connection,
         SqlTransaction? transaction,
         bool disposeConnectionOnStreamDispose,
-        CancellationToken cancellation = default)
+        Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         Guard.AgainstNullOrEmpty(name, nameof(name));
@@ -96,7 +96,7 @@ public partial class Persister
         string messageId,
         SqlConnection connection,
         SqlTransaction? transaction,
-        [EnumeratorCancellation] CancellationToken cancellation = default)
+        [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
@@ -117,7 +117,7 @@ public partial class Persister
         string messageId,
         SqlConnection connection,
         SqlTransaction? transaction,
-        [EnumeratorCancellation] CancellationToken cancellation = default)
+        [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
@@ -133,7 +133,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, [EnumeratorCancellation] CancellationToken cancellation = default)
+    public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         encoding = encoding.Default();

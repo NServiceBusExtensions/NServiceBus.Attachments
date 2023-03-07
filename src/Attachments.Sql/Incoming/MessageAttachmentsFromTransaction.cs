@@ -9,9 +9,9 @@ class MessageAttachmentsFromTransaction :
     Func<Task<SqlConnection>> connectionFactory;
     string messageId;
     IPersister persister;
-    public CancellationToken Cancellation { get; }
+    public Cancellation Cancellation { get; }
 
-    public MessageAttachmentsFromTransaction(Transaction transaction, Func<Task<SqlConnection>> connectionFactory, string messageId, IPersister persister, CancellationToken cancellation)
+    public MessageAttachmentsFromTransaction(Transaction transaction, Func<Task<SqlConnection>> connectionFactory, string messageId, IPersister persister, Cancellation cancellation)
     {
         this.transaction = transaction;
         this.connectionFactory = connectionFactory;

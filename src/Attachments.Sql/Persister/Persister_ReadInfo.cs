@@ -10,7 +10,7 @@ public partial class Persister
 {
     //TODO: remove?
     /// <inheritdoc />
-    public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
+    public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         using var command = GetReadInfoCommand(connection, transaction, messageId);
@@ -34,7 +34,7 @@ public partial class Persister
         SqlConnection connection,
         SqlTransaction? transaction,
         string messageId,
-        [EnumeratorCancellation] CancellationToken cancellation = default)
+        [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         using var command = GetReadInfoCommand(connection, transaction, messageId);
@@ -51,7 +51,7 @@ public partial class Persister
         SqlConnection connection,
         SqlTransaction? transaction,
         string messageId,
-        [EnumeratorCancellation] CancellationToken cancellation = default)
+        [EnumeratorCancellation] Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
         using var command = GetReadInfoCommand(connection, transaction, messageId);
@@ -68,7 +68,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Task> action, CancellationToken cancellation = default)
+    public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Task> action, Cancellation cancellation = default)
     {
         using var command = GetReadInfosCommand(connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
@@ -87,7 +87,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, CancellationToken cancellation = default)
+    public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Cancellation cancellation = default)
     {
         var list = new ConcurrentBag<AttachmentInfo>();
         await ReadAllInfo(
