@@ -19,5 +19,7 @@
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <PackageReference Include="ProjectDefaults" Version="1.0.88" PrivateAssets="all" />
     <Compile Remove="IntegrationTests\**" Condition=" '$(Configuration)' == 'Release' " />
+    <Using Include="NServiceBus.IMessageHandlerContext"
+           Alias="HandlerContext" />
   </ItemGroup>
 </Project>

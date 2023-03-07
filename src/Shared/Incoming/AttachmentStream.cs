@@ -114,7 +114,7 @@ public class AttachmentStream :
         throw new NotImplementedException();
 
     public override ValueTask<int> ReadAsync(Memory<byte> buffer, Cancellation cancellation = default) =>
-        inner.ReadAsync(buffer, cancellationToken);
+        inner.ReadAsync(buffer, cancellation);
 
     public override int Read(Span<byte> buffer) =>
         inner.Read(buffer);
