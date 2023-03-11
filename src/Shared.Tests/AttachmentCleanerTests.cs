@@ -39,7 +39,7 @@
         {
             if (i % 9 == 0) //Succeed every 9th attempt
             {
-                await timer.Tick(DateTime.UtcNow, CancellationToken.None);
+                await timer.Tick(DateTime.UtcNow, Cancellation.None);
             }
             else
             {
@@ -53,7 +53,7 @@
     class TestableCleaner :
         Cleaner
     {
-        public TestableCleaner(Func<CancellationToken, Task> cleanup, Action<string, Exception, CancellationToken> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
+        public TestableCleaner(Func<Cancellation, Task> cleanup, Action<string, Exception, Cancellation> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
             : base(cleanup, criticalError, frequencyToRunCleanup, timer)
         {
         }
@@ -71,7 +71,7 @@
         public void OnError(Exception error) =>
             errorCallback(error);
 
-        public void Start(Func<DateTime, CancellationToken, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, CancellationToken, Task> delayStrategy)
+        public void Start(Func<DateTime, Cancellation, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, Cancellation, Task> delayStrategy)
         {
             this.callback = callback;
             this.errorCallback = errorCallback;
@@ -80,7 +80,7 @@
         public Task Stop() =>
             Task.CompletedTask;
 
-        Func<DateTime, CancellationToken, Task> callback = null!;
+        Func<DateTime, Cancellation, Task> callback = null!;
         Action<Exception> errorCallback = null!;
     }
 }

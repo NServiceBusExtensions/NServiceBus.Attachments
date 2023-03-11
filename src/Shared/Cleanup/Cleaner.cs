@@ -5,8 +5,8 @@ class Cleaner :
     FeatureStartupTask
 {
     public Cleaner(
-        Func<CancellationToken, Task> cleanup,
-        Action<string, Exception, CancellationToken> criticalError,
+        Func<Cancellation, Task> cleanup,
+        Action<string, Exception, Cancellation> criticalError,
         TimeSpan frequencyToRunCleanup,
         IAsyncTimer timer)
     {
@@ -44,8 +44,8 @@ class Cleaner :
         timer.Stop();
 
     IAsyncTimer timer;
-    Action<string, Exception, CancellationToken> criticalError;
-    Func<CancellationToken, Task> cleanup;
+    Action<string, Exception, Cancellation> criticalError;
+    Func<Cancellation, Task> cleanup;
     TimeSpan frequencyToRunCleanup;
 
     static ILog log = LogManager.GetLogger<Cleaner>();

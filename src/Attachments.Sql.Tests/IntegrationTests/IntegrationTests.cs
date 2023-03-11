@@ -168,7 +168,7 @@ public class IntegrationTests : IDisposable
             shouldInstallOutbox: false,
             shouldInstallSagas: true,
             shouldInstallSubscriptions: false,
-            cancellationToken: default);
+            cancellation: default);
     }
 
     internal void PerformNestedConnection()

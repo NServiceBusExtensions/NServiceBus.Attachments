@@ -14,19 +14,19 @@ public interface IPersister
     /// <summary>
     /// Saves <paramref name="stream" /> as an attachment.
     /// </summary>
-    /// <exception cref="TaskCanceledException">If <paramref name="cancellation" /> is <see cref="CancellationToken.IsCancellationRequested" />.</exception>
+    /// <exception cref="TaskCanceledException">If <paramref name="cancellation" /> is <see cref="Cancellation.IsCancellationRequested" />.</exception>
     Task<Guid> SaveStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata, Cancellation cancellation = default);
 
     /// <summary>
     /// Saves <paramref name="bytes" /> as an attachment.
     /// </summary>
-    /// <exception cref="TaskCanceledException">If <paramref name="cancellation" /> is <see cref="CancellationToken.IsCancellationRequested" />.</exception>
+    /// <exception cref="TaskCanceledException">If <paramref name="cancellation" /> is <see cref="Cancellation.IsCancellationRequested" />.</exception>
     Task<Guid> SaveBytes(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata, Cancellation cancellation = default);
 
     /// <summary>
     /// Saves <paramref name="value" /> as an attachment.
     /// </summary>
-    /// <exception cref="TaskCanceledException">If <paramref name="cancellation" /> is <see cref="CancellationToken.IsCancellationRequested" />.</exception>
+    /// <exception cref="TaskCanceledException">If <paramref name="cancellation" /> is <see cref="Cancellation.IsCancellationRequested" />.</exception>
     Task<Guid> SaveString(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding, IReadOnlyDictionary<string, string>? metadata, Cancellation cancellation = default);
 
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿class AsyncTimer :
     IAsyncTimer
 {
-    public void Start(Func<DateTime, CancellationToken, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, CancellationToken, Task> delayStrategy)
+    public void Start(Func<DateTime, Cancellation, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, Cancellation, Task> delayStrategy)
     {
         tokenSource = new();
         var token = tokenSource.Token;
@@ -27,7 +27,7 @@
                     }
                 }
             },
-            CancellationToken.None);
+            Cancellation.None);
     }
 
     public Task Stop()
@@ -44,5 +44,5 @@
     }
 
     Task? task;
-    CancellationTokenSource? tokenSource;
+    CancellationSource? tokenSource;
 }
