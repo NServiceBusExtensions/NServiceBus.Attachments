@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net48;net7.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MarkdownSnippets.MsBuild" Version="24.5.1" Condition="$(TargetFramework) == 'net7.0'" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="Argon" Version="0.5.1" />
     <PackageReference Include="NServiceBus" Version="8.0.3" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="7.0.0" />
