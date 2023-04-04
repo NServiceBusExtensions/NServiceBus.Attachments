@@ -27,25 +27,25 @@ class DeleteBehavior :
 
         if (!headers.ContainsKey("Attachments"))
         {
-            log.Debug($"Did not delete attachments for {id} since there is no 'Attachments' header");
+            //log.Debug($"Did not delete attachments for {id} since there is no 'Attachments' header");
             return;
         }
 
         if (!headers.TryGetValue(Headers.MessageIntent, out var intent))
         {
-            log.Debug($"Did not delete attachments for {id} since there is no message intent");
+            //log.Debug($"Did not delete attachments for {id} since there is no message intent");
             return;
         }
 
         if (intent != "Send" && intent != "Reply")
         {
-            log.Debug($"Did not delete attachments for {id} since intent is {intent}");
+            //log.Debug($"Did not delete attachments for {id} since intent is {intent}");
             return;
         }
 
         if (!context.Extensions.TryGet<TransportTransaction>(out var transportTransaction))
         {
-            log.Debug($"Did not delete attachments for {id} since there is no TransportTransaction");
+            //log.Debug($"Did not delete attachments for {id} since there is no TransportTransaction");
             return;
         }
 
@@ -64,6 +64,6 @@ class DeleteBehavior :
             log.Debug($"Deleting {count} attachments for {id} using Transactions.Transaction");
         }
 
-        log.Debug($"Did not delete attachments for {id} since there is no Transactions.Transaction or System.Data.SqlClient.SqlTransaction");
+        //log.Debug($"Did not delete attachments for {id} since there is no Transactions.Transaction or System.Data.SqlClient.SqlTransaction");
     }
 }
