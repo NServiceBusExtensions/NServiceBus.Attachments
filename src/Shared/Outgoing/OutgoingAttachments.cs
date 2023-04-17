@@ -1,5 +1,4 @@
 ﻿
-using System.Runtime.InteropServices.ComTypes;
 #if FileShare
 using NServiceBus.Attachments.FileShare;
 #elif Sql
@@ -20,7 +19,15 @@ class OutgoingAttachments :
 
     public bool DuplicateIncomingAttachments;
 
-    public IReadOnlyList<string> Names => Inner.Keys.ToList();
+    public IReadOnlyList<OutgoingAttachment> Items =>
+        Inner.Select(_ =>
+                new OutgoingAttachment
+                {
+                    Name = _.Key,
+                    Metadata = _.Value.Metadata,
+                    Encoding = _.Value.Encoding
+                })
+            .ToList();
 
     public void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
         where T : Stream =>
@@ -127,15 +134,4 @@ class OutgoingAttachments :
                 Cleanup = cleanup.WrapCleanupInCheck(name),
                 AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name)
             });
-
-    public IEnumerator<OutgoingAttachment> GetEnumerator() =>
-        Inner.Select(_ => new OutgoingAttachment
-            {
-                Name = _.Key,
-                Metadata = _.Value.Metadata
-            })
-            .GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() =>
-        GetEnumerator();
 }

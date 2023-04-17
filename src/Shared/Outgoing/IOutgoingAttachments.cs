@@ -9,12 +9,14 @@
 /// <summary>
 /// Provides access to write attachments.
 /// </summary>
-public interface IOutgoingAttachments: IEnumerable<OutgoingAttachment>
+public interface IOutgoingAttachments
 {
     /// <summary>
     /// Returns <code>true</code> if there are pending attachments to be written in the current outgoing pipeline.
     /// </summary>
     bool HasPendingAttachments { get; }
+
+    IReadOnlyList<OutgoingAttachment> Items { get; }
 
     /// <summary>
     /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
