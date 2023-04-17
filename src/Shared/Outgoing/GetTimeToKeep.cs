@@ -20,6 +20,6 @@ static class TimeToKeepEx
         {
             return null;
         }
-        return x => timeToKeep(x);
+        return _ => timeToKeep(_);
     }
 }

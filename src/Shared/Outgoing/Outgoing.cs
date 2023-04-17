@@ -7,7 +7,7 @@
 #endif
 ;
 
-class Outgoing
+class Outgoing : IOutgoingAttachment
 {
     public Encoding? Encoding { get; init; }
     public Func<Task<Stream>>? AsyncStreamFactory { get; init; }
@@ -20,4 +20,10 @@ class Outgoing
     public GetTimeToKeep? TimeToKeep { get; init; }
     public Action? Cleanup { get; init; }
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
+}
+
+public interface IOutgoingAttachment
+{
+    Encoding? Encoding { get; init; }
+    IReadOnlyDictionary<string, string>? Metadata { get; init; }
 }

@@ -16,6 +16,9 @@ class OutgoingAttachments :
                                          DuplicateIncomingAttachments ||
                                          Duplicates.Any();
 
+    public IReadOnlyDictionary<string, IOutgoingAttachment> Attachments =>
+        Inner.ToDictionary(_ => _.Key, _ => (IOutgoingAttachment) _.Value);
+
     public bool DuplicateIncomingAttachments;
 
     public IReadOnlyList<string> Names => Inner.Keys.ToList();
