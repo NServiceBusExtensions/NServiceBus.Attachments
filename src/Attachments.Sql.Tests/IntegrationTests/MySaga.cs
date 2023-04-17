@@ -14,7 +14,7 @@
     public async Task Handle(SendMessage message, HandlerContext context)
     {
         var incomingAttachment = context.Attachments();
-        using var stream = await incomingAttachment.GetStream();
+        await using var stream = await incomingAttachment.GetStream();
         integrationTests.SagaEvent.Set();
     }
 
