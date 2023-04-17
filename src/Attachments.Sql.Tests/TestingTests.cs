@@ -11,11 +11,7 @@ public class TestingTests
         var context = new TestableMessageHandlerContext();
         var handler = new OutgoingAttachmentsHandler();
         await handler.Handle(new(), context);
-        var attachments = context.SentMessages
-            .Single()
-            .Options
-            .Attachments();
-        await Verify(attachments);
+        await Verify(context);
     }
 
     public class OutgoingAttachmentsHandler :

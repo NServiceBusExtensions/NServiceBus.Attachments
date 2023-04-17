@@ -1,4 +1,5 @@
-﻿#if FileShare
+﻿
+#if FileShare
 using NServiceBus.Attachments.FileShare;
 #elif Sql
 using NServiceBus.Attachments.Sql;
@@ -16,12 +17,17 @@ class OutgoingAttachments :
                                          DuplicateIncomingAttachments ||
                                          Duplicates.Any();
 
-    public IReadOnlyDictionary<string, IOutgoingAttachment> Attachments =>
-        Inner.ToDictionary(_ => _.Key, _ => (IOutgoingAttachment) _.Value);
-
     public bool DuplicateIncomingAttachments;
 
-    public IReadOnlyList<string> Names => Inner.Keys.ToList();
+    public IReadOnlyList<OutgoingAttachment> Items =>
+        Inner.Select(_ =>
+                new OutgoingAttachment
+                {
+                    Name = _.Key,
+                    Metadata = _.Value.Metadata,
+                    Encoding = _.Value.Encoding
+                })
+            .ToList();
 
     public void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
         where T : Stream =>

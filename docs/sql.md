@@ -713,13 +713,12 @@ public async Task TestOutgoingAttachments()
     // Assert
     var sentMessage = context.SentMessages.Single();
     var attachments = sentMessage.Options.Attachments();
-    var names = attachments.Names;
-    Assert.Single(names);
-    Assert.Contains("theName", names);
+    var attachment = attachments.Items.Single();
+    Assert.Contains("theName", attachment.Name);
     Assert.True(attachments.HasPendingAttachments);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L21-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L21-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testoutgoing-1'></a>
 ```cs
 [Fact]
@@ -735,13 +734,12 @@ public async Task TestOutgoingAttachments()
     // Assert
     var sentMessage = context.SentMessages.Single();
     var attachments = sentMessage.Options.Attachments();
-    var names = attachments.Names;
-    Assert.Single(names);
-    Assert.Contains("theName", names);
+    var attachment = attachments.Items.Single();
+    Assert.Contains("theName", attachment.Name);
     Assert.True(attachments.HasPendingAttachments);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L21-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L21-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 

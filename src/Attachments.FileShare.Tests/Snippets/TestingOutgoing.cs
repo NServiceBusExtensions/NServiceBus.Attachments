@@ -33,9 +33,8 @@ public class TestingOutgoing
         // Assert
         var sentMessage = context.SentMessages.Single();
         var attachments = sentMessage.Options.Attachments();
-        var names = attachments.Names;
-        Assert.Single(names);
-        Assert.Contains("theName", names);
+        var attachment = attachments.Items.Single();
+        Assert.Contains("theName", attachment.Name);
         Assert.True(attachments.HasPendingAttachments);
     }
 

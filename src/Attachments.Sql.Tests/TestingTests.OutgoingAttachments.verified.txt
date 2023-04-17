@@ -1,16 +1,18 @@
 ﻿{
-  DuplicateIncomingAttachments: false,
-  HasPendingAttachments: true,
-  Attachments: {
-    theName: {
-      StreamFactory: {
-        Type: Func<Stream>,
-        Target: Guard.<>c__DisplayClass4_0<Stream>,
-        Method: System.IO.Stream WrapFuncInCheck()
+  SentMessages: [
+    {
+      TestingTests.AMessage: {},
+      Options: {
+        NServiceBus.Attachments.Sql.IOutgoingAttachments: {
+          DuplicateIncomingAttachments: false,
+          HasPendingAttachments: true,
+          Items: [
+            {
+              Name: theName
+            }
+          ]
+        }
       }
     }
-  },
-  Names: [
-    theName
   ]
 }
