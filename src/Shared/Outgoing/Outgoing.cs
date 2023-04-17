@@ -9,14 +9,6 @@
 
 class Outgoing
 {
-    public Outgoing(IReadOnlyDictionary<string, string>? metadata, GetTimeToKeep? timeToKeep, Action? cleanup, Encoding? encoding)
-    {
-        Metadata = metadata;
-        TimeToKeep = timeToKeep;
-        Cleanup = cleanup;
-        Encoding = encoding;
-    }
-
     public Encoding? Encoding { get; init; }
     public Func<Task<Stream>>? AsyncStreamFactory { get; init; }
     public Func<Stream>? StreamFactory { get; init; }
