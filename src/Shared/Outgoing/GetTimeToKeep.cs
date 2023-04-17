@@ -1,9 +1,9 @@
 ﻿namespace NServiceBus.Attachments
+
 #if FileShare
-.FileShare
-#endif
-#if Sql
-.Sql
+    .FileShare
+#elif Sql
+    .Sql
 #endif
 ;
 
@@ -20,6 +20,6 @@ static class TimeToKeepEx
         {
             return null;
         }
-        return x => timeToKeep(x);
+        return _ => timeToKeep(_);
     }
 }
