@@ -1,9 +1,8 @@
 ﻿namespace NServiceBus.Attachments
 #if FileShare
-.FileShare
-#endif
-#if Sql
-.Sql
+    .FileShare
+#elif Sql
+    .Sql
 #endif
 ;
 
@@ -20,10 +19,4 @@ class Outgoing : IOutgoingAttachment
     public GetTimeToKeep? TimeToKeep { get; init; }
     public Action? Cleanup { get; init; }
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
-}
-
-public interface IOutgoingAttachment
-{
-    Encoding? Encoding { get; init; }
-    IReadOnlyDictionary<string, string>? Metadata { get; init; }
 }
