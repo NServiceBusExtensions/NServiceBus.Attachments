@@ -14,7 +14,7 @@
 
         var buffer = await incomingAttachment.GetBytes();
         Debug.WriteLine(buffer);
-        using var stream = await incomingAttachment.GetStream();
+        await using var stream = await incomingAttachment.GetStream();
         Debug.WriteLine(stream);
         integrationTests.HandlerEvent.Set();
     }

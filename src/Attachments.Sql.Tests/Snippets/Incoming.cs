@@ -15,7 +15,7 @@ public class Incoming
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    using var fileToCopyTo = File.Create("FilePath.txt");
+                    await using var fileToCopyTo = File.Create("FilePath.txt");
                     await stream.CopyToAsync(fileToCopyTo);
                 });
         }
@@ -35,7 +35,7 @@ public class Incoming
                     action: async stream =>
                     {
                         // Use the attachment stream. in this example copy to a file
-                        using var file = File.Create($"{stream.Name}.txt");
+                        await using var file = File.Create($"{stream.Name}.txt");
                         await stream.CopyToAsync(file);
                     })
                 .ConfigureAwait(false);
@@ -57,7 +57,7 @@ public class Incoming
                     action: async stream =>
                     {
                         // Use the attachment stream. in this example copy to a file
-                        using var file = File.Create($"{stream.Name}.txt");
+                        await using var file = File.Create($"{stream.Name}.txt");
                         await stream.CopyToAsync(file);
                     })
                 .ConfigureAwait(false);
@@ -74,7 +74,7 @@ public class Incoming
         public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
-            using var fileToCopyTo = File.Create("FilePath.txt");
+            await using var fileToCopyTo = File.Create("FilePath.txt");
             await attachments.CopyTo("attachment1", fileToCopyTo);
         }
     }
@@ -104,9 +104,9 @@ public class Incoming
         public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
-            using var attachment = await attachments.GetStream("attachment1");
+            await using var attachment = await attachments.GetStream("attachment1");
             // Use the attachment stream. in this example copy to a file
-            using var fileToCopyTo = File.Create("FilePath.txt");
+            await using var fileToCopyTo = File.Create("FilePath.txt");
             await attachment.CopyToAsync(fileToCopyTo);
         }
     }
