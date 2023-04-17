@@ -2,6 +2,7 @@
 using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
 
+[UsesVerify]
 public class TestingTests
 {
     [Fact]
@@ -14,10 +15,7 @@ public class TestingTests
             .Single()
             .Options
             .Attachments();
-        var names = attachments.Names;
-        Assert.Single(names);
-        Assert.Contains("theName", names);
-        Assert.True(attachments.HasPendingAttachments);
+        await Verify(attachments);
     }
 
     public class OutgoingAttachmentsHandler :
