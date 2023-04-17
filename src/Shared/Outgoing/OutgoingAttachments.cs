@@ -1,4 +1,6 @@
-﻿#if FileShare
+﻿
+using System.Runtime.InteropServices.ComTypes;
+#if FileShare
 using NServiceBus.Attachments.FileShare;
 #elif Sql
 using NServiceBus.Attachments.Sql;
@@ -15,9 +17,6 @@ class OutgoingAttachments :
     public bool HasPendingAttachments => Inner.Any() ||
                                          DuplicateIncomingAttachments ||
                                          Duplicates.Any();
-
-    public IReadOnlyDictionary<string, IOutgoingAttachment> Attachments =>
-        Inner.ToDictionary(_ => _.Key, _ => (IOutgoingAttachment) _.Value);
 
     public bool DuplicateIncomingAttachments;
 
@@ -128,4 +127,15 @@ class OutgoingAttachments :
                 Cleanup = cleanup.WrapCleanupInCheck(name),
                 AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name)
             });
+
+    public IEnumerator<OutgoingAttachment> GetEnumerator() =>
+        Inner.Select(_ => new OutgoingAttachment
+            {
+                Name = _.Key,
+                Metadata = _.Value.Metadata
+            })
+            .GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() =>
+        GetEnumerator();
 }

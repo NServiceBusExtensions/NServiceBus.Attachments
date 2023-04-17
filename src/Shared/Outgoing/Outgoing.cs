@@ -6,7 +6,7 @@
 #endif
 ;
 
-class Outgoing : IOutgoingAttachment
+class Outgoing
 {
     public Encoding? Encoding { get; init; }
     public Func<Task<Stream>>? AsyncStreamFactory { get; init; }
