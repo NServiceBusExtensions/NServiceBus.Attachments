@@ -302,7 +302,7 @@ class HandlerProcessStream :
             action: async stream =>
             {
                 // Use the attachment stream. in this example copy to a file
-                using var fileToCopyTo = File.Create("FilePath.txt");
+                await using var fileToCopyTo = File.Create("FilePath.txt");
                 await stream.CopyToAsync(fileToCopyTo);
             });
     }
@@ -348,7 +348,7 @@ class HandlerProcessStreams :
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    using var file = File.Create($"{stream.Name}.txt");
+                    await using var file = File.Create($"{stream.Name}.txt");
                     await stream.CopyToAsync(file);
                 })
             .ConfigureAwait(false);
@@ -386,7 +386,7 @@ class HandlerCopyTo :
     public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
-        using var fileToCopyTo = File.Create("FilePath.txt");
+        await using var fileToCopyTo = File.Create("FilePath.txt");
         await attachments.CopyTo("attachment1", fileToCopyTo);
     }
 }
@@ -424,9 +424,9 @@ class HandlerGetStream :
     public async Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
-        using var attachment = await attachments.GetStream("attachment1");
+        await using var attachment = await attachments.GetStream("attachment1");
         // Use the attachment stream. in this example copy to a file
-        using var fileToCopyTo = File.Create("FilePath.txt");
+        await using var fileToCopyTo = File.Create("FilePath.txt");
         await attachment.CopyToAsync(fileToCopyTo);
     }
 }
@@ -511,7 +511,7 @@ class HandlerProcessStreamsForMessage :
                 action: async stream =>
                 {
                     // Use the attachment stream. in this example copy to a file
-                    using var file = File.Create($"{stream.Name}.txt");
+                    await using var file = File.Create($"{stream.Name}.txt");
                     await stream.CopyToAsync(file);
                 })
             .ConfigureAwait(false);
