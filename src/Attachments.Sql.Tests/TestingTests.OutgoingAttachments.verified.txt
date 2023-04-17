@@ -1,0 +1,16 @@
+﻿{
+  DuplicateIncomingAttachments: false,
+  HasPendingAttachments: true,
+  Attachments: {
+    theName: {
+      StreamFactory: {
+        Type: Func<Stream>,
+        Target: Guard.<>c__DisplayClass4_0<Stream>,
+        Method: System.IO.Stream WrapFuncInCheck()
+      }
+    }
+  },
+  Names: [
+    theName
+  ]
+}
