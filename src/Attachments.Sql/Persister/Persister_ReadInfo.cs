@@ -23,9 +23,7 @@ public partial class Persister
                 name: reader.GetString(1),
                 expiry: reader.GetDateTime(2),
                 metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
-            var task = action(info);
-            Guard.ThrowIfNullReturned(null, null, task);
-            await task;
+            await action(info);
         }
     }
 
@@ -80,9 +78,7 @@ public partial class Persister
                 name: reader.GetString(2),
                 expiry: reader.GetDateTime(3),
                 metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
-            var task = action(info);
-            Guard.ThrowIfNullReturned(null, null, task);
-            await task;
+            await action(info);
         }
     }
 

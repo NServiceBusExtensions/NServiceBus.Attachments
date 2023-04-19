@@ -44,18 +44,14 @@
     static T EvaluateAndCheck<T>(this Func<T> func, string attachmentName)
     {
         var message = $"Provided delegate threw an exception. Attachment name: {attachmentName}.";
-        T value;
         try
         {
-            value = func();
+            return func();
         }
         catch (Exception exception)
         {
             throw new(message, exception);
         }
-
-        ThrowIfNullReturned(null, attachmentName, value);
-        return value;
     }
 
     public static Action? WrapCleanupInCheck(this Action? cleanup, string attachmentName)
@@ -79,54 +75,9 @@
     }
 
     public static Func<Task<T>> WrapFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName) =>
-        async () =>
-        {
-            var task = func.EvaluateAndCheck(attachmentName);
-            ThrowIfNullReturned(null, attachmentName, task);
-            var value = await task;
-            ThrowIfNullReturned(null, attachmentName, value);
-            return value;
-        };
+        async () => await func.EvaluateAndCheck(attachmentName);
 
     public static Func<Task<Stream>> WrapStreamFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName)
         where T : Stream =>
-        async () =>
-        {
-            var task = func.EvaluateAndCheck(attachmentName);
-            ThrowIfNullReturned(null, attachmentName, task);
-            var value = await task;
-            ThrowIfNullReturned(null, attachmentName, value);
-            return value;
-        };
-
-    public static void ThrowIfNullReturned(object? value)
-    {
-        if (value is null)
-        {
-            throw new("Provided delegate returned a null.");
-        }
-    }
-
-    public static void ThrowIfNullReturned(string? messageId, string? attachmentName, object? value)
-    {
-        if (value is null)
-        {
-            if (attachmentName != null && messageId is not null)
-            {
-                throw new($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachmentName}'.");
-            }
-
-            if (attachmentName is not null)
-            {
-                throw new($"Provided delegate returned a null. Attachment: '{attachmentName}'.");
-            }
-
-            if (messageId is not null)
-            {
-                throw new($"Provided delegate returned a null. MessageId: '{messageId}'.");
-            }
-
-            throw new("Provided delegate returned a null.");
-        }
-    }
+        async () => await func.EvaluateAndCheck(attachmentName);
 }
