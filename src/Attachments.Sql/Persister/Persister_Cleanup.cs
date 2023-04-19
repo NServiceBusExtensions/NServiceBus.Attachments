@@ -13,9 +13,10 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-delete from {table} where expiry < @date
-select @@ROWCOUNT";
+        command.CommandText = $"""
+            delete from {table} where expiry < @date
+            select @@ROWCOUNT
+            """;
         command.AddParameter("date", dateTime);
 
         var result = await command.ExecuteScalarAsync(cancellation);
@@ -27,19 +28,20 @@ select @@ROWCOUNT";
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-if exists (
-    select * from sys.objects
-    where
-        object_id = object_id('{table}')
-        and type in ('U')
-)
-begin
-
-delete from {table}
-
-end
-select @@ROWCOUNT";
+        command.CommandText = $"""
+            if exists (
+                select * from sys.objects
+                where
+                    object_id = object_id('{table}')
+                    and type in ('U')
+            )
+            begin
+            
+            delete from {table}
+            
+            end
+            select @@ROWCOUNT
+            """;
         return (int) (await command.ExecuteScalarAsync(cancellation))!;
     }
 }

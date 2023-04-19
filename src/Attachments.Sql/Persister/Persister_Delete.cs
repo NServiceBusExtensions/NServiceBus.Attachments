@@ -13,8 +13,10 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"delete from {table}
-select @@ROWCOUNT";
+        command.CommandText = $"""
+            delete from {table}
+            select @@ROWCOUNT
+            """;
         return (int) (await command.ExecuteScalarAsync(cancellation))!;
     }
 
@@ -22,9 +24,10 @@ select @@ROWCOUNT";
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-delete from {table} where MessageIdLower = lower(@MessageId)
-select @@ROWCOUNT";
+        command.CommandText = $"""
+            delete from {table} where MessageIdLower = lower(@MessageId)
+            select @@ROWCOUNT
+            """;
         command.AddParameter("MessageId", messageId);
         return (int) (await command.ExecuteScalarAsync(cancellation))!;
     }

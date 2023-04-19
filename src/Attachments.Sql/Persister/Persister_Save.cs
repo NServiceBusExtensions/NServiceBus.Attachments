@@ -42,24 +42,25 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-insert into {table}
-(
-    MessageId,
-    Name,
-    Expiry,
-    Data,
-    Metadata
-)
-output inserted.ID
-values
-(
-    @MessageId,
-    @Name,
-    @Expiry,
-    @Data,
-    @Metadata
-)";
+        command.CommandText = $"""
+            insert into {table}
+            (
+                MessageId,
+                Name,
+                Expiry,
+                Data,
+                Metadata
+            )
+            output inserted.ID
+            values
+            (
+                @MessageId,
+                @Name,
+                @Expiry,
+                @Data,
+                @Metadata
+            )
+            """;
         command.AddParameter("MessageId", messageId);
         command.AddParameter("Name", name);
         command.AddParameter("Expiry", expiry);

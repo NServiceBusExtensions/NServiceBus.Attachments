@@ -168,15 +168,17 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-select
-    datalength(Data),
-    Metadata,
-    Data
-from {table}
-where
-    NameLower = lower(@Name) and
-    MessageIdLower = lower(@MessageId)";
+        command.CommandText = $"""
+            
+            select
+                datalength(Data),
+                Metadata,
+                Data
+            from {table}
+            where
+                NameLower = lower(@Name) and
+                MessageIdLower = lower(@MessageId)
+            """;
         command.AddParameter("Name", name);
         command.AddParameter("MessageId", messageId);
         return command;
@@ -186,15 +188,16 @@ where
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-select
-    Name,
-    datalength(Data),
-    Metadata,
-    Data
-from {table}
-where
-    MessageIdLower = lower(@MessageId)";
+        command.CommandText = $"""
+            select
+                Name,
+                datalength(Data),
+                Metadata,
+                Data
+            from {table}
+            where
+                MessageIdLower = lower(@MessageId)
+            """;
         command.AddParameter("MessageId", messageId);
         return command;
     }

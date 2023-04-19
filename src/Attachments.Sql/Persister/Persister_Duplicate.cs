@@ -52,26 +52,26 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-insert into {table}
-(
-    MessageId,
-    Name,
-    Expiry,
-    Data,
-    Metadata
-)
-output inserted.ID, inserted.Name
-select
-    @TargetMessageId,
-    Name,
-    Expiry,
-    Data,
-    Metadata
-from {table}
-where
-    MessageIdLower = lower(@SourceMessageId);
-";
+        command.CommandText = $"""
+            insert into {table}
+            (
+                MessageId,
+                Name,
+                Expiry,
+                Data,
+                Metadata
+            )
+            output inserted.ID, inserted.Name
+            select
+                @TargetMessageId,
+                Name,
+                Expiry,
+                Data,
+                Metadata
+            from {table}
+            where
+                MessageIdLower = lower(@SourceMessageId);
+            """;
         command.AddParameter("SourceMessageId", sourceMessageId);
         command.AddParameter("TargetMessageId", targetMessageId);
         return command;
@@ -81,27 +81,27 @@ where
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-insert into {table}
-(
-    MessageId,
-    Name,
-    Expiry,
-    Data,
-    Metadata
-)
-output inserted.ID
-select
-    @TargetMessageId,
-    @TargetName,
-    Expiry,
-    Data,
-    Metadata
-from {table}
-where
-    NameLower = lower(@Name) and
-    MessageIdLower = lower(@SourceMessageId);
-";
+        command.CommandText = $"""
+            insert into {table}
+            (
+                MessageId,
+                Name,
+                Expiry,
+                Data,
+                Metadata
+            )
+            output inserted.ID
+            select
+                @TargetMessageId,
+                @TargetName,
+                Expiry,
+                Data,
+                Metadata
+            from {table}
+            where
+                NameLower = lower(@Name) and
+                MessageIdLower = lower(@SourceMessageId);
+            """;
         command.AddParameter("Name", name);
         command.AddParameter("SourceMessageId", sourceMessageId);
         command.AddParameter("TargetMessageId", targetMessageId);
@@ -113,27 +113,27 @@ where
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $@"
-insert into {table}
-(
-    MessageId,
-    Name,
-    Expiry,
-    Data,
-    Metadata
-)
-output inserted.ID
-select
-    @TargetMessageId,
-    Name,
-    Expiry,
-    Data,
-    Metadata
-from {table}
-where
-    NameLower = lower(@Name) and
-    MessageIdLower = lower(@SourceMessageId);
-";
+        command.CommandText = $"""
+            insert into {table}
+            (
+                MessageId,
+                Name,
+                Expiry,
+                Data,
+                Metadata
+            )
+            output inserted.ID
+            select
+                @TargetMessageId,
+                Name,
+                Expiry,
+                Data,
+                Metadata
+            from {table}
+            where
+                NameLower = lower(@Name) and
+                MessageIdLower = lower(@SourceMessageId);
+            """;
         command.AddParameter("Name", name);
         command.AddParameter("SourceMessageId", sourceMessageId);
         command.AddParameter("TargetMessageId", targetMessageId);
