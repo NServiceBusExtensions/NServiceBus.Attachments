@@ -75,7 +75,7 @@
     }
 
     public static Func<Task<T>> WrapFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName) =>
-        async () => await func.EvaluateAndCheck(attachmentName);
+        () => func.EvaluateAndCheck(attachmentName);
 
     public static Func<Task<Stream>> WrapStreamFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName)
         where T : Stream =>
