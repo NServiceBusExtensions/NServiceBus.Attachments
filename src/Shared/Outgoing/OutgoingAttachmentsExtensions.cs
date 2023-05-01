@@ -23,8 +23,8 @@ public static class OutgoingAttachmentsExtensions
         string file,
         string? name = default)
     {
-        Guard.FileExists(file, nameof(file));
-        Guard.AgainstEmpty(name, nameof(name));
+        Guard.FileExists(file);
+        Guard.AgainstEmpty(name);
 
         if (name is null)
         {

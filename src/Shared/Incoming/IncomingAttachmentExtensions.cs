@@ -23,8 +23,8 @@ public static class IncomingAttachmentExtensions
         string directory,
         string? nameForDefault = default)
     {
-        Guard.AgainstNullOrEmpty(directory, nameof(directory));
-        Guard.AgainstEmpty(nameForDefault, nameof(nameForDefault));
+        Guard.AgainstNullOrEmpty(directory);
+        Guard.AgainstEmpty(nameForDefault);
         Directory.CreateDirectory(directory);
 
         return attachments.ProcessStreams(

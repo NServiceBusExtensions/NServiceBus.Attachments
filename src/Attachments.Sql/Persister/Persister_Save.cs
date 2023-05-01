@@ -11,8 +11,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual Task<Guid> SaveStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         stream.MoveToStart();
         return Save(connection, transaction, messageId, name, expiry, stream, metadata, cancellation);
@@ -21,8 +21,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual Task<Guid> SaveBytes(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         return Save(connection, transaction, messageId, name, expiry, bytes, metadata, cancellation);
     }
@@ -30,8 +30,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual Task<Guid> SaveString(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         encoding = encoding.Default();
         var dictionary = MetadataSerializer.AppendEncoding(encoding, metadata);

@@ -19,7 +19,7 @@ public partial class Persister :
     /// </summary>
     public Persister(string fileShare)
     {
-        Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
+        Guard.AgainstNullOrEmpty(fileShare);
         this.fileShare = fileShare;
     }
 

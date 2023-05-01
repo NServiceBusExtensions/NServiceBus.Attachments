@@ -9,7 +9,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
         ThrowIfDirectoryNotFound(messageDirectory, messageId);
         foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
@@ -27,8 +27,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task ProcessStream(string messageId, string name, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);
         ThrowIfDirectoryNotFound(attachmentDirectory, messageId);
         cancellation.ThrowIfCancellationRequested();

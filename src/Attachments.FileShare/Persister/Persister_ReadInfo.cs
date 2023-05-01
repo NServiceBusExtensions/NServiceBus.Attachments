@@ -38,7 +38,7 @@ public partial class Persister
         string messageId,
         Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
         return ReadMessageInfo(messageDirectory, messageId, cancellation);
     }

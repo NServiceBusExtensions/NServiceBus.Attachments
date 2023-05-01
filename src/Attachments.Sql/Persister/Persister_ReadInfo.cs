@@ -12,7 +12,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
         using var reader = await command.ExecuteSequentialReader(cancellation);
         while (await reader.ReadAsync(cancellation))
@@ -34,7 +34,7 @@ public partial class Persister
         string messageId,
         [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
         using var reader = await command.ExecuteSequentialReader(cancellation);
         while (await reader.ReadAsync(cancellation))
@@ -51,7 +51,7 @@ public partial class Persister
         string messageId,
         [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
         using var reader = await command.ExecuteSequentialReader(cancellation);
         while (await reader.ReadAsync(cancellation))

@@ -16,7 +16,7 @@ public static class FileShareAttachmentsExtensions
         string fileShare,
         GetTimeToKeep timeToKeep)
     {
-        Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
+        Guard.AgainstNullOrEmpty(fileShare);
         var settings = configuration.GetSettings();
         var attachments = new AttachmentSettings(fileShare, timeToKeep);
         settings.Set(attachments);
