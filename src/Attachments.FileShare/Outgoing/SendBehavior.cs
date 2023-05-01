@@ -28,12 +28,12 @@ class SendBehavior :
         }
 
         var outgoingAttachments = (OutgoingAttachments) attachments;
-        var inner = outgoingAttachments.Inner;
         if (!outgoingAttachments.HasPendingAttachments)
         {
             return;
         }
 
+        var inner = outgoingAttachments.Inner;
         var attachmentNames = new List<string>();
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
