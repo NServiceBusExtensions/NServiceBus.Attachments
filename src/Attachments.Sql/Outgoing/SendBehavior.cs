@@ -107,6 +107,8 @@ class SendBehavior :
             attachments.Add(guid, duplicate.To);
         }
 
+        Guard.AgainstDuplicateNames(attachments.Values);
+
         context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x => $"{x.Key}: {x.Value}")));
     }
 

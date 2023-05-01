@@ -55,6 +55,8 @@ class SendBehavior :
             await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To);
         }
 
+        Guard.AgainstDuplicateNames(attachmentNames);
+
         context.Headers.Add("Attachments", string.Join(", ", attachmentNames));
     }
 
