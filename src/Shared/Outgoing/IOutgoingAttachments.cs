@@ -25,7 +25,7 @@ public interface IOutgoingAttachments
         where T : Stream;
 
     /// <summary>
-    /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
+    /// Add an attachment to the current outgoing pipeline.
     /// </summary>
     void Add(AttachmentToAdd attachment, GetTimeToKeep? timeToKeep = null, Action? cleanup = null);
 
