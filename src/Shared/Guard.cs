@@ -14,6 +14,7 @@
         var duplicates = attachmentNames
             .GroupBy(_ => _)
             .Where(_ => _.Count() > 1)
+            .Select(_ => _.Key)
             .ToList();
         if (duplicates.Any())
         {
