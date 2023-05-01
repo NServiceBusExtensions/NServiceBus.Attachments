@@ -41,7 +41,7 @@ public class AttachmentString :
     /// <param name="metadata">The attachment metadata.</param>
     public AttachmentString(string name, string value, IReadOnlyDictionary<string, string>? metadata = null)
     {
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(name);
         metadata ??= MetadataSerializer.EmptyMetadata;
 
         Name = name;

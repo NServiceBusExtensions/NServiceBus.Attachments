@@ -33,7 +33,7 @@ public partial class StubMessageAttachments
     /// </summary>
     public void AddAttachment(string name, byte[] bytes, IDictionary<string, string>? metadata = null)
     {
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(name);
         currentAttachments.Add(name,
             new(
                 name: name,
@@ -54,7 +54,7 @@ public partial class StubMessageAttachments
     /// </summary>
     public void AddAttachmentForMessage(string messageId, string name, byte[] bytes, IDictionary<string, string>? metadata = null)
     {
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(name);
         if (!attachments.TryGetValue(messageId, out var attachmentsForMessage))
         {
             attachments[messageId] = attachmentsForMessage = new();

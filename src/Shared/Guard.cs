@@ -1,6 +1,6 @@
 ﻿static class Guard
 {
-    public static void FileExists(string? path, string argumentName)
+    public static void FileExists(string path, [CallerArgumentExpression("path")] string argumentName = "")
     {
         AgainstNullOrEmpty(path, argumentName);
         if (!File.Exists(path))
@@ -14,6 +14,7 @@
         var duplicates = attachmentNames
             .GroupBy(_ => _)
             .Where(_ => _.Count() > 1)
+            .Select(_ => _.Key)
             .ToList();
         if (duplicates.Any())
         {
@@ -21,7 +22,7 @@
         }
     }
 
-    public static void AgainstEmpty(string? value, string argumentName)
+    public static void AgainstEmpty(string? value, [CallerArgumentExpression("value")] string argumentName = "")
     {
         if (value is null)
         {
@@ -34,7 +35,7 @@
         }
     }
 
-    public static void AgainstNullOrEmpty(string? value, string argumentName)
+    public static void AgainstNullOrEmpty(string value, [CallerArgumentExpression("value")] string argumentName = "")
     {
         if (string.IsNullOrWhiteSpace(value))
         {

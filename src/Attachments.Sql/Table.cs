@@ -23,8 +23,8 @@ public class Table
     /// </summary>
     public Table(string tableName, string schema, bool sanitize)
     {
-        Guard.AgainstNullOrEmpty(tableName, nameof(tableName));
-        Guard.AgainstNullOrEmpty(schema, nameof(schema));
+        Guard.AgainstNullOrEmpty(tableName);
+        Guard.AgainstNullOrEmpty(schema);
         TableName = tableName;
         Schema = schema;
         if (sanitize)

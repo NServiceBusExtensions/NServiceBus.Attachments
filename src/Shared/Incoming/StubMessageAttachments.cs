@@ -30,7 +30,7 @@ public partial class StubMessageAttachments :
     /// </summary>
     public StubMessageAttachments(string messageId)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         this.messageId = messageId;
     }
 

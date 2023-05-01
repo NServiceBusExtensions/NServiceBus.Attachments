@@ -11,7 +11,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
         while (await reader.ReadAsync(cancellation))
@@ -29,8 +29,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDataCommand(messageId, name, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);

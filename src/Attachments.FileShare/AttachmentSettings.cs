@@ -9,7 +9,7 @@ public partial class AttachmentSettings
 
     internal AttachmentSettings(string fileShare, GetTimeToKeep timeToKeep)
     {
-        Guard.AgainstNullOrEmpty(fileShare, nameof(fileShare));
+        Guard.AgainstNullOrEmpty(fileShare);
         FileShare = fileShare;
         TimeToKeep = timeToKeep;
     }

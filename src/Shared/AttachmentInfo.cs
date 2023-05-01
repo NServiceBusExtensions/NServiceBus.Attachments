@@ -36,8 +36,8 @@ public class AttachmentInfo
     /// </summary>
     public AttachmentInfo(string messageId, string name, DateTime expiry, IReadOnlyDictionary<string, string> metadata)
     {
-        Guard.AgainstNullOrEmpty(messageId,nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         MessageId = messageId;
         Name = name;
         Expiry = expiry;
@@ -49,8 +49,8 @@ public class AttachmentInfo
     /// </summary>
     public AttachmentInfo(string messageId, string name, DateTime expiry)
     {
-        Guard.AgainstNullOrEmpty(messageId,nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         MessageId = messageId;
         Name = name;
         Expiry = expiry;

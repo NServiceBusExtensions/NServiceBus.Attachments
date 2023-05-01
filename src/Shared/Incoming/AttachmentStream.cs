@@ -42,10 +42,9 @@ public class AttachmentStream :
         Stream inner,
         long length,
         IReadOnlyDictionary<string, string> metadata,
-        params Func<ValueTask>[] cleanups
-    )
+        params Func<ValueTask>[] cleanups)
     {
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(name);
         this.inner = inner;
         this.cleanups = cleanups;
         Name = name;
@@ -62,8 +61,7 @@ public class AttachmentStream :
     public AttachmentStream(
         string name,
         Stream inner,
-        IReadOnlyDictionary<string, string>? metadata = null
-    ) : this(name, inner, inner.Length, metadata ?? new Dictionary<string, string>(), inner.DisposeAsync)
+        IReadOnlyDictionary<string, string>? metadata = null) : this(name, inner, inner.Length, metadata ?? new Dictionary<string, string>(), inner.DisposeAsync)
     {
     }
 

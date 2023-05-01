@@ -10,8 +10,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, string targetMessageId, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
-        Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
         var sourceDirectory = GetMessageDirectory(sourceMessageId);
         var targetDirectory = GetMessageDirectory(targetMessageId);
         FileHelpers.Copy(sourceDirectory, targetDirectory);
@@ -22,10 +22,10 @@ public partial class Persister
     /// <inheritdoc />
     public virtual Task Duplicate(string sourceMessageId, string name, string targetMessageId, string targetName, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
-        Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
-        Guard.AgainstNullOrEmpty(targetName, nameof(targetName));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
+        Guard.AgainstNullOrEmpty(targetName);
+        Guard.AgainstNullOrEmpty(name);
         var sourceDirectory = GetAttachmentDirectory(sourceMessageId, name);
         var targetDirectory = GetAttachmentDirectory(targetMessageId, targetName);
         var sourceDataFile = GetDataFile(sourceDirectory);
@@ -37,9 +37,9 @@ public partial class Persister
     /// <inheritdoc />
     public virtual Task Duplicate(string sourceMessageId, string name, string targetMessageId, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
-        Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
+        Guard.AgainstNullOrEmpty(name);
         var sourceDirectory = GetAttachmentDirectory(sourceMessageId, name);
         var targetDirectory = GetAttachmentDirectory(targetMessageId, name);
         var sourceDataFile = GetDataFile(sourceDirectory);

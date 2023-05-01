@@ -11,8 +11,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<AttachmentString> GetString(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDataCommand(messageId, name, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
@@ -34,8 +34,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDataCommand(messageId, name, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
@@ -54,8 +54,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDataCommand(messageId, name, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
@@ -78,8 +78,8 @@ public partial class Persister
         bool disposeConnectionOnStreamDispose,
         Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDataCommand(messageId, name, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
@@ -98,7 +98,7 @@ public partial class Persister
         SqlTransaction? transaction,
         [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
         while (await reader.ReadAsync(cancellation))
@@ -119,7 +119,7 @@ public partial class Persister
         SqlTransaction? transaction,
         [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
         while (await reader.ReadAsync(cancellation))
@@ -135,7 +135,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, SqlConnection connection, SqlTransaction? transaction, Encoding? encoding = null, [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         encoding = encoding.Default();
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);

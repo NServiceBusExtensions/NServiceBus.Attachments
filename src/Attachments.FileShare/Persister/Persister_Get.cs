@@ -9,8 +9,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);
         var dataFile = GetDataFile(attachmentDirectory);
         ThrowIfFileNotFound(dataFile, messageId, name);
@@ -22,8 +22,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);
         var dataFile = GetDataFile(attachmentDirectory);
         ThrowIfFileNotFound(dataFile, messageId, name);
@@ -34,8 +34,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);
         var dataFile = GetDataFile(attachmentDirectory);
         ThrowIfFileNotFound(dataFile, messageId, name);
@@ -48,15 +48,15 @@ public partial class Persister
     /// <inheritdoc />
     public virtual Task<AttachmentStream> GetStream(string messageId, string name, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(messageId);
+        Guard.AgainstNullOrEmpty(name);
         return OpenAttachmentStream(messageId, name, cancellation);
     }
 
     /// <inheritdoc />
     public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
         ThrowIfDirectoryNotFound(messageDirectory, messageId);
         foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
@@ -73,7 +73,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, Encoding? encoding = null, [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
         ThrowIfDirectoryNotFound(messageDirectory, messageId);
         encoding = encoding.Default();
@@ -91,7 +91,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, [EnumeratorCancellation] Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(messageId, nameof(messageId));
+        Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
         ThrowIfDirectoryNotFound(messageDirectory, messageId);
         foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))

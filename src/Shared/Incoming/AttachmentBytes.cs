@@ -47,7 +47,7 @@ public class AttachmentBytes :
     /// <param name="metadata">The attachment metadata.</param>
     public AttachmentBytes(string name, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null)
     {
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(name);
         metadata ??= MetadataSerializer.EmptyMetadata;
         Name = name;
         Bytes = bytes;

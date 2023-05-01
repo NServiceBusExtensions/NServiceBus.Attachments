@@ -11,8 +11,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
-        Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
         using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
         using var reader = await command.ExecuteSequentialReader(cancellation);
         var names = new List<(Guid, string)>();
@@ -28,10 +28,10 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, string targetName, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
-        Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
-        Guard.AgainstNullOrEmpty(targetName, nameof(targetName));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
+        Guard.AgainstNullOrEmpty(targetName);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
         return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
@@ -40,9 +40,9 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
     {
-        Guard.AgainstNullOrEmpty(sourceMessageId, nameof(sourceMessageId));
-        Guard.AgainstNullOrEmpty(targetMessageId, nameof(targetMessageId));
-        Guard.AgainstNullOrEmpty(name, nameof(name));
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
+        Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
         return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
