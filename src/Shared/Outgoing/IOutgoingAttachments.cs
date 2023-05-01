@@ -25,6 +25,11 @@ public interface IOutgoingAttachments
         where T : Stream;
 
     /// <summary>
+    /// Add attachments to the current outgoing pipeline.
+    /// </summary>
+    void Add(Func<IAsyncEnumerable<AttachmentToAdd>> factory);
+
+    /// <summary>
     /// Add an attachment to the current outgoing pipeline.
     /// </summary>
     void Add(AttachmentToAdd attachment);

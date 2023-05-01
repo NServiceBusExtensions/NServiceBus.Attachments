@@ -1,3 +1,5 @@
+using NServiceBus.Attachments.FileShare;
+
 [UsesVerify]
 public class OutgoingAttachmentsTests
 {
@@ -6,7 +8,7 @@ public class OutgoingAttachmentsTests
     {
         var attachments = new OutgoingAttachments();
         attachments.Add(
-            new()
+            new AttachmentToAdd
             {
                 Name = "Name",
                 Stream = new MemoryStream()
