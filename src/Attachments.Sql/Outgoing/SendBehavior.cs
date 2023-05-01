@@ -94,9 +94,9 @@ class SendBehavior :
             }
 
             var names = await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
-            foreach (var name in names)
+            foreach (var (id, name) in names)
             {
-                attachments.Add(name.Item1, name.Item2);
+                attachments.Add(id, name);
             }
         }
 
