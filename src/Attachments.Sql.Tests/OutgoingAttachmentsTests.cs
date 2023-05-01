@@ -1,5 +1,3 @@
-using NServiceBus.Attachments.Sql;
-
 [UsesVerify]
 public class OutgoingAttachmentsTests
 {
