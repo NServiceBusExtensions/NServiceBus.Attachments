@@ -15,11 +15,11 @@ class SendBehavior :
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
     {
-        await ProcessStreams(context);
+        await ProcessOutgoing(context);
         await next();
     }
 
-    async Task ProcessStreams(IOutgoingLogicalMessageContext context)
+    async Task ProcessOutgoing(IOutgoingLogicalMessageContext context)
     {
         var extensions = context.Extensions;
         if (!extensions.TryGet<IOutgoingAttachments>(out var attachments))
@@ -33,17 +33,14 @@ class SendBehavior :
             return;
         }
 
-        var inner = outgoingAttachments.Inner;
         var attachmentNames = new List<string>();
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        foreach (var item in inner)
+        foreach (var (name, value) in outgoingAttachments.Inner)
         {
-            var name = item.Key;
             attachmentNames.Add(name);
-            var outgoing = item.Value;
-            await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
+            await ProcessAttachment(timeToBeReceived, context.MessageId, value, name);
         }
 
         if (outgoingAttachments.DuplicateIncomingAttachments)
@@ -57,6 +54,8 @@ class SendBehavior :
             attachmentNames.Add(duplicate.To);
             await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To);
         }
+
+        Guard.AgainstDuplicateNames(attachmentNames);
 
         context.Headers.Add("Attachments", string.Join(", ", attachmentNames));
     }

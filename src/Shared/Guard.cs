@@ -9,6 +9,18 @@
         }
     }
 
+    public static void AgainstDuplicateNames(IEnumerable<string> attachmentNames)
+    {
+        var duplicates = attachmentNames
+            .GroupBy(_ => _)
+            .Where(_ => _.Count() > 1)
+            .ToList();
+        if (duplicates.Any())
+        {
+            throw new($"Duplicate names detected: {string.Join(", ", duplicates)}");
+        }
+    }
+
     public static void AgainstEmpty(string? value, string argumentName)
     {
         if (value is null)
