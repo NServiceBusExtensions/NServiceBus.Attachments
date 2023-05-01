@@ -7,7 +7,7 @@
     <DefineConstants>$(DefineConstants);FileShare</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Polyfill" Version="1.20.0" PrivateAssets="all" />
+    <PackageReference Include="Polyfill" Version="1.21.0" PrivateAssets="all" />
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.2" PrivateAssets="All" />
     <PackageReference Include="Fody" Version="6.7.0" PrivateAssets="all" />
     <PackageReference Include="NServiceBus" Version="8.0.3" />
