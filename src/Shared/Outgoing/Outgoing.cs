@@ -19,4 +19,12 @@ class Outgoing
     public GetTimeToKeep? TimeToKeep { get; init; }
     public Action? Cleanup { get; init; }
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
+
+    public bool HasString => StringInstance != null;
+    public bool HasBytes => BytesInstance != null ||
+                            BytesFactory != null ||
+                            AsyncBytesFactory != null;
+    public bool HasStream => StreamInstance != null ||
+                             StreamFactory != null ||
+                             AsyncStreamFactory != null;
 }
