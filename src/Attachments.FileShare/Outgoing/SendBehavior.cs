@@ -15,11 +15,11 @@ class SendBehavior :
 
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
     {
-        await ProcessStreams(context);
+        await ProcessOutgoing(context);
         await next();
     }
 
-    async Task ProcessStreams(IOutgoingLogicalMessageContext context)
+    async Task ProcessOutgoing(IOutgoingLogicalMessageContext context)
     {
         var extensions = context.Extensions;
         if (!extensions.TryGet<IOutgoingAttachments>(out var attachments))
