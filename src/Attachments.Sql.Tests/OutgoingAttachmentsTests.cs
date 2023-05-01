@@ -8,7 +8,7 @@ public class OutgoingAttachmentsTests
     {
         var attachments = new OutgoingAttachments();
         attachments.Add(
-            new AttachmentToAdd
+            new()
             {
                 Name = "Name",
                 Stream = new MemoryStream()

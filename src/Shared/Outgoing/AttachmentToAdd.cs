@@ -11,4 +11,6 @@ public readonly record struct AttachmentToAdd
     public required string Name { get; init; }
     public required Stream Stream { get; init; }
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
+    public GetTimeToKeep? TimeToKeep { get; init; }
+    public Action? Cleanup { get; init; }
 }
