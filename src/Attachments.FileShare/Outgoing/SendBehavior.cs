@@ -33,17 +33,14 @@ class SendBehavior :
             return;
         }
 
-        var inner = outgoingAttachments.Inner;
         var attachmentNames = new List<string>();
 
         var timeToBeReceived = extensions.GetTimeToBeReceivedFromConstraint();
 
-        foreach (var item in inner)
+        foreach (var (name, value) in outgoingAttachments.Inner)
         {
-            var name = item.Key;
             attachmentNames.Add(name);
-            var outgoing = item.Value;
-            await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
+            await ProcessAttachment(timeToBeReceived, context.MessageId, value, name);
         }
 
         if (outgoingAttachments.DuplicateIncomingAttachments)

@@ -80,10 +80,10 @@ class SendBehavior :
     async Task ProcessOutgoing(TimeSpan? timeToBeReceived, SqlConnection connection, SqlTransaction? transaction, IOutgoingLogicalMessageContext context, OutgoingAttachments outgoingAttachments)
     {
         var attachments = new Dictionary<Guid, string>();
-        foreach (var outgoing in outgoingAttachments.Inner)
+        foreach (var (key, value) in outgoingAttachments.Inner)
         {
-            var guid = await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing.Value, outgoing.Key);
-            attachments.Add(guid, outgoing.Key);
+            var guid = await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, value, key);
+            attachments.Add(guid, key);
         }
 
         if (outgoingAttachments.DuplicateIncomingAttachments)
