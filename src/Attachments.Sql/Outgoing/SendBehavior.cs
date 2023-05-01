@@ -109,7 +109,7 @@ class SendBehavior :
 
         Guard.AgainstDuplicateNames(attachments.Values);
 
-        context.Headers.Add("Attachments", string.Join(", ", attachments.Select(x => $"{x.Key}: {x.Value}")));
+        context.Headers.Add("Attachments", string.Join(", ", attachments.Select(_ => $"{_.Key}: {_.Value}")));
     }
 
     async Task<Guid> ProcessStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
