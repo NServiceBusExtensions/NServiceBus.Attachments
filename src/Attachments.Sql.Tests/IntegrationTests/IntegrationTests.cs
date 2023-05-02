@@ -190,7 +190,13 @@ public class IntegrationTests : IDisposable
         attachment.Add(GetStream);
         attachment.Add("second", GetStream);
         attachment.Add("dir/inDir", GetStream);
-        attachment.Add("withMetadata", GetStream, metadata: new Dictionary<string, string> {{"key", "value"}});
+        attachment.Add(
+            "withMetadata",
+            GetStream,
+            metadata: new Dictionary<string, string>
+            {
+                {"key", "value"}
+            });
         await endpoint.Send(new SendMessage(), sendOptions);
         return messageId;
     }
