@@ -39,8 +39,8 @@ class SendBehavior :
 
         foreach (var (name, value) in outgoingAttachments.Inner)
         {
-            attachmentNames.Add(name);
             await ProcessAttachment(timeToBeReceived, context.MessageId, value, name);
+            attachmentNames.Add(name);
         }
 
         if (outgoingAttachments.DuplicateIncomingAttachments)
