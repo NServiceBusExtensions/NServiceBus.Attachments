@@ -24,7 +24,7 @@ class SendHandler :
         outgoingAttachment.AddBytes(attachment);
 
         var attachmentInfos = await incomingAttachments.GetMetadata().ToAsyncList();
-        Assert.Equal(4, attachmentInfos.Count);
+        Assert.Equal(5, attachmentInfos.Count);
         integrationTests.PerformNestedConnection();
 
         await context.Send(new ReplyMessage(), replyOptions);
