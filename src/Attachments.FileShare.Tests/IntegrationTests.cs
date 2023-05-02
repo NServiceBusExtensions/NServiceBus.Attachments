@@ -53,16 +53,15 @@ public class IntegrationTests :
     {
         public async Task Handle(SendMessage message, HandlerContext context)
         {
-            var withAttachment = await context.Attachments().GetBytes("withMetadata");
+            var incomingAttachments = context.Attachments();
+            var withAttachment = await incomingAttachments.GetBytes("withMetadata");
             Assert.Equal("value", withAttachment.Metadata["key"]);
             var replyOptions = new ReplyOptions();
             var outgoingAttachment = replyOptions.Attachments();
-            outgoingAttachment.Add(() =>
-            {
-                var incomingAttachment = context.Attachments();
-                return incomingAttachment.GetStream();
-            });
+            outgoingAttachment.Add(() => incomingAttachments.GetStream());
             await context.Reply(new ReplyMessage(), replyOptions);
+            var attachmentInfos = await incomingAttachments.GetMetadata().ToAsyncList();
+            Assert.Equal(2, attachmentInfos.Count);
         }
     }
 
@@ -77,6 +76,8 @@ public class IntegrationTests :
             memoryStream.Position = 0;
             var buffer = memoryStream.GetBuffer();
             Debug.WriteLine(buffer);
+            var attachmentInfos = await incomingAttachment.GetMetadata().ToAsyncList();
+            Assert.Equal(1, attachmentInfos.Count);
             resetEvent.Set();
         }
     }
