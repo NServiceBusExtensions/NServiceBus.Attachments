@@ -195,8 +195,15 @@ public class IntegrationTests : IDisposable
             GetStream,
             metadata: new Dictionary<string, string>
             {
-                {"key", "value"}
+                {
+                    "key", "value"
+                }
             });
+        attachment.Add(async appendAttachment =>
+        {
+            await appendAttachment("viaAttachmentFactory1", GetStream());
+            await appendAttachment("viaAttachmentFactory2", GetStream());
+        });
         await endpoint.Send(new SendMessage(), sendOptions);
         return messageId;
     }

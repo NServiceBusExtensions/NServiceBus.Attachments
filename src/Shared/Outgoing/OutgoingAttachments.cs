@@ -14,7 +14,8 @@ class OutgoingAttachments :
 
     public bool HasPendingAttachments => Inner.Any() ||
                                          DuplicateIncomingAttachments ||
-                                         Duplicates.Any();
+                                         Duplicates.Any()||
+                                         Dynamic.Any();
 
     public bool DuplicateIncomingAttachments;
 
@@ -27,6 +28,11 @@ class OutgoingAttachments :
                     Encoding = _.Value.Encoding
                 })
             .ToList();
+
+    internal List<AttachmentFactory> Dynamic = new();
+
+    public void Add(AttachmentFactory factory) =>
+        Dynamic.Add(factory);
 
     public void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)
         where T : Stream =>
