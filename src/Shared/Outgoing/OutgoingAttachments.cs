@@ -1,5 +1,4 @@
-﻿
-#if FileShare
+﻿#if FileShare
 using NServiceBus.Attachments.FileShare;
 #elif Sql
 using NServiceBus.Attachments.Sql;
