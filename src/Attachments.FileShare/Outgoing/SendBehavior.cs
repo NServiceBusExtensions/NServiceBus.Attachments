@@ -60,16 +60,20 @@ class SendBehavior :
         }
 
         var incomingMessageId = context.IncomingMessageId();
-        if (outgoingAttachments.DuplicateIncomingAttachments)
+        if (outgoingAttachments.DuplicateIncomingAttachments || outgoingAttachments.Duplicates.Any())
         {
-            var names = await persister.Duplicate(incomingMessageId, context.MessageId);
-            attachmentNames.AddRange(names);
-        }
+            var incomingMessageId = context.IncomingMessageId();
+            if (outgoingAttachments.DuplicateIncomingAttachments)
+            {
+                var names = await persister.Duplicate(incomingMessageId, context.MessageId);
+                attachmentNames.AddRange(names);
+            }
 
-        foreach (var duplicate in outgoingAttachments.Duplicates)
-        {
-            attachmentNames.Add(duplicate.To);
-            await persister.Duplicate(incomingMessageId, duplicate.From, context.MessageId, duplicate.To);
+            foreach (var duplicate in outgoingAttachments.Duplicates)
+            {
+                attachmentNames.Add(duplicate.To);
+                await persister.Duplicate(incomingMessageId, duplicate.From, context.MessageId, duplicate.To);
+            }
         }
 
         Guard.AgainstDuplicateNames(attachmentNames);

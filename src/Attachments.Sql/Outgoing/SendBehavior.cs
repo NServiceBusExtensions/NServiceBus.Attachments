@@ -102,25 +102,23 @@ class SendBehavior :
             }
         }
 
-        if (outgoingAttachments.DuplicateIncomingAttachments)
+        if (outgoingAttachments.DuplicateIncomingAttachments || outgoingAttachments.Duplicates.Any())
         {
-            if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
+            var incomingMessageId = context.IncomingMessageId();
+            if (outgoingAttachments.DuplicateIncomingAttachments)
             {
-                throw new("Cannot duplicate incoming when there is no IncomingPhysicalMessage.");
+                var names = await persister.Duplicate(incomingMessageId, connection, transaction, context.MessageId);
+                foreach (var (id, name) in names)
+                {
+                    attachments.Add(id, name);
+                }
             }
 
-            var names = await persister.Duplicate(incomingMessage.MessageId, connection, transaction, context.MessageId);
-            foreach (var (id, name) in names)
+            foreach (var duplicate in outgoingAttachments.Duplicates)
             {
-                attachments.Add(id, name);
+                var guid = await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
+                attachments.Add(guid, duplicate.To);
             }
-        }
-
-        var incomingMessageId = context.IncomingMessageId();
-        foreach (var duplicate in outgoingAttachments.Duplicates)
-        {
-            var guid = await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
-            attachments.Add(guid, duplicate.To);
         }
 
         Guard.AgainstDuplicateNames(attachments.Values);
