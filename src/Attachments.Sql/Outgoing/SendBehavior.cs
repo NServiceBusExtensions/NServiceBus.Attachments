@@ -86,6 +86,21 @@ class SendBehavior :
             attachments.Add(guid, key);
         }
 
+        foreach (var dynamic in outgoingAttachments.Dynamic)
+        {
+            await foreach (var item in dynamic())
+            {
+                var outgoing = new Outgoing
+                {
+                    Cleanup = item.Cleanup,
+                    StreamInstance = item.Stream,
+                    Metadata = item.Metadata,
+                };
+                var guid = await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing, item.Name);
+                attachments.Add(guid, item.Name);
+            }
+        }
+
         if (outgoingAttachments.DuplicateIncomingAttachments)
         {
             if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))

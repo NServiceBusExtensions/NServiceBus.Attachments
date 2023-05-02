@@ -43,6 +43,21 @@ class SendBehavior :
             attachmentNames.Add(name);
         }
 
+        foreach (var dynamic in outgoingAttachments.Dynamic)
+        {
+            await foreach (var item in dynamic())
+            {
+                var outgoing = new Outgoing
+                {
+                    Cleanup = item.Cleanup,
+                    StreamInstance = item.Stream,
+                    Metadata = item.Metadata,
+                };
+                await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, item.Name);
+                attachmentNames.Add(item.Name);
+            }
+        }
+
         var incomingMessageId = context.IncomingMessageId();
         if (outgoingAttachments.DuplicateIncomingAttachments)
         {
