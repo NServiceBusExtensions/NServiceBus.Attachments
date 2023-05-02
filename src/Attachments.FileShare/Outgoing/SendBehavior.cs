@@ -59,7 +59,6 @@ class SendBehavior :
             }
         }
 
-        var incomingMessageId = context.IncomingMessageId();
         if (outgoingAttachments.DuplicateIncomingAttachments || outgoingAttachments.Duplicates.Any())
         {
             var incomingMessageId = context.IncomingMessageId();
