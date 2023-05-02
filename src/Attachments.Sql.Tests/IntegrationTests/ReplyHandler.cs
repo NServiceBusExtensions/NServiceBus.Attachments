@@ -16,6 +16,8 @@
         Debug.WriteLine(buffer);
         await using var stream = await incomingAttachment.GetStream();
         Debug.WriteLine(stream);
+        var attachmentInfos = await incomingAttachment.GetMetadata().ToAsyncList();
+        Assert.Equal(1, attachmentInfos.Count);
         integrationTests.HandlerEvent.Set();
     }
 }
