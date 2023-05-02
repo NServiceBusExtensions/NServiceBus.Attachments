@@ -86,6 +86,7 @@ class SendBehavior :
             attachments.Add(guid, key);
         }
 
+        var incomingMessageId = context.IncomingMessageId();
         if (outgoingAttachments.DuplicateIncomingAttachments)
         {
             if (!context.TryGetIncomingPhysicalMessage(out var incomingMessage))
@@ -102,7 +103,6 @@ class SendBehavior :
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
-            var incomingMessageId = context.IncomingMessageId();
             var guid = await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
             attachments.Add(guid, duplicate.To);
         }
