@@ -197,12 +197,6 @@ public class IntegrationTests : IDisposable
             {
                 {"key", "value"}
             });
-        attachment.Add(
-            new AttachmentToAdd
-            {
-                Name = "viaAttachmentToAdd",
-                Stream = GetStream()
-            });
         await endpoint.Send(new SendMessage(), sendOptions);
         return messageId;
     }

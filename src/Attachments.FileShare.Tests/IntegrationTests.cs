@@ -37,12 +37,6 @@ public class IntegrationTests :
                     "key", "value"
                 }
             });
-        attachment.Add(
-            new AttachmentToAdd
-            {
-                Name = "viaAttachmentToAdd",
-                Stream = GetStream()
-            });
         return endpoint.Send(new SendMessage(), sendOptions);
     }
 
