@@ -52,6 +52,7 @@ class SendBehavior :
                     Cleanup = item.Cleanup,
                     StreamInstance = item.Stream,
                     Metadata = item.Metadata,
+                    TimeToKeep = item.TimeToKeep,
                 };
                 await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, item.Name);
                 attachmentNames.Add(item.Name);

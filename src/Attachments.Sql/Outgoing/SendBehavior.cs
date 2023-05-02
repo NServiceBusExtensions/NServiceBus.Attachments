@@ -95,6 +95,7 @@ class SendBehavior :
                     Cleanup = item.Cleanup,
                     StreamInstance = item.Stream,
                     Metadata = item.Metadata,
+                    TimeToKeep = item.TimeToKeep,
                 };
                 var guid = await ProcessAttachment(timeToBeReceived, connection, transaction, context.MessageId, outgoing, item.Name);
                 attachments.Add(guid, item.Name);
