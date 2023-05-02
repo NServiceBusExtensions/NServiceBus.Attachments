@@ -69,7 +69,7 @@ public class IntegrationTests :
             outgoingAttachment.Add(() => incomingAttachments.GetStream());
             await context.Reply(new ReplyMessage(), replyOptions);
             var attachmentInfos = await incomingAttachments.GetMetadata().ToAsyncList();
-            Assert.Equal(2, attachmentInfos.Count);
+            Assert.Equal(3, attachmentInfos.Count);
         }
     }
 
