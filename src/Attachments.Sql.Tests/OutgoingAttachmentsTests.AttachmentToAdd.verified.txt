@@ -1,7 +1,0 @@
-﻿{
-  Name: {
-    HasString: false,
-    HasBytes: false,
-    HasStream: true
-  }
-}

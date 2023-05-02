@@ -79,17 +79,6 @@ class OutgoingAttachments :
                 StreamInstance = stream
             });
 
-    public void Add(AttachmentToAdd attachment) =>
-        Inner.Add(
-            attachment.Name,
-            new()
-            {
-                Metadata = attachment.Metadata,
-                TimeToKeep = attachment.TimeToKeep,
-                Cleanup = attachment.Cleanup.WrapCleanupInCheck(attachment.Name),
-                StreamInstance = attachment.Stream
-            });
-
     public void AddBytes(Func<byte[]> bytesFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null) =>
         AddBytes("default", bytesFactory, timeToKeep, cleanup, metadata);
 

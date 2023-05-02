@@ -45,17 +45,17 @@ class SendBehavior :
 
         foreach (var dynamic in outgoingAttachments.Dynamic)
         {
-            await dynamic(async item =>
+            await dynamic(async (name, stream, keep, cleanup, metadata) =>
             {
                 var outgoing = new Outgoing
                 {
-                    Cleanup = item.Cleanup,
-                    StreamInstance = item.Stream,
-                    Metadata = item.Metadata,
-                    TimeToKeep = item.TimeToKeep,
+                    Cleanup = cleanup,
+                    StreamInstance = stream,
+                    Metadata = metadata,
+                    TimeToKeep = keep,
                 };
-                await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, item.Name);
-                attachmentNames.Add(item.Name);
+                await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, name);
+                attachmentNames.Add(name);
             });
         }
 

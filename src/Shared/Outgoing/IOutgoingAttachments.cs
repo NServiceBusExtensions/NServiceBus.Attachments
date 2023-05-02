@@ -7,7 +7,7 @@
 ;
 
 public delegate Task AttachmentFactory(AppendAttachment append);
-public delegate Task AppendAttachment(AttachmentToAdd attachment);
+public delegate Task AppendAttachment(string name, Stream stream, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null);
 
 /// <summary>
 /// Provides access to write attachments.
@@ -31,11 +31,6 @@ public interface IOutgoingAttachments
     /// Add attachments to the current outgoing pipeline.
     /// </summary>
     void Add(AttachmentFactory factory);
-
-    /// <summary>
-    /// Add an attachment to the current outgoing pipeline.
-    /// </summary>
-    void Add(AttachmentToAdd attachment);
 
     /// <summary>
     /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.

@@ -199,26 +199,10 @@ public class IntegrationTests : IDisposable
                     "key", "value"
                 }
             });
-        attachment.Add(
-            new AttachmentToAdd
-            {
-                Name = "viaAttachmentToAdd",
-                Stream = GetStream()
-            });
         attachment.Add(async appendAttachment =>
         {
-            await appendAttachment(
-                new()
-                {
-                    Name = "viaAttachmentFactory1",
-                    Stream = GetStream()
-                });
-            await appendAttachment(
-                new()
-                {
-                    Name = "viaAttachmentFactory2",
-                    Stream = GetStream()
-                });
+            await appendAttachment("viaAttachmentFactory1", GetStream());
+            await appendAttachment("viaAttachmentFactory2", GetStream());
         });
         await endpoint.Send(new SendMessage(), sendOptions);
         return messageId;
