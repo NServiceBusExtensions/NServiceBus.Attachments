@@ -43,16 +43,17 @@ class SendBehavior :
             attachmentNames.Add(name);
         }
 
+        var incomingMessageId = context.IncomingMessageId();
         if (outgoingAttachments.DuplicateIncomingAttachments)
         {
-            var names = await persister.Duplicate(context.IncomingMessageId(), context.MessageId);
+            var names = await persister.Duplicate(incomingMessageId, context.MessageId);
             attachmentNames.AddRange(names);
         }
 
         foreach (var duplicate in outgoingAttachments.Duplicates)
         {
             attachmentNames.Add(duplicate.To);
-            await persister.Duplicate(context.IncomingMessageId(), duplicate.From, context.MessageId, duplicate.To);
+            await persister.Duplicate(incomingMessageId, duplicate.From, context.MessageId, duplicate.To);
         }
 
         Guard.AgainstDuplicateNames(attachmentNames);
