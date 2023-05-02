@@ -6,6 +6,9 @@
 #endif
 ;
 
+public delegate Task AttachmentFactory(AppendAttachment append);
+public delegate Task AppendAttachment(AttachmentToAdd attachment);
+
 /// <summary>
 /// Provides access to write attachments.
 /// </summary>
@@ -27,7 +30,7 @@ public interface IOutgoingAttachments
     /// <summary>
     /// Add attachments to the current outgoing pipeline.
     /// </summary>
-    void Add(Func<IAsyncEnumerable<AttachmentToAdd>> factory);
+    void Add(AttachmentFactory factory);
 
     /// <summary>
     /// Add an attachment to the current outgoing pipeline.

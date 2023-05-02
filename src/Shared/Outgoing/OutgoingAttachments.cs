@@ -30,9 +30,9 @@ class OutgoingAttachments :
                 })
             .ToList();
 
-    internal List<Func<IAsyncEnumerable<AttachmentToAdd>>> Dynamic = new();
+    internal List<AttachmentFactory> Dynamic = new();
 
-    public void Add(Func<IAsyncEnumerable<AttachmentToAdd>> factory) =>
+    public void Add(AttachmentFactory factory) =>
         Dynamic.Add(factory);
 
     public void Add<T>(Func<Task<T>> streamFactory, GetTimeToKeep? timeToKeep = null, Action? cleanup = null, IReadOnlyDictionary<string, string>? metadata = null)

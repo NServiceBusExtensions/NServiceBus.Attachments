@@ -195,7 +195,9 @@ public class IntegrationTests : IDisposable
             GetStream,
             metadata: new Dictionary<string, string>
             {
-                {"key", "value"}
+                {
+                    "key", "value"
+                }
             });
         attachment.Add(
             new AttachmentToAdd
@@ -203,6 +205,21 @@ public class IntegrationTests : IDisposable
                 Name = "viaAttachmentToAdd",
                 Stream = GetStream()
             });
+        attachment.Add(async appendAttachment =>
+        {
+            await appendAttachment(
+                new()
+                {
+                    Name = "viaAttachmentFactory1",
+                    Stream = GetStream()
+                });
+            await appendAttachment(
+                new()
+                {
+                    Name = "viaAttachmentFactory2",
+                    Stream = GetStream()
+                });
+        });
         await endpoint.Send(new SendMessage(), sendOptions);
         return messageId;
     }

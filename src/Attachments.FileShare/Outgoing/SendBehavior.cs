@@ -45,7 +45,7 @@ class SendBehavior :
 
         foreach (var dynamic in outgoingAttachments.Dynamic)
         {
-            await foreach (var item in dynamic())
+            await dynamic(async item =>
             {
                 var outgoing = new Outgoing
                 {
@@ -56,7 +56,7 @@ class SendBehavior :
                 };
                 await ProcessAttachment(timeToBeReceived, context.MessageId, outgoing, item.Name);
                 attachmentNames.Add(item.Name);
-            }
+            });
         }
 
         if (outgoingAttachments.DuplicateIncomingAttachments || outgoingAttachments.Duplicates.Any())
