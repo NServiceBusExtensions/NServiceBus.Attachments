@@ -15,7 +15,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancellation);
         if (!await reader.ReadAsync(cancellation))
         {
             throw ThrowNotFound(messageId, name);

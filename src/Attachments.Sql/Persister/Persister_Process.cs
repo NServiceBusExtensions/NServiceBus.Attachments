@@ -13,7 +13,7 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
@@ -33,7 +33,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancellation);
         if (!await reader.ReadAsync(cancellation))
         {
             throw ThrowNotFound(messageId, name);

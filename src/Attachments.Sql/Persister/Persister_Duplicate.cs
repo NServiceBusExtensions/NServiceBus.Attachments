@@ -14,7 +14,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(sourceMessageId);
         Guard.AgainstNullOrEmpty(targetMessageId);
         using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(cancellation);
         var names = new List<(Guid, string)>();
         while (await reader.ReadAsync(cancellation))
         {
@@ -23,29 +23,6 @@ public partial class Persister
         }
 
         return names;
-    }
-
-    /// <inheritdoc />
-    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, string targetName, Cancellation cancellation = default)
-    {
-        Guard.AgainstNullOrEmpty(sourceMessageId);
-        Guard.AgainstNullOrEmpty(targetMessageId);
-        Guard.AgainstNullOrEmpty(targetName);
-        Guard.AgainstNullOrEmpty(name);
-        Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
-        return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
-    }
-
-    /// <inheritdoc />
-    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
-    {
-        Guard.AgainstNullOrEmpty(sourceMessageId);
-        Guard.AgainstNullOrEmpty(targetMessageId);
-        Guard.AgainstNullOrEmpty(name);
-        Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
-        return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
     }
 
     SqlCommand CreateGetDuplicateCommand(string sourceMessageId, string targetMessageId, SqlConnection connection, SqlTransaction? transaction)
@@ -75,6 +52,29 @@ public partial class Persister
         command.AddParameter("SourceMessageId", sourceMessageId);
         command.AddParameter("TargetMessageId", targetMessageId);
         return command;
+    }
+
+    /// <inheritdoc />
+    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, string targetName, Cancellation cancellation = default)
+    {
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
+        Guard.AgainstNullOrEmpty(targetName);
+        Guard.AgainstNullOrEmpty(name);
+        Guard.AgainstLongAttachmentName(name);
+        using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
+        return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
+    }
+
+    /// <inheritdoc />
+    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
+    {
+        Guard.AgainstNullOrEmpty(sourceMessageId);
+        Guard.AgainstNullOrEmpty(targetMessageId);
+        Guard.AgainstNullOrEmpty(name);
+        Guard.AgainstLongAttachmentName(name);
+        using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
+        return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
     }
 
     SqlCommand CreateGetDuplicateCommandWithRename(string sourceMessageId, string name, string targetMessageId, string targetName, SqlConnection connection, SqlTransaction? transaction)

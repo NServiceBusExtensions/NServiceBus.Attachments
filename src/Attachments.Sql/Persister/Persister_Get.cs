@@ -96,7 +96,7 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
@@ -116,7 +116,7 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
@@ -133,7 +133,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId);
         encoding = encoding.Default();
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
