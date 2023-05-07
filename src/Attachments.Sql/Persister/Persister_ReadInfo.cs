@@ -14,7 +14,7 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
@@ -36,7 +36,7 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
@@ -53,7 +53,7 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
@@ -69,7 +69,7 @@ public partial class Persister
     public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Task> action, Cancellation cancellation = default)
     {
         using var command = GetReadInfosCommand(connection, transaction);
-        using var reader = await command.ExecuteSequentialReader(cancellation);
+        using var reader = await command.ExecuteReaderAsync(cancellation);
         while (await reader.ReadAsync(cancellation))
         {
             cancellation.ThrowIfCancellationRequested();
