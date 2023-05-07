@@ -39,6 +39,13 @@ static class SqlExtensions
         command.Parameters.Add(parameter);
     }
 
+    public static string GetString(this SqlDataReader reader, int column, Encoding encoding)
+    {
+        var stream = reader.GetStream(column);
+        using var streamReader = new StreamReader(stream, encoding, true);
+        return streamReader.ReadToEnd();
+    }
+
     public static void AddParameter(this SqlCommand command, string name, DateTime value)
     {
         var parameter = command.CreateParameter();
