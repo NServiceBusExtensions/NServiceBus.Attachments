@@ -21,11 +21,7 @@ public partial class Persister
             var metadataString = reader.GetStringOrNull(1);
             var metadata = MetadataSerializer.Deserialize(metadataString);
             encoding = MetadataSerializer.GetEncoding(encoding, metadata);
-            //TODO: read string directly
-            var bytes = (byte[]) reader[2];
-            using var memoryStream = new MemoryStream(bytes);
-            using var streamReader = new StreamReader(memoryStream, encoding, true);
-            return new(name, streamReader.ReadToEnd(), metadata);
+            return new(name, reader.GetString(2, encoding), metadata);
         }
 
         throw ThrowNotFound(messageId, name);
@@ -107,8 +103,7 @@ public partial class Persister
             var name = reader.GetString(0);
             var length = reader.GetInt64(1);
             var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
-            using var sqlStream = reader.GetStream(3);
-            yield return new(name, sqlStream, length, metadata);
+            yield return new(name, reader.GetStream(3), length, metadata);
         }
     }
 
@@ -144,9 +139,7 @@ public partial class Persister
             cancellation.ThrowIfCancellationRequested();
             var name = reader.GetString(0);
             var metadata = MetadataSerializer.Deserialize(reader.GetStringOrNull(2));
-            //TODO: read string directly
-            var bytes = (byte[]) reader[3];
-            yield return new(name, encoding.GetString(bytes), metadata);
+            yield return new(name, reader.GetString(3, encoding), metadata);
         }
     }
 
