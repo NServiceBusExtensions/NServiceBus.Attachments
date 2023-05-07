@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" Condition="$(Configuration) == 'Release'" />
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
     <Using Include="NServiceBus.IMessageHandlerContext" Alias="HandlerContext" />
+    <Using Include="System.Data.CommandBehavior" Static="True" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>
