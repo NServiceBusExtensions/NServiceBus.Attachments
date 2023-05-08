@@ -229,4 +229,10 @@ public partial class StubMessageAttachments :
         using var attachmentStream = attachment.ToAttachmentStream();
         return action(attachmentStream);
     }
+
+    Task InnerProcessByteArray(string name, Func<AttachmentBytes, Task> action)
+    {
+        var attachment = GetCurrentMessageAttachment(name);
+        return action(attachment.ToAttachmentBytes());
+    }
 }

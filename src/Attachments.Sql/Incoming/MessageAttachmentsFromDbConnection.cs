@@ -27,11 +27,20 @@ class MessageAttachmentsFromSqlConnection :
     public Task ProcessStream(Func<AttachmentStream, Task> action) =>
         persister.ProcessStream(messageId, "default", connection, null, action, Cancellation);
 
+    public Task ProcessByteArray(Func<AttachmentBytes, Task> action) =>
+        persister.ProcessByteArray(messageId, "default", connection, null, action, Cancellation);
+
     public Task ProcessStream(string name, Func<AttachmentStream, Task> action) =>
         persister.ProcessStream(messageId, name, connection, null, action, Cancellation);
 
+    public Task ProcessByteArray(string name, Func<AttachmentBytes, Task> action) =>
+        persister.ProcessByteArray(messageId, name, connection, null, action, Cancellation);
+
     public Task ProcessStreams(Func<AttachmentStream, Task> action) =>
         persister.ProcessStreams(messageId, connection, null, action, Cancellation);
+
+    public Task ProcessByteArrays(Func<AttachmentBytes, Task> action) =>
+        persister.ProcessByteArrays(messageId, connection, null, action, Cancellation);
 
     public Task<AttachmentBytes> GetBytes() =>
         persister.GetBytes(messageId, "default", connection, null, Cancellation);
@@ -66,11 +75,20 @@ class MessageAttachmentsFromSqlConnection :
     public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action) =>
         persister.ProcessStream(messageId, "default", connection, null, action, Cancellation);
 
+    public Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Task> action) =>
+        persister.ProcessByteArray(messageId, "default", connection, null, action, Cancellation);
+
     public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action) =>
         persister.ProcessStream(messageId, name, connection, null, action, Cancellation);
 
+    public Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Task> action) =>
+        persister.ProcessByteArray(messageId, name, connection, null, action, Cancellation);
+
     public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action) =>
         persister.ProcessStreams(messageId, connection, null, action, Cancellation);
+
+    public Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Task> action) =>
+        persister.ProcessByteArrays(messageId, connection, null, action, Cancellation);
 
     public Task<AttachmentBytes> GetBytesForMessage(string messageId) =>
         persister.GetBytes(messageId, "default", connection, null, Cancellation);

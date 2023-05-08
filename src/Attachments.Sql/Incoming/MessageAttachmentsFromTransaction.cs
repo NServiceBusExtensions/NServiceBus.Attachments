@@ -46,16 +46,34 @@ class MessageAttachmentsFromTransaction :
         await persister.ProcessStream(messageId, "default", connection, null, action, Cancellation);
     }
 
+    public async Task ProcessByteArray(Func<AttachmentBytes, Task> action)
+    {
+        using var connection = await GetConnection();
+        await persister.ProcessByteArray(messageId, "default", connection, null, action, Cancellation);
+    }
+
     public async Task ProcessStream(string name, Func<AttachmentStream, Task> action)
     {
         using var connection = await GetConnection();
         await persister.ProcessStream(messageId, name, connection, null, action, Cancellation);
     }
 
+    public async Task ProcessByteArray(string name, Func<AttachmentBytes, Task> action)
+    {
+        using var connection = await GetConnection();
+        await persister.ProcessByteArray(messageId, name, connection, null, action, Cancellation);
+    }
+
     public async Task ProcessStreams(Func<AttachmentStream, Task> action)
     {
         using var connection = await GetConnection();
         await persister.ProcessStreams(messageId, connection, null, action, Cancellation);
+    }
+
+    public async Task ProcessByteArrays(Func<AttachmentBytes, Task> action)
+    {
+        using var connection = await GetConnection();
+        await persister.ProcessByteArrays(messageId, connection, null, action, Cancellation);
     }
 
     public async Task<AttachmentBytes> GetBytes()
@@ -124,16 +142,34 @@ class MessageAttachmentsFromTransaction :
         await persister.ProcessStream(messageId, "default", connection, null, action, Cancellation);
     }
 
+    public async Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Task> action)
+    {
+        using var connection = await GetConnection();
+        await persister.ProcessByteArray(messageId, "default", connection, null, action, Cancellation);
+    }
+
     public async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action)
     {
         using var connection = await GetConnection();
         await persister.ProcessStream(messageId, name, connection, null, action, Cancellation);
     }
 
+    public async Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Task> action)
+    {
+        using var connection = await GetConnection();
+        await persister.ProcessByteArray(messageId, name, connection, null, action, Cancellation);
+    }
+
     public async Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action)
     {
         using var connection = await GetConnection();
         await persister.ProcessStreams(messageId, connection, null, action, Cancellation);
+    }
+
+    public async Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Task> action)
+    {
+        using var connection = await GetConnection();
+        await persister.ProcessByteArrays(messageId, connection, null, action, Cancellation);
     }
 
     public async Task<AttachmentBytes> GetBytesForMessage(string messageId)

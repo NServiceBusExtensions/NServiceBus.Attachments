@@ -73,6 +73,9 @@ public class TestingIncoming
 
 class MyMessageAttachments : IMessageAttachments
 {
+    public Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Task> action) =>
+        throw new NotImplementedException();
+
     public Cancellation Cancellation { get; }
 
     public Task CopyTo(string name, Stream target) =>
@@ -154,5 +157,20 @@ class MyMessageAttachments : IMessageAttachments
         throw new NotImplementedException();
 
     public Task<AttachmentStream> GetStreamForMessage(string messageId, string name) =>
+        throw new NotImplementedException();
+
+    public Task ProcessByteArray(string name, Func<AttachmentBytes, Task> action) =>
+        throw new NotImplementedException();
+
+    public Task ProcessByteArray(Func<AttachmentBytes, Task> action) =>
+        throw new NotImplementedException();
+
+    public Task ProcessByteArrays(Func<AttachmentBytes, Task> action) =>
+        throw new NotImplementedException();
+
+    public Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Task> action) =>
+        throw new NotImplementedException();
+
+    public Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Task> action) =>
         throw new NotImplementedException();
 }
