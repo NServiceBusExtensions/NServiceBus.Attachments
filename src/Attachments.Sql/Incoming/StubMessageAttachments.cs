@@ -57,8 +57,7 @@ public partial class StubMessageAttachments
     {
         foreach (var pair in GetAttachmentsForMessage(messageId))
         {
-            var attachment = pair.Value;
-            await action(attachment.ToAttachmentBytes());
+            await action(pair.Value.ToAttachmentBytes());
         }
     }
 }
