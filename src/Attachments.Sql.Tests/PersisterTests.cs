@@ -89,6 +89,26 @@ public class PersisterTests
         Assert.Equal(1, count);
     }
 
+
+    [Fact]
+    public async Task ProcessByteArray()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var count = 0;
+        await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
+        await persister.ProcessByteArray("theMessageId", "theName", connection, null,
+            action: bytes =>
+            {
+                count++;
+                var array = bytes.Bytes;
+                Assert.Equal(5, array[0]);
+                return Task.CompletedTask;
+            });
+        Assert.Equal(1, count);
+    }
+
     [Fact]
     public async Task ProcessStreamMultiple()
     {
@@ -198,6 +218,37 @@ public class PersisterTests
                 {
                     Assert.Equal(2, array[0]);
                     Assert.Equal("theName2", stream.Name);
+                }
+
+                return Task.CompletedTask;
+            });
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
+    public async Task ProcessByteArrays()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var count = 0;
+        await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
+        await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
+        await persister.ProcessByteArrays("theMessageId", connection, null,
+            action: array =>
+            {
+                count++;
+                var bytes = array.Bytes;
+                if (count == 1)
+                {
+                    Assert.Equal(1, bytes[0]);
+                    Assert.Equal("theName1", array.Name);
+                }
+
+                if (count == 2)
+                {
+                    Assert.Equal(2, bytes[0]);
+                    Assert.Equal("theName2", array.Name);
                 }
 
                 return Task.CompletedTask;

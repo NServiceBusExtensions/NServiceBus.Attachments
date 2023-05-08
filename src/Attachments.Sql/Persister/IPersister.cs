@@ -138,4 +138,14 @@ public interface IPersister
     /// Processes an attachment by passing it to <paramref name="action" />.
     /// </summary>
     Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, Cancellation cancellation = default);
+
+    /// <summary>
+    /// Processes all attachments for <paramref name="messageId" /> by passing them to <paramref name="action" />.
+    /// </summary>
+    Task ProcessByteArrays(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Task> action, Cancellation cancellation = default);
+
+    /// <summary>
+    /// Processes an attachment by passing it to <paramref name="action" />.
+    /// </summary>
+    Task ProcessByteArray(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Task> action, Cancellation cancellation = default);
 }

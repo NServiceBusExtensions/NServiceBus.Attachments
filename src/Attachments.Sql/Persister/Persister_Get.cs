@@ -162,7 +162,6 @@ public partial class Persister
         var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText = $"""
-            
             select
                 datalength(Data),
                 Metadata,
