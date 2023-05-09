@@ -3,14 +3,14 @@ using Microsoft.Data.SqlClient;
 
 static class SqlExtensions
 {
-    public static string? GetStringOrNull(this IDataReader dataReader, int index)
+    public static string? GetStringOrNull(this IDataReader reader, int index)
     {
-        if (dataReader.IsDBNull(index))
+        if (reader.IsDBNull(index))
         {
             return null;
         }
 
-        return dataReader.GetString(index);
+        return reader.GetString(index);
     }
 
     public static void AddParameter(this SqlCommand command, string name, string? value)
