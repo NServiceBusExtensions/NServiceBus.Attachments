@@ -41,7 +41,7 @@ static class SqlExtensions
 
     public static string GetString(this SqlDataReader reader, int column, Encoding encoding)
     {
-        var stream = reader.GetStream(column);
+        using var stream = reader.GetStream(column);
         using var streamReader = new StreamReader(stream, encoding, true);
         return streamReader.ReadToEnd();
     }
