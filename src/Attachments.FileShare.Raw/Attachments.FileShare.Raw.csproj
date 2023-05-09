@@ -17,7 +17,7 @@
     <Compile Include="..\Shared\Extensions.cs" />
     <Compile Include="..\Shared\Guard.cs" />
 
-    <PackageReference Include="Polyfill" Version="1.22.0" PrivateAssets="all" />
+    <PackageReference Include="Polyfill" Version="1.23.0" PrivateAssets="all" />
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.2" PrivateAssets="All" />
     <PackageReference Include="Fody" Version="6.7.0" PrivateAssets="all" />
     <PackageReference Include="ProjectDefaults" Version="1.0.90" PrivateAssets="all" />
