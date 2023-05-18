@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="7.0.0" />
+    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="7.0.1" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
     <PackageReference Include="ProjectDefaults" Version="1.0.90" PrivateAssets="all" />
