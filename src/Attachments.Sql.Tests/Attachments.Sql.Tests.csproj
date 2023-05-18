@@ -9,7 +9,7 @@
     <PackageReference Include="Argon" Version="0.7.0" />
     <PackageReference Include="NServiceBus" Version="8.0.3" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="7.0.1" />
-    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="7.0.0" />
+    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="7.0.1" />
     <PackageReference Include="NServiceBus.Testing" Version="8.0.1" />
     <PackageReference Include="Verify.Xunit" Version="19.14.1" />
     <PackageReference Include="Verify.NServiceBus" Version="5.5.1" />
