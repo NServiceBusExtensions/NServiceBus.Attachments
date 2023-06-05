@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageReference Include="MarkdownSnippets.MsBuild" Version="24.5.1" Condition="$(TargetFramework) == 'net7.0'" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-    <PackageReference Include="Argon" Version="0.7.1" />
+    <PackageReference Include="Argon" Version="0.7.2" />
     <PackageReference Include="NServiceBus" Version="8.0.3" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="7.0.2" />
     <PackageReference Include="NServiceBus.Transport.SqlServer" Version="7.0.1" />
