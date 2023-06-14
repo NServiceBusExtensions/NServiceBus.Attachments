@@ -12,7 +12,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
         stream.MoveToStart();
-        return Save(messageId, name, expiry, metadata, fileStream => stream.CopyToAsync(fileStream, 4096, cancellation), cancellation);
+        return Save(messageId, name, expiry, metadata, (fileStream, cancellation) => stream.CopyToAsync(fileStream, 4096, cancellation), cancellation);
     }
 
     /// <inheritdoc />
@@ -20,7 +20,7 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
-        return Save(messageId, name, expiry, metadata, fileStream => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation), cancellation);
+        return Save(messageId, name, expiry, metadata, (fileStream, cancellation)  => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation), cancellation);
     }
 
     /// <inheritdoc />
@@ -35,7 +35,7 @@ public partial class Persister
             name,
             expiry,
             dictionary,
-            async fileStream =>
+            async (fileStream, _)  =>
             {
                 await using var writer = fileStream.BuildLeaveOpenWriter(encoding);
                 await writer.WriteAsync(value);
@@ -48,7 +48,7 @@ public partial class Persister
         string? name,
         DateTime expiry,
         IReadOnlyDictionary<string, string>? metadata,
-        Func<FileStream, Task> action,
+        Func<FileStream, Cancellation, Task> action,
         Cancellation cancellation = default)
     {
         name ??= "default";
@@ -67,6 +67,6 @@ public partial class Persister
         await WriteMetadata(attachmentDirectory, metadata, cancellation);
 
         await using var fileStream = FileHelpers.OpenWrite(dataFile);
-        await action(fileStream);
+        await action(fileStream, cancellation);
     }
 }

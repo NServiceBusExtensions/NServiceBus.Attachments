@@ -8,9 +8,9 @@ class PurgeTask :
 {
     static ILog log = LogManager.GetLogger("AttachmentPurgeTask");
     IPersister persister;
-    Func<Task<SqlConnection>> connectionFactory;
+    Func<Cancellation, Task<SqlConnection>> connectionFactory;
 
-    public PurgeTask(IPersister persister, Func<Task<SqlConnection>> connectionFactory)
+    public PurgeTask(IPersister persister, Func<Cancellation, Task<SqlConnection>> connectionFactory)
     {
         this.persister = persister;
         this.connectionFactory = connectionFactory;
@@ -18,7 +18,7 @@ class PurgeTask :
 
     protected override async Task OnStart(IMessageSession session, Cancellation cancellation = default)
     {
-        using var connection = await connectionFactory();
+        using var connection = await connectionFactory(cancellation);
         var count = await persister.PurgeItems(connection, null, Cancellation.None);
         log.DebugFormat($"Deleted {count} attachments");
     }

@@ -5,7 +5,7 @@ using NServiceBus.Pipeline;
 class SendRegistration :
     RegisterStep
 {
-    public SendRegistration(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendRegistration(Func<Cancellation, Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
         : base(
             stepId: $"{AssemblyHelper.Name}Send",
             behavior: typeof(SendBehavior),

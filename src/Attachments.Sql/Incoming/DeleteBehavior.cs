@@ -9,10 +9,10 @@ class DeleteBehavior :
     Behavior<IIncomingPhysicalMessageContext>
 {
     static ILog log = LogManager.GetLogger("AttachmentDeleteBehavior");
-    Func<Task<SqlConnection>> connectionBuilder;
+    Func<Cancellation, Task<SqlConnection>> connectionBuilder;
     IPersister persister;
 
-    public DeleteBehavior(Func<Task<SqlConnection>> connectionBuilder, IPersister persister)
+    public DeleteBehavior(Func<Cancellation, Task<SqlConnection>> connectionBuilder, IPersister persister)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;
@@ -58,7 +58,7 @@ class DeleteBehavior :
 
         if (transportTransaction.TryGet<Transaction>(out var transaction))
         {
-            using var connection = await connectionBuilder();
+            using var connection = await connectionBuilder(context.CancellationToken);
             connection.EnlistTransaction(transaction);
             var count = await persister.DeleteAttachments(id, connection, null);
             log.Debug($"Deleting {count} attachments for {id} using Transactions.Transaction");

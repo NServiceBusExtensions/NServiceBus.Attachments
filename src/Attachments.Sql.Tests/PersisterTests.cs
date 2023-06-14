@@ -79,7 +79,7 @@ public class PersisterTests
         var count = 0;
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
         await persister.ProcessStream("theMessageId", "theName", connection, null,
-            action: stream =>
+            action: (stream, _) =>
             {
                 count++;
                 var array = ToBytes(stream);
@@ -99,7 +99,7 @@ public class PersisterTests
         var count = 0;
         await persister.SaveStream(connection, null, "theMessageId", "theName", defaultTestDate, GetStream(), metadata);
         await persister.ProcessByteArray("theMessageId", "theName", connection, null,
-            action: bytes =>
+            action: (bytes, _) =>
             {
                 count++;
                 var array = bytes.Bytes;
@@ -124,7 +124,7 @@ public class PersisterTests
         for (var i = 0; i < 10; i++)
         {
             await persister.ProcessStream("theMessageId", $"theName{i}", connection, null,
-                action: stream =>
+                action: (stream, _) =>
                 {
                     Interlocked.Increment(ref count);
                     var array = ToBytes(stream);
@@ -204,7 +204,7 @@ public class PersisterTests
         await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
         await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
         await persister.ProcessStreams("theMessageId", connection, null,
-            action: stream =>
+            action: (stream, _) =>
             {
                 count++;
                 var array = ToBytes(stream);
@@ -235,7 +235,7 @@ public class PersisterTests
         await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
         await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
         await persister.ProcessByteArrays("theMessageId", connection, null,
-            action: array =>
+            action: (array, _) =>
             {
                 count++;
                 var bytes = array.Bytes;
@@ -403,7 +403,7 @@ public class PersisterTests
         await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
         var list = new List<AttachmentInfo>();
         await persister.ReadAllMessageInfo(connection, null, "theMessageId",
-            info =>
+            (info, _) =>
             {
                 list.Add(info);
                 return Task.CompletedTask;

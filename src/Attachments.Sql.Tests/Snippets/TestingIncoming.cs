@@ -25,7 +25,7 @@ public class TestingIncoming
     public class CustomMockMessageAttachments :
         MockMessageAttachments
     {
-        public override Task<AttachmentBytes> GetBytes()
+        public override Task<AttachmentBytes> GetBytes(Cancellation cancellation = default)
         {
             GetBytesWasCalled = true;
             return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -73,104 +73,102 @@ public class TestingIncoming
 
 class MyMessageAttachments : IMessageAttachments
 {
-    public Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Task> action) =>
+    public Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Cancellation Cancellation { get; }
-
-    public Task CopyTo(string name, Stream target) =>
+    public Task CopyTo(string name, Stream target, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task CopyTo(Stream target) =>
+    public Task CopyTo(Stream target, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessStream(string name, Func<AttachmentStream, Task> action) =>
+    public Task ProcessStream(string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessStream(Func<AttachmentStream, Task> action) =>
+    public Task ProcessStream(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreams(Func<AttachmentStream, Task> action) =>
+    public Task ProcessStreams(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public IAsyncEnumerable<AttachmentInfo> GetMetadata() =>
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytes() =>
+    public Task<AttachmentBytes> GetBytes(Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytes(string name) =>
+    public Task<AttachmentBytes> GetBytes(string name, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStream() =>
+    public Task<MemoryStream> GetMemoryStream(Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStream(string name) =>
+    public Task<MemoryStream> GetMemoryStream(string name, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetString(Encoding? encoding) =>
+    public Task<AttachmentString> GetString(Encoding? encoding, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetString(string name, Encoding? encoding) =>
+    public Task<AttachmentString> GetString(string name, Encoding? encoding, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStream() =>
+    public Task<AttachmentStream> GetStream(Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStream(string name) =>
+    public Task<AttachmentStream> GetStream(string name, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task CopyToForMessage(string messageId, string name, Stream target) =>
+    public Task CopyToForMessage(string messageId, string name, Stream target, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task CopyToForMessage(string messageId, Stream target) =>
+    public Task CopyToForMessage(string messageId, Stream target, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Task> action) =>
+    public Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Task> action) =>
+    public Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Task> action) =>
+    public Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId) =>
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId) =>
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name) =>
+    public Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name) =>
+    public Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding) =>
+    public Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding) =>
+    public Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId) =>
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name) =>
+    public Task<AttachmentStream> GetStreamForMessage(string messageId, string name, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessByteArray(string name, Func<AttachmentBytes, Task> action) =>
+    public Task ProcessByteArray(string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessByteArray(Func<AttachmentBytes, Task> action) =>
+    public Task ProcessByteArray(Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessByteArrays(Func<AttachmentBytes, Task> action) =>
+    public Task ProcessByteArrays(Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Task> action) =>
+    public Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 
-    public Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Task> action) =>
+    public Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         throw new NotImplementedException();
 }

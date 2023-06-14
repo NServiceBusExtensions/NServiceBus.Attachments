@@ -13,17 +13,17 @@ public class Usage
         #region EnableAttachments
 
         configuration.EnableAttachments(
-            connectionFactory: async () =>
+            connectionFactory: async cancellation =>
             {
                 var connection = new SqlConnection(connectionString);
                 try
                 {
-                    await connection.OpenAsync().ConfigureAwait(false);
+                    await connection.OpenAsync(cancellation).ConfigureAwait(false);
                     return connection;
                 }
                 catch
                 {
-                    connection.Dispose();
+                    await connection.DisposeAsync();
                     throw;
                 }
             },
@@ -115,17 +115,17 @@ public class Usage
 
     #region OpenConnection
 
-    async Task<SqlConnection> OpenConnection()
+    async Task<SqlConnection> OpenConnection(Cancellation cancellation)
     {
         var connection = new SqlConnection(connectionString);
         try
         {
-            await connection.OpenAsync().ConfigureAwait(false);
+            await connection.OpenAsync(cancellation).ConfigureAwait(false);
             return connection;
         }
         catch
         {
-            connection.Dispose();
+            await connection.DisposeAsync();
             throw;
         }
     }

@@ -5,11 +5,11 @@ using NServiceBus.Pipeline;
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<Task<SqlConnection>> connectionFactory;
+    Func<Cancellation, Task<SqlConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Func<Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Cancellation, Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;
@@ -42,7 +42,7 @@ class SendBehavior :
         {
             if (state.Transaction is not null)
             {
-                using var connectionFromState = await state.GetConnection();
+                using var connectionFromState = await state.GetConnection(context.CancellationToken);
                 connectionFromState.EnlistTransaction(state.Transaction);
                 await ProcessOutgoing(timeToBeReceived, connectionFromState, null, context, outgoingAttachments);
                 return;
@@ -60,12 +60,12 @@ class SendBehavior :
                 return;
             }
 
-            using var connection = await state.GetConnection();
+            using var connection = await state.GetConnection(context.CancellationToken);
             await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
             return;
         }
 
-        using var connectionFromFactory = await connectionFactory();
+        using var connectionFromFactory = await connectionFactory(context.CancellationToken);
         //TODO: should this be done ?
         if (context.TryReadTransaction(out var transaction))
         {

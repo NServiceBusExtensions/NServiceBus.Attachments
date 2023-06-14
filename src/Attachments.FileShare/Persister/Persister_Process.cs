@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
+    public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
@@ -20,12 +20,12 @@ public partial class Persister
             var read = FileHelpers.OpenRead(dataFile);
             var metadata = await ReadMetadata(attachmentDirectory, cancellation);
             await using var attachment = new AttachmentStream(attachmentName, read, read.Length, metadata);
-            await action(attachment);
+            await action(attachment, cancellation);
         }
     }
 
     /// <inheritdoc />
-    public virtual async Task ProcessStream(string messageId, string name, Func<AttachmentStream, Task> action, Cancellation cancellation = default)
+    public virtual async Task ProcessStream(string messageId, string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -37,6 +37,6 @@ public partial class Persister
         var read = FileHelpers.OpenRead(dataFile);
         var metadata = await ReadMetadata(attachmentDirectory, cancellation);
         await using var attachment = new AttachmentStream(name, read, read.Length, metadata);
-        await action(attachment);
+        await action(attachment, cancellation);
     }
 }

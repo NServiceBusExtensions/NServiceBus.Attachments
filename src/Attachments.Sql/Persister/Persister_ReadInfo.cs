@@ -10,7 +10,7 @@ public partial class Persister
 {
     //TODO: remove?
     /// <inheritdoc />
-    public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, Cancellation cancellation = default)
+    public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
@@ -23,7 +23,7 @@ public partial class Persister
                 name: reader.GetString(1),
                 expiry: reader.GetDateTime(2),
                 metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
-            await action(info);
+            await action(info, cancellation);
         }
     }
 
@@ -66,7 +66,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Task> action, Cancellation cancellation = default)
+    public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancellation = default)
     {
         using var command = GetReadInfosCommand(connection, transaction);
         using var reader = await command.ExecuteReaderAsync(cancellation);
@@ -78,7 +78,7 @@ public partial class Persister
                 name: reader.GetString(2),
                 expiry: reader.GetDateTime(3),
                 metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
-            await action(info);
+            await action(info, cancellation);
         }
     }
 
@@ -89,7 +89,7 @@ public partial class Persister
         await ReadAllInfo(
             connection,
             transaction,
-            info =>
+            (info, _) =>
             {
                 list.Add(info);
                 return Task.CompletedTask;
