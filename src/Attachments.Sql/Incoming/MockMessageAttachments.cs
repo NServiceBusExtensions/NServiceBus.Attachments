@@ -19,13 +19,13 @@ public partial class MockMessageAttachments
         Task.FromResult(AttachmentStream.Empty());
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessByteArray(string,Func{AttachmentBytes,Task})"/>
+    /// <see cref="IMessageAttachments.ProcessByteArray(string,Func{AttachmentBytes,Cancellation,Task},Cancellation)"/>
     /// </summary>
     public virtual Task ProcessByteArray(string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessByteArray(Func{AttachmentBytes,Task})"/>
+    /// <see cref="IMessageAttachments.ProcessByteArray(Func{AttachmentBytes,Cancellation,Task},Cancellation)"/>
     /// </summary>
     public virtual Task ProcessByteArray(Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         Task.CompletedTask;
@@ -37,19 +37,19 @@ public partial class MockMessageAttachments
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessByteArrayForMessage(string,string,Func{AttachmentBytes,Task})"/>
+    /// <see cref="IMessageAttachments.ProcessByteArrayForMessage(string,string,Func{AttachmentBytes,Cancellation,Task},Cancellation)"/>
     /// </summary>
     public virtual Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessByteArrayForMessage(string,Func{AttachmentBytes,Task})"/>
+    /// <see cref="IMessageAttachments.ProcessByteArrayForMessage(string,Func{AttachmentBytes,Cancellation,Task},Cancellation)"/>
     /// </summary>
     public virtual Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessByteArraysForMessage(string,Func{AttachmentBytes,Task})"/>
+    /// <see cref="IMessageAttachments.ProcessByteArraysForMessage(string,Func{AttachmentBytes,Cancellation,Task},Cancellation)"/>
     /// </summary>
     public virtual Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default) =>
         Task.CompletedTask;
