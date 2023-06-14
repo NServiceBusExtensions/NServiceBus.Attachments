@@ -1,5 +1,6 @@
 ﻿// ReSharper disable UnusedVariable
 
+// ReSharper disable UnusedType.Global
 public class Incoming
 {
     #region ProcessStream
