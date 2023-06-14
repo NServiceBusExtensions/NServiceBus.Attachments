@@ -28,17 +28,17 @@ configuration.EnableAttachments(
 <a id='snippet-enableattachments-1'></a>
 ```cs
 configuration.EnableAttachments(
-    connectionFactory: async () =>
+    connectionFactory: async cancellation =>
     {
         var connection = new SqlConnection(connectionString);
         try
         {
-            await connection.OpenAsync().ConfigureAwait(false);
+            await connection.OpenAsync(cancellation).ConfigureAwait(false);
             return connection;
         }
         catch
         {
-            connection.Dispose();
+            await connection.DisposeAsync();
             throw;
         }
     },
@@ -279,11 +279,11 @@ class HandlerProcessStream :
         var attachments = context.Attachments();
         await attachments.ProcessStream(
             name: "attachment1",
-            action: async stream =>
+            action: async(stream, token) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var fileToCopyTo = File.Create("FilePath.txt");
-                await stream.CopyToAsync(fileToCopyTo);
+                await stream.CopyToAsync(fileToCopyTo, token);
             });
     }
 }
@@ -299,11 +299,11 @@ class HandlerProcessStream :
         var attachments = context.Attachments();
         await attachments.ProcessStream(
             name: "attachment1",
-            action: async stream =>
+            action: async (stream, token) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var fileToCopyTo = File.Create("FilePath.txt");
-                await stream.CopyToAsync(fileToCopyTo);
+                await stream.CopyToAsync(fileToCopyTo, token);
             });
     }
 }
@@ -326,11 +326,11 @@ class HandlerProcessStreams :
     {
         var attachments = context.Attachments();
         return attachments.ProcessStreams(
-            action: async stream =>
+            action: async (stream, cancellation) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var file = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(file);
+                await stream.CopyToAsync(file, cancellation);
             });
     }
 }
@@ -345,11 +345,11 @@ class HandlerProcessStreams :
     {
         var attachments = context.Attachments();
         await attachments.ProcessStreams(
-                action: async stream =>
+                action: async (stream, cancellation) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file);
+                    await stream.CopyToAsync(file, cancellation);
                 })
             .ConfigureAwait(false);
     }
@@ -488,11 +488,11 @@ class HandlerProcessStreamsForMessage :
         var attachments = context.Attachments();
         return attachments.ProcessStreamsForMessage(
             messageId: "theMessageId",
-            action: async stream =>
+            action: async (stream, cancellation) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var toCopyTo = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(toCopyTo);
+                await stream.CopyToAsync(toCopyTo, cancellation);
             });
     }
 }
@@ -508,11 +508,11 @@ class HandlerProcessStreamsForMessage :
         var attachments = context.Attachments();
         await attachments.ProcessStreamsForMessage(
                 messageId: "theMessageId",
-                action: async stream =>
+                action: async (stream, cancellation) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file);
+                    await stream.CopyToAsync(file, cancellation);
                 })
             .ConfigureAwait(false);
     }
@@ -644,7 +644,7 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes()
+    public override Task<AttachmentBytes> GetBytes(Cancellation cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -659,7 +659,7 @@ public class CustomMockMessageAttachments :
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes()
+    public override Task<AttachmentBytes> GetBytes(Cancellation cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
