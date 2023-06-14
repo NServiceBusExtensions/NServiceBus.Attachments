@@ -12,11 +12,11 @@ public class Incoming
             var attachments = context.Attachments();
             await attachments.ProcessStream(
                 name: "attachment1",
-                action: async stream =>
+                action: async(stream, token) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var fileToCopyTo = File.Create("FilePath.txt");
-                    await stream.CopyToAsync(fileToCopyTo);
+                    await stream.CopyToAsync(fileToCopyTo, token);
                 });
         }
     }
@@ -32,11 +32,11 @@ public class Incoming
         {
             var attachments = context.Attachments();
             return attachments.ProcessStreams(
-                action: async stream =>
+                action: async (stream, cancellation) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file);
+                    await stream.CopyToAsync(file, cancellation);
                 });
         }
     }
@@ -53,11 +53,11 @@ public class Incoming
             var attachments = context.Attachments();
             return attachments.ProcessStreamsForMessage(
                 messageId: "theMessageId",
-                action: async stream =>
+                action: async (stream, cancellation) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var toCopyTo = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(toCopyTo);
+                    await stream.CopyToAsync(toCopyTo, cancellation);
                 });
         }
     }

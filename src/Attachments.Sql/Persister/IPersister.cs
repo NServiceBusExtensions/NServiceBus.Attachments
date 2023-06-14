@@ -32,7 +32,7 @@ public interface IPersister
     /// <summary>
     /// Reads the <see cref="AttachmentInfo" /> for all attachments of a specific message.
     /// </summary>
-    Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Task> action, Cancellation cancellation = default);
+    Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancellation = default);
 
     /// <summary>
     /// Reads the <see cref="AttachmentInfo" /> for all attachments of a specific message.
@@ -47,7 +47,7 @@ public interface IPersister
     /// <summary>
     /// Reads the <see cref="AttachmentInfo" /> for all attachments.
     /// </summary>
-    Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Task> action, Cancellation cancellation = default);
+    Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancellation = default);
 
     /// <summary>
     /// Reads the <see cref="AttachmentInfo" /> for all attachments.
@@ -132,20 +132,20 @@ public interface IPersister
     /// <summary>
     /// Processes all attachments for <paramref name="messageId" /> by passing them to <paramref name="action" />.
     /// </summary>
-    Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, Cancellation cancellation = default);
+    Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default);
 
     /// <summary>
     /// Processes an attachment by passing it to <paramref name="action" />.
     /// </summary>
-    Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Task> action, Cancellation cancellation = default);
+    Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default);
 
     /// <summary>
     /// Processes all attachments for <paramref name="messageId" /> by passing them to <paramref name="action" />.
     /// </summary>
-    Task ProcessByteArrays(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Task> action, Cancellation cancellation = default);
+    Task ProcessByteArrays(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default);
 
     /// <summary>
     /// Processes an attachment by passing it to <paramref name="action" />.
     /// </summary>
-    Task ProcessByteArray(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Task> action, Cancellation cancellation = default);
+    Task ProcessByteArray(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default);
 }

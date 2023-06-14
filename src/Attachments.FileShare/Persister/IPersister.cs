@@ -100,12 +100,12 @@ public interface IPersister
     /// <summary>
     /// Processes all attachments for <paramref name="messageId" /> by passing them to <paramref name="action" />.
     /// </summary>
-    Task ProcessStreams(string messageId, Func<AttachmentStream, Task> action, Cancellation cancellation = default);
+    Task ProcessStreams(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default);
 
     /// <summary>
     /// Processes an attachment by passing it to <paramref name="action" />.
     /// </summary>
-    Task ProcessStream(string messageId, string name, Func<AttachmentStream, Task> action, Cancellation cancellation = default);
+    Task ProcessStream(string messageId, string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default);
 
     /// <summary>
     /// Reads all <see cref="AttachmentBytes" />s for an attachment.

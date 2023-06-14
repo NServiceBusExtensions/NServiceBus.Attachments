@@ -28,17 +28,17 @@ configuration.EnableAttachments(
 <a id='snippet-enableattachments-1'></a>
 ```cs
 configuration.EnableAttachments(
-    connectionFactory: async () =>
+    connectionFactory: async cancellation =>
     {
         var connection = new SqlConnection(connectionString);
         try
         {
-            await connection.OpenAsync().ConfigureAwait(false);
+            await connection.OpenAsync(cancellation).ConfigureAwait(false);
             return connection;
         }
         catch
         {
-            connection.Dispose();
+            await connection.DisposeAsync();
             throw;
         }
     },
@@ -279,11 +279,11 @@ class HandlerProcessStream :
         var attachments = context.Attachments();
         await attachments.ProcessStream(
             name: "attachment1",
-            action: async stream =>
+            action: async(stream, token) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var fileToCopyTo = File.Create("FilePath.txt");
-                await stream.CopyToAsync(fileToCopyTo);
+                await stream.CopyToAsync(fileToCopyTo, token);
             });
     }
 }
@@ -299,16 +299,16 @@ class HandlerProcessStream :
         var attachments = context.Attachments();
         await attachments.ProcessStream(
             name: "attachment1",
-            action: async stream =>
+            action: async (stream, token) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var fileToCopyTo = File.Create("FilePath.txt");
-                await stream.CopyToAsync(fileToCopyTo);
+                await stream.CopyToAsync(fileToCopyTo, token);
             });
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L5-L24' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstream-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L6-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstream-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -326,11 +326,11 @@ class HandlerProcessStreams :
     {
         var attachments = context.Attachments();
         return attachments.ProcessStreams(
-            action: async stream =>
+            action: async (stream, cancellation) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var file = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(file);
+                await stream.CopyToAsync(file, cancellation);
             });
     }
 }
@@ -345,17 +345,17 @@ class HandlerProcessStreams :
     {
         var attachments = context.Attachments();
         await attachments.ProcessStreams(
-                action: async stream =>
+                action: async (stream, cancellation) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file);
+                    await stream.CopyToAsync(file, cancellation);
                 })
             .ConfigureAwait(false);
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L26-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L27-L46' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -391,7 +391,7 @@ class HandlerCopyTo :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L69-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L70-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -431,7 +431,7 @@ class HandlerGetStream :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L99-L114' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L100-L115' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -469,7 +469,7 @@ class HandlerGetBytes :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L84-L97' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L85-L98' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -488,11 +488,11 @@ class HandlerProcessStreamsForMessage :
         var attachments = context.Attachments();
         return attachments.ProcessStreamsForMessage(
             messageId: "theMessageId",
-            action: async stream =>
+            action: async (stream, cancellation) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var toCopyTo = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(toCopyTo);
+                await stream.CopyToAsync(toCopyTo, cancellation);
             });
     }
 }
@@ -508,17 +508,17 @@ class HandlerProcessStreamsForMessage :
         var attachments = context.Attachments();
         await attachments.ProcessStreamsForMessage(
                 messageId: "theMessageId",
-                action: async stream =>
+                action: async (stream, cancellation) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file);
+                    await stream.CopyToAsync(file, cancellation);
                 })
             .ConfigureAwait(false);
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L47-L67' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L48-L68' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be helpful in a saga that is operating in a [Scatter-Gather](https://www.enterpriseintegrationpatterns.com/patterns/messaging/BroadcastAggregate.html) mode. So instead of storing all binaries inside the saga persister, the saga can instead store the message ids and then, at a latter point in time, access those attachments.
@@ -624,7 +624,7 @@ var context = new TestableMessageHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L11-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
 var context = new TestableMessageHandlerContext();
@@ -644,7 +644,7 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes()
+    public override Task<AttachmentBytes> GetBytes(Cancellation cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -653,13 +653,13 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L23-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L24-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes()
+    public override Task<AttachmentBytes> GetBytes(Cancellation cancellation = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -686,7 +686,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L39-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L40-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'></a>
 ```cs
 public class Handler :
@@ -721,7 +721,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L53-L71' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L54-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincoming-1'></a>
 ```cs
 [Fact]

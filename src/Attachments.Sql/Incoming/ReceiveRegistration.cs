@@ -6,7 +6,7 @@ class ReceiveRegistration :
     RegisterStep
 {
     public ReceiveRegistration(
-        Func<Task<SqlConnection>> connectionFactory,
+        Func<Cancellation, Task<SqlConnection>> connectionFactory,
         IPersister persister,
         bool useTransport,
         bool useSynchronizedStorage)

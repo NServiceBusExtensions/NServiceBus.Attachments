@@ -62,7 +62,7 @@ public class PersisterTests
         var count = 0;
         await persister.SaveStream("theMessageId", "theName", defaultTestDate, GetStream());
         await persister.ProcessStream("theMessageId", "theName",
-            action: stream =>
+            action: (stream, _) =>
             {
                 count++;
                 var array = ToBytes(stream);
@@ -80,7 +80,7 @@ public class PersisterTests
         await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(1));
         await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(2));
         await persister.ProcessStreams("theMessageId",
-            action: stream =>
+            action: (stream, _) =>
             {
                 count++;
                 var array = ToBytes(stream);

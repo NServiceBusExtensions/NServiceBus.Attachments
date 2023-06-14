@@ -21,14 +21,15 @@ public static class IncomingAttachmentExtensions
     public static Task CopyToDirectory(
         this IMessageAttachments attachments,
         string directory,
-        string? nameForDefault = default)
+        string? nameForDefault = default,
+        Cancellation cancellation = default)
     {
         Guard.AgainstNullOrEmpty(directory);
         Guard.AgainstEmpty(nameForDefault);
         Directory.CreateDirectory(directory);
 
         return attachments.ProcessStreams(
-            async stream =>
+            async (stream, cancellation) =>
             {
                 var name = stream.Name;
                 if (name == "default" && nameForDefault is not null)
@@ -42,7 +43,8 @@ public static class IncomingAttachmentExtensions
                 Directory.CreateDirectory(fileDirectory);
                 File.Delete(file);
                 using var fileStream = File.Create(file);
-                await stream.CopyToAsync(fileStream, 4096, attachments.Cancellation);
-            });
+                await stream.CopyToAsync(fileStream, 4096, cancellation);
+            },
+            cancellation);
     }
 }

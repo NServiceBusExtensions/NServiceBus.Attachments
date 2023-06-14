@@ -26,12 +26,12 @@ public static class SqlAttachmentsExtensions
         }
 
         return EnableAttachments(configuration,
-            connectionFactory: async () =>
+            connectionFactory: async cancelaltion =>
             {
                 var connection = connectionFactory();
                 try
                 {
-                    await connection.OpenAsync();
+                    await connection.OpenAsync(cancelaltion);
                     return connection;
                 }
                 catch
@@ -48,7 +48,7 @@ public static class SqlAttachmentsExtensions
     /// </summary>
     public static AttachmentSettings EnableAttachments(
         this EndpointConfiguration configuration,
-        Func<Task<SqlConnection>> connectionFactory,
+        Func<Cancellation, Task<SqlConnection>> connectionFactory,
         GetTimeToKeep timeToKeep)
     {
         var settings = configuration.GetSettings();
