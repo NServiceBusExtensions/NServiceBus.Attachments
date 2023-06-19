@@ -80,11 +80,11 @@ class SendBehavior :
         context.Headers.Add("Attachments", string.Join(", ", attachmentNames));
     }
 
-    async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata, Cancellation cancellation)
+    async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata, Cancellation cancel)
     {
         await using (stream)
         {
-            await persister.SaveStream(messageId, name, expiry, stream, metadata, cancellation);
+            await persister.SaveStream(messageId, name, expiry, stream, metadata, cancel);
         }
     }
 
@@ -103,49 +103,49 @@ class SendBehavior :
         }
     }
 
-    async Task Process(string messageId, Outgoing outgoing, string name, DateTime expiry, Cancellation cancellation = default)
+    async Task Process(string messageId, Outgoing outgoing, string name, DateTime expiry, Cancellation cancel = default)
     {
         if (outgoing.AsyncStreamFactory is not null)
         {
             var stream = await outgoing.AsyncStreamFactory();
-            await ProcessStream(messageId, name, expiry, stream, outgoing.Metadata, cancellation);
+            await ProcessStream(messageId, name, expiry, stream, outgoing.Metadata, cancel);
             return;
         }
 
         if (outgoing.StreamFactory is not null)
         {
-            await ProcessStream(messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata, cancellation);
+            await ProcessStream(messageId, name, expiry, outgoing.StreamFactory(), outgoing.Metadata, cancel);
             return;
         }
 
         if (outgoing.StreamInstance is not null)
         {
-            await ProcessStream(messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata, cancellation);
+            await ProcessStream(messageId, name, expiry, outgoing.StreamInstance, outgoing.Metadata, cancel);
             return;
         }
 
         if (outgoing.AsyncBytesFactory is not null)
         {
             var bytes = await outgoing.AsyncBytesFactory();
-            await persister.SaveBytes(messageId, name, expiry, bytes, outgoing.Metadata, cancellation);
+            await persister.SaveBytes(messageId, name, expiry, bytes, outgoing.Metadata, cancel);
             return;
         }
 
         if (outgoing.BytesFactory is not null)
         {
-            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata, cancellation);
+            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesFactory(), outgoing.Metadata, cancel);
             return;
         }
 
         if (outgoing.BytesInstance is not null)
         {
-            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata, cancellation);
+            await persister.SaveBytes(messageId, name, expiry, outgoing.BytesInstance, outgoing.Metadata, cancel);
             return;
         }
 
         if (outgoing.StringInstance is not null)
         {
-            await persister.SaveString(messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, outgoing.Metadata, cancellation);
+            await persister.SaveString(messageId, name, expiry, outgoing.StringInstance, outgoing.Encoding, outgoing.Metadata, cancel);
             return;
         }
 

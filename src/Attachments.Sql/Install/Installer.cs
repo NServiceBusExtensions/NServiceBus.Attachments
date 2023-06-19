@@ -14,19 +14,19 @@ public static class Installer
     /// <summary>
     /// Create the attachments storage table.
     /// </summary>
-    public static Task CreateTable(SqlConnection connection, Cancellation cancellation = default) =>
-        CreateTable(connection, "MessageAttachments", cancellation);
+    public static Task CreateTable(SqlConnection connection, Cancellation cancel = default) =>
+        CreateTable(connection, "MessageAttachments", cancel);
 
     /// <summary>
     /// Create the attachments storage table.
     /// </summary>
-    public static async Task CreateTable(SqlConnection connection, Table table, Cancellation cancellation = default)
+    public static async Task CreateTable(SqlConnection connection, Table table, Cancellation cancel = default)
     {
         using var command = connection.CreateCommand();
         command.CommandText = GetTableSql();
         command.AddParameter("schema", table.Schema);
         command.AddParameter("table", table.TableName);
-        await command.ExecuteNonQueryAsync(cancellation);
+        await command.ExecuteNonQueryAsync(cancel);
     }
 
     /// <summary>

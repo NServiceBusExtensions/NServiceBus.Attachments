@@ -52,8 +52,8 @@ public static class MetadataSerializer
     /// </summary>
     public static async Task<IReadOnlyDictionary<string, string>> Deserialize(
         Stream stream,
-        Cancellation cancellation = default) =>
-        (await Serializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancellation))!;
+        Cancellation cancel = default) =>
+        (await Serializer.DeserializeAsync<Dictionary<string, string>>(stream, cancellationToken: cancel))!;
 
     /// <summary>
     ///
@@ -61,8 +61,8 @@ public static class MetadataSerializer
     public static Task Serialize(
         Stream stream,
         IReadOnlyDictionary<string, string> metadata,
-        Cancellation cancellation = default) =>
-        Serializer.SerializeAsync(stream, metadata, cancellationToken: cancellation);
+        Cancellation cancel = default) =>
+        Serializer.SerializeAsync(stream, metadata, cancellationToken: cancel);
 
     internal static Dictionary<string, string> AppendEncoding(Encoding encoding, IReadOnlyDictionary<string, string>? metadata)
     {

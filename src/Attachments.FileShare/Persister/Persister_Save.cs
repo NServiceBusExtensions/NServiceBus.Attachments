@@ -7,24 +7,24 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
+    public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
         stream.MoveToStart();
-        return Save(messageId, name, expiry, metadata, (fileStream, cancellation) => stream.CopyToAsync(fileStream, 4096, cancellation), cancellation);
+        return Save(messageId, name, expiry, metadata, (fileStream, cancel) => stream.CopyToAsync(fileStream, 4096, cancel), cancel);
     }
 
     /// <inheritdoc />
-    public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
+    public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
-        return Save(messageId, name, expiry, metadata, (fileStream, cancellation)  => fileStream.WriteAsync(bytes, 0, bytes.Length, cancellation), cancellation);
+        return Save(messageId, name, expiry, metadata, (fileStream, cancel)  => fileStream.WriteAsync(bytes, 0, bytes.Length, cancel), cancel);
     }
 
     /// <inheritdoc />
-    public virtual Task SaveString(string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancellation = default)
+    public virtual Task SaveString(string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -40,7 +40,7 @@ public partial class Persister
                 await using var writer = fileStream.BuildLeaveOpenWriter(encoding);
                 await writer.WriteAsync(value);
             },
-            cancellation);
+            cancel);
     }
 
     async Task Save(
@@ -49,7 +49,7 @@ public partial class Persister
         DateTime expiry,
         IReadOnlyDictionary<string, string>? metadata,
         Func<FileStream, Cancellation, Task> action,
-        Cancellation cancellation = default)
+        Cancellation cancel = default)
     {
         name ??= "default";
 
@@ -64,9 +64,9 @@ public partial class Persister
         {
         }
 
-        await WriteMetadata(attachmentDirectory, metadata, cancellation);
+        await WriteMetadata(attachmentDirectory, metadata, cancel);
 
         await using var fileStream = FileHelpers.OpenWrite(dataFile);
-        await action(fileStream, cancellation);
+        await action(fileStream, cancel);
     }
 }

@@ -9,14 +9,14 @@ public partial class Persister
 {
     /// <inheritdoc />
     public virtual async IAsyncEnumerable<AttachmentInfo> ReadAllInfo(
-        [EnumeratorCancellation] Cancellation cancellation = default)
+        [EnumeratorCancellation] Cancellation cancel = default)
     {
         foreach (var messageDirectory in Directory.EnumerateDirectories(fileShare))
         {
             var messageId = Path.GetFileName(messageDirectory);
-            await foreach (var info in ReadMessageInfo(messageDirectory, messageId, cancellation))
+            await foreach (var info in ReadMessageInfo(messageDirectory, messageId, cancel))
             {
-                if (cancellation.IsCancellationRequested)
+                if (cancel.IsCancellationRequested)
                 {
                     yield break;
                 }
@@ -36,27 +36,27 @@ public partial class Persister
     /// <inheritdoc />
     public virtual IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(
         string messageId,
-        Cancellation cancellation = default)
+        Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
-        return ReadMessageInfo(messageDirectory, messageId, cancellation);
+        return ReadMessageInfo(messageDirectory, messageId, cancel);
     }
 
     async IAsyncEnumerable<AttachmentInfo> ReadMessageInfo(
         string messageDirectory,
         string messageId,
-        [EnumeratorCancellation] Cancellation cancellation = default)
+        [EnumeratorCancellation] Cancellation cancel = default)
     {
         foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
         {
-            if (cancellation.IsCancellationRequested)
+            if (cancel.IsCancellationRequested)
             {
                 yield break;
             }
 
             var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
-            var metadata = await ReadMetadata(attachmentDirectory, cancellation);
+            var metadata = await ReadMetadata(attachmentDirectory, cancel);
             yield return new(
                 messageId: messageId,
                 name: Path.GetFileName(attachmentDirectory),

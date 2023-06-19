@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<int> CleanupItemsOlderThan(SqlConnection connection, SqlTransaction? transaction, DateTime dateTime, Cancellation cancellation = default)
+    public virtual async Task<int> CleanupItemsOlderThan(SqlConnection connection, SqlTransaction? transaction, DateTime dateTime, Cancellation cancel = default)
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
@@ -19,12 +19,12 @@ public partial class Persister
             """;
         command.AddParameter("date", dateTime);
 
-        var result = await command.ExecuteScalarAsync(cancellation);
+        var result = await command.ExecuteScalarAsync(cancel);
         return (int) result!;
     }
 
     /// <inheritdoc />
-    public virtual async Task<int> PurgeItems(SqlConnection connection, SqlTransaction? transaction, Cancellation cancellation = default)
+    public virtual async Task<int> PurgeItems(SqlConnection connection, SqlTransaction? transaction, Cancellation cancel = default)
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
@@ -42,6 +42,6 @@ public partial class Persister
             end
             select @@ROWCOUNT
             """;
-        return (int) (await command.ExecuteScalarAsync(cancellation))!;
+        return (int) (await command.ExecuteScalarAsync(cancel))!;
     }
 }

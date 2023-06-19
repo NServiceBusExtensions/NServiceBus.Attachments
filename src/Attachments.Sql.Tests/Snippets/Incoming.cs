@@ -33,11 +33,11 @@ public class Incoming
         {
             var attachments = context.Attachments();
             await attachments.ProcessStreams(
-                    action: async (stream, cancellation) =>
+                    action: async (stream, cancel) =>
                     {
                         // Use the attachment stream. in this example copy to a file
                         await using var file = File.Create($"{stream.Name}.txt");
-                        await stream.CopyToAsync(file, cancellation);
+                        await stream.CopyToAsync(file, cancel);
                     })
                 .ConfigureAwait(false);
         }
@@ -55,11 +55,11 @@ public class Incoming
             var attachments = context.Attachments();
             await attachments.ProcessStreamsForMessage(
                     messageId: "theMessageId",
-                    action: async (stream, cancellation) =>
+                    action: async (stream, cancel) =>
                     {
                         // Use the attachment stream. in this example copy to a file
                         await using var file = File.Create($"{stream.Name}.txt");
-                        await stream.CopyToAsync(file, cancellation);
+                        await stream.CopyToAsync(file, cancel);
                     })
                 .ConfigureAwait(false);
         }

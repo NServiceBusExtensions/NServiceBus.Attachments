@@ -7,11 +7,11 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual void CleanupItemsOlderThan(DateTime dateTime, Cancellation cancellation = default)
+    public virtual void CleanupItemsOlderThan(DateTime dateTime, Cancellation cancel = default)
     {
         foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))
         {
-            if (cancellation.IsCancellationRequested)
+            if (cancel.IsCancellationRequested)
             {
                 return;
             }
@@ -25,11 +25,11 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual void PurgeItems(Cancellation cancellation = default)
+    public virtual void PurgeItems(Cancellation cancel = default)
     {
         foreach (var expiryFile in Directory.EnumerateFiles(fileShare, "*.expiry", SearchOption.AllDirectories))
         {
-            if (cancellation.IsCancellationRequested)
+            if (cancel.IsCancellationRequested)
             {
                 return;
             }

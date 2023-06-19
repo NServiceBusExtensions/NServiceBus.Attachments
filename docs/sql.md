@@ -28,12 +28,12 @@ configuration.EnableAttachments(
 <a id='snippet-enableattachments-1'></a>
 ```cs
 configuration.EnableAttachments(
-    connectionFactory: async cancellation =>
+    connectionFactory: async cancel =>
     {
         var connection = new SqlConnection(connectionString);
         try
         {
-            await connection.OpenAsync(cancellation).ConfigureAwait(false);
+            await connection.OpenAsync(cancel).ConfigureAwait(false);
             return connection;
         }
         catch
@@ -55,12 +55,12 @@ Extract out the connection factory to a helper method
 <!-- snippet: OpenConnection -->
 <a id='snippet-openconnection'></a>
 ```cs
-async Task<SqlConnection> OpenConnection(Cancellation cancellation)
+async Task<SqlConnection> OpenConnection(Cancellation cancel)
 {
     var connection = new SqlConnection(connectionString);
     try
     {
-        await connection.OpenAsync(cancellation).ConfigureAwait(false);
+        await connection.OpenAsync(cancel).ConfigureAwait(false);
         return connection;
     }
     catch
@@ -459,11 +459,11 @@ class HandlerProcessStreams :
     {
         var attachments = context.Attachments();
         return attachments.ProcessStreams(
-            action: async (stream, cancellation) =>
+            action: async (stream, cancel) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var file = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(file, cancellation);
+                await stream.CopyToAsync(file, cancel);
             });
     }
 }
@@ -478,11 +478,11 @@ class HandlerProcessStreams :
     {
         var attachments = context.Attachments();
         await attachments.ProcessStreams(
-                action: async (stream, cancellation) =>
+                action: async (stream, cancel) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file, cancellation);
+                    await stream.CopyToAsync(file, cancel);
                 })
             .ConfigureAwait(false);
     }
@@ -621,11 +621,11 @@ class HandlerProcessStreamsForMessage :
         var attachments = context.Attachments();
         return attachments.ProcessStreamsForMessage(
             messageId: "theMessageId",
-            action: async (stream, cancellation) =>
+            action: async (stream, cancel) =>
             {
                 // Use the attachment stream. in this example copy to a file
                 await using var toCopyTo = File.Create($"{stream.Name}.txt");
-                await stream.CopyToAsync(toCopyTo, cancellation);
+                await stream.CopyToAsync(toCopyTo, cancel);
             });
     }
 }
@@ -641,11 +641,11 @@ class HandlerProcessStreamsForMessage :
         var attachments = context.Attachments();
         await attachments.ProcessStreamsForMessage(
                 messageId: "theMessageId",
-                action: async (stream, cancellation) =>
+                action: async (stream, cancel) =>
                 {
                     // Use the attachment stream. in this example copy to a file
                     await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file, cancellation);
+                    await stream.CopyToAsync(file, cancel);
                 })
             .ConfigureAwait(false);
     }
@@ -777,7 +777,7 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(Cancellation cancellation = default)
+    public override Task<AttachmentBytes> GetBytes(Cancellation cancel = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -792,7 +792,7 @@ public class CustomMockMessageAttachments :
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(Cancellation cancellation = default)
+    public override Task<AttachmentBytes> GetBytes(Cancellation cancel = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));

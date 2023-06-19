@@ -9,16 +9,16 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
+    public virtual async Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId);
         Guard.AgainstNullOrEmpty(targetMessageId);
         using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(cancellation);
+        using var reader = await command.ExecuteReaderAsync(cancel);
         var names = new List<(Guid, string)>();
-        while (await reader.ReadAsync(cancellation))
+        while (await reader.ReadAsync(cancel))
         {
-            cancellation.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
             names.Add((reader.GetGuid(0), reader.GetString(1)));
         }
 
@@ -55,7 +55,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, string targetName, Cancellation cancellation = default)
+    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, string targetName, Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId);
         Guard.AgainstNullOrEmpty(targetMessageId);
@@ -63,18 +63,18 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
-        return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
+        return (Guid) (await command.ExecuteScalarAsync(cancel))!;
     }
 
     /// <inheritdoc />
-    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancellation = default)
+    public virtual async Task<Guid> Duplicate(string sourceMessageId, string name, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId);
         Guard.AgainstNullOrEmpty(targetMessageId);
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
         using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
-        return (Guid) (await command.ExecuteScalarAsync(cancellation))!;
+        return (Guid) (await command.ExecuteScalarAsync(cancel))!;
     }
 
     SqlCommand CreateGetDuplicateCommandWithRename(string sourceMessageId, string name, string targetMessageId, string targetName, SqlConnection connection, SqlTransaction? transaction)

@@ -32,10 +32,10 @@ public static class Connection
         return connection;
     }
 
-    public static async Task<SqlConnection> OpenAsyncConnection(Cancellation cancellation = default)
+    public static async Task<SqlConnection> OpenAsyncConnection(Cancellation cancel = default)
     {
         var connection = new SqlConnection(ConnectionString);
-        await connection.OpenAsync(cancellation);
+        await connection.OpenAsync(cancel);
         return connection;
     }
 

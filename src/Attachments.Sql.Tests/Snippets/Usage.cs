@@ -13,12 +13,12 @@ public class Usage
         #region EnableAttachments
 
         configuration.EnableAttachments(
-            connectionFactory: async cancellation =>
+            connectionFactory: async cancel =>
             {
                 var connection = new SqlConnection(connectionString);
                 try
                 {
-                    await connection.OpenAsync(cancellation).ConfigureAwait(false);
+                    await connection.OpenAsync(cancel).ConfigureAwait(false);
                     return connection;
                 }
                 catch
@@ -115,12 +115,12 @@ public class Usage
 
     #region OpenConnection
 
-    async Task<SqlConnection> OpenConnection(Cancellation cancellation)
+    async Task<SqlConnection> OpenConnection(Cancellation cancel)
     {
         var connection = new SqlConnection(connectionString);
         try
         {
-            await connection.OpenAsync(cancellation).ConfigureAwait(false);
+            await connection.OpenAsync(cancel).ConfigureAwait(false);
             return connection;
         }
         catch

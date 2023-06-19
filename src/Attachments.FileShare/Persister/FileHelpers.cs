@@ -32,10 +32,10 @@ static class FileHelpers
             bufferSize: bufferSize,
             options: fileOptions);
 
-    public static async Task CopyTo(Stream target, Cancellation cancellation, string dataFile)
+    public static async Task CopyTo(Stream target, Cancellation cancel, string dataFile)
     {
         await using var fileStream = OpenRead(dataFile);
-        await fileStream.CopyToAsync(target, bufferSize, cancellation);
+        await fileStream.CopyToAsync(target, bufferSize, cancel);
     }
 
     public static void Copy(string sourceDirectory, string targetDirectory) =>
@@ -59,11 +59,11 @@ static class FileHelpers
         }
     }
 
-    public static async Task<byte[]> ReadBytes(Cancellation cancellation, string dataFile)
+    public static async Task<byte[]> ReadBytes(Cancellation cancel, string dataFile)
     {
         await using var fileStream = OpenRead(dataFile);
         var bytes = new byte[fileStream.Length];
-        await fileStream.ReadAsync(bytes, 0, (int) fileStream.Length, cancellation);
+        await fileStream.ReadAsync(bytes, 0, (int) fileStream.Length, cancel);
         return bytes;
     }
 }

@@ -71,11 +71,11 @@ public class AttachmentStream :
     public override void Flush() =>
         inner.Flush();
 
-    public override Task FlushAsync(Cancellation cancellation) =>
-        inner.FlushAsync(cancellation);
+    public override Task FlushAsync(Cancellation cancel) =>
+        inner.FlushAsync(cancel);
 
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, Cancellation cancellation) =>
-        inner.ReadAsync(buffer, offset, count, cancellation);
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, Cancellation cancel) =>
+        inner.ReadAsync(buffer, offset, count, cancel);
 
     protected override void Dispose(bool disposing)
     {
@@ -108,11 +108,11 @@ public class AttachmentStream :
     public override void Write(ReadOnlySpan<byte> buffer) =>
         throw new NotImplementedException();
 
-    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, Cancellation cancellation = default) =>
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, Cancellation cancel = default) =>
         throw new NotImplementedException();
 
-    public override ValueTask<int> ReadAsync(Memory<byte> buffer, Cancellation cancellation = default) =>
-        inner.ReadAsync(buffer, cancellation);
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, Cancellation cancel = default) =>
+        inner.ReadAsync(buffer, cancel);
 
     public override int Read(Span<byte> buffer) =>
         inner.Read(buffer);
@@ -157,8 +157,8 @@ public class AttachmentStream :
         base.Close();
     }
 
-    public override Task CopyToAsync(Stream destination, int bufferSize, Cancellation cancellation) =>
-        inner.CopyToAsync(destination, bufferSize, cancellation);
+    public override Task CopyToAsync(Stream destination, int bufferSize, Cancellation cancel) =>
+        inner.CopyToAsync(destination, bufferSize, cancel);
 
     public override int EndRead(IAsyncResult asyncResult) =>
         inner.EndRead(asyncResult);
@@ -178,7 +178,7 @@ public class AttachmentStream :
     public override void Write(byte[] buffer, int offset, int count) =>
         throw new NotImplementedException();
 
-    public override Task WriteAsync(byte[] buffer, int offset, int count, Cancellation cancellation) =>
+    public override Task WriteAsync(byte[] buffer, int offset, int count, Cancellation cancel) =>
         throw new NotImplementedException();
 
     public override void WriteByte(byte value) =>

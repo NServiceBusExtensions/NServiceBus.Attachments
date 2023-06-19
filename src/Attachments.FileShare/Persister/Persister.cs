@@ -70,7 +70,7 @@ public partial class Persister :
         throw new($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
     }
 
-    static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory, Cancellation cancellation = default)
+    static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory, Cancellation cancel = default)
     {
         var metadataFile = GetMetadataFile(attachmentDirectory);
         if (!File.Exists(metadataFile))
@@ -79,7 +79,7 @@ public partial class Persister :
         }
 
         await using var stream = FileHelpers.OpenRead(metadataFile);
-        return await MetadataSerializer.Deserialize(stream, cancellation);
+        return await MetadataSerializer.Deserialize(stream, cancel);
     }
 
     static string GetMetadataFile(string attachmentDirectory) =>
@@ -88,7 +88,7 @@ public partial class Persister :
     static async Task WriteMetadata(
         string attachmentDirectory,
         IReadOnlyDictionary<string, string>? metadata,
-        Cancellation cancellation = default)
+        Cancellation cancel = default)
     {
         if (metadata is null)
         {
@@ -97,6 +97,6 @@ public partial class Persister :
 
         var metadataFile = GetMetadataFile(attachmentDirectory);
         await using var stream = FileHelpers.OpenWrite(metadataFile);
-        await MetadataSerializer.Serialize(stream, metadata, cancellation);
+        await MetadataSerializer.Serialize(stream, metadata, cancel);
     }
 }

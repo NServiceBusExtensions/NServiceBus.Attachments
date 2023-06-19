@@ -35,69 +35,69 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task CopyTo(string name, Stream target, Cancellation cancellation = default)
+    public virtual Task CopyTo(string name, Stream target, Cancellation cancel = default)
     {
         CopyCurrentMessageAttachmentToStream(name, target, null);
         return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public virtual Task CopyTo(Stream target, Cancellation cancellation = default) =>
-        CopyTo("default", target, cancellation);
+    public virtual Task CopyTo(Stream target, Cancellation cancel = default) =>
+        CopyTo("default", target, cancel);
 
     /// <inheritdoc />
-    public virtual Task ProcessStream(string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
-        InnerProcessStream(name, action, cancellation);
+    public virtual Task ProcessStream(string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+        InnerProcessStream(name, action, cancel);
 
     /// <inheritdoc />
-    public virtual Task ProcessStream(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
-        ProcessStream("default", action, cancellation);
+    public virtual Task ProcessStream(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+        ProcessStream("default", action, cancel);
 
     /// <inheritdoc />
-    public virtual async Task ProcessStreams(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default)
+    public virtual async Task ProcessStreams(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
     {
         foreach (var pair in currentAttachments)
         {
             using var attachmentStream = pair.Value.ToAttachmentStream();
-            await action(attachmentStream, cancellation);
+            await action(attachmentStream, cancel);
         }
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentString> GetString(Encoding? encoding, Cancellation cancellation = default) =>
-        GetString("default", encoding, cancellation);
+    public virtual Task<AttachmentString> GetString(Encoding? encoding, Cancellation cancel = default) =>
+        GetString("default", encoding, cancel);
 
     /// <inheritdoc />
-    public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, Cancellation cancellation = default)
+    public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, Cancellation cancel = default)
     {
         var attachment = GetCurrentMessageAttachment(name);
         return Task.FromResult(attachment.ToAttachmentString(encoding));
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentBytes> GetBytes(Cancellation cancellation = default) =>
-        GetBytes("default", cancellation);
+    public virtual Task<AttachmentBytes> GetBytes(Cancellation cancel = default) =>
+        GetBytes("default", cancel);
 
     /// <inheritdoc />
-    public virtual Task<MemoryStream> GetMemoryStream(Cancellation cancellation = default) =>
-        GetMemoryStream("default", cancellation);
+    public virtual Task<MemoryStream> GetMemoryStream(Cancellation cancel = default) =>
+        GetMemoryStream("default", cancel);
 
     /// <inheritdoc />
-    public virtual Task<AttachmentBytes> GetBytes(string name, Cancellation cancellation = default)
+    public virtual Task<AttachmentBytes> GetBytes(string name, Cancellation cancel = default)
     {
         var attachment = GetCurrentMessageAttachment(name);
         return Task.FromResult(attachment.ToAttachmentBytes());
     }
 
     /// <inheritdoc />
-    public virtual Task<MemoryStream> GetMemoryStream(string name, Cancellation cancellation = default)
+    public virtual Task<MemoryStream> GetMemoryStream(string name, Cancellation cancel = default)
     {
         var attachment = GetCurrentMessageAttachment(name);
         return Task.FromResult(new MemoryStream(attachment.ToAttachmentBytes()));
     }
 
     /// <inheritdoc />
-    public virtual Task CopyToForMessage(string messageId, string name, Stream target, Cancellation cancellation = default)
+    public virtual Task CopyToForMessage(string messageId, string name, Stream target, Cancellation cancel = default)
     {
         var attachment = GetAttachmentForMessage(messageId, name);
         using var writer = BuildWriter(target, null);
@@ -106,68 +106,68 @@ public partial class StubMessageAttachments :
     }
 
     /// <inheritdoc />
-    public virtual Task CopyToForMessage(string messageId, Stream target, Cancellation cancellation = default) =>
-        CopyToForMessage(messageId, "default", target, cancellation);
+    public virtual Task CopyToForMessage(string messageId, Stream target, Cancellation cancel = default) =>
+        CopyToForMessage(messageId, "default", target, cancel);
 
     /// <inheritdoc />
-    public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default)
+    public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
     {
         var attachment = GetAttachmentForMessage(messageId, name);
         using var attachmentStream = attachment.ToAttachmentStream();
-        await action(attachmentStream, cancellation);
+        await action(attachmentStream, cancel);
     }
 
     /// <inheritdoc />
-    public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default) =>
-        ProcessStreamForMessage("default", messageId, action, cancellation);
+    public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+        ProcessStreamForMessage("default", messageId, action, cancel);
 
     /// <inheritdoc />
-    public virtual async Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default)
+    public virtual async Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
     {
         foreach (var pair in GetAttachmentsForMessage(messageId))
         {
             var attachment = pair.Value;
             using var attachmentStream = attachment.ToAttachmentStream();
-            await action(attachmentStream, cancellation);
+            await action(attachmentStream, cancel);
         }
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, Cancellation cancellation = default) =>
-        GetBytesForMessage(messageId, "default", cancellation);
+    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, Cancellation cancel = default) =>
+        GetBytesForMessage(messageId, "default", cancel);
 
     /// <inheritdoc />
-    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, Cancellation cancellation = default) =>
-        GetMemoryStreamForMessage(messageId, "default", cancellation);
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, Cancellation cancel = default) =>
+        GetMemoryStreamForMessage(messageId, "default", cancel);
 
     /// <inheritdoc />
-    public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, Cancellation cancellation = default) =>
-        GetStringForMessage(messageId, "default", encoding, cancellation);
+    public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, Cancellation cancel = default) =>
+        GetStringForMessage(messageId, "default", encoding, cancel);
 
-    /// <param name="cancellation"></param>
+    /// <param name="cancel"></param>
     /// <inheritdoc />
-    public IAsyncEnumerable<AttachmentInfo> GetMetadata(Cancellation cancellation = default)
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(Cancellation cancel = default)
     {
         var infos = currentAttachments.Select(_ => new AttachmentInfo(messageId, _.Key, _.Value.Expiry, _.Value.Metadata));
         return new AsyncEnumerable<AttachmentInfo>(infos);
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, Cancellation cancellation = default)
+    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, Cancellation cancel = default)
     {
         var attachment = GetAttachmentForMessage(messageId, name);
         return Task.FromResult(attachment.ToAttachmentBytes());
     }
 
     /// <inheritdoc />
-    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, Cancellation cancellation = default)
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, Cancellation cancel = default)
     {
         var attachment = GetAttachmentForMessage(messageId, name);
         return Task.FromResult(new MemoryStream(attachment.ToAttachmentBytes()));
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, Cancellation cancellation = default)
+    public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, Cancellation cancel = default)
     {
         var attachment = GetAttachmentForMessage(messageId, name);
         return Task.FromResult(attachment.ToAttachmentString(encoding));
@@ -224,16 +224,16 @@ public partial class StubMessageAttachments :
 
     static BinaryWriter BuildWriter(Stream target, Encoding? encoding) => new(target, encoding.Default(), leaveOpen: true);
 
-    Task InnerProcessStream(string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancellation = default)
+    Task InnerProcessStream(string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
     {
         var attachment = GetCurrentMessageAttachment(name);
         using var attachmentStream = attachment.ToAttachmentStream();
-        return action(attachmentStream, cancellation);
+        return action(attachmentStream, cancel);
     }
 
-    Task InnerProcessByteArray(string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancellation = default)
+    Task InnerProcessByteArray(string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default)
     {
         var attachment = GetCurrentMessageAttachment(name);
-        return action(attachment.ToAttachmentBytes(), cancellation);
+        return action(attachment.ToAttachmentBytes(), cancel);
     }
 }

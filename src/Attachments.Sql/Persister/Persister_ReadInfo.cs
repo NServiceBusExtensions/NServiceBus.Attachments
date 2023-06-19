@@ -10,20 +10,20 @@ public partial class Persister
 {
     //TODO: remove?
     /// <inheritdoc />
-    public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancellation = default)
+    public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteReaderAsync(cancellation);
-        while (await reader.ReadAsync(cancellation))
+        using var reader = await command.ExecuteReaderAsync(cancel);
+        while (await reader.ReadAsync(cancel))
         {
-            cancellation.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
             var info = new AttachmentInfo(
                 messageId: messageId,
                 name: reader.GetString(1),
                 expiry: reader.GetDateTime(2),
                 metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
-            await action(info, cancellation);
+            await action(info, cancel);
         }
     }
 
@@ -32,14 +32,14 @@ public partial class Persister
         SqlConnection connection,
         SqlTransaction? transaction,
         string messageId,
-        [EnumeratorCancellation] Cancellation cancellation = default)
+        [EnumeratorCancellation] Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteReaderAsync(cancellation);
-        while (await reader.ReadAsync(cancellation))
+        using var reader = await command.ExecuteReaderAsync(cancel);
+        while (await reader.ReadAsync(cancel))
         {
-            cancellation.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
             yield return (reader.GetGuid(0), reader.GetString(1));
         }
     }
@@ -49,14 +49,14 @@ public partial class Persister
         SqlConnection connection,
         SqlTransaction? transaction,
         string messageId,
-        [EnumeratorCancellation] Cancellation cancellation = default)
+        [EnumeratorCancellation] Cancellation cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteReaderAsync(cancellation);
-        while (await reader.ReadAsync(cancellation))
+        using var reader = await command.ExecuteReaderAsync(cancel);
+        while (await reader.ReadAsync(cancel))
         {
-            cancellation.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
             yield return new(
                 messageId: messageId,
                 name: reader.GetString(1),
@@ -66,24 +66,24 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancellation = default)
+    public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Cancellation, Task> action, Cancellation cancel = default)
     {
         using var command = GetReadInfosCommand(connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(cancellation);
-        while (await reader.ReadAsync(cancellation))
+        using var reader = await command.ExecuteReaderAsync(cancel);
+        while (await reader.ReadAsync(cancel))
         {
-            cancellation.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
             var info = new AttachmentInfo(
                 messageId: reader.GetString(1),
                 name: reader.GetString(2),
                 expiry: reader.GetDateTime(3),
                 metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
-            await action(info, cancellation);
+            await action(info, cancel);
         }
     }
 
     /// <inheritdoc />
-    public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Cancellation cancellation = default)
+    public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Cancellation cancel = default)
     {
         var list = new ConcurrentBag<AttachmentInfo>();
         await ReadAllInfo(
@@ -94,7 +94,7 @@ public partial class Persister
                 list.Add(info);
                 return Task.CompletedTask;
             },
-            cancellation);
+            cancel);
         return list;
     }
 

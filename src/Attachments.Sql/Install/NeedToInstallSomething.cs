@@ -10,14 +10,14 @@ class NeedToInstallSomething :
     public NeedToInstallSomething(IReadOnlySettings settings) =>
         this.settings = settings.GetOrDefault<AttachmentSettings?>();
 
-    public async Task Install(string identity, Cancellation cancellation = default)
+    public async Task Install(string identity, Cancellation cancel = default)
     {
         if (settings == null || settings.InstallerDisabled)
         {
             return;
         }
 
-        using var connection = await settings.ConnectionFactory(cancellation);
-        await Installer.CreateTable(connection, settings.Table, cancellation);
+        using var connection = await settings.ConnectionFactory(cancel);
+        await Installer.CreateTable(connection, settings.Table, cancel);
     }
 }

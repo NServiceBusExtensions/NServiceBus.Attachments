@@ -65,8 +65,8 @@
     class FakeTimer :
         IAsyncTimer
     {
-        public Task Tick(DateTime utcTime, Cancellation cancellation) =>
-            callback(utcTime, cancellation);
+        public Task Tick(DateTime utcTime, Cancellation cancel) =>
+            callback(utcTime, cancel);
 
         public void OnError(Exception error) =>
             errorCallback(error);

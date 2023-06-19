@@ -35,11 +35,11 @@ class SqlAttachmentState
         Persister = persister;
     }
 
-    public Task<SqlConnection> GetConnection(Cancellation cancellation)
+    public Task<SqlConnection> GetConnection(Cancellation cancel)
     {
         try
         {
-            return connectionFactory!(cancellation);
+            return connectionFactory!(cancel);
         }
         catch (Exception exception)
         {

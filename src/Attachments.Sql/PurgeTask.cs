@@ -16,13 +16,13 @@ class PurgeTask :
         this.connectionFactory = connectionFactory;
     }
 
-    protected override async Task OnStart(IMessageSession session, Cancellation cancellation = default)
+    protected override async Task OnStart(IMessageSession session, Cancellation cancel = default)
     {
-        using var connection = await connectionFactory(cancellation);
+        using var connection = await connectionFactory(cancel);
         var count = await persister.PurgeItems(connection, null, Cancellation.None);
         log.DebugFormat($"Deleted {count} attachments");
     }
 
-    protected override Task OnStop(IMessageSession session, Cancellation cancellation = default) =>
+    protected override Task OnStop(IMessageSession session, Cancellation cancel = default) =>
         Task.CompletedTask;
 }
