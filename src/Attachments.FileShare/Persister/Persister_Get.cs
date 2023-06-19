@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, Cancellation cancel = default)
+    public virtual async Task<AttachmentBytes> GetBytes(string messageId, string name, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -20,7 +20,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, Cancellation cancel = default)
+    public virtual async Task<MemoryStream> GetMemoryStream(string messageId, string name, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -32,7 +32,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, Cancellation cancel = default)
+    public virtual async Task<AttachmentString> GetString(string messageId, string name, Encoding? encoding, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -46,7 +46,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task<AttachmentStream> GetStream(string messageId, string name, Cancellation cancel = default)
+    public virtual Task<AttachmentStream> GetStream(string messageId, string name, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -54,7 +54,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, [EnumeratorCancellation] Cancellation cancel = default)
+    public virtual async IAsyncEnumerable<AttachmentBytes> GetBytes(string messageId, [EnumeratorCancellation] Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
@@ -71,7 +71,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, Encoding? encoding = null, [EnumeratorCancellation] Cancellation cancel = default)
+    public virtual async IAsyncEnumerable<AttachmentString> GetStrings(string messageId, Encoding? encoding = null, [EnumeratorCancellation] Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
@@ -89,7 +89,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, [EnumeratorCancellation] Cancellation cancel = default)
+    public virtual async IAsyncEnumerable<AttachmentStream> GetStreams(string messageId, [EnumeratorCancellation] Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
@@ -108,7 +108,7 @@ public partial class Persister
     async Task<AttachmentStream> OpenAttachmentStream(
         string messageId,
         string name,
-        Cancellation cancel = default)
+        Cancel cancel = default)
     {
         var attachmentDirectory = GetAttachmentDirectory(messageId, name);
         var dataFile = GetDataFile(attachmentDirectory);

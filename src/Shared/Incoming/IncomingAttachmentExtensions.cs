@@ -22,7 +22,7 @@ public static class IncomingAttachmentExtensions
         this IMessageAttachments attachments,
         string directory,
         string? nameForDefault = default,
-        Cancellation cancel = default)
+        Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(directory);
         Guard.AgainstEmpty(nameForDefault);

@@ -9,7 +9,7 @@ public partial class Persister
 {
     /// <inheritdoc />
     public virtual async IAsyncEnumerable<AttachmentInfo> ReadAllInfo(
-        [EnumeratorCancellation] Cancellation cancel = default)
+        [EnumeratorCancellation] Cancel cancel = default)
     {
         foreach (var messageDirectory in Directory.EnumerateDirectories(fileShare))
         {
@@ -36,7 +36,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual IAsyncEnumerable<AttachmentInfo> ReadAllMessageInfo(
         string messageId,
-        Cancellation cancel = default)
+        Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
@@ -46,7 +46,7 @@ public partial class Persister
     async IAsyncEnumerable<AttachmentInfo> ReadMessageInfo(
         string messageDirectory,
         string messageId,
-        [EnumeratorCancellation] Cancellation cancel = default)
+        [EnumeratorCancellation] Cancel cancel = default)
     {
         foreach (var attachmentDirectory in Directory.EnumerateDirectories(messageDirectory))
         {

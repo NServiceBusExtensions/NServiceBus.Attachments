@@ -4,7 +4,7 @@ using NServiceBus.Attachments.Sql;
 
 class SqlAttachmentState
 {
-    Func<Cancellation, Task<SqlConnection>>? connectionFactory;
+    Func<Cancel, Task<SqlConnection>>? connectionFactory;
     public IPersister Persister;
     public Transaction? Transaction;
     public SqlTransaction? SqlTransaction;
@@ -22,20 +22,20 @@ class SqlAttachmentState
         Persister = persister;
     }
 
-    public SqlAttachmentState(Transaction transaction, Func<Cancellation, Task<SqlConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Transaction transaction, Func<Cancel, Task<SqlConnection>> connectionFactory, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         Transaction = transaction;
         Persister = persister;
     }
 
-    public SqlAttachmentState(Func<Cancellation, Task<SqlConnection>> connectionFactory, IPersister persister)
+    public SqlAttachmentState(Func<Cancel, Task<SqlConnection>> connectionFactory, IPersister persister)
     {
         this.connectionFactory = connectionFactory;
         Persister = persister;
     }
 
-    public Task<SqlConnection> GetConnection(Cancellation cancel)
+    public Task<SqlConnection> GetConnection(Cancel cancel)
     {
         try
         {

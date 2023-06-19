@@ -5,8 +5,8 @@ class Cleaner :
     FeatureStartupTask
 {
     public Cleaner(
-        Func<Cancellation, Task> cleanup,
-        Action<string, Exception, Cancellation> criticalError,
+        Func<Cancel, Task> cleanup,
+        Action<string, Exception, Cancel> criticalError,
         TimeSpan frequencyToRunCleanup,
         IAsyncTimer timer)
     {
@@ -16,7 +16,7 @@ class Cleaner :
         this.criticalError = criticalError;
     }
 
-    protected override Task OnStart(IMessageSession? session, Cancellation cancel = default)
+    protected override Task OnStart(IMessageSession? session, Cancel cancel = default)
     {
         var cleanupFailures = 0;
         timer.Start(
@@ -40,12 +40,12 @@ class Cleaner :
         return Task.CompletedTask;
     }
 
-    protected override Task OnStop(IMessageSession session, Cancellation cancel = default) =>
+    protected override Task OnStop(IMessageSession session, Cancel cancel = default) =>
         timer.Stop();
 
     IAsyncTimer timer;
-    Action<string, Exception, Cancellation> criticalError;
-    Func<Cancellation, Task> cleanup;
+    Action<string, Exception, Cancel> criticalError;
+    Func<Cancel, Task> cleanup;
     TimeSpan frequencyToRunCleanup;
 
     static ILog log = LogManager.GetLogger<Cleaner>();

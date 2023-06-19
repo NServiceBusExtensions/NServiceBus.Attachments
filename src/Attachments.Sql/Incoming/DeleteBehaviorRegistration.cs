@@ -5,7 +5,7 @@ using NServiceBus.Pipeline;
 class DeleteBehaviorRegistration :
     RegisterStep
 {
-    public DeleteBehaviorRegistration(Func<Cancellation, Task<SqlConnection>> connectionBuilder, IPersister persister)
+    public DeleteBehaviorRegistration(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersister persister)
         : base(
             stepId: $"{AssemblyHelper.Name}DeleteBehavior",
             behavior: typeof(DeleteBehavior),

@@ -5,11 +5,11 @@ using NServiceBus.Pipeline;
 class SendBehavior :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    Func<Cancellation, Task<SqlConnection>> connectionFactory;
+    Func<Cancel, Task<SqlConnection>> connectionFactory;
     IPersister persister;
     GetTimeToKeep endpointTimeToKeep;
 
-    public SendBehavior(Func<Cancellation, Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
+    public SendBehavior(Func<Cancel, Task<SqlConnection>> connectionFactory, IPersister persister, GetTimeToKeep timeToKeep)
     {
         this.connectionFactory = connectionFactory;
         this.persister = persister;

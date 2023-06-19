@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
+    public virtual async Task ProcessStreams(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
@@ -27,7 +27,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
+    public virtual async Task ProcessStream(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -47,7 +47,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ProcessByteArrays(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default)
+    public virtual async Task ProcessByteArrays(string messageId, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         using var command = CreateGetDatasCommand(messageId, connection, transaction);
@@ -64,7 +64,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ProcessByteArray(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default)
+    public virtual async Task ProcessByteArray(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);

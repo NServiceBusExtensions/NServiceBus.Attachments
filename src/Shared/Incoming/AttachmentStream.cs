@@ -71,10 +71,10 @@ public class AttachmentStream :
     public override void Flush() =>
         inner.Flush();
 
-    public override Task FlushAsync(Cancellation cancel) =>
+    public override Task FlushAsync(Cancel cancel) =>
         inner.FlushAsync(cancel);
 
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, Cancellation cancel) =>
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, Cancel cancel) =>
         inner.ReadAsync(buffer, offset, count, cancel);
 
     protected override void Dispose(bool disposing)
@@ -108,10 +108,10 @@ public class AttachmentStream :
     public override void Write(ReadOnlySpan<byte> buffer) =>
         throw new NotImplementedException();
 
-    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, Cancellation cancel = default) =>
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, Cancel cancel = default) =>
         throw new NotImplementedException();
 
-    public override ValueTask<int> ReadAsync(Memory<byte> buffer, Cancellation cancel = default) =>
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, Cancel cancel = default) =>
         inner.ReadAsync(buffer, cancel);
 
     public override int Read(Span<byte> buffer) =>
@@ -157,7 +157,7 @@ public class AttachmentStream :
         base.Close();
     }
 
-    public override Task CopyToAsync(Stream destination, int bufferSize, Cancellation cancel) =>
+    public override Task CopyToAsync(Stream destination, int bufferSize, Cancel cancel) =>
         inner.CopyToAsync(destination, bufferSize, cancel);
 
     public override int EndRead(IAsyncResult asyncResult) =>
@@ -178,7 +178,7 @@ public class AttachmentStream :
     public override void Write(byte[] buffer, int offset, int count) =>
         throw new NotImplementedException();
 
-    public override Task WriteAsync(byte[] buffer, int offset, int count, Cancellation cancel) =>
+    public override Task WriteAsync(byte[] buffer, int offset, int count, Cancel cancel) =>
         throw new NotImplementedException();
 
     public override void WriteByte(byte value) =>

@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual Task<Guid> SaveStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
+    public virtual Task<Guid> SaveStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -19,7 +19,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task<Guid> SaveBytes(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
+    public virtual Task<Guid> SaveBytes(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -28,7 +28,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task<Guid> SaveString(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
+    public virtual Task<Guid> SaveString(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -38,7 +38,7 @@ public partial class Persister
         return Save(connection, transaction, messageId, name, expiry, value.ToBytes(encoding), dictionary, cancel);
     }
 
-    async Task<Guid> Save(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
+    async Task<Guid> Save(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, object stream, IReadOnlyDictionary<string, string>? metadata = null, Cancel cancel = default)
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;

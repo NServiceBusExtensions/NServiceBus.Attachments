@@ -115,7 +115,7 @@ public class Usage
 
     #region OpenConnection
 
-    async Task<SqlConnection> OpenConnection(Cancellation cancel)
+    async Task<SqlConnection> OpenConnection(Cancel cancel)
     {
         var connection = new SqlConnection(connectionString);
         try

@@ -7,13 +7,13 @@ using NServiceBus.Transport;
 class ReceiveBehavior :
     Behavior<IInvokeHandlerContext>
 {
-    Func<Cancellation, Task<SqlConnection>> connectionBuilder;
+    Func<Cancel, Task<SqlConnection>> connectionBuilder;
     IPersister persister;
     bool useTransport;
     bool useSynchronizedStorage;
     StorageAccessor storageAccessor;
 
-    public ReceiveBehavior(Func<Cancellation, Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
+    public ReceiveBehavior(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;

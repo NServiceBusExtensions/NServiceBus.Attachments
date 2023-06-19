@@ -9,10 +9,10 @@ class DeleteBehavior :
     Behavior<IIncomingPhysicalMessageContext>
 {
     static ILog log = LogManager.GetLogger("AttachmentDeleteBehavior");
-    Func<Cancellation, Task<SqlConnection>> connectionBuilder;
+    Func<Cancel, Task<SqlConnection>> connectionBuilder;
     IPersister persister;
 
-    public DeleteBehavior(Func<Cancellation, Task<SqlConnection>> connectionBuilder, IPersister persister)
+    public DeleteBehavior(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersister persister)
     {
         this.connectionBuilder = connectionBuilder;
         this.persister = persister;

@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual Task CopyTo(string messageId, string name, Stream target, Cancellation cancel = default)
+    public virtual Task CopyTo(string messageId, string name, Stream target, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);

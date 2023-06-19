@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
+    public virtual async Task ProcessStreams(string messageId, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         var messageDirectory = GetMessageDirectory(messageId);
@@ -25,7 +25,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task ProcessStream(string messageId, string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default)
+    public virtual async Task ProcessStream(string messageId, string name, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);

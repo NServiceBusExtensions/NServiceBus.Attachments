@@ -8,7 +8,7 @@
     public AsyncEnumerable(IEnumerable<T> inner) =>
         this.inner = inner.GetEnumerator();
 
-    public IAsyncEnumerator<T> GetAsyncEnumerator(Cancellation cancel = default) =>
+    public IAsyncEnumerator<T> GetAsyncEnumerator(Cancel cancel = default) =>
         this;
 
     public ValueTask DisposeAsync()

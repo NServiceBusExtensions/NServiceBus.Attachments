@@ -55,7 +55,7 @@ Extract out the connection factory to a helper method
 <!-- snippet: OpenConnection -->
 <a id='snippet-openconnection'></a>
 ```cs
-async Task<SqlConnection> OpenConnection(Cancellation cancel)
+async Task<SqlConnection> OpenConnection(Cancel cancel)
 {
     var connection = new SqlConnection(connectionString);
     try
@@ -777,7 +777,7 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(Cancellation cancel = default)
+    public override Task<AttachmentBytes> GetBytes(Cancel cancel = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -792,7 +792,7 @@ public class CustomMockMessageAttachments :
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(Cancellation cancel = default)
+    public override Task<AttachmentBytes> GetBytes(Cancel cancel = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));

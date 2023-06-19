@@ -644,7 +644,7 @@ There is a default implementation of `IMessageAttachments` named  `MockMessageAt
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(Cancellation cancel = default)
+    public override Task<AttachmentBytes> GetBytes(Cancel cancel = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));
@@ -659,7 +659,7 @@ public class CustomMockMessageAttachments :
 public class CustomMockMessageAttachments :
     MockMessageAttachments
 {
-    public override Task<AttachmentBytes> GetBytes(Cancellation cancel = default)
+    public override Task<AttachmentBytes> GetBytes(Cancel cancel = default)
     {
         GetBytesWasCalled = true;
         return Task.FromResult(new AttachmentBytes("name", new byte[] {5}));

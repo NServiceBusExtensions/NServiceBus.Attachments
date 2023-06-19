@@ -80,7 +80,7 @@ class SendBehavior :
         context.Headers.Add("Attachments", string.Join(", ", attachmentNames));
     }
 
-    async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata, Cancellation cancel)
+    async Task ProcessStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata, Cancel cancel)
     {
         await using (stream)
         {
@@ -103,7 +103,7 @@ class SendBehavior :
         }
     }
 
-    async Task Process(string messageId, Outgoing outgoing, string name, DateTime expiry, Cancellation cancel = default)
+    async Task Process(string messageId, Outgoing outgoing, string name, DateTime expiry, Cancel cancel = default)
     {
         if (outgoing.AsyncStreamFactory is not null)
         {

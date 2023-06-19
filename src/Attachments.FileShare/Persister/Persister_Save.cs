@@ -7,7 +7,7 @@
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
+    public virtual Task SaveStream(string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata = null, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -16,7 +16,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
+    public virtual Task SaveBytes(string messageId, string name, DateTime expiry, byte[] bytes, IReadOnlyDictionary<string, string>? metadata = null, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -24,7 +24,7 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual Task SaveString(string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancellation cancel = default)
+    public virtual Task SaveString(string messageId, string name, DateTime expiry, string value, Encoding? encoding = null, IReadOnlyDictionary<string, string>? metadata = null, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -48,8 +48,8 @@ public partial class Persister
         string? name,
         DateTime expiry,
         IReadOnlyDictionary<string, string>? metadata,
-        Func<FileStream, Cancellation, Task> action,
-        Cancellation cancel = default)
+        Func<FileStream, Cancel, Task> action,
+        Cancel cancel = default)
     {
         name ??= "default";
 

@@ -8,50 +8,50 @@ public partial interface IMessageAttachments
     /// <summary>
     /// Get a <see cref="Stream" />, for the current message, the attachment with the default name of <see cref="string.Empty" />.
     /// </summary>
-    Task<AttachmentStream> GetStream(Cancellation cancel = default);
+    Task<AttachmentStream> GetStream(Cancel cancel = default);
 
     /// <summary>
     /// Get a <see cref="Stream" />, for the current message, the attachment of <paramref name="name" />.
     /// </summary>
-    Task<AttachmentStream> GetStream(string name, Cancellation cancel = default);
+    Task<AttachmentStream> GetStream(string name, Cancel cancel = default);
 
     /// <summary>
     /// Get a <see cref="Stream" />, for the message with <paramref name="messageId" />, the attachment with the default name of <see cref="string.Empty" />.
     /// </summary>
-    Task<AttachmentStream> GetStreamForMessage(string messageId, Cancellation cancel = default);
+    Task<AttachmentStream> GetStreamForMessage(string messageId, Cancel cancel = default);
 
     /// <summary>
     /// Get a <see cref="Stream" />, for the message with <paramref name="messageId" />, the attachment of <paramref name="name" />.
     /// </summary>
-    Task<AttachmentStream> GetStreamForMessage(string messageId, string name, Cancellation cancel = default);
+    Task<AttachmentStream> GetStreamForMessage(string messageId, string name, Cancel cancel = default);
 
     /// <summary>
     /// Process with the delegate <paramref name="action"/>, for the current message, the attachment of <paramref name="name"/>.
     /// </summary>
-    Task ProcessByteArray(string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default);
+    Task ProcessByteArray(string name, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default);
 
     /// <summary>
     /// Process with the delegate <paramref name="action"/>, the attachment with the default name of <see cref="string.Empty"/>.
     /// </summary>
-    Task ProcessByteArray(Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default);
+    Task ProcessByteArray(Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default);
 
     /// <summary>
     /// Process with the delegate <paramref name="action"/>, all attachments for the current message.
     /// </summary>
-    Task ProcessByteArrays(Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default);
+    Task ProcessByteArrays(Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default);
 
     /// <summary>
     /// Process with the delegate <paramref name="action"/>, for the message with <paramref name="messageId"/>, the attachment of <paramref name="name"/>.
     /// </summary>
-    Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default);
+    Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default);
 
     /// <summary>
     /// Process with the delegate <paramref name="action"/>, for the message with <paramref name="messageId"/>, the attachment with the default name of <see cref="string.Empty"/>.
     /// </summary>
-    Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default);
+    Task ProcessByteArrayForMessage(string messageId, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default);
 
     /// <summary>
     /// Process with the delegate <paramref name="action"/>, all attachments for the message with <paramref name="messageId"/>.
     /// </summary>
-    Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Cancellation, Task> action, Cancellation cancel = default);
+    Task ProcessByteArraysForMessage(string messageId, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default);
 }

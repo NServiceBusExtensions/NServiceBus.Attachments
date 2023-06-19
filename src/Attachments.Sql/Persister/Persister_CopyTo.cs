@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Stream target, Cancellation cancel = default)
+    public virtual async Task CopyTo(string messageId, string name, SqlConnection connection, SqlTransaction? transaction, Stream target, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);

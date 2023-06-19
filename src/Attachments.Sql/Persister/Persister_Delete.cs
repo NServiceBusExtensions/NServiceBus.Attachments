@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<int> DeleteAllAttachments(SqlConnection connection, SqlTransaction? transaction, Cancellation cancel = default)
+    public virtual async Task<int> DeleteAllAttachments(SqlConnection connection, SqlTransaction? transaction, Cancel cancel = default)
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
@@ -20,7 +20,7 @@ public partial class Persister
         return (int) (await command.ExecuteScalarAsync(cancel))!;
     }
 
-    public virtual async Task<int> DeleteAttachments(string messageId, SqlConnection connection, SqlTransaction? transaction, Cancellation cancel = default)
+    public virtual async Task<int> DeleteAttachments(string messageId, SqlConnection connection, SqlTransaction? transaction, Cancel cancel = default)
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;

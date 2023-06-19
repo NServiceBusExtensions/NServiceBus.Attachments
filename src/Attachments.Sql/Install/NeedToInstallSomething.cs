@@ -10,7 +10,7 @@ class NeedToInstallSomething :
     public NeedToInstallSomething(IReadOnlySettings settings) =>
         this.settings = settings.GetOrDefault<AttachmentSettings?>();
 
-    public async Task Install(string identity, Cancellation cancel = default)
+    public async Task Install(string identity, Cancel cancel = default)
     {
         if (settings == null || settings.InstallerDisabled)
         {

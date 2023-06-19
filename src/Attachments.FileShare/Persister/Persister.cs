@@ -70,7 +70,7 @@ public partial class Persister :
         throw new($"Attachment already exists. MessageId:{messageId}, Name:{name}, Path:{path}");
     }
 
-    static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory, Cancellation cancel = default)
+    static async Task<IReadOnlyDictionary<string, string>> ReadMetadata(string attachmentDirectory, Cancel cancel = default)
     {
         var metadataFile = GetMetadataFile(attachmentDirectory);
         if (!File.Exists(metadataFile))
@@ -88,7 +88,7 @@ public partial class Persister :
     static async Task WriteMetadata(
         string attachmentDirectory,
         IReadOnlyDictionary<string, string>? metadata,
-        Cancellation cancel = default)
+        Cancel cancel = default)
     {
         if (metadata is null)
         {

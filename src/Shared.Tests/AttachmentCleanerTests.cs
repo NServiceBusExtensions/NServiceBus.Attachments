@@ -39,7 +39,7 @@
         {
             if (i % 9 == 0) //Succeed every 9th attempt
             {
-                await timer.Tick(DateTime.UtcNow, Cancellation.None);
+                await timer.Tick(DateTime.UtcNow, Cancel.None);
             }
             else
             {
@@ -53,7 +53,7 @@
     class TestableCleaner :
         Cleaner
     {
-        public TestableCleaner(Func<Cancellation, Task> cleanup, Action<string, Exception, Cancellation> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
+        public TestableCleaner(Func<Cancel, Task> cleanup, Action<string, Exception, Cancel> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
             : base(cleanup, criticalError, frequencyToRunCleanup, timer)
         {
         }
@@ -65,13 +65,13 @@
     class FakeTimer :
         IAsyncTimer
     {
-        public Task Tick(DateTime utcTime, Cancellation cancel) =>
+        public Task Tick(DateTime utcTime, Cancel cancel) =>
             callback(utcTime, cancel);
 
         public void OnError(Exception error) =>
             errorCallback(error);
 
-        public void Start(Func<DateTime, Cancellation, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, Cancellation, Task> delayStrategy)
+        public void Start(Func<DateTime, Cancel, Task> callback, TimeSpan interval, Action<Exception> errorCallback, Func<TimeSpan, Cancel, Task> delayStrategy)
         {
             this.callback = callback;
             this.errorCallback = errorCallback;
@@ -80,7 +80,7 @@
         public Task Stop() =>
             Task.CompletedTask;
 
-        Func<DateTime, Cancellation, Task> callback = null!;
+        Func<DateTime, Cancel, Task> callback = null!;
         Action<Exception> errorCallback = null!;
     }
 }

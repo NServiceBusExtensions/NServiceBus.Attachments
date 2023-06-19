@@ -48,7 +48,7 @@ public static class SqlAttachmentsExtensions
     /// </summary>
     public static AttachmentSettings EnableAttachments(
         this EndpointConfiguration configuration,
-        Func<Cancellation, Task<SqlConnection>> connectionFactory,
+        Func<Cancel, Task<SqlConnection>> connectionFactory,
         GetTimeToKeep timeToKeep)
     {
         var settings = configuration.GetSettings();

@@ -17,143 +17,141 @@ namespace NServiceBus.Attachments
 public partial class MockMessageAttachments :
     IMessageAttachments
 {
-    public Cancellation Cancellation { get; }
-
     /// <summary>
-    /// <see cref="IMessageAttachments.CopyTo(string,Stream,Cancellation)"/>
+    /// <see cref="IMessageAttachments.CopyTo(string,Stream,Cancel)"/>
     /// </summary>
-    public virtual Task CopyTo(string name, Stream target, Cancellation cancel = default) =>
+    public virtual Task CopyTo(string name, Stream target, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.CopyTo(Stream,Cancellation)"/>
+    /// <see cref="IMessageAttachments.CopyTo(Stream,Cancel)"/>
     /// </summary>
-    public virtual Task CopyTo(Stream target, Cancellation cancel = default) =>
+    public virtual Task CopyTo(Stream target, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessStream(string,Func{AttachmentStream,Cancellation,Task},Cancellation)"/>
+    /// <see cref="IMessageAttachments.ProcessStream(string,Func{AttachmentStream,Cancel,Task},Cancel)"/>
     /// </summary>
-    public virtual Task ProcessStream(string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+    public virtual Task ProcessStream(string name, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessStream(Func{AttachmentStream,Cancellation,Task},Cancellation)"/>
+    /// <see cref="IMessageAttachments.ProcessStream(Func{AttachmentStream,Cancel,Task},Cancel)"/>
     /// </summary>
-    public virtual Task ProcessStream(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+    public virtual Task ProcessStream(Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
     /// <see cref="IMessageAttachments.ProcessStreams"/>
     /// </summary>
-    public virtual Task ProcessStreams(Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+    public virtual Task ProcessStreams(Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
     /// Read all attachment metadata for the current message.
     /// </summary>
-    public IAsyncEnumerable<AttachmentInfo> GetMetadata(Cancellation cancel = default) =>
+    public IAsyncEnumerable<AttachmentInfo> GetMetadata(Cancel cancel = default) =>
         new AsyncEnumerable<AttachmentInfo>();
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetBytes(Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetBytes(Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentBytes> GetBytes(Cancellation cancel = default) =>
+    public virtual Task<AttachmentBytes> GetBytes(Cancel cancel = default) =>
         Task.FromResult(AttachmentBytes.Empty);
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetMemoryStream(Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetMemoryStream(Cancel)"/>
     /// </summary>
-    public virtual Task<MemoryStream> GetMemoryStream(Cancellation cancel = default) =>
+    public virtual Task<MemoryStream> GetMemoryStream(Cancel cancel = default) =>
         Task.FromResult(new MemoryStream());
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetBytes(string,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetBytes(string,Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentBytes> GetBytes(string name, Cancellation cancel = default) =>
+    public virtual Task<AttachmentBytes> GetBytes(string name, Cancel cancel = default) =>
         Task.FromResult(AttachmentBytes.Empty);
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetMemoryStream(string,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetMemoryStream(string,Cancel)"/>
     /// </summary>
-    public virtual Task<MemoryStream> GetMemoryStream(string name, Cancellation cancel = default) =>
+    public virtual Task<MemoryStream> GetMemoryStream(string name, Cancel cancel = default) =>
         Task.FromResult(new MemoryStream());
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetString(Encoding,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetString(Encoding,Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentString> GetString(Encoding? encoding, Cancellation cancel = default) =>
+    public virtual Task<AttachmentString> GetString(Encoding? encoding, Cancel cancel = default) =>
         Task.FromResult(AttachmentString.Empty);
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetString(string,Encoding,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetString(string,Encoding,Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, Cancellation cancel = default) =>
+    public virtual Task<AttachmentString> GetString(string name, Encoding? encoding, Cancel cancel = default) =>
         Task.FromResult(AttachmentString.Empty);
 
     /// <summary>
-    /// <see cref="IMessageAttachments.CopyToForMessage(string,string,Stream,Cancellation)"/>
+    /// <see cref="IMessageAttachments.CopyToForMessage(string,string,Stream,Cancel)"/>
     /// </summary>
-    public virtual Task CopyToForMessage(string messageId, string name, Stream target, Cancellation cancel = default) =>
+    public virtual Task CopyToForMessage(string messageId, string name, Stream target, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.CopyToForMessage(string,Stream,Cancellation)"/>
+    /// <see cref="IMessageAttachments.CopyToForMessage(string,Stream,Cancel)"/>
     /// </summary>
-    public virtual Task CopyToForMessage(string messageId, Stream target, Cancellation cancel = default) =>
+    public virtual Task CopyToForMessage(string messageId, Stream target, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{AttachmentStream,Cancellation,Task},Cancellation)"/>
+    /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,string,Func{AttachmentStream,Cancel,Task},Cancel)"/>
     /// </summary>
-    public virtual Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+    public virtual Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{AttachmentStream,Cancellation,Task},Cancellation)"/>
+    /// <see cref="IMessageAttachments.ProcessStreamForMessage(string,Func{AttachmentStream,Cancel,Task},Cancel)"/>
     /// </summary>
-    public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+    public virtual Task ProcessStreamForMessage(string messageId, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{AttachmentStream,Cancellation,Task},Cancellation)"/>
+    /// <see cref="IMessageAttachments.ProcessStreamsForMessage(string,Func{AttachmentStream,Cancel,Task},Cancel)"/>
     /// </summary>
-    public virtual Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Cancellation, Task> action, Cancellation cancel = default) =>
+    public virtual Task ProcessStreamsForMessage(string messageId, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default) =>
         Task.CompletedTask;
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetBytesForMessage(string,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetBytesForMessage(string,Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, Cancellation cancel = default) =>
+    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, Cancel cancel = default) =>
         Task.FromResult(AttachmentBytes.Empty);
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetMemoryStreamForMessage(string,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetMemoryStreamForMessage(string,Cancel)"/>
     /// </summary>
-    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, Cancellation cancel = default) =>
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, Cancel cancel = default) =>
         Task.FromResult(new MemoryStream());
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetBytesForMessage(string,string,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetBytesForMessage(string,string,Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, Cancellation cancel = default) =>
+    public virtual Task<AttachmentBytes> GetBytesForMessage(string messageId, string name, Cancel cancel = default) =>
         Task.FromResult(AttachmentBytes.Empty);
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetMemoryStreamForMessage(string,string,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetMemoryStreamForMessage(string,string,Cancel)"/>
     /// </summary>
-    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, Cancellation cancel = default) =>
+    public virtual Task<MemoryStream> GetMemoryStreamForMessage(string messageId, string name, Cancel cancel = default) =>
         Task.FromResult(new MemoryStream());
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetStringForMessage(string,Encoding,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetStringForMessage(string,Encoding,Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, Cancellation cancel = default) =>
+    public virtual Task<AttachmentString> GetStringForMessage(string messageId, Encoding? encoding, Cancel cancel = default) =>
         Task.FromResult(AttachmentString.Empty);
 
     /// <summary>
-    /// <see cref="IMessageAttachments.GetStringForMessage(string,string,Encoding,Cancellation)"/>
+    /// <see cref="IMessageAttachments.GetStringForMessage(string,string,Encoding,Cancel)"/>
     /// </summary>
-    public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, Cancellation cancel = default) =>
+    public virtual Task<AttachmentString> GetStringForMessage(string messageId, string name, Encoding? encoding, Cancel cancel = default) =>
         Task.FromResult(AttachmentString.Empty);
 }
