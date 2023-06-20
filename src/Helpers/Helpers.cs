@@ -26,8 +26,8 @@
     public static void DisableRetries(this EndpointConfiguration configuration)
     {
         var recoverability = configuration.Recoverability();
-        recoverability.Immediate(x => x.NumberOfRetries(0));
-        recoverability.Delayed(x => x.NumberOfRetries(0));
+        recoverability.Immediate(_ => _.NumberOfRetries(0));
+        recoverability.Delayed(_ => _.NumberOfRetries(0));
     }
 
     public static byte[] Buffer = new byte[1000 * 10 * 1000];

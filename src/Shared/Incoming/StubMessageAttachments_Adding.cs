@@ -76,6 +76,6 @@ public partial class StubMessageAttachments
             return new Dictionary<string, string>();
         }
 
-        return metadata.ToDictionary(x => x.Key, x => x.Value);
+        return metadata.ToDictionary(_ => _.Key, _ => _.Value);
     }
 }
