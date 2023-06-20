@@ -1,6 +1,7 @@
 ﻿using NServiceBus.Attachments.Sql;
 using NServiceBus.Installation;
 using NServiceBus.Settings;
+using Installer = NServiceBus.Attachments.Sql.Installer;
 
 class NeedToInstallSomething :
     INeedToInstallSomething
