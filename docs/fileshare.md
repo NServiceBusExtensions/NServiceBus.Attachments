@@ -72,7 +72,7 @@ configuration.EnableAttachments(
 <!-- endSnippet -->
 
 
- <!-- include: attachments. path: /docs/mdsource/attachments.include.md -->
+<!-- include: attachments. path: /docs/mdsource/attachments.include.md -->
 
 ## Data Cleanup
 
