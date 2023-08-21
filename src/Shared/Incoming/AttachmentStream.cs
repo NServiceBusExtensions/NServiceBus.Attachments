@@ -145,7 +145,7 @@ public class AttachmentStream :
 
     public override long Seek(long offset, SeekOrigin origin)
     {
-        if (offset == 0)
+        if (offset == 0 && origin == SeekOrigin.Current)
         {
             return position;
         }
