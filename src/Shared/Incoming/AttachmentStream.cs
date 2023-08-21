@@ -28,6 +28,7 @@ public class AttachmentStream :
 
     Stream inner;
     IEnumerable<Func<ValueTask>>? cleanups;
+    long position;
 
     /// <summary>
     /// Initialises a new instance of <see cref="AttachmentStream"/>.
@@ -66,16 +67,20 @@ public class AttachmentStream :
     }
 
     public override void EndWrite(IAsyncResult asyncResult) =>
-        inner.EndWrite(asyncResult);
+        throw new NotImplementedException();
 
     public override void Flush() =>
-        inner.Flush();
+        throw new NotImplementedException();
 
     public override Task FlushAsync(Cancel cancel) =>
-        inner.FlushAsync(cancel);
+        throw new NotImplementedException();
 
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, Cancel cancel) =>
-        inner.ReadAsync(buffer, offset, count, cancel);
+    public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, Cancel cancel)
+    {
+        var bytesRead = await inner.ReadAsync(buffer, offset, count, cancel);
+        position += bytesRead;
+        return bytesRead;
+    }
 
     protected override void Dispose(bool disposing)
     {
@@ -111,24 +116,45 @@ public class AttachmentStream :
     public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, Cancel cancel = default) =>
         throw new NotImplementedException();
 
-    public override ValueTask<int> ReadAsync(Memory<byte> buffer, Cancel cancel = default) =>
-        inner.ReadAsync(buffer, cancel);
+    public override async ValueTask<int> ReadAsync(Memory<byte> buffer, Cancel cancel = default)
+    {
+        var bytesRead = await inner.ReadAsync(buffer,  cancel);
+        position += bytesRead;
+        return bytesRead;
+    }
 
-    public override int Read(Span<byte> buffer) =>
-        inner.Read(buffer);
+    public override int Read(Span<byte> buffer)
+    {
+        var bytesRead = inner.Read(buffer);
+        position += bytesRead;
+        return bytesRead;
+    }
 
-    public override void CopyTo(Stream destination, int bufferSize) =>
+    public override void CopyTo(Stream destination, int bufferSize)
+    {
+        position = Length;
         inner.CopyTo(destination, bufferSize);
+    }
 #endif
 
-    public override int ReadByte() =>
-        inner.ReadByte();
+    public override int ReadByte()
+    {
+        position++;
+        return inner.ReadByte();
+    }
 
-    public override long Seek(long offset, SeekOrigin origin) =>
-        inner.Seek(offset, origin);
+    public override long Seek(long offset, SeekOrigin origin)
+    {
+        position += offset;
+        return inner.Seek(offset, origin);
+    }
 
-    public override int Read(byte[] buffer, int offset, int count) =>
-        inner.Read(buffer, offset, count);
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        var bytesRead = inner.Read(buffer, offset, count);
+        position += bytesRead;
+        return bytesRead;
+    }
 
     public override bool CanRead => inner.CanRead;
     public override bool CanSeek => inner.CanSeek;
@@ -144,8 +170,16 @@ public class AttachmentStream :
 
     public override long Position
     {
-        get => inner.Position;
-        set => inner.Position = value;
+        get => position;
+        set
+        {
+            if (position == value)
+            {
+                return;
+            }
+
+            throw new NotImplementedException();
+        }
     }
 
     public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback? callback, object? state) =>
@@ -157,11 +191,18 @@ public class AttachmentStream :
         base.Close();
     }
 
-    public override Task CopyToAsync(Stream destination, int bufferSize, Cancel cancel) =>
-        inner.CopyToAsync(destination, bufferSize, cancel);
+    public override Task CopyToAsync(Stream destination, int bufferSize, Cancel cancel)
+    {
+        position = Length;
+        return inner.CopyToAsync(destination, bufferSize, cancel);
+    }
 
-    public override int EndRead(IAsyncResult asyncResult) =>
-        inner.EndRead(asyncResult);
+    public override int EndRead(IAsyncResult asyncResult)
+    {
+        var readBytes = inner.EndRead(asyncResult);
+        position += readBytes;
+        return readBytes;
+    }
 
     public override bool Equals(object? obj) =>
         inner.Equals(obj);
