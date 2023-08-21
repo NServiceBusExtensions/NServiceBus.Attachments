@@ -145,6 +145,11 @@ public class AttachmentStream :
 
     public override long Seek(long offset, SeekOrigin origin)
     {
+        if (offset == 0)
+        {
+            return position;
+        }
+
         var seek = inner.Seek(offset, origin);
         position = seek;
         return seek;
