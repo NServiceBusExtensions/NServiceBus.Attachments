@@ -145,8 +145,9 @@ public class AttachmentStream :
 
     public override long Seek(long offset, SeekOrigin origin)
     {
-        position += offset;
-        return inner.Seek(offset, origin);
+        var seek = inner.Seek(offset, origin);
+        position = seek;
+        return seek;
     }
 
     public override int Read(byte[] buffer, int offset, int count)
