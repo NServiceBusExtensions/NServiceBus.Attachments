@@ -101,7 +101,6 @@ public class PersisterTests
         Assert.Equal(2, count);
     }
 
-
     [Fact]
     public async Task GetMultipleStreams()
     {

@@ -49,7 +49,6 @@ public class AttachmentString :
         Metadata = metadata;
     }
 
-
     public static implicit operator string(AttachmentString d) =>
         d.Value;
 }

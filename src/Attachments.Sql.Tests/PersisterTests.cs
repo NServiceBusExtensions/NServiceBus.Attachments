@@ -89,7 +89,6 @@ public class PersisterTests
         Assert.Equal(1, count);
     }
 
-
     [Fact]
     public async Task ProcessByteArray()
     {
