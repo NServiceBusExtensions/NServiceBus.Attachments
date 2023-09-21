@@ -15,6 +15,8 @@ To change this file edit the source file and then run MarkdownSnippets.
 
 Adds a streaming based attachment functionality to [NServiceBus](https://docs.particular.net/nservicebus/).
 
+**See [Milestones](../../milestones?state=closed) for release notes.**
+
 <!--- StartOpenCollectiveBackers -->
 
 [Already a Patron? skip past this section](#endofbacking)
