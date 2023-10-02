@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.99" PrivateAssets="all" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.100" PrivateAssets="all" />
     <Compile Remove="IntegrationTests\**" Condition=" '$(Configuration)' == 'Release' " />
     <Using Include="NServiceBus.IMessageHandlerContext" Alias="HandlerContext" />
   </ItemGroup>
