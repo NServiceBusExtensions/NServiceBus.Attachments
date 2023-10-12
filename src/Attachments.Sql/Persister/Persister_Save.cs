@@ -42,7 +42,8 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             insert into {table}
             (
                 MessageId,

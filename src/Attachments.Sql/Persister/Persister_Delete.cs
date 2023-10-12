@@ -13,7 +13,8 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             delete from {table}
             select @@ROWCOUNT
             """;
@@ -24,7 +25,8 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             delete from {table} where MessageIdLower = lower(@MessageId)
             select @@ROWCOUNT
             """;

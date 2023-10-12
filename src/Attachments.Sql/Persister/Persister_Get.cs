@@ -161,7 +161,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             select
                 datalength(Data),
                 Metadata,
@@ -180,7 +181,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             select
                 Name,
                 datalength(Data),

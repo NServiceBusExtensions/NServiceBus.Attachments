@@ -102,7 +102,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             select
                 Id,
                 MessageId,
@@ -118,7 +119,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             select
                 Id,
                 Name
@@ -135,7 +137,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             select
                 Id,
                 Name,

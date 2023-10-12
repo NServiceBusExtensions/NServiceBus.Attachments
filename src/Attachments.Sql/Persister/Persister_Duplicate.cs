@@ -29,7 +29,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             insert into {table}
             (
                 MessageId,
@@ -81,7 +82,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             insert into {table}
             (
                 MessageId,
@@ -113,7 +115,8 @@ public partial class Persister
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             insert into {table}
             (
                 MessageId,

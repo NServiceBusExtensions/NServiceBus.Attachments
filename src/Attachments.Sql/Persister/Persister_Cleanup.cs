@@ -13,7 +13,8 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             delete from {table} where expiry < @date
             select @@ROWCOUNT
             """;
@@ -28,7 +29,8 @@ public partial class Persister
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = $"""
+        command.CommandText =
+            $"""
             if exists (
                 select * from sys.objects
                 where
@@ -36,9 +38,9 @@ public partial class Persister
                     and type in ('U')
             )
             begin
-            
+
             delete from {table}
-            
+
             end
             select @@ROWCOUNT
             """;
