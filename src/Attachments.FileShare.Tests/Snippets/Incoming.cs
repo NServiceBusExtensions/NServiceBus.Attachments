@@ -7,10 +7,10 @@ public class Incoming
     class HandlerProcessStream :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, HandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
-            await attachments.ProcessStream(
+            return attachments.ProcessStream(
                 name: "attachment1",
                 action: async(stream, token) =>
                 {

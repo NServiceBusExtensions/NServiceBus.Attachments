@@ -8,10 +8,10 @@ public class Incoming
     class HandlerProcessStream :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, HandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
-            await attachments.ProcessStream(
+            return attachments.ProcessStream(
                 name: "attachment1",
                 action: async (stream, token) =>
                 {
@@ -29,17 +29,16 @@ public class Incoming
     class HandlerProcessStreams :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, HandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
-            await attachments.ProcessStreams(
-                    action: async (stream, cancel) =>
-                    {
-                        // Use the attachment stream. in this example copy to a file
-                        await using var file = File.Create($"{stream.Name}.txt");
-                        await stream.CopyToAsync(file, cancel);
-                    })
-                .ConfigureAwait(false);
+            return attachments.ProcessStreams(
+                action: async (stream, cancel) =>
+                {
+                    // Use the attachment stream. in this example copy to a file
+                    await using var file = File.Create($"{stream.Name}.txt");
+                    await stream.CopyToAsync(file, cancel);
+                });
         }
     }
 
@@ -50,18 +49,17 @@ public class Incoming
     class HandlerProcessStreamsForMessage :
         IHandleMessages<MyMessage>
     {
-        public async Task Handle(MyMessage message, HandlerContext context)
+        public Task Handle(MyMessage message, HandlerContext context)
         {
             var attachments = context.Attachments();
-            await attachments.ProcessStreamsForMessage(
-                    messageId: "theMessageId",
-                    action: async (stream, cancel) =>
-                    {
-                        // Use the attachment stream. in this example copy to a file
-                        await using var file = File.Create($"{stream.Name}.txt");
-                        await stream.CopyToAsync(file, cancel);
-                    })
-                .ConfigureAwait(false);
+            return attachments.ProcessStreamsForMessage(
+                messageId: "theMessageId",
+                action: async (stream, cancel) =>
+                {
+                    // Use the attachment stream. in this example copy to a file
+                    await using var file = File.Create($"{stream.Name}.txt");
+                    await stream.CopyToAsync(file, cancel);
+                });
         }
     }
 

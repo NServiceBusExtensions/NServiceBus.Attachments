@@ -1,7 +1,3 @@
-﻿public class MyMessage
-{
-}
+﻿public class MyMessage;
 
-public class OtherMessage
-{
-}
+public class OtherMessage;

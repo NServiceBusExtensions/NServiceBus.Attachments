@@ -42,10 +42,10 @@ public partial class StubMessageAttachments
         }
     }
     /// <inheritdoc />
-    public virtual async Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default)
+    public virtual Task ProcessByteArrayForMessage(string messageId, string name, Func<AttachmentBytes, Cancel, Task> action, Cancel cancel = default)
     {
         var attachment = GetAttachmentForMessage(messageId, name);
-        await action(attachment.ToAttachmentBytes(), cancel);
+        return action(attachment.ToAttachmentBytes(), cancel);
     }
 
     /// <inheritdoc />

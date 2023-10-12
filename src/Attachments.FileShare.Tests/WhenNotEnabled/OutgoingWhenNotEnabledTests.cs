@@ -34,7 +34,5 @@ public class OutgoingWhenNotEnabledTests
     }
 
     class SendMessage :
-        IMessage
-    {
-    }
+        IMessage;
 }

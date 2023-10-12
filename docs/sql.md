@@ -407,10 +407,10 @@ Processes an attachment with a specific name.
 class HandlerProcessStream :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, HandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
-        await attachments.ProcessStream(
+        return attachments.ProcessStream(
             name: "attachment1",
             action: async(stream, token) =>
             {
@@ -427,10 +427,10 @@ class HandlerProcessStream :
 class HandlerProcessStream :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, HandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
-        await attachments.ProcessStream(
+        return attachments.ProcessStream(
             name: "attachment1",
             action: async (stream, token) =>
             {
@@ -474,21 +474,20 @@ class HandlerProcessStreams :
 class HandlerProcessStreams :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, HandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
-        await attachments.ProcessStreams(
-                action: async (stream, cancel) =>
-                {
-                    // Use the attachment stream. in this example copy to a file
-                    await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file, cancel);
-                })
-            .ConfigureAwait(false);
+        return attachments.ProcessStreams(
+            action: async (stream, cancel) =>
+            {
+                // Use the attachment stream. in this example copy to a file
+                await using var file = File.Create($"{stream.Name}.txt");
+                await stream.CopyToAsync(file, cancel);
+            });
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L27-L46' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L27-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreams-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -524,7 +523,7 @@ class HandlerCopyTo :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L70-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L68-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-copyto-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -564,7 +563,7 @@ class HandlerGetStream :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L100-L115' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L98-L113' title='Snippet source file'>snippet source</a> | <a href='#snippet-getstream-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -602,7 +601,7 @@ class HandlerGetBytes :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L85-L98' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L83-L96' title='Snippet source file'>snippet source</a> | <a href='#snippet-getbytes-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -636,22 +635,21 @@ class HandlerProcessStreamsForMessage :
 class HandlerProcessStreamsForMessage :
     IHandleMessages<MyMessage>
 {
-    public async Task Handle(MyMessage message, HandlerContext context)
+    public Task Handle(MyMessage message, HandlerContext context)
     {
         var attachments = context.Attachments();
-        await attachments.ProcessStreamsForMessage(
-                messageId: "theMessageId",
-                action: async (stream, cancel) =>
-                {
-                    // Use the attachment stream. in this example copy to a file
-                    await using var file = File.Create($"{stream.Name}.txt");
-                    await stream.CopyToAsync(file, cancel);
-                })
-            .ConfigureAwait(false);
+        return attachments.ProcessStreamsForMessage(
+            messageId: "theMessageId",
+            action: async (stream, cancel) =>
+            {
+                // Use the attachment stream. in this example copy to a file
+                await using var file = File.Create($"{stream.Name}.txt");
+                await stream.CopyToAsync(file, cancel);
+            });
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L48-L68' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Incoming.cs#L47-L66' title='Snippet source file'>snippet source</a> | <a href='#snippet-processstreamsformessage-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be helpful in a saga that is operating in a [Scatter-Gather](https://www.enterpriseintegrationpatterns.com/patterns/messaging/BroadcastAggregate.html) mode. So instead of storing all binaries inside the saga persister, the saga can instead store the message ids and then, at a latter point in time, access those attachments.

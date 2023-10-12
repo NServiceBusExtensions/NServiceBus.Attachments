@@ -90,12 +90,8 @@ public class IntegrationTests :
     }
 
     class SendMessage :
-        IMessage
-    {
-    }
+        IMessage;
 
     class ReplyMessage :
-        IMessage
-    {
-    }
+        IMessage;
 }

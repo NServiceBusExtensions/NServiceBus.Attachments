@@ -13,10 +13,11 @@ public static class SqlHelper
         connection.Open();
 
         using var command = connection.CreateCommand();
-        command.CommandText = $@"
-if(db_id('{database}') is null)
-    create database [{database}]
-";
+        command.CommandText =
+            $"""
+             if(db_id('{database}') is null)
+                 create database [{database}]
+             """;
         command.ExecuteNonQuery();
     }
 }

@@ -82,10 +82,8 @@ public class IntegrationTests : IDisposable
         {
             var persistence = configuration.UsePersistence<SqlPersistence>();
 
-            static SqlConnection ConnectionBuilder()
-            {
-                return new(Connection.ConnectionString);
-            }
+            static SqlConnection ConnectionBuilder() =>
+                new(Connection.ConnectionString);
 
             await RunSqlScripts(endpointName, ConnectionBuilder);
             persistence.SqlDialect<SqlDialect.MsSqlServer>();

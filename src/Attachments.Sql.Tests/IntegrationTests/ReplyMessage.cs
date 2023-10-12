@@ -1,4 +1,2 @@
 ﻿class ReplyMessage :
-    IMessage
-{
-}
+    IMessage;

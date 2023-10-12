@@ -47,9 +47,7 @@ public class IncomingWhenNotEnabledTests : IDisposable
     }
 
     class SendMessage :
-        IMessage
-    {
-    }
+        IMessage;
 
     public void Dispose() =>
         ResetEvent.Dispose();

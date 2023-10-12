@@ -10,7 +10,7 @@ public static partial class SqlAttachmentsMessageContextExtensions
     /// <summary>
     /// Provides an instance of <see cref="IMessageAttachments" /> for reading attachments.
     /// </summary>
-    public static IMessageAttachments Attachments(this IMessageHandlerContext context)
+    public static IMessageAttachments Attachments(this HandlerContext context)
     {
         var contextBag = context.Extensions;
         // check the context for a IMessageAttachments in case a mocked instance is injected for testing

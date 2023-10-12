@@ -60,7 +60,5 @@ public class TestingTests
         }
     }
 
-    public class AMessage
-    {
-    }
+    public class AMessage;
 }

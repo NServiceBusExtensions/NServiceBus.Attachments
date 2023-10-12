@@ -5,11 +5,9 @@ public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new() {{"key", "value"}};
-    Persister persister;
+    Persister persister = new("MessageAttachments");
 
     static PersisterTests() => DbSetup.Setup();
-
-    public PersisterTests() => persister = new("MessageAttachments");
 
     [Fact]
     public async Task CopyTo()
@@ -316,7 +314,7 @@ public class PersisterTests
         var encoding = Encoding.BigEndianUnicode;
         await persister.SaveString(connection, null, "theMessageId", "theName", defaultTestDate, "Sample", encoding, metadata);
 
-        AttachmentString result = await persister.GetString("theMessageId", "theName", connection, null);
+        var result = await persister.GetString("theMessageId", "theName", connection, null);
         var encodingName = result.Metadata["encoding"];
         Assert.Equal(encodingName, encoding.WebName);
         Assert.Equal("Sample", result);
