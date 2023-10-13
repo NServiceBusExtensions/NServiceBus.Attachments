@@ -19,14 +19,9 @@ public class IncomingWhenNotEnabledTests : IDisposable
         await Verify(Exception!.Message);
     }
 
-    class Handler :
+    class Handler(IncomingWhenNotEnabledTests whenNotEnabledTests) :
         IHandleMessages<SendMessage>
     {
-        IncomingWhenNotEnabledTests incomingWhenNotEnabledTests;
-
-        public Handler(IncomingWhenNotEnabledTests incomingWhenNotEnabledTests) =>
-            this.incomingWhenNotEnabledTests = incomingWhenNotEnabledTests;
-
         public Task Handle(SendMessage message, HandlerContext context)
         {
             try
@@ -35,11 +30,11 @@ public class IncomingWhenNotEnabledTests : IDisposable
             }
             catch (Exception e)
             {
-                incomingWhenNotEnabledTests.Exception = e;
+                whenNotEnabledTests.Exception = e;
             }
             finally
             {
-                incomingWhenNotEnabledTests.ResetEvent.Set();
+                whenNotEnabledTests.ResetEvent.Set();
             }
 
             return Task.CompletedTask;
