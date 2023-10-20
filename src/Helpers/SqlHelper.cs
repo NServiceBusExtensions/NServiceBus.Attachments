@@ -15,7 +15,7 @@ public static class SqlHelper
         using var command = connection.CreateCommand();
         command.CommandText =
             $"""
-             if(db_id('{database}') is null)
+             if (db_id('{database}') is null)
                  create database [{database}]
              """;
         command.ExecuteNonQuery();
