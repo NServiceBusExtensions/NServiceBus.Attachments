@@ -3,7 +3,7 @@
     <TargetFrameworks>net48;net7.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NServiceBus" Version="8.1.4" />
+    <PackageReference Include="NServiceBus" Version="8.1.5" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
     <PackageReference Include="ProjectDefaults" Version="1.0.101" PrivateAssets="all" />
   </ItemGroup>
