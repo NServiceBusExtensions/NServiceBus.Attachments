@@ -1,43 +1,43 @@
 ﻿public class TestDataGenerator :
     IEnumerable<object[]>
 {
-    List<TransportTransactionMode> transactionModes = new()
-    {
+    List<TransportTransactionMode> transactionModes =
+    [
         TransportTransactionMode.None,
         TransportTransactionMode.ReceiveOnly,
         TransportTransactionMode.SendsAtomicWithReceive,
         TransportTransactionMode.TransactionScope
-    };
+    ];
 
-    List<bool> useSqlPersistenceList = new()
-    {
+    List<bool> useSqlPersistenceList =
+    [
         true,
         false
-    };
+    ];
 
-    List<bool> runEarlyCleanupList = new()
-    {
+    List<bool> runEarlyCleanupList =
+    [
         true,
         false
-    };
+    ];
 
-    List<bool> useSqlTransportList = new()
-    {
+    List<bool> useSqlTransportList =
+    [
         true,
         false
-    };
+    ];
 
-    List<bool> useStorageSessionList = new()
-    {
+    List<bool> useStorageSessionList =
+    [
         true,
         false
-    };
+    ];
 
-    List<bool> useSqlTransportConnectionList = new()
-    {
+    List<bool> useSqlTransportConnectionList =
+    [
         true,
         false
-    };
+    ];
 
     public IEnumerator<object[]> GetEnumerator()
     {
