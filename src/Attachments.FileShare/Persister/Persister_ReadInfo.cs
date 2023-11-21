@@ -30,7 +30,8 @@ public partial class Persister
     public virtual IEnumerable<string> ReadAllMessageNames(string messageId)
     {
         var messageDirectory = GetMessageDirectory(messageId);
-        return Directory.EnumerateDirectories(messageDirectory).Select(x => Path.GetFileName(x));
+        return Directory.EnumerateDirectories(messageDirectory)
+            .Select(_ => Path.GetFileName(_));
     }
 
     /// <inheritdoc />
