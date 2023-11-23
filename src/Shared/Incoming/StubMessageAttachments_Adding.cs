@@ -57,7 +57,7 @@ public partial class StubMessageAttachments
         Guard.AgainstNullOrEmpty(name);
         if (!attachments.TryGetValue(messageId, out var attachmentsForMessage))
         {
-            attachments[messageId] = attachmentsForMessage = new();
+            attachments[messageId] = attachmentsForMessage = [];
         }
 
         attachmentsForMessage.Add(name,

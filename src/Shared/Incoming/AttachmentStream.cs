@@ -18,7 +18,7 @@ public class AttachmentStream :
     Stream,
     IAttachment
 {
-    static Dictionary<string, string> emptyDictionary = new();
+    static Dictionary<string, string> emptyDictionary = [];
 
     /// <summary>
     /// An empty <see cref="AttachmentStream"/> that contains a "default" name and empty <see cref="MemoryStream"/> as content.

@@ -10,7 +10,7 @@ class OutgoingAttachments :
     IOutgoingAttachments
 {
     internal Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
-    public List<Duplicate> Duplicates = new();
+    public List<Duplicate> Duplicates = [];
 
     public bool HasPendingAttachments => Inner.Any() ||
                                          DuplicateIncomingAttachments ||
@@ -29,7 +29,7 @@ class OutgoingAttachments :
                 })
             .ToList();
 
-    internal List<AttachmentFactory> Dynamic = new();
+    internal List<AttachmentFactory> Dynamic = [];
 
     public void Add(AttachmentFactory factory) =>
         Dynamic.Add(factory);

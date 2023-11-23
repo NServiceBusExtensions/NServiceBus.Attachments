@@ -69,7 +69,7 @@ public static class MetadataSerializer
         Dictionary<string, string> dictionary;
         if (metadata == null)
         {
-            dictionary = new();
+            dictionary = [];
         }
         else
         {
