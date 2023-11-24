@@ -36,7 +36,7 @@ public class AttachmentBytes :
     {
         Metadata = MetadataSerializer.EmptyMetadata;
         Name = string.Empty;
-        Bytes =  Array.Empty<byte>();
+        Bytes = [];
     }
 
     /// <summary>
