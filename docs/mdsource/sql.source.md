@@ -89,5 +89,4 @@ The default table name and schema is `dbo.MessageAttachments`. It can be changed
 snippet: UseTableName
 
 
-
 include: attachments

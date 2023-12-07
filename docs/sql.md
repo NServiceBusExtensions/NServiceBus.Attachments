@@ -204,7 +204,6 @@ attachments.UseTable(new("CustomAttachmentsTableName", "dbo"));
 <!-- endSnippet -->
 
 
-
 <!-- include: attachments. path: /docs/mdsource/attachments.include.md -->
 
 ## Data Cleanup
