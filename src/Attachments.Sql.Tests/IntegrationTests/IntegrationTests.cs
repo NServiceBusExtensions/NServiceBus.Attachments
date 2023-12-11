@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Transactions;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
@@ -9,17 +10,20 @@ public class IntegrationTests : IDisposable
     internal ManualResetEvent SagaEvent = new(false);
     bool shouldPerformNestedConnection = true;
 
-    static IntegrationTests() =>
+    static IntegrationTests()
+    {
+        TransactionManager.ImplicitDistributedTransactions = true;
         DbSetup.Setup();
+    }
 
     [Fact]
     public Task AdHoc() =>
         RunSql(
-            useSqlTransport: false,
+            useSqlTransport: true,
             useSqlTransportConnection: false,
             useSqlPersistence: false,
-            useStorageSession: false,
-            transactionMode: TransportTransactionMode.SendsAtomicWithReceive,
+            useStorageSession: true,
+            transactionMode: TransportTransactionMode.TransactionScope,
             runEarlyCleanup: true);
 
     [Theory]
@@ -32,34 +36,6 @@ public class IntegrationTests : IDisposable
         TransportTransactionMode transactionMode,
         bool runEarlyCleanup)
     {
-        // sql persistence connection spans the handler. so a nested connection will cause DTC
-        if (useSqlTransport &&
-            useSqlPersistence &&
-            transactionMode == TransportTransactionMode.TransactionScope)
-        {
-            // this scenario is not supported. since useStorageSession=false means attachments
-            // will open a nested connection rather than use reuse the storage session connection
-            //TODO: should detect this a runtime and throw an better exception
-            return;
-        }
-
-        if (useSqlTransport &&
-            !useSqlPersistence &&
-            transactionMode == TransportTransactionMode.TransactionScope)
-        {
-            // this scenario is not supported by netcore
-            // will cause a "This platform does not support distributed transactions."
-            //TODO: should detect this a runtime and throw a better exception
-            return;
-        }
-
-        if (useSqlPersistence &&
-            transactionMode == TransportTransactionMode.TransactionScope)
-        {
-            // so a nested connection will cause DTC
-            shouldPerformNestedConnection = false;
-        }
-
         var endpointName = "SqlIntegrationTests";
         var configuration = new EndpointConfiguration(endpointName);
         var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
@@ -123,7 +99,7 @@ public class IntegrationTests : IDisposable
         var endpoint = await Endpoint.Start(configuration);
         var startMessageId = await SendStartMessage(endpoint);
 
-        var timeout = TimeSpan.FromSeconds(10);
+        var timeout = TimeSpan.FromSeconds(20);
         if (!HandlerEvent.WaitOne(timeout))
         {
             throw new("TimedOut");
