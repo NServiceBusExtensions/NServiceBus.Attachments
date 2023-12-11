@@ -1,13 +1,8 @@
 ﻿using NServiceBus.Attachments.Sql;
 
-class SendHandler :
+class SendHandler(IntegrationTests tests) :
     IHandleMessages<SendMessage>
 {
-    IntegrationTests integrationTests;
-
-    public SendHandler(IntegrationTests integrationTests) =>
-        this.integrationTests = integrationTests;
-
     public async Task Handle(SendMessage message, HandlerContext context)
     {
         var replyOptions = new SendOptions();
@@ -25,7 +20,7 @@ class SendHandler :
 
         var attachmentInfos = await incomingAttachments.GetMetadata().ToAsyncList();
         Assert.Equal(6, attachmentInfos.Count);
-        integrationTests.PerformNestedConnection();
+        tests.PerformNestedConnection();
 
         await context.Send(new ReplyMessage(), replyOptions);
     }

@@ -544,7 +544,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L5-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoinghandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L3-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoinghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testoutgoinghandler-1'></a>
 ```cs
 public class Handler :
@@ -583,7 +583,7 @@ public async Task TestOutgoingAttachments()
     Assert.True(attachments.HasPendingAttachments);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L21-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingOutgoing.cs#L19-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-testoutgoing' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testoutgoing-1'></a>
 ```cs
 [Fact]

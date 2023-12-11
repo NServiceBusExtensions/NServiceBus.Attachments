@@ -1,6 +1,4 @@
-﻿using NServiceBus.Testing;
-
-public class TestingOutgoing
+﻿public class TestingOutgoing
 {
     #region TestOutgoingHandler
 

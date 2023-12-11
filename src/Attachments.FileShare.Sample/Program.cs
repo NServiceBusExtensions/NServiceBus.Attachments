@@ -1,5 +1,4 @@
-﻿using NServiceBus;
-using NServiceBus.Attachments.FileShare;
+﻿using NServiceBus.Attachments.FileShare;
 
 if (!Connection.IsUsingEnvironmentVariable)
 {

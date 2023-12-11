@@ -1,6 +1,4 @@
-﻿using NServiceBus.Attachments.FileShare;
-
-[UsesVerify]
+﻿[UsesVerify]
 public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);

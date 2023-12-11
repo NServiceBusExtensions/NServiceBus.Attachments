@@ -1,16 +1,11 @@
-﻿class ReplyHandler :
+﻿class ReplyHandler(IntegrationTests tests) :
     IHandleMessages<ReplyMessage>
 {
-    IntegrationTests integrationTests;
-
-    public ReplyHandler(IntegrationTests integrationTests) =>
-        this.integrationTests = integrationTests;
-
     public async Task Handle(ReplyMessage message, HandlerContext context)
     {
         var incomingAttachment = context.Attachments();
 
-        integrationTests.PerformNestedConnection();
+        tests.PerformNestedConnection();
 
         var buffer = await incomingAttachment.GetBytes();
         Debug.WriteLine(buffer);
@@ -18,6 +13,6 @@
         Debug.WriteLine(stream);
         var attachmentInfos = await incomingAttachment.GetMetadata().ToAsyncList();
         Assert.Equal(1, attachmentInfos.Count);
-        integrationTests.HandlerEvent.Set();
+        tests.HandlerEvent.Set();
     }
 }

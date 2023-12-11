@@ -1,6 +1,4 @@
-﻿using NServiceBus.Attachments.FileShare;
-
-public class IntegrationTests :
+﻿public class IntegrationTests :
     IDisposable
 {
     static ManualResetEvent resetEvent = new(false);

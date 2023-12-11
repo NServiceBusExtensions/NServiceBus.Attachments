@@ -1,6 +1,5 @@
-﻿using NServiceBus.Attachments.FileShare;
-using NServiceBus.Attachments.FileShare.Testing;
-using NServiceBus.Testing;
+﻿using NServiceBus.Attachments.FileShare.Testing;
+
 // ReSharper disable UnusedMember.Global
 
 // ReSharper disable UnusedVariable

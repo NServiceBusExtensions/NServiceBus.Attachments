@@ -1,6 +1,4 @@
-﻿using NServiceBus.Attachments.FileShare;
-
-public class Usage
+﻿public class Usage
 {
     Usage(EndpointConfiguration configuration)
     {
