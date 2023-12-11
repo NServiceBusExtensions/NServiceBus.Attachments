@@ -24,7 +24,7 @@ configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: _ => TimeSpan.FromDays(7));
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L7-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L5-L11' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-enableattachments-1'></a>
 ```cs
 configuration.EnableAttachments(
@@ -61,7 +61,7 @@ configuration.EnableAttachments(
     fileShare: "networkSharePath",
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L15-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L13-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-enableattachmentsrecommended' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-enableattachmentsrecommended-1'></a>
 ```cs
 configuration.EnableAttachments(
@@ -86,7 +86,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L26-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/Usage.cs#L24-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-disablecleanuptask' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-disablecleanuptask-1'></a>
 ```cs
 var attachments = configuration.EnableAttachments(
@@ -622,7 +622,7 @@ var context = new TestableMessageHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L11-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-injectattachmentsinstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-injectattachmentsinstance-1'></a>
 ```cs
 var context = new TestableMessageHandlerContext();
@@ -651,7 +651,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L24-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L23-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-custommockmessageattachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-custommockmessageattachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
@@ -684,7 +684,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L40-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L39-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincominghandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincominghandler-1'></a>
 ```cs
 public class Handler :
@@ -719,7 +719,7 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L54-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L53-L71' title='Snippet source file'>snippet source</a> | <a href='#snippet-testincoming' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-testincoming-1'></a>
 ```cs
 [Fact]
