@@ -192,7 +192,7 @@ public class PersisterTests
     public async Task SaveBytes()
     {
         var persister = GetPersister();
-        await persister.SaveBytes("theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes("theMessageId", "theName", defaultTestDate, [1], metadata);
         await Verify(persister.ReadAllInfo());
     }
 

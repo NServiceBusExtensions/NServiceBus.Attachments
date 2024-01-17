@@ -58,15 +58,15 @@
                                     continue;
                                 }
 
-                                yield return new object[]
-                                {
+                                yield return
+                                [
                                     useSqlTransport,
                                     useSqlTransportConnection,
                                     useSqlPersistence,
                                     useStorageSession,
                                     mode,
                                     runEarlyCleanup
-                                };
+                                ];
                             }
                         }
                     }

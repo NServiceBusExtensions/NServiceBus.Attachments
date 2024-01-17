@@ -43,7 +43,7 @@ public class TestingTests
         public override Task<AttachmentBytes> GetBytes(Cancel cancel = default)
         {
             GetBytesWasCalled = true;
-            return Task.FromResult(new AttachmentBytes("default", new byte[] {5}));
+            return Task.FromResult(new AttachmentBytes("default", [5]));
         }
 
         public bool GetBytesWasCalled { get; private set; }
