@@ -276,7 +276,7 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes(connection, null, "theMessageId", "theName", defaultTestDate, [1], metadata);
         var result = persister.ReadAllInfo(connection, null);
         await Verify(result);
     }
@@ -357,8 +357,8 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
-        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
+        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, [1], metadata);
         var names = await persister.Duplicate("theSourceMessageId", connection, null, "theTargetMessageId");
         var allInfo = await persister.ReadAllInfo(connection, null);
         await Verify(new {names, allInfo});
@@ -370,8 +370,8 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
-        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
+        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, [1], metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId");
         var result = persister.ReadAllInfo(connection, null);
         await Verify(result);
@@ -383,7 +383,7 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId", "theName2");
         var result = persister.ReadAllInfo(connection, null);
         await Verify(result);
@@ -395,8 +395,8 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
-        await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, [1], metadata);
+        await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, [1], metadata);
         var list = new List<AttachmentInfo>();
         await persister.ReadAllMessageInfo(connection, null, "theMessageId",
             (info, _) =>
@@ -413,8 +413,8 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
-        await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, [1], metadata);
+        await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, [1], metadata);
         await Verify(persister.ReadAllMessageInfo(connection, null, "theMessageId"));
     }
 
@@ -424,8 +424,8 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, new byte[] {1}, metadata);
-        await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, new byte[] {1}, metadata);
+        await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, [1], metadata);
+        await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, [1], metadata);
         await Verify(persister.ReadAllMessageNames(connection, null, "theMessageId"));
     }
 
