@@ -1,6 +1,5 @@
 ﻿using NServiceBus.Attachments.Sql;
 
-[UsesVerify]
 public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);

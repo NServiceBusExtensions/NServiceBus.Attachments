@@ -2,7 +2,6 @@
 using NServiceBus.Attachments.Sql.Testing;
 using NServiceBus.Testing;
 
-[UsesVerify]
 public class TestingTests
 {
     [Fact]

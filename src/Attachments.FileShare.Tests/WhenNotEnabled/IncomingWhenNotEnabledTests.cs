@@ -1,5 +1,4 @@
-﻿[UsesVerify]
-public class IncomingWhenNotEnabledTests : IDisposable
+﻿public class IncomingWhenNotEnabledTests : IDisposable
 {
     public ManualResetEvent ResetEvent = new(false);
     public Exception? Exception;

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
-[UsesVerify]
 public class InstallerTests
 {
     static InstallerTests() =>

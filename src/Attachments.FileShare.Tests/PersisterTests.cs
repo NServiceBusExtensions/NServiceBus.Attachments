@@ -1,5 +1,4 @@
-﻿[UsesVerify]
-public class PersisterTests
+﻿public class PersisterTests
 {
     DateTime defaultTestDate = new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
     Dictionary<string, string> metadata = new()

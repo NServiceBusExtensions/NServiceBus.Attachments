@@ -1,5 +1,4 @@
-﻿[UsesVerify]
-public class OutgoingWhenNotEnabledTests
+﻿public class OutgoingWhenNotEnabledTests
 {
     [Fact]
     public async Task Run()
