@@ -44,7 +44,10 @@ class AttachmentFeature :
             {
                 using var connection = await settings.ConnectionFactory(token);
                 var count = await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
-                log.Debug($"Deleted {count} attachments during cleanup");
+                if (count != 0)
+                {
+                    log.Debug($"Deleted {count} attachments during cleanup");
+                }
             },
             criticalError: services.GetRequiredService<CriticalError>().Raise,
             frequencyToRunCleanup: TimeSpan.FromHours(1),
