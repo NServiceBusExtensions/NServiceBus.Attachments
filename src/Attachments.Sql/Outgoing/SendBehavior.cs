@@ -107,7 +107,7 @@ class SendBehavior :
             var incomingMessageId = context.IncomingMessageId();
             if (outgoingAttachments.DuplicateIncomingAttachments)
             {
-                var names = await persister.Duplicate(incomingMessageId, connection, transaction, context.MessageId);
+                var names = await persister.Duplicate(incomingMessageId, connection, transaction, context.MessageId, context.CancellationToken);
                 foreach (var (id, name) in names)
                 {
                     attachments.Add(id, name);
@@ -116,7 +116,7 @@ class SendBehavior :
 
             foreach (var duplicate in outgoingAttachments.Duplicates)
             {
-                var guid = await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To);
+                var guid = await persister.Duplicate(incomingMessageId, duplicate.From, connection, transaction, context.MessageId, duplicate.To, context.CancellationToken);
                 attachments.Add(guid, duplicate.To);
             }
         }

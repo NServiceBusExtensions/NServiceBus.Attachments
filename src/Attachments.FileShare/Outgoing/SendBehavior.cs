@@ -1,18 +1,9 @@
 ﻿using NServiceBus.Attachments.FileShare;
 using NServiceBus.Pipeline;
 
-class SendBehavior :
+class SendBehavior(IPersister persister, GetTimeToKeep endpointTimeToKeep) :
     Behavior<IOutgoingLogicalMessageContext>
 {
-    IPersister persister;
-    GetTimeToKeep endpointTimeToKeep;
-
-    public SendBehavior(IPersister persister, GetTimeToKeep timeToKeep)
-    {
-        this.persister = persister;
-        endpointTimeToKeep = timeToKeep;
-    }
-
     public override async Task Invoke(IOutgoingLogicalMessageContext context, Func<Task> next)
     {
         await ProcessOutgoing(context);
@@ -64,14 +55,14 @@ class SendBehavior :
             var incomingMessageId = context.IncomingMessageId();
             if (outgoingAttachments.DuplicateIncomingAttachments)
             {
-                var names = await persister.Duplicate(incomingMessageId, context.MessageId);
+                var names = await persister.Duplicate(incomingMessageId, context.MessageId, context.CancellationToken);
                 attachmentNames.AddRange(names);
             }
 
             foreach (var duplicate in outgoingAttachments.Duplicates)
             {
                 attachmentNames.Add(duplicate.To);
-                await persister.Duplicate(incomingMessageId, duplicate.From, context.MessageId, duplicate.To);
+                await persister.Duplicate(incomingMessageId, duplicate.From, context.MessageId, duplicate.To, context.CancellationToken);
             }
         }
 

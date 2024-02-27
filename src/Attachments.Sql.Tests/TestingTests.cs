@@ -54,7 +54,7 @@ public class TestingTests
         public async Task Handle(AMessage message, HandlerContext context)
         {
             var attachment = context.Attachments();
-            var bytes = await attachment.GetBytes();
+            var bytes = await attachment.GetBytes(context.CancellationToken);
             Trace.WriteLine(bytes);
         }
     }

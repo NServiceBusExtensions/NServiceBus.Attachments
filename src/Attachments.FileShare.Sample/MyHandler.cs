@@ -5,6 +5,6 @@
     {
         Console.WriteLine("Hello from MyHandler.");
         var incomingAttachments = context.Attachments();
-        Console.WriteLine(await incomingAttachments.GetString("foo"));
+        Console.WriteLine(await incomingAttachments.GetString("foo", cancel: context.CancellationToken));
     }
 }

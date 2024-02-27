@@ -59,13 +59,13 @@
         public async Task Handle(SendMessage message, HandlerContext context)
         {
             var incomingAttachments = context.Attachments();
-            var withAttachment = await incomingAttachments.GetBytes("withMetadata");
+            var withAttachment = await incomingAttachments.GetBytes("withMetadata", context.CancellationToken);
             Assert.Equal("value", withAttachment.Metadata["key"]);
             var replyOptions = new ReplyOptions();
             var outgoingAttachment = replyOptions.Attachments();
             outgoingAttachment.Add(() => incomingAttachments.GetStream());
             await context.Reply(new ReplyMessage(), replyOptions);
-            var attachmentInfos = await incomingAttachments.GetMetadata().ToAsyncList();
+            var attachmentInfos = await incomingAttachments.GetMetadata(context.CancellationToken).ToAsyncList();
             Assert.Equal(4, attachmentInfos.Count);
         }
     }
@@ -77,12 +77,12 @@
         {
             await using var memoryStream = new MemoryStream();
             var incomingAttachment = context.Attachments();
-            await incomingAttachment.CopyTo(memoryStream);
+            await incomingAttachment.CopyTo(memoryStream, context.CancellationToken);
             memoryStream.Position = 0;
             var buffer = memoryStream.GetBuffer();
             Debug.WriteLine(buffer);
-            var attachmentInfos = await incomingAttachment.GetMetadata().ToAsyncList();
-            Assert.Equal(1, attachmentInfos.Count);
+            var attachmentInfos = await incomingAttachment.GetMetadata(context.CancellationToken).ToAsyncList();
+            Assert.Single(attachmentInfos);
             resetEvent.Set();
         }
     }

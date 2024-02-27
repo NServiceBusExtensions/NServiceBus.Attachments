@@ -5,18 +5,10 @@ using NServiceBus.Logging;
 using NServiceBus.Pipeline;
 using NServiceBus.Transport;
 
-class DeleteBehavior :
-    Behavior<IIncomingPhysicalMessageContext>
+class DeleteBehavior(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersister persister) :
+        Behavior<IIncomingPhysicalMessageContext>
 {
     static ILog log = LogManager.GetLogger("AttachmentDeleteBehavior");
-    Func<Cancel, Task<SqlConnection>> connectionBuilder;
-    IPersister persister;
-
-    public DeleteBehavior(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersister persister)
-    {
-        this.connectionBuilder = connectionBuilder;
-        this.persister = persister;
-    }
 
     public override async Task Invoke(IIncomingPhysicalMessageContext context, Func<Task> next)
     {
@@ -51,7 +43,7 @@ class DeleteBehavior :
 
         if (transportTransaction.TryGet("System.Data.SqlClient.SqlTransaction", out SqlTransaction dbTransaction))
         {
-            var count = await persister.DeleteAttachments(id, dbTransaction.Connection!, dbTransaction);
+            var count = await persister.DeleteAttachments(id, dbTransaction.Connection!, dbTransaction, context.CancellationToken);
             log.Debug($"Deleted {count} attachments for {id} using System.Data.SqlClient.SqlTransaction");
             return;
         }
@@ -60,7 +52,7 @@ class DeleteBehavior :
         {
             using var connection = await connectionBuilder(context.CancellationToken);
             connection.EnlistTransaction(transaction);
-            var count = await persister.DeleteAttachments(id, connection, null);
+            var count = await persister.DeleteAttachments(id, connection, null, context.CancellationToken);
             log.Debug($"Deleting {count} attachments for {id} using Transactions.Transaction");
         }
 

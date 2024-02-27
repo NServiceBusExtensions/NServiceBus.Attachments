@@ -7,12 +7,12 @@
 
         tests.PerformNestedConnection();
 
-        var buffer = await incomingAttachment.GetBytes();
+        var buffer = await incomingAttachment.GetBytes(context.CancellationToken);
         Debug.WriteLine(buffer);
-        await using var stream = await incomingAttachment.GetStream();
+        await using var stream = await incomingAttachment.GetStream(context.CancellationToken);
         Debug.WriteLine(stream);
-        var attachmentInfos = await incomingAttachment.GetMetadata().ToAsyncList();
-        Assert.Equal(1, attachmentInfos.Count);
+        var attachmentInfos = await incomingAttachment.GetMetadata(context.CancellationToken).ToAsyncList();
+        Assert.Single(attachmentInfos);
         tests.HandlerEvent.Set();
     }
 }

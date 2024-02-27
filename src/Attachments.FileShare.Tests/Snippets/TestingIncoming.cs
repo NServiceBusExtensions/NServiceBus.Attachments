@@ -44,7 +44,7 @@ public class TestingIncoming
         public async Task Handle(MyMessage message, HandlerContext context)
         {
             var attachment = context.Attachments();
-            var bytes = await attachment.GetBytes();
+            var bytes = await attachment.GetBytes(context.CancellationToken);
         }
     }
 

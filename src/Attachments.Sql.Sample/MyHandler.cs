@@ -8,7 +8,7 @@ class MyHandler :
     {
         Console.WriteLine("Hello from MyHandler. SendMessage");
         var incomingAttachments = context.Attachments();
-        var attachment = await incomingAttachments.GetString("foo");
+        var attachment = await incomingAttachments.GetString("foo", cancel: context.CancellationToken);
         var sendOptions = new SendOptions();
         sendOptions.RouteToThisEndpoint();
         var outgoingAttachments = sendOptions.Attachments();
@@ -19,7 +19,7 @@ class MyHandler :
     public async Task Handle(ReplyMessage message, HandlerContext context)
     {
         var incomingAttachments = context.Attachments();
-        var attachment = await incomingAttachments.GetString("bar");
+        var attachment = await incomingAttachments.GetString("bar", cancel: context.CancellationToken);
         Console.WriteLine($"Hello from MyHandler. ReplyMessage. {attachment.Value}");
     }
 }

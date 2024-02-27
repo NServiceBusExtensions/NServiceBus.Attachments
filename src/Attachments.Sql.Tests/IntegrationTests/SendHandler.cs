@@ -8,17 +8,17 @@ class SendHandler(IntegrationTests tests) :
         var replyOptions = new SendOptions();
         replyOptions.RouteToThisEndpoint();
         var incomingAttachments = context.Attachments();
-        var attachment = await incomingAttachments.GetBytes("withMetadata");
+        var attachment = await incomingAttachments.GetBytes("withMetadata", context.CancellationToken);
         Assert.Equal("value", attachment.Metadata["key"]);
         Assert.NotNull(attachment);
 
         var directory = Path.Combine(AttributeReader.GetSolutionDirectory(), "temp");
-        await incomingAttachments.CopyToDirectory(directory);
+        await incomingAttachments.CopyToDirectory(directory, cancel: context.CancellationToken);
 
         var outgoingAttachment = replyOptions.Attachments();
         outgoingAttachment.AddBytes(attachment);
 
-        var attachmentInfos = await incomingAttachments.GetMetadata().ToAsyncList();
+        var attachmentInfos = await incomingAttachments.GetMetadata(context.CancellationToken).ToAsyncList();
         Assert.Equal(6, attachmentInfos.Count);
         tests.PerformNestedConnection();
 
