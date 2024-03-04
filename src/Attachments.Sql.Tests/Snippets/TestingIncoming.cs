@@ -6,7 +6,7 @@ using NServiceBus.Testing;
 
 class IncomingAttachment
 {
-    public void InjectAttachmentsInstance()
+    public static void InjectAttachmentsInstance()
     {
         #region InjectAttachmentsInstance
 

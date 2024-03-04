@@ -16,7 +16,7 @@
             .Where(_ => _.Count() > 1)
             .Select(_ => _.Key)
             .ToList();
-        if (duplicates.Any())
+        if (duplicates.Count != 0)
         {
             throw new($"Duplicate names detected: {string.Join(", ", duplicates)}");
         }

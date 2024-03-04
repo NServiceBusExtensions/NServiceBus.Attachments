@@ -12,15 +12,17 @@ class OutgoingAttachments :
     internal Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
     public List<Duplicate> Duplicates = [];
 
-    public bool HasPendingAttachments => Inner.Any() ||
-                                         DuplicateIncomingAttachments ||
-                                         Duplicates.Any()||
-                                         Dynamic.Any();
+    public bool HasPendingAttachments =>
+        Inner.Count != 0 ||
+        DuplicateIncomingAttachments ||
+        Duplicates.Count != 0 ||
+        Dynamic.Count != 0;
 
     public bool DuplicateIncomingAttachments;
 
     public IReadOnlyList<OutgoingAttachment> Items =>
-        Inner.Select(_ =>
+        Inner
+            .Select(_ =>
                 new OutgoingAttachment
                 {
                     Name = _.Key,

@@ -102,7 +102,7 @@ class SendBehavior :
             });
         }
 
-        if (outgoingAttachments.DuplicateIncomingAttachments || outgoingAttachments.Duplicates.Any())
+        if (outgoingAttachments.DuplicateIncomingAttachments || outgoingAttachments.Duplicates.Count != 0)
         {
             var incomingMessageId = context.IncomingMessageId();
             if (outgoingAttachments.DuplicateIncomingAttachments)

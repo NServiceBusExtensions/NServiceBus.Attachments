@@ -19,7 +19,7 @@
         #endregion
     }
 
-    void DisableCleanupTask(EndpointConfiguration configuration)
+    static void DisableCleanupTask(EndpointConfiguration configuration)
     {
         #region DisableCleanupTask
 
