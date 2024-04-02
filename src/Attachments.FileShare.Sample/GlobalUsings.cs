@@ -1,3 +1,1 @@
-﻿// Global using directives
-
-global using NServiceBus;
+﻿global using NServiceBus;
