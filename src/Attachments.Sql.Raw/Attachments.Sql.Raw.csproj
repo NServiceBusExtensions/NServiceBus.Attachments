@@ -11,7 +11,7 @@
     <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
     <PackageReference Include="ProjectDefaults" Version="1.0.126" PrivateAssets="all" />
-    <PackageReference Include="Polyfill" Version="4.2.0" PrivateAssets="all" />
+    <PackageReference Include="Polyfill" Version="4.3.0" PrivateAssets="all" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />
 
     <Compile Include="..\Attachments.Sql\Persister\*.cs" />
