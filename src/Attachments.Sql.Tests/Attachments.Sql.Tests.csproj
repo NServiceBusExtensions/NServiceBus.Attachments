@@ -7,14 +7,14 @@
     <PackageReference Include="MarkdownSnippets.MsBuild" Version="27.0.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
     <PackageReference Include="Argon" Version="0.17.0" />
-    <PackageReference Include="NServiceBus" Version="8.1.6" />
+    <PackageReference Include="NServiceBus" Version="8.2.0" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="7.0.5" />
     <PackageReference Include="NServiceBus.Transport.SqlServer" Version="7.0.6" />
     <PackageReference Include="NServiceBus.Testing" Version="8.1.0" />
     <PackageReference Include="Verify.Xunit" Version="23.7.2" />
     <PackageReference Include="Verify.NServiceBus" Version="8.2.0" />
-    <PackageReference Include="Xunit" Version="2.7.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.7" PrivateAssets="all" />
+    <PackageReference Include="Xunit" Version="2.7.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8" PrivateAssets="all" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <ProjectReference Include="..\Attachments.Sql\Attachments.Sql.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
