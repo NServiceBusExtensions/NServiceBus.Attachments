@@ -4,9 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NServiceBus" Version="8.2.0" />
-    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="7.0.6" />
-    <PackageReference Include="NServiceBus.Testing" Version="8.1.0" />
+    <PackageReference Include="NServiceBus" Version="9.0.0" />
+    <PackageReference Include="NServiceBus.Transport.SqlServer" Version="8.0.0" />
+    <PackageReference Include="NServiceBus.Testing" Version="9.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />
     <PackageReference Include="Xunit" Version="2.7.1" />
     <PackageReference Include="Verify.Xunit" Version="24.1.0" />
