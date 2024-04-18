@@ -14,6 +14,7 @@ class Program
         configuration.EnableInstallers();
         configuration.PurgeOnStartup(true);
         configuration.UsePersistence<LearningPersistence>();
+        configuration.UseSerialization<SystemJsonSerializer>();
         var transport = configuration.UseTransport<SqlServerTransport>();
         transport.ConnectionString(Connection.ConnectionString);
         transport.Transactions(TransportTransactionMode.SendsAtomicWithReceive);

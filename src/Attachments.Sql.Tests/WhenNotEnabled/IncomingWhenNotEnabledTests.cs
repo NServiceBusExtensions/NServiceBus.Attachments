@@ -14,6 +14,9 @@ public class IncomingWhenNotEnabledTests : IDisposable
         var configuration = new EndpointConfiguration("SqlIncomingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
+        configuration.AssemblyScanner()
+            .ExcludeAssemblies("xunit.runner.utility.netcoreapp10.dll");
+        configuration.UseSerialization<SystemJsonSerializer>();
         configuration.RegisterComponents(_ => _.AddSingleton(this));
         var endpoint = await Endpoint.Start(configuration);
         await endpoint.SendLocal(new SendMessage());
