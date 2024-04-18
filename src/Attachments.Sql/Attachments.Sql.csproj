@@ -3,11 +3,11 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.Sql</AssemblyName>
     <PackageName>NServiceBus.Attachments.Sql</PackageName>
-    <TargetFrameworks>net48;net8.0</TargetFrameworks>
+    <TargetFramework>net8.0</TargetFramework>
     <DefineConstants>$(DefineConstants);Sql</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <!--CVE Microsoft.Data.SqlClient 5.2.0 depends on Azure.Identity 1.10.3 with CVE-2024-29992 vulnerability -->
+    <!-- explicit due to CVE -->
     <PackageReference Include="Azure.Identity" Version="1.11.1" />
     <EmbeddedResource Include="Table.sql" LogicalName="Table.sql" />
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.2" PrivateAssets="All" />

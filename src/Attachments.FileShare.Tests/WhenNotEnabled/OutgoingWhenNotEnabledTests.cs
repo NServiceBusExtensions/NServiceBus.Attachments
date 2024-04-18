@@ -6,6 +6,9 @@
         var configuration = new EndpointConfiguration("FileShareOutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
+        configuration.AssemblyScanner()
+            .ExcludeAssemblies("xunit.runner.utility.netcoreapp10.dll");
+        configuration.UseSerialization<SystemJsonSerializer>();
         var endpoint = await Endpoint.Start(configuration);
 
         var exception = await Assert.ThrowsAsync<Exception>(() => SendStartMessageWithAttachment(endpoint));

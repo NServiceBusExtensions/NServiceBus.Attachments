@@ -11,6 +11,9 @@
         configuration.UseTransport<LearningTransport>();
         configuration.RegisterComponents(_ => _.AddSingleton(resetEvent));
         configuration.EnableAttachments(Path.GetFullPath("attachments/IntegrationTests"), TimeToKeep.Default);
+        configuration.AssemblyScanner()
+            .ExcludeAssemblies("xunit.runner.utility.netcoreapp10.dll");
+        configuration.UseSerialization<SystemJsonSerializer>();
         var endpoint = await Endpoint.Start(configuration);
         await SendStartMessage(endpoint);
         resetEvent.WaitOne();
