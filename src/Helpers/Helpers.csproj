@@ -7,6 +7,6 @@
     <!-- explicit due to CVE -->
     <PackageReference Include="Azure.Identity" Version="1.11.2" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.126" PrivateAssets="all" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.127" PrivateAssets="all" />
   </ItemGroup>
 </Project>
