@@ -15,7 +15,7 @@
     <PackageVersion Include="NServiceBus.Persistence.Sql" Version="8.0.0" />
     <PackageVersion Include="NServiceBus.Testing" Version="9.0.0" />
     <PackageVersion Include="NServiceBus.Transport.SqlServer" Version="8.0.0" />
-    <PackageVersion Include="Polyfill" Version="5.2.2" />
+    <PackageVersion Include="Polyfill" Version="5.3.0" />
     <PackageVersion Include="ProjectDefaults" Version="1.0.127" />
     <PackageVersion Include="System.Text.Json" Version="8.0.3" />
     <PackageVersion Include="Verify.NServiceBus" Version="9.0.0" />
