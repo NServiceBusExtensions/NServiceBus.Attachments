@@ -7,8 +7,6 @@
     <DefineConstants>$(DefineConstants);Sql</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <!-- explicit due to CVE -->
-    <PackageReference Include="Azure.Identity" />
     <EmbeddedResource Include="Table.sql" LogicalName="Table.sql" />
     <PackageReference Include="ConfigureAwait.Fody" PrivateAssets="All" />
     <PackageReference Include="Fody" PrivateAssets="all" />

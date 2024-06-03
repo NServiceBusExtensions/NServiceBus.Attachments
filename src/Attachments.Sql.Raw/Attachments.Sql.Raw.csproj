@@ -7,8 +7,6 @@
     <DefineConstants>$(DefineConstants);Sql;Raw</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <!-- explicit due to CVE -->
-    <PackageReference Include="Azure.Identity" />
     <PackageReference Include="ConfigureAwait.Fody" PrivateAssets="All" />
     <PackageReference Include="Fody" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Data.SqlClient" />
