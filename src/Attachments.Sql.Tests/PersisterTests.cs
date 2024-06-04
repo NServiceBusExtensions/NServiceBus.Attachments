@@ -138,18 +138,17 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        var count = 0;
         await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
         await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
+        var names = new List<string>();
         await foreach (var attachment in persister.GetStreams("theMessageId", connection, null))
         {
             var array = ToBytes(attachment);
-            Assert.True(attachment.Name is "theName1" or "theName2");
+            names.Add(attachment.Name);
             Assert.True(array[0] == 1 || array[0] == 2);
-            Interlocked.Increment(ref count);
         }
 
-        Assert.Equal(2, count);
+        Assert.True(names.SequenceEqual(["theName1", "theName2"]));
     }
 
     [Fact]
@@ -158,17 +157,16 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        var count = 0;
+        var names = new List<string>();
         await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
         await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
         await foreach (var attachment in persister.GetBytes("theMessageId", connection, null))
         {
-            Assert.True(attachment.Name is "theName1" or "theName2");
+            names.Add(attachment.Name);
             Assert.True(attachment.Bytes[0] == 1 || attachment.Bytes[0] == 2);
-            Interlocked.Increment(ref count);
         }
 
-        Assert.Equal(2, count);
+        Assert.True(names.SequenceEqual(["theName1", "theName2"]));
     }
 
     [Fact]
@@ -177,17 +175,16 @@ public class PersisterTests
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        var count = 0;
+        var names = new List<string>();
         await persister.SaveString(connection, null, "theMessageId", "theName1", defaultTestDate, "a", null, metadata);
         await persister.SaveString(connection, null, "theMessageId", "theName2", defaultTestDate, "b", null, metadata);
         await foreach (var attachment in persister.GetStrings("theMessageId", connection, null))
         {
-            Assert.True(attachment.Name is "theName1" or "theName2");
+            names.Add(attachment.Name);
             Assert.True(attachment.Value is "a" or "b", attachment.Value);
-            Interlocked.Increment(ref count);
         }
 
-        Assert.Equal(2, count);
+        Assert.True(names.SequenceEqual(["theName1", "theName2"]));
     }
 
     [Fact]
