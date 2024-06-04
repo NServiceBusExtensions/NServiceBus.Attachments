@@ -1,20 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromSqlFactory :
+class MessageAttachmentsFromSqlFactory(Func<Cancel, Task<SqlConnection>> connectionFactory, string messageId, IPersister persister) :
     IMessageAttachments
 {
-    Func<Cancel, Task<SqlConnection>> connectionFactory;
-    string messageId;
-    IPersister persister;
-
-    public MessageAttachmentsFromSqlFactory(Func<Cancel, Task<SqlConnection>> connectionFactory, string messageId, IPersister persister)
-    {
-        this.connectionFactory = connectionFactory;
-        this.messageId = messageId;
-        this.persister = persister;
-    }
-
     public async Task CopyTo(Stream target, Cancel cancel = default)
     {
         using var connection = await connectionFactory(cancel);

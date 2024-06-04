@@ -1,20 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
 
-class MessageAttachmentsFromSqlTransaction :
+class MessageAttachmentsFromSqlTransaction(SqlTransaction transaction, string messageId, IPersister persister) :
     IMessageAttachments
 {
-    SqlTransaction transaction;
-    string messageId;
-    IPersister persister;
-
-    public MessageAttachmentsFromSqlTransaction(SqlTransaction transaction, string messageId, IPersister persister)
-    {
-        this.transaction = transaction;
-        this.messageId = messageId;
-        this.persister = persister;
-    }
-
     public Task CopyTo(Stream target, Cancel cancel = default) =>
         persister.CopyTo(messageId, "default", transaction.Connection!, transaction, target, cancel);
 

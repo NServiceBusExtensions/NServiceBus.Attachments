@@ -4,23 +4,10 @@ using NServiceBus.Attachments.Sql;
 using NServiceBus.Pipeline;
 using NServiceBus.Transport;
 
-class ReceiveBehavior :
+class ReceiveBehavior(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage) :
     Behavior<IInvokeHandlerContext>
 {
-    Func<Cancel, Task<SqlConnection>> connectionBuilder;
-    IPersister persister;
-    bool useTransport;
-    bool useSynchronizedStorage;
-    StorageAccessor storageAccessor;
-
-    public ReceiveBehavior(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersister persister, bool useTransport, bool useSynchronizedStorage)
-    {
-        this.connectionBuilder = connectionBuilder;
-        this.persister = persister;
-        this.useTransport = useTransport;
-        this.useSynchronizedStorage = useSynchronizedStorage;
-        storageAccessor = new();
-    }
+    StorageAccessor storageAccessor = new();
 
     public override Task Invoke(IInvokeHandlerContext context, Func<Task> next)
     {

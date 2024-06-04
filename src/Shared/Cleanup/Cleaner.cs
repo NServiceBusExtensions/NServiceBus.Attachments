@@ -1,21 +1,13 @@
 ﻿using NServiceBus.Features;
 using NServiceBus.Logging;
 
-class Cleaner :
+class Cleaner(
+    Func<Cancel, Task> cleanup,
+    Action<string, Exception, Cancel> criticalError,
+    TimeSpan frequencyToRunCleanup,
+    IAsyncTimer timer) :
     FeatureStartupTask
 {
-    public Cleaner(
-        Func<Cancel, Task> cleanup,
-        Action<string, Exception, Cancel> criticalError,
-        TimeSpan frequencyToRunCleanup,
-        IAsyncTimer timer)
-    {
-        this.cleanup = cleanup;
-        this.frequencyToRunCleanup = frequencyToRunCleanup;
-        this.timer = timer;
-        this.criticalError = criticalError;
-    }
-
     protected override Task OnStart(IMessageSession? session, Cancel cancel = default)
     {
         var cleanupFailures = 0;
@@ -42,11 +34,6 @@ class Cleaner :
 
     protected override Task OnStop(IMessageSession session, Cancel cancel = default) =>
         timer.Stop();
-
-    IAsyncTimer timer;
-    Action<string, Exception, Cancel> criticalError;
-    Func<Cancel, Task> cleanup;
-    TimeSpan frequencyToRunCleanup;
 
     static ILog log = LogManager.GetLogger<Cleaner>();
 }
