@@ -170,6 +170,24 @@ public class PersisterTests
     }
 
     [Fact]
+    public async Task GetMultipleWithPause()
+    {
+        await using var connection = Connection.OpenConnection();
+        await Installer.CreateTable(connection, "MessageAttachments");
+        await persister.DeleteAllAttachments(connection, null);
+        var names = new List<string>();
+        await persister.SaveStream(connection, null, "theMessageId", "theName1", defaultTestDate, GetStream(1), metadata);
+        await Task.Delay(1000);
+        await persister.SaveStream(connection, null, "theMessageId", "theName2", defaultTestDate, GetStream(2), metadata);
+        await foreach (var attachment in persister.GetBytes("theMessageId", connection, null))
+        {
+            names.Add(attachment.Name);
+        }
+
+        Assert.True(names.SequenceEqual(["theName1", "theName2"]));
+    }
+
+    [Fact]
     public async Task GetMultipleStrings()
     {
         await using var connection = Connection.OpenConnection();

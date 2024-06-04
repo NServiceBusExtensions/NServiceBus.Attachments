@@ -111,6 +111,7 @@ public partial class Persister
                 Expiry,
                 Metadata
             from {table}
+            order by Created
             """;
         return command;
     }
@@ -127,6 +128,7 @@ public partial class Persister
             from {table}
             where
                 MessageIdLower = lower(@MessageId)
+            order by Created
             """;
         command.AddParameter("MessageId", messageId);
 
