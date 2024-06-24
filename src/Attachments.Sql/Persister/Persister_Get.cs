@@ -171,6 +171,7 @@ public partial class Persister
             where
                 NameLower = lower(@Name) and
                 MessageIdLower = lower(@MessageId)
+            order by Id
             """;
         command.AddParameter("Name", name);
         command.AddParameter("MessageId", messageId);
@@ -191,7 +192,7 @@ public partial class Persister
             from {table}
             where
                 MessageIdLower = lower(@MessageId)
-            order by Created
+            order by Id
             """;
         command.AddParameter("MessageId", messageId);
         return command;
