@@ -35,6 +35,7 @@ public partial class Persister
             (
                 MessageId,
                 Name,
+                Created,
                 Expiry,
                 Data,
                 Metadata
@@ -43,6 +44,7 @@ public partial class Persister
             select
                 @TargetMessageId,
                 Name,
+                Created,
                 Expiry,
                 Data,
                 Metadata

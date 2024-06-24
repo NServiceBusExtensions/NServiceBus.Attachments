@@ -247,7 +247,12 @@
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId", "theName2");
-        await Verify(persister.ReadAllInfo());
+        var info = await persister
+            .ReadAllInfo()
+            .ToAsyncList();
+        Assert.Equal(info[0].Created, info[1].Created);
+        await Verify(info)
+            .IgnoreMember("Created");
     }
 
     [Fact]
@@ -257,7 +262,12 @@
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId");
-        await Verify(persister.ReadAllInfo());
+        var info = await persister
+            .ReadAllInfo()
+            .ToAsyncList();
+        Assert.Equal(info[0].Created, info[2].Created);
+        await Verify(info)
+            .IgnoreMember("Created");
     }
 
     [Fact]
