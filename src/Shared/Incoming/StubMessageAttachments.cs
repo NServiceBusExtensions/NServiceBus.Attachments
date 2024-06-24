@@ -146,7 +146,7 @@ public partial class StubMessageAttachments :
     /// <inheritdoc />
     public IAsyncEnumerable<AttachmentInfo> GetMetadata(Cancel cancel = default)
     {
-        var infos = currentAttachments.Select(_ => new AttachmentInfo(messageId, _.Key, _.Value.Expiry, _.Value.Metadata));
+        var infos = currentAttachments.Select(_ => new AttachmentInfo(messageId, _.Key, _.Value.Created, _.Value.Expiry, _.Value.Metadata));
         return new AsyncEnumerable<AttachmentInfo>(infos);
     }
 

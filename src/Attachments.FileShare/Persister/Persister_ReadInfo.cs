@@ -58,10 +58,12 @@ public partial class Persister
 
             var expiryFile = Directory.EnumerateFiles(attachmentDirectory, "*.expiry").Single();
             var metadata = await ReadMetadata(attachmentDirectory, cancel);
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(expiryFile);
             yield return new(
                 messageId: messageId,
                 name: Path.GetFileName(attachmentDirectory),
-                expiry: ParseExpiry(Path.GetFileNameWithoutExtension(expiryFile)),
+                created: Directory.GetCreationTimeUtc(attachmentDirectory),
+                expiry: ParseExpiry(fileNameWithoutExtension),
                 metadata: metadata);
         }
     }

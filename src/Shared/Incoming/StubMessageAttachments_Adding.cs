@@ -34,13 +34,14 @@ public partial class StubMessageAttachments
     public void AddAttachment(string name, byte[] bytes, IDictionary<string, string>? metadata = null)
     {
         Guard.AgainstNullOrEmpty(name);
+        var now = DateTime.UtcNow;
         currentAttachments.Add(name,
             new(
                 name: name,
+                created: now,
+                expiry: now.AddDays(10),
                 bytes: bytes,
-                metadata: BuildMetadata(metadata),
-                expiry: DateTime.UtcNow.AddDays(10)
-            ));
+                metadata: BuildMetadata(metadata)));
     }
 
     /// <summary>
@@ -60,13 +61,14 @@ public partial class StubMessageAttachments
             attachments[messageId] = attachmentsForMessage = [];
         }
 
+        var now = DateTime.UtcNow;
         attachmentsForMessage.Add(name,
             new(
                 name: name,
+                created: now,
+                expiry: now.AddDays(10),
                 bytes: bytes,
-                metadata: BuildMetadata(metadata),
-                expiry: DateTime.UtcNow.AddDays(10)
-            ));
+                metadata: BuildMetadata(metadata)));
     }
 
     static IReadOnlyDictionary<string, string> BuildMetadata(IDictionary<string, string>? metadata)

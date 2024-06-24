@@ -21,8 +21,9 @@ public partial class Persister
             var info = new AttachmentInfo(
                 messageId: messageId,
                 name: reader.GetString(1),
-                expiry: reader.GetDateTime(2),
-                metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
+                created: reader.GetDateTime(2),
+                expiry: reader.GetDateTime(3),
+                metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
             await action(info, cancel);
         }
     }
@@ -60,8 +61,9 @@ public partial class Persister
             yield return new(
                 messageId: messageId,
                 name: reader.GetString(1),
-                expiry: reader.GetDateTime(2),
-                metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(3)));
+                created: reader.GetDateTime(2),
+                expiry: reader.GetDateTime(3),
+                metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
         }
     }
 
@@ -76,8 +78,9 @@ public partial class Persister
             var info = new AttachmentInfo(
                 messageId: reader.GetString(1),
                 name: reader.GetString(2),
-                expiry: reader.GetDateTime(3),
-                metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(4)));
+                created: reader.GetDateTime(3),
+                expiry: reader.GetDateTime(4),
+                metadata: MetadataSerializer.Deserialize(reader.GetStringOrNull(5)));
             await action(info, cancel);
         }
     }
@@ -108,6 +111,7 @@ public partial class Persister
                 Id,
                 MessageId,
                 Name,
+                Created,
                 Expiry,
                 Metadata
             from {table}
@@ -144,6 +148,7 @@ public partial class Persister
             select
                 Id,
                 Name,
+                Created,
                 Expiry,
                 Metadata
             from {table}
