@@ -9,15 +9,7 @@
       Item2: theName2
     }
   ],
-  allInfo: [
-    {
-      MessageId: theTargetMessageId,
-      Name: theName2,
-      Expiry: DateTime_1,
-      Metadata: {
-        key: value
-      }
-    },
+  info: [
     {
       MessageId: theTargetMessageId,
       Name: theName1,
@@ -27,16 +19,8 @@
       }
     },
     {
-      MessageId: theSourceMessageId,
+      MessageId: theTargetMessageId,
       Name: theName2,
-      Expiry: DateTime_1,
-      Metadata: {
-        key: value
-      }
-    },
-    {
-      MessageId: theSourceMessageId,
-      Name: theName1,
       Expiry: DateTime_1,
       Metadata: {
         key: value

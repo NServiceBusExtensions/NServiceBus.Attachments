@@ -75,7 +75,7 @@ public interface IPersister
     /// <summary>
     /// Copies attachments to a different message.
     /// </summary>
-    Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, string targetMessageId, Cancel cancel = default);
+    Task<IReadOnlyList<string>> Duplicate(string sourceMessageId, string targetMessageId, Cancel cancel = default);
 
     /// <summary>
     /// Reads an <see cref="AttachmentBytes" /> for an attachment.

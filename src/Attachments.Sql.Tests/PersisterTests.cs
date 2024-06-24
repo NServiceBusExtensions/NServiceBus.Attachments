@@ -375,8 +375,14 @@ public class PersisterTests
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, [1], metadata);
         var names = await persister.Duplicate("theSourceMessageId", connection, null, "theTargetMessageId");
-        var allInfo = await persister.ReadAllInfo(connection, null);
-        await Verify(new {names, allInfo});
+        var info = await persister.ReadAllInfo(connection, null);
+        await Verify(
+                new
+                {
+                    names,
+                    info = info.Where(_ => _.MessageId == "theTargetMessageId").ToList()
+                })
+            .IgnoreMember("Created");
     }
 
     [Fact]
@@ -388,8 +394,10 @@ public class PersisterTests
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, [1], metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId");
-        var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        var info = await persister.ReadAllInfo(connection, null);
+        Assert.Equal(info[0].Created, info[2].Created);
+        await Verify(info.Where(_ => _.MessageId == "theTargetMessageId"))
+            .IgnoreMember("Created");
     }
 
     [Fact]
@@ -400,8 +408,10 @@ public class PersisterTests
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId", "theName2");
-        var result = persister.ReadAllInfo(connection, null);
-        await Verify(result);
+        var info = await persister.ReadAllInfo(connection, null);
+        Assert.Equal(info[0].Created, info[1].Created);
+        await Verify(info.Where(_ => _.MessageId == "theTargetMessageId"))
+            .IgnoreMember("Created");
     }
 
     [Fact]
@@ -430,7 +440,8 @@ public class PersisterTests
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theMessageId", "theName1", defaultTestDate, [1], metadata);
         await persister.SaveBytes(connection, null, "theMessageId", "theName2", defaultTestDate, [1], metadata);
-        await Verify(persister.ReadAllMessageInfo(connection, null, "theMessageId"));
+        await Verify(persister.ReadAllMessageInfo(connection, null, "theMessageId"))
+            .IgnoreMember("Created");
     }
 
     [Fact]

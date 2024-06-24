@@ -23,7 +23,11 @@ public class AttachmentInfo
     /// </summary>
     public readonly string Name;
     /// <summary>
-    /// the attachment expiry. The date after which it can be cleaned-up.
+    /// the attachment created.
+    /// </summary>
+    public readonly DateTime Created;
+    /// <summary>
+    /// The attachment expiry. The date after which it can be cleaned-up.
     /// </summary>
     public readonly DateTime Expiry;
     /// <summary>
@@ -34,7 +38,7 @@ public class AttachmentInfo
     /// <summary>
     /// Initializes a new instance of <see cref="AttachmentInfo"/>.
     /// </summary>
-    public AttachmentInfo(string messageId, string name, DateTime expiry, IReadOnlyDictionary<string, string> metadata)
+    public AttachmentInfo(string messageId, string name, DateTime created, DateTime expiry, IReadOnlyDictionary<string, string> metadata)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
@@ -42,17 +46,19 @@ public class AttachmentInfo
         Name = name;
         Expiry = expiry;
         Metadata = metadata;
+        Created = created;
     }
 
     /// <summary>
     /// Initializes a new instance of <see cref="AttachmentInfo"/>.
     /// </summary>
-    public AttachmentInfo(string messageId, string name, DateTime expiry)
+    public AttachmentInfo(string messageId, string name, DateTime created, DateTime expiry)
     {
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
         MessageId = messageId;
         Name = name;
         Expiry = expiry;
+        Created = created;
     }
 }

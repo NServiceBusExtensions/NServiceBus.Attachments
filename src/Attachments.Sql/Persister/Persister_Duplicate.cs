@@ -9,7 +9,7 @@ namespace NServiceBus.Attachments.Sql
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual async Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancel cancel = default)
+    public virtual async Task<IReadOnlyList<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId);
         Guard.AgainstNullOrEmpty(targetMessageId);
@@ -35,6 +35,7 @@ public partial class Persister
             (
                 MessageId,
                 Name,
+                Created,
                 Expiry,
                 Data,
                 Metadata
@@ -43,6 +44,7 @@ public partial class Persister
             select
                 @TargetMessageId,
                 Name,
+                Created,
                 Expiry,
                 Data,
                 Metadata

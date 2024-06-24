@@ -2,7 +2,8 @@
   {
     MessageId: theMessageId,
     Name: theName,
-    Expiry: DateTime_1,
+    Created: DateTime_1,
+    Expiry: DateTime_2,
     Metadata: {
       encoding: utf-8,
       key: value

@@ -52,7 +52,7 @@ public interface IPersister
     /// <summary>
     /// Reads the <see cref="AttachmentInfo" /> for all attachments.
     /// </summary>
-    Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction transaction, Cancel cancel = default);
+    Task<IReadOnlyList<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction transaction, Cancel cancel = default);
 
     /// <summary>
     /// Deletes all attachments.
@@ -87,7 +87,7 @@ public interface IPersister
     /// <summary>
     /// Copies all attachments to a different message.
     /// </summary>
-    Task<IReadOnlyCollection<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancel cancel = default);
+    Task<IReadOnlyList<(Guid, string)>> Duplicate(string sourceMessageId, SqlConnection connection, SqlTransaction? transaction, string targetMessageId, Cancel cancel = default);
 
     /// <summary>
     /// Reads all <see cref="AttachmentBytes" />s for an attachment.

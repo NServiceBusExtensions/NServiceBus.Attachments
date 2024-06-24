@@ -45,6 +45,7 @@ static class FileHelpers
     {
         Directory.CreateDirectory(target.FullName);
 
+        target.CreationTimeUtc = source.CreationTimeUtc;
         // Copy each file into the new directory.
         foreach (var file in source.GetFiles())
         {
