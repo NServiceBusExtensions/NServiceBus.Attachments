@@ -184,7 +184,8 @@
         var persister = GetPersister();
         await persister.SaveStream("theMessageId", "theName1", defaultTestDate, GetStream(), metadata);
         await persister.SaveStream("theMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        await Verify(persister.ReadAllMessageInfo("theMessageId"));
+        await Verify(persister.ReadAllMessageInfo("theMessageId"))
+            .IgnoreMember("Created");
     }
 
     [Fact]
@@ -242,16 +243,22 @@
     }
 
     [Fact]
-    public async Task DuplicateWithRename()
+    public async Task DuplicateAll()
     {
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
-        await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId", "theName2");
+        await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
+        var names = await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
         var info = await persister
             .ReadAllInfo()
             .ToAsyncList();
-        Assert.Equal(info[0].Created, info[1].Created);
-        await Verify(info)
+        Assert.Equal(info[0].Created, info[2].Created);
+        await Verify(
+                new
+                {
+                    names,
+                    info = info.Where(_ => _.MessageId == "theTargetMessageId").ToList()
+                })
             .IgnoreMember("Created");
     }
 
@@ -266,19 +273,22 @@
             .ReadAllInfo()
             .ToAsyncList();
         Assert.Equal(info[0].Created, info[2].Created);
-        await Verify(info)
+        await Verify(info.Where(_ => _.MessageId == "theTargetMessageId"))
             .IgnoreMember("Created");
     }
 
     [Fact]
-    public async Task DuplicateAll()
+    public async Task DuplicateWithRename()
     {
         var persister = GetPersister();
         await persister.SaveStream("theSourceMessageId", "theName1", defaultTestDate, GetStream(), metadata);
-        await persister.SaveStream("theSourceMessageId", "theName2", defaultTestDate, GetStream(), metadata);
-        var names = await persister.Duplicate("theSourceMessageId", "theTargetMessageId");
-        var allInfo = await persister.ReadAllInfo().ToAsyncList();
-        await Verify(new {names, allInfo});
+        await persister.Duplicate("theSourceMessageId", "theName1", "theTargetMessageId", "theName2");
+        var info = await persister
+            .ReadAllInfo()
+            .ToAsyncList();
+        Assert.Equal(info[0].Created, info[1].Created);
+        await Verify(info.Where(_ => _.MessageId == "theTargetMessageId"))
+            .IgnoreMember("Created");
     }
 
     [Fact]

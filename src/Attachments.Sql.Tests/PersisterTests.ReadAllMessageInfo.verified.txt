@@ -2,8 +2,7 @@
   {
     MessageId: theMessageId,
     Name: theName1,
-    Created: DateTime_1,
-    Expiry: DateTime_2,
+    Expiry: DateTime_1,
     Metadata: {
       key: value
     }
@@ -11,8 +10,7 @@
   {
     MessageId: theMessageId,
     Name: theName2,
-    Created: DateTime_1,
-    Expiry: DateTime_2,
+    Expiry: DateTime_1,
     Metadata: {
       key: value
     }

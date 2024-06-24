@@ -86,9 +86,9 @@ public partial class Persister
     }
 
     /// <inheritdoc />
-    public virtual async Task<IReadOnlyCollection<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Cancel cancel = default)
+    public virtual async Task<IReadOnlyList<AttachmentInfo>> ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Cancel cancel = default)
     {
-        var list = new ConcurrentBag<AttachmentInfo>();
+        var list = new List<AttachmentInfo>();
         await ReadAllInfo(
             connection,
             transaction,
@@ -98,7 +98,7 @@ public partial class Persister
                 return Task.CompletedTask;
             },
             cancel);
-        return list;
+        return list.ToList();
     }
 
     SqlCommand GetReadInfosCommand(SqlConnection connection, SqlTransaction? transaction)

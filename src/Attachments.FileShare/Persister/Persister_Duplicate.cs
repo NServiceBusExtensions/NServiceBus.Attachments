@@ -8,7 +8,7 @@ namespace NServiceBus.Attachments.FileShare
 public partial class Persister
 {
     /// <inheritdoc />
-    public virtual Task<IReadOnlyCollection<string>> Duplicate(string sourceMessageId, string targetMessageId, Cancel cancel = default)
+    public virtual Task<IReadOnlyList<string>> Duplicate(string sourceMessageId, string targetMessageId, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(sourceMessageId);
         Guard.AgainstNullOrEmpty(targetMessageId);
@@ -16,7 +16,7 @@ public partial class Persister
         var targetDirectory = GetMessageDirectory(targetMessageId);
         FileHelpers.Copy(sourceDirectory, targetDirectory);
         var names = new List<string>(Directory.EnumerateDirectories(targetDirectory).Select(s => Path.GetFileName(s)));
-        return Task.FromResult<IReadOnlyCollection<string>>(names);
+        return Task.FromResult<IReadOnlyList<string>>(names);
     }
 
     /// <inheritdoc />
