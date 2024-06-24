@@ -3,7 +3,8 @@
     {
       MessageId: theMessageId2,
       Name: theName,
-      Expiry: DateTime_1
+      Created: DateTime_1,
+      Expiry: DateTime_2
     }
   ],
   deleteCount: 2

@@ -13,7 +13,8 @@
     {
       MessageId: theTargetMessageId,
       Name: theName2,
-      Expiry: DateTime_1,
+      Created: DateTime_1,
+      Expiry: DateTime_2,
       Metadata: {
         key: value
       }
@@ -21,7 +22,8 @@
     {
       MessageId: theTargetMessageId,
       Name: theName1,
-      Expiry: DateTime_1,
+      Created: DateTime_1,
+      Expiry: DateTime_2,
       Metadata: {
         key: value
       }
@@ -29,7 +31,8 @@
     {
       MessageId: theSourceMessageId,
       Name: theName2,
-      Expiry: DateTime_1,
+      Created: DateTime_1,
+      Expiry: DateTime_2,
       Metadata: {
         key: value
       }
@@ -37,7 +40,8 @@
     {
       MessageId: theSourceMessageId,
       Name: theName1,
-      Expiry: DateTime_1,
+      Created: DateTime_1,
+      Expiry: DateTime_2,
       Metadata: {
         key: value
       }
