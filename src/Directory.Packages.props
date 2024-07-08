@@ -10,7 +10,7 @@
     <PackageVersion Include="MarkdownSnippets.MsBuild" Version="27.0.2" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-    <PackageVersion Include="NServiceBus" Version="9.0.2" />
+    <PackageVersion Include="NServiceBus" Version="9.0.3" />
     <PackageVersion Include="NServiceBus.Persistence.Sql" Version="8.1.0" />
     <PackageVersion Include="NServiceBus.Testing" Version="9.0.0" />
     <PackageVersion Include="NServiceBus.Transport.SqlServer" Version="8.1.2" />
