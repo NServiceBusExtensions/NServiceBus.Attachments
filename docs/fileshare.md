@@ -442,7 +442,7 @@ class HandlerGetStream :
 
 Get a byte array for an attachment with a specific name.
 
-WARNING: This should only be used the the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
+WARNING: This should only be used the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
 
 <!-- snippet: GetBytes -->
 <a id='snippet-GetBytes'></a>
