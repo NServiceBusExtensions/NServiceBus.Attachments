@@ -11,8 +11,6 @@ configuration.UsePersistence<LearningPersistence>();
 configuration.UseTransport<LearningTransport>();
 configuration.AuditProcessedMessagesTo("audit");
 configuration.EnableAttachments("Attachments", TimeToKeep.Default);
-configuration.AssemblyScanner()
-    .ExcludeAssemblies("xunit.runner.utility.netcoreapp10.dll");
 configuration.UseSerialization<SystemJsonSerializer>();
 var endpoint = await Endpoint.Start(configuration);
 await SendMessage(endpoint);

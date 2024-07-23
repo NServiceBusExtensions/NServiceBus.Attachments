@@ -63,8 +63,6 @@ public class IntegrationTests : IDisposable
         var endpointName = "SqlIntegrationTests";
         var configuration = new EndpointConfiguration(endpointName);
         var attachments = configuration.EnableAttachments(Connection.NewConnection, TimeToKeep.Default);
-        configuration.AssemblyScanner()
-            .ExcludeAssemblies("xunit.runner.utility.netcoreapp10.dll");
         configuration.UseSerialization<SystemJsonSerializer>();
         if (useStorageSession)
         {

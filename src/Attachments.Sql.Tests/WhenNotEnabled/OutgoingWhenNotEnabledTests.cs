@@ -9,8 +9,6 @@
         var configuration = new EndpointConfiguration("SqlOutgoingWhenNotEnabledTests");
         configuration.UsePersistence<LearningPersistence>();
         configuration.UseTransport<LearningTransport>();
-        configuration.AssemblyScanner()
-            .ExcludeAssemblies("xunit.runner.utility.netcoreapp10.dll");
         configuration.UseSerialization<SystemJsonSerializer>();
         var endpoint = await Endpoint.Start(configuration);
 
