@@ -1,6 +1,4 @@
-﻿using NServiceBus.Attachments.Sql;
-
-public class DbSetup
+﻿public class DbSetup
 {
     static bool init;
 

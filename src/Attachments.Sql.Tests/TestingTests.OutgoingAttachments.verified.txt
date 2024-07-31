@@ -1,5 +1,5 @@
 ﻿{
-  SentMessages: [
+  Send: [
     {
       TestingTests.AMessage: {},
       Options: {

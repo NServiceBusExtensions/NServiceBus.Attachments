@@ -10,7 +10,6 @@
     <PackageReference Include="NServiceBus" />
     <PackageReference Include="NServiceBus.Persistence.Sql" />
     <PackageReference Include="NServiceBus.Transport.SqlServer" />
-    <PackageReference Include="NServiceBus.Testing" />
     <PackageReference Include="Verify.DiffPlex" />
     <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="Verify.NServiceBus" />

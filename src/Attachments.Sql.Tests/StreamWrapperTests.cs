@@ -1,5 +1,3 @@
-using NServiceBus.Attachments.Sql;
-
 public class StreamWrapperTests
 {
     static byte[] buffer = "content"u8.ToArray();

@@ -11,6 +11,7 @@
         configuration.RegisterComponents(_ => _.AddSingleton(this));
         configuration.UseTransport<LearningTransport>();
         configuration.UseSerialization<SystemJsonSerializer>();
+        configuration.AssemblyScanner().ExcludeAssemblies("xunit.runner.utility.netcoreapp10.dll");
         var endpoint = await Endpoint.Start(configuration);
         await endpoint.SendLocal(new SendMessage());
         ResetEvent.WaitOne();

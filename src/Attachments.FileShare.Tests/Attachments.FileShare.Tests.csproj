@@ -5,7 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NServiceBus" />
-    <PackageReference Include="NServiceBus.Testing" />
     <PackageReference Include="Verify.DiffPlex" />
     <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="Verify.NServiceBus" />

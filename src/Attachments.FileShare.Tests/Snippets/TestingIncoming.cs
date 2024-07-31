@@ -1,6 +1,4 @@
-﻿using NServiceBus.Attachments.FileShare.Testing;
-
-// ReSharper disable UnusedMember.Global
+﻿// ReSharper disable UnusedMember.Global
 
 // ReSharper disable UnusedVariable
 
@@ -10,7 +8,7 @@ class IncomingAttachment
     {
         #region InjectAttachmentsInstance
 
-        var context = new TestableMessageHandlerContext();
+        var context = new RecordingHandlerContext();
         var mockMessageAttachments = new MyMessageAttachments();
         context.InjectAttachmentsInstance(mockMessageAttachments);
 
@@ -56,7 +54,7 @@ public class TestingIncoming
     public async Task TestIncomingAttachment()
     {
         //Arrange
-        var context = new TestableMessageHandlerContext();
+        var context = new RecordingHandlerContext();
         var handler = new Handler();
         var mockMessageAttachments = new CustomMockMessageAttachments();
         context.InjectAttachmentsInstance(mockMessageAttachments);

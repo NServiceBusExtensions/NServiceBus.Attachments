@@ -1,13 +1,9 @@
-﻿using NServiceBus.Attachments.Sql;
-using NServiceBus.Attachments.Sql.Testing;
-using NServiceBus.Testing;
-
-public class TestingTests
+﻿public class TestingTests
 {
     [Fact]
     public async Task OutgoingAttachments()
     {
-        var context = new TestableMessageHandlerContext();
+        var context = new RecordingHandlerContext();
         var handler = new OutgoingAttachmentsHandler();
         await handler.Handle(new(), context);
         await Verify(context);
@@ -28,7 +24,7 @@ public class TestingTests
     [Fact]
     public async Task IncomingAttachment()
     {
-        var context = new TestableMessageHandlerContext();
+        var context = new RecordingHandlerContext();
         var handler = new IncomingAttachmentHandler();
         var mockMessageAttachments = new CustomMockMessageAttachments();
         context.InjectAttachmentsInstance(mockMessageAttachments);

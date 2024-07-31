@@ -1,4 +1,3 @@
-
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,7 +5,6 @@
   <ItemGroup>
     <PackageReference Include="NServiceBus" />
     <PackageReference Include="NServiceBus.Transport.SqlServer" />
-    <PackageReference Include="NServiceBus.Testing" />
     <PackageReference Include="System.Text.Json" />
     <PackageReference Include="Xunit" />
     <PackageReference Include="Verify.Xunit" />

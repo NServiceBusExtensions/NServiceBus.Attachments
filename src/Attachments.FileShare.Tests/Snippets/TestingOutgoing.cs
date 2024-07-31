@@ -22,14 +22,14 @@
     public async Task TestOutgoingAttachments()
     {
         //Arrange
-        var context = new TestableMessageHandlerContext();
+        var context = new RecordingHandlerContext();
         var handler = new Handler();
 
         //Act
         await handler.Handle(new(), context);
 
         // Assert
-        var sentMessage = context.SentMessages.Single();
+        var sentMessage = context.Sent.Single();
         var attachments = sentMessage.Options.Attachments();
         var attachment = attachments.Items.Single();
         Assert.Contains("theName", attachment.Name);

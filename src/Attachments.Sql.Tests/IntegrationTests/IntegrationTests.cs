@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
-using NServiceBus.Attachments.Sql;
 using NServiceBus.Persistence.Sql;
 
 public class IntegrationTests : IDisposable

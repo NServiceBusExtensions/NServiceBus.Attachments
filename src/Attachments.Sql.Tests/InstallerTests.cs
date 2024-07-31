@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using NServiceBus.Attachments.Sql;
 
 public class InstallerTests
 {

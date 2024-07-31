@@ -44,7 +44,7 @@ configuration.EnableAttachments(
     },
     timeToKeep: _ => TimeSpan.FromDays(7));
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L13-L32' title='Snippet source file'>snippet source</a> | <a href='#snippet-EnableAttachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L12-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-EnableAttachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -70,7 +70,7 @@ async Task<SqlConnection> OpenConnection(Cancel cancel)
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L116-L133' title='Snippet source file'>snippet source</a> | <a href='#snippet-OpenConnection' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L115-L132' title='Snippet source file'>snippet source</a> | <a href='#snippet-OpenConnection' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Also uses the `NServiceBus.Attachments.Sql.TimeToKeep.Default` method for attachment cleanup.
@@ -91,7 +91,7 @@ configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L34-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-EnableAttachmentsRecommended-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L33-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-EnableAttachmentsRecommended-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -114,7 +114,7 @@ var attachments = configuration.EnableAttachments(
     TimeToKeep.Default);
 attachments.UseSynchronizedStorageSessionConnectivity();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L69-L76' title='Snippet source file'>snippet source</a> | <a href='#snippet-UseSynchronizedStorageSessionConnectivity' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L68-L75' title='Snippet source file'>snippet source</a> | <a href='#snippet-UseSynchronizedStorageSessionConnectivity' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This approach attempts to use the SynchronizedStorageSession using the following steps:
@@ -138,7 +138,7 @@ var attachments = configuration.EnableAttachments(
     TimeToKeep.Default);
 attachments.UseTransportConnectivity();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L57-L64' title='Snippet source file'>snippet source</a> | <a href='#snippet-UseTransportConnectivity' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L56-L63' title='Snippet source file'>snippet source</a> | <a href='#snippet-UseTransportConnectivity' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This approach attempts to use the transport transaction using the following steps:
@@ -165,7 +165,7 @@ var attachments = configuration.EnableAttachments(
     connectionFactory: OpenConnection,
     timeToKeep: TimeToKeep.Default);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L81-L88' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteAtStartup' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L80-L87' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteAtStartup' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 NOTE: Note that this is also a valid approach for higher level environments.
@@ -184,7 +184,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.DisableInstaller();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L93-L101' title='Snippet source file'>snippet source</a> | <a href='#snippet-DisableInstaller' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L92-L100' title='Snippet source file'>snippet source</a> | <a href='#snippet-DisableInstaller' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -200,7 +200,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.UseTable(new("CustomAttachmentsTableName", "dbo"));
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L106-L113' title='Snippet source file'>snippet source</a> | <a href='#snippet-UseTableName' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L105-L112' title='Snippet source file'>snippet source</a> | <a href='#snippet-UseTableName' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -226,7 +226,7 @@ var attachments = configuration.EnableAttachments(
     timeToKeep: TimeToKeep.Default);
 attachments.DisableCleanupTask();
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L45-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-DisableCleanupTask-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/Usage.cs#L44-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-DisableCleanupTask-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -697,7 +697,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L5-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestOutgoingHandler-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L3-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestOutgoingHandler-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestOutgoing -->
@@ -707,14 +707,14 @@ public class Handler :
 public async Task TestOutgoingAttachments()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
+    var context = new RecordingHandlerContext();
     var handler = new Handler();
 
     //Act
     await handler.Handle(new(), context);
 
     // Assert
-    var sentMessage = context.SentMessages.Single();
+    var sentMessage = context.Sent.Single();
     var attachments = sentMessage.Options.Attachments();
     var attachment = attachments.Items.Single();
     Assert.Contains("theName", attachment.Name);
@@ -728,21 +728,21 @@ public async Task TestOutgoingAttachments()
 public async Task TestOutgoingAttachments()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
+    var context = new RecordingHandlerContext();
     var handler = new Handler();
 
     //Act
     await handler.Handle(new(), context);
 
     // Assert
-    var sentMessage = context.SentMessages.Single();
+    var sentMessage = context.Sent.Single();
     var attachments = sentMessage.Options.Attachments();
     var attachment = attachments.Items.Single();
     Assert.Contains("theName", attachment.Name);
     Assert.True(attachments.HasPendingAttachments);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L21-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestOutgoing-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingOutgoing.cs#L19-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestOutgoing-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -756,18 +756,18 @@ To mock or verify incoming attachments is it necessary to inject a instance of `
 <!-- snippet: InjectAttachmentsInstance -->
 <a id='snippet-InjectAttachmentsInstance'></a>
 ```cs
-var context = new TestableMessageHandlerContext();
+var context = new RecordingHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L11-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-InjectAttachmentsInstance' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L9-L15' title='Snippet source file'>snippet source</a> | <a href='#snippet-InjectAttachmentsInstance' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-InjectAttachmentsInstance-1'></a>
 ```cs
-var context = new TestableMessageHandlerContext();
+var context = new RecordingHandlerContext();
 var mockMessageAttachments = new MyMessageAttachments();
 context.InjectAttachmentsInstance(mockMessageAttachments);
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L11-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-InjectAttachmentsInstance-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L7-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-InjectAttachmentsInstance-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The implementation of `IMessageHandlerContext` can be a custom coded mock or constructed using any of the popular mocking/assertion frameworks.
@@ -789,7 +789,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L23-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-CustomMockMessageAttachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L21-L35' title='Snippet source file'>snippet source</a> | <a href='#snippet-CustomMockMessageAttachments' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-CustomMockMessageAttachments-1'></a>
 ```cs
 public class CustomMockMessageAttachments :
@@ -804,7 +804,7 @@ public class CustomMockMessageAttachments :
     public bool GetBytesWasCalled { get; private set; }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L23-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-CustomMockMessageAttachments-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L19-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-CustomMockMessageAttachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Putting these parts together allows a handler, using incoming attachments, to be tested.
@@ -822,7 +822,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L39-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncomingHandler' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L37-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncomingHandler' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-TestIncomingHandler-1'></a>
 ```cs
 public class Handler :
@@ -835,7 +835,7 @@ public class Handler :
     }
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L39-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncomingHandler-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L35-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncomingHandler-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: TestIncoming -->
@@ -845,7 +845,7 @@ public class Handler :
 public async Task TestIncomingAttachment()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
+    var context = new RecordingHandlerContext();
     var handler = new Handler();
     var mockMessageAttachments = new CustomMockMessageAttachments();
     context.InjectAttachmentsInstance(mockMessageAttachments);
@@ -857,14 +857,14 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L53-L71' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncoming' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.FileShare.Tests/Snippets/TestingIncoming.cs#L51-L69' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncoming' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-TestIncoming-1'></a>
 ```cs
 [Fact]
 public async Task TestIncomingAttachment()
 {
     //Arrange
-    var context = new TestableMessageHandlerContext();
+    var context = new RecordingHandlerContext();
     var handler = new Handler();
     var mockMessageAttachments = new CustomMockMessageAttachments();
     context.InjectAttachmentsInstance(mockMessageAttachments);
@@ -876,6 +876,6 @@ public async Task TestIncomingAttachment()
     Assert.True(mockMessageAttachments.GetBytesWasCalled);
 }
 ```
-<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L53-L71' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncoming-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Attachments.Sql.Tests/Snippets/TestingIncoming.cs#L49-L67' title='Snippet source file'>snippet source</a> | <a href='#snippet-TestIncoming-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 <!-- endInclude -->

@@ -1,6 +1,4 @@
-﻿using NServiceBus.Attachments.Sql;
-
-class SendHandler(IntegrationTests tests) :
+﻿class SendHandler(IntegrationTests tests) :
     IHandleMessages<SendMessage>
 {
     public async Task Handle(SendMessage message, HandlerContext context)
