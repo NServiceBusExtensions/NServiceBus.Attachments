@@ -427,7 +427,8 @@
                 list.Add(info);
                 return Task.CompletedTask;
             });
-        await Verify(list);
+        await Verify(list)
+            .IgnoreMember("Created");
     }
 
     [Fact]
