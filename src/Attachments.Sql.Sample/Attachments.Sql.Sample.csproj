@@ -5,6 +5,7 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" />
     <PackageReference Include="NServiceBus" />
     <PackageReference Include="NServiceBus.Transport.SqlServer" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />

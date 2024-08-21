@@ -5,6 +5,7 @@
     <NoWarn>xUnit1051</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" />
     <PackageReference Include="NServiceBus" />
     <PackageReference Include="NServiceBus.Transport.SqlServer" />
     <PackageReference Include="System.Text.Json" />
