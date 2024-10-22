@@ -4,7 +4,7 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Argon" Version="0.21.0" />
+    <PackageVersion Include="Argon" Version="0.22.0" />
     <PackageVersion Include="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageVersion Include="Fody" Version="6.8.2" />
     <PackageVersion Include="MarkdownSnippets.MsBuild" Version="27.0.2" />
@@ -12,14 +12,14 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageVersion Include="NServiceBus" Version="9.2.2" />
     <PackageVersion Include="NServiceBus.Persistence.Sql" Version="8.1.0" />
-    <PackageVersion Include="NServiceBus.Transport.SqlServer" Version="8.1.4" />
+    <PackageVersion Include="NServiceBus.Transport.SqlServer" Version="8.1.5" />
     <PackageVersion Include="Polyfill" Version="7.0.0" />
     <PackageVersion Include="ProjectDefaults" Version="1.0.139" />
     <PackageVersion Include="System.Text.Json" Version="8.0.5" />
     <PackageVersion Include="Verify.DiffPlex" Version="3.1.2" />
-    <PackageVersion Include="Verify.NServiceBus" Version="10.3.3" />
-    <PackageVersion Include="Verify.XunitV3" Version="27.0.0" />
-    <PackageVersion Include="xunit.v3" Version="0.4.0-pre.20" />
+    <PackageVersion Include="Verify.NServiceBus" Version="10.3.4" />
+    <PackageVersion Include="Verify.XunitV3" Version="27.0.1" />
+    <PackageVersion Include="xunit.v3" Version="0.5.0-pre.27" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0-pre.42" />
     <!--CVE-->
     <PackageVersion Include="System.Runtime.Caching" Version="8.0.1" />
