@@ -14,11 +14,11 @@ public static class FileShareAttachmentsExtensions
     public static AttachmentSettings EnableAttachments(
         this EndpointConfiguration configuration,
         string fileShare,
-        GetTimeToKeep timeToKeep)
+        GetTimeToKeep? timeToKeep = null)
     {
         Guard.AgainstNullOrEmpty(fileShare);
         var settings = configuration.GetSettings();
-        var attachments = new AttachmentSettings(fileShare, timeToKeep);
+        var attachments = new AttachmentSettings(fileShare, timeToKeep ?? TimeToKeep.Default);
         settings.Set(attachments);
         configuration.EnableFeature<AttachmentFeature>();
         configuration.DisableFeature<AttachmentsUsedWhenNotEnabledFeature>();
