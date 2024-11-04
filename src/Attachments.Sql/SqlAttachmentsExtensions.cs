@@ -25,13 +25,14 @@ public static class SqlAttachmentsExtensions
             throw new("This overload of EnableAttachments expects `Func<SqlConnection> connectionFactory` to return a un-opened SqlConnection.");
         }
 
-        return EnableAttachments(configuration,
-            connectionFactory: async cancelaltion =>
+        return EnableAttachments(
+            configuration,
+            connectionFactory: async cancel =>
             {
                 var connection = connectionFactory();
                 try
                 {
-                    await connection.OpenAsync(cancelaltion);
+                    await connection.OpenAsync(cancel);
                     return connection;
                 }
                 catch
@@ -48,6 +49,23 @@ public static class SqlAttachmentsExtensions
     /// </summary>
     public static AttachmentSettings EnableAttachments(
         this EndpointConfiguration configuration,
+        string connection,
+        GetTimeToKeep? timeToKeep = null) =>
+        EnableAttachments(
+            configuration,
+            connectionFactory: async cancel =>
+            {
+                var sqlConnection = new SqlConnection(connection);
+                await sqlConnection.OpenAsync(cancel);
+                return sqlConnection;
+            },
+            timeToKeep);
+
+    /// <summary>
+    /// Enable SQL attachments for this endpoint.
+    /// </summary>
+    public static AttachmentSettings EnableAttachments(
+        this EndpointConfiguration configuration,
         Func<Cancel, Task<SqlConnection>> connectionFactory,
         GetTimeToKeep? timeToKeep = null)
     {
@@ -56,7 +74,10 @@ public static class SqlAttachmentsExtensions
         return SetAttachments(configuration, settings, attachments);
     }
 
-    static AttachmentSettings SetAttachments(EndpointConfiguration configuration, SettingsHolder settings, AttachmentSettings attachments)
+    static AttachmentSettings SetAttachments(
+        EndpointConfiguration configuration,
+        SettingsHolder settings,
+        AttachmentSettings attachments)
     {
         settings.Set(attachments);
         configuration.EnableFeature<AttachmentFeature>();
