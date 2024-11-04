@@ -17,7 +17,7 @@ public static class SqlAttachmentsExtensions
     public static AttachmentSettings EnableAttachments(
         this EndpointConfiguration configuration,
         Func<SqlConnection> connectionFactory,
-        GetTimeToKeep timeToKeep)
+        GetTimeToKeep? timeToKeep = null)
     {
         var dbConnection = connectionFactory();
         if (dbConnection.State == ConnectionState.Open)
@@ -49,10 +49,10 @@ public static class SqlAttachmentsExtensions
     public static AttachmentSettings EnableAttachments(
         this EndpointConfiguration configuration,
         Func<Cancel, Task<SqlConnection>> connectionFactory,
-        GetTimeToKeep timeToKeep)
+        GetTimeToKeep? timeToKeep = null)
     {
         var settings = configuration.GetSettings();
-        var attachments = new AttachmentSettings(connectionFactory, timeToKeep);
+        var attachments = new AttachmentSettings(connectionFactory, timeToKeep ?? TimeToKeep.Default);
         return SetAttachments(configuration, settings, attachments);
     }
 
