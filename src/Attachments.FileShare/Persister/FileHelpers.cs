@@ -60,11 +60,6 @@ static class FileHelpers
         }
     }
 
-    public static async Task<byte[]> ReadBytes(Cancel cancel, string dataFile)
-    {
-        await using var fileStream = OpenRead(dataFile);
-        var bytes = new byte[fileStream.Length];
-        await fileStream.ReadAsync(bytes, 0, (int) fileStream.Length, cancel);
-        return bytes;
-    }
+    public static Task<byte[]> ReadBytes(Cancel cancel, string dataFile) =>
+        File.ReadAllBytesAsync(dataFile, cancel);
 }

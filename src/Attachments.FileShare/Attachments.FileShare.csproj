@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>NServiceBus.Attachments.FileShare</AssemblyName>
     <PackageName>NServiceBus.Attachments.FileShare</PackageName>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <DefineConstants>$(DefineConstants);FileShare</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -12,7 +12,6 @@
     <PackageReference Include="Fody" PrivateAssets="all" />
     <PackageReference Include="NServiceBus" />
     <PackageReference Include="ProjectDefaults" PrivateAssets="all" />
-    <PackageReference Include="System.Text.Json" />
     <Using Include="NServiceBus.IMessageHandlerContext" Alias="HandlerContext" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />

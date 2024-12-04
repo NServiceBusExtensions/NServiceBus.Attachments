@@ -15,13 +15,10 @@
     <PackageVersion Include="NServiceBus.Transport.SqlServer" Version="8.1.6" />
     <PackageVersion Include="Polyfill" Version="7.5.0" />
     <PackageVersion Include="ProjectDefaults" Version="1.0.144" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.0" />
     <PackageVersion Include="Verify.DiffPlex" Version="3.1.2" />
     <PackageVersion Include="Verify.NServiceBus" Version="10.3.4" />
     <PackageVersion Include="Verify.XunitV3" Version="28.3.2" />
     <PackageVersion Include="xunit.v3" Version="0.7.0-pre.15" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0-pre.49" />
-    <!--CVE-->
-    <PackageVersion Include="System.Runtime.Caching" Version="9.0.0" />
   </ItemGroup>
 </Project>
