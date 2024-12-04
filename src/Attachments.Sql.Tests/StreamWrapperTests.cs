@@ -1,3 +1,5 @@
+// ReSharper disable MustUseReturnValue
+// ReSharper disable StreamReadReturnValueIgnored
 public class StreamWrapperTests
 {
     static byte[] buffer = "content"u8.ToArray();
