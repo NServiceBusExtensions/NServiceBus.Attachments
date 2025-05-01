@@ -3,18 +3,10 @@ using NServiceBus.Attachments.Sql;
 using NServiceBus.Features;
 using NServiceBus.Logging;
 
-class PurgeTask :
+class PurgeTask(IPersister persister, Func<Cancel, Task<SqlConnection>> connectionFactory) :
     FeatureStartupTask
 {
     static ILog log = LogManager.GetLogger("AttachmentPurgeTask");
-    IPersister persister;
-    Func<Cancel, Task<SqlConnection>> connectionFactory;
-
-    public PurgeTask(IPersister persister, Func<Cancel, Task<SqlConnection>> connectionFactory)
-    {
-        this.persister = persister;
-        this.connectionFactory = connectionFactory;
-    }
 
     protected override async Task OnStart(IMessageSession session, Cancel cancel = default)
     {
