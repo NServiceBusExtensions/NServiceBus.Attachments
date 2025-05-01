@@ -42,7 +42,7 @@ public static class IncomingAttachmentExtensions
                 var fileDirectory = Path.GetDirectoryName(file)!;
                 Directory.CreateDirectory(fileDirectory);
                 File.Delete(file);
-                using var fileStream = File.Create(file);
+                await using var fileStream = File.Create(file);
                 await stream.CopyToAsync(fileStream, 4096, cancel);
             },
             cancel);

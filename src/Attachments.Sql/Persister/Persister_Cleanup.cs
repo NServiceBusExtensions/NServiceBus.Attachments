@@ -11,7 +11,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<int> CleanupItemsOlderThan(SqlConnection connection, SqlTransaction? transaction, DateTime dateTime, Cancel cancel = default)
     {
-        using var command = connection.CreateCommand();
+        await using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText =
             $"""
@@ -27,7 +27,7 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task<int> PurgeItems(SqlConnection connection, SqlTransaction? transaction, Cancel cancel = default)
     {
-        using var command = connection.CreateCommand();
+        await using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText =
             $"""

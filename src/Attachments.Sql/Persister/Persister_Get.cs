@@ -14,8 +14,8 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(SequentialAccess | SingleRow, cancel);
+        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(SequentialAccess | SingleRow, cancel);
         if (await reader.ReadAsync(cancel))
         {
             var metadataString = reader.GetStringOrNull(1);
@@ -33,8 +33,8 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(SingleRow, cancel);
+        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(SingleRow, cancel);
         if (await reader.ReadAsync(cancel))
         {
             var metadataString = reader.GetStringOrNull(1);
@@ -53,8 +53,8 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(SingleRow, cancel);
+        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(SingleRow, cancel);
         if (await reader.ReadAsync(cancel))
         {
             var bytes = (byte[]) reader[2];
@@ -77,8 +77,8 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(messageId);
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDataCommand(messageId, name, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(SequentialAccess | SingleRow, cancel);
+        await using var command = CreateGetDataCommand(messageId, name, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(SequentialAccess | SingleRow, cancel);
         if (await reader.ReadAsync(cancel))
         {
             return InnerGetStream(name, reader, command, disposeConnectionOnStreamDispose);
@@ -95,8 +95,8 @@ public partial class Persister
         [EnumeratorCancellation] Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
-        using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancel);
+        await using var command = CreateGetDatasCommand(messageId, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancel);
         while (await reader.ReadAsync(cancel))
         {
             cancel.ThrowIfCancellationRequested();
@@ -115,8 +115,8 @@ public partial class Persister
         [EnumeratorCancellation] Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
-        using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(cancel);
+        await using var command = CreateGetDatasCommand(messageId, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(cancel);
         while (await reader.ReadAsync(cancel))
         {
             cancel.ThrowIfCancellationRequested();
@@ -132,8 +132,8 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(messageId);
         encoding = encoding.Default();
-        using var command = CreateGetDatasCommand(messageId, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancel);
+        await using var command = CreateGetDatasCommand(messageId, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(SequentialAccess, cancel);
         while (await reader.ReadAsync(cancel))
         {
             cancel.ThrowIfCancellationRequested();

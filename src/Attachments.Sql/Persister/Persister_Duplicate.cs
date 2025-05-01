@@ -13,8 +13,8 @@ public partial class Persister
     {
         Guard.AgainstNullOrEmpty(sourceMessageId);
         Guard.AgainstNullOrEmpty(targetMessageId);
-        using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(cancel);
+        await using var command = CreateGetDuplicateCommand(sourceMessageId, targetMessageId, connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(cancel);
         var names = new List<(Guid, string)>();
         while (await reader.ReadAsync(cancel))
         {
@@ -65,7 +65,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(targetName);
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
+        await using var command = CreateGetDuplicateCommandWithRename(sourceMessageId, name, targetMessageId, targetName, connection, transaction);
         return (Guid) (await command.ExecuteScalarAsync(cancel))!;
     }
 
@@ -76,7 +76,7 @@ public partial class Persister
         Guard.AgainstNullOrEmpty(targetMessageId);
         Guard.AgainstNullOrEmpty(name);
         Guard.AgainstLongAttachmentName(name);
-        using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
+        await using var command = CreateGetDuplicateCommand(sourceMessageId, name, targetMessageId, connection, transaction);
         return (Guid) (await command.ExecuteScalarAsync(cancel))!;
     }
 

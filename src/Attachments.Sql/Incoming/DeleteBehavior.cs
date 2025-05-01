@@ -50,7 +50,7 @@ class DeleteBehavior(Func<Cancel, Task<SqlConnection>> connectionBuilder, IPersi
 
         if (transportTransaction.TryGet<Transaction>(out var transaction))
         {
-            using var connection = await connectionBuilder(context.CancellationToken);
+            await using var connection = await connectionBuilder(context.CancellationToken);
             connection.EnlistTransaction(transaction);
             var count = await persister.DeleteAttachments(id, connection, null, context.CancellationToken);
             log.Debug($"Deleting {count} attachments for {id} using Transactions.Transaction");
