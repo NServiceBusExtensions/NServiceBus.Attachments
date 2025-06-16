@@ -50,14 +50,9 @@
         Assert.False(criticalActionTriggered);
     }
 
-    class TestableCleaner :
-        Cleaner
+    class TestableCleaner(Func<Cancel, Task> cleanup, Action<string, Exception, Cancel> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer) :
+        Cleaner(cleanup, criticalError, frequencyToRunCleanup, timer)
     {
-        public TestableCleaner(Func<Cancel, Task> cleanup, Action<string, Exception, Cancel> criticalError, TimeSpan frequencyToRunCleanup, IAsyncTimer timer)
-            : base(cleanup, criticalError, frequencyToRunCleanup, timer)
-        {
-        }
-
         public Task Start() =>
             OnStart(null);
     }
