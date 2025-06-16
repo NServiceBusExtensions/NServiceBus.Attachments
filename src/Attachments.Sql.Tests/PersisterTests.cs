@@ -389,11 +389,19 @@
         await using var connection = Connection.OpenConnection();
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
-        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
-        await persister.SaveBytes(connection, null, "theSourceMessageId", "theName2", defaultTestDate, [1], metadata);
-        await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId");
+
+        await persister.SaveBytes(connection, null, "theSourceMessageId", "sourceName", defaultTestDate, [1], metadata);
+        Thread.Sleep(1000); // Ensure different Created time
+        await persister.Duplicate("theSourceMessageId", "sourceName", connection, null, "theTargetMessageId");
+
+        // Add a second attachment for the same message
+        await persister.SaveBytes(connection, null, "theSourceMessageId", "otherName", defaultTestDate, [1], metadata);
+
         var info = await persister.ReadAllInfo(connection, null);
-        Assert.Equal(info[0].Created, info[2].Created);
+        var sourceInfo = info.Single(_ => _ is { Name: "sourceName", MessageId: "theSourceMessageId" });
+        var duplicateInfo = info.Single(_ => _.MessageId == "theTargetMessageId");
+
+        Assert.Equal(sourceInfo.Expiry, duplicateInfo.Expiry);
         await Verify(info.Where(_ => _.MessageId == "theTargetMessageId"))
             .IgnoreMember("Created");
     }
@@ -405,9 +413,10 @@
         await Installer.CreateTable(connection, "MessageAttachments");
         await persister.DeleteAllAttachments(connection, null);
         await persister.SaveBytes(connection, null, "theSourceMessageId", "theName1", defaultTestDate, [1], metadata);
+        Thread.Sleep(1000); // Ensure different Created time
         await persister.Duplicate("theSourceMessageId", "theName1", connection, null, "theTargetMessageId", "theName2");
         var info = await persister.ReadAllInfo(connection, null);
-        Assert.Equal(info[0].Created, info[1].Created);
+        Assert.Equal(info[0].Expiry, info[1].Expiry);
         await Verify(info.Where(_ => _.MessageId == "theTargetMessageId"))
             .IgnoreMember("Created");
     }
