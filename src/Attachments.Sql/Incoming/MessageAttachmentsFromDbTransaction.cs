@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using NServiceBus.Attachments.Sql;
+// ReSharper disable ParameterHidesPrimaryConstructorParameter
 
 class MessageAttachmentsFromSqlTransaction(SqlTransaction transaction, string messageId, IPersister persister) :
     IMessageAttachments
