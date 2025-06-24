@@ -56,7 +56,7 @@ public partial class StubMessageAttachments :
     {
         foreach (var pair in currentAttachments)
         {
-            using var attachmentStream = pair.Value.ToAttachmentStream();
+            await using var attachmentStream = pair.Value.ToAttachmentStream();
             await action(attachmentStream, cancel);
         }
     }
@@ -111,7 +111,7 @@ public partial class StubMessageAttachments :
     public virtual async Task ProcessStreamForMessage(string messageId, string name, Func<AttachmentStream, Cancel, Task> action, Cancel cancel = default)
     {
         var attachment = GetAttachmentForMessage(messageId, name);
-        using var attachmentStream = attachment.ToAttachmentStream();
+        await using var attachmentStream = attachment.ToAttachmentStream();
         await action(attachmentStream, cancel);
     }
 
@@ -125,7 +125,7 @@ public partial class StubMessageAttachments :
         foreach (var pair in GetAttachmentsForMessage(messageId))
         {
             var attachment = pair.Value;
-            using var attachmentStream = attachment.ToAttachmentStream();
+            await using var attachmentStream = attachment.ToAttachmentStream();
             await action(attachmentStream, cancel);
         }
     }

@@ -42,7 +42,7 @@ class SendBehavior :
         {
             if (state.Transaction is not null)
             {
-                using var connectionFromState = await state.GetConnection(context.CancellationToken);
+                await using var connectionFromState = await state.GetConnection(context.CancellationToken);
                 connectionFromState.EnlistTransaction(state.Transaction);
                 await ProcessOutgoing(timeToBeReceived, connectionFromState, null, context, outgoingAttachments);
                 return;
@@ -60,19 +60,19 @@ class SendBehavior :
                 return;
             }
 
-            using var connection = await state.GetConnection(context.CancellationToken);
+            await using var connection = await state.GetConnection(context.CancellationToken);
             await ProcessOutgoing(timeToBeReceived, connection, null, context, outgoingAttachments);
             return;
         }
 
-        using var connectionFromFactory = await connectionFactory(context.CancellationToken);
+        await using var connectionFromFactory = await connectionFactory(context.CancellationToken);
         //TODO: should this be done ?
         if (context.TryReadTransaction(out var transaction))
         {
             connectionFromFactory.EnlistTransaction(transaction);
         }
 
-        using var dbTransaction = connectionFromFactory.BeginTransaction();
+        await using var dbTransaction = connectionFromFactory.BeginTransaction();
         await ProcessOutgoing(timeToBeReceived, connectionFromFactory, dbTransaction, context, outgoingAttachments);
         dbTransaction.Commit();
     }
@@ -128,7 +128,7 @@ class SendBehavior :
 
     async Task<Guid> ProcessStream(SqlConnection connection, SqlTransaction? transaction, string messageId, string name, DateTime expiry, Stream stream, IReadOnlyDictionary<string, string>? metadata)
     {
-        using (stream)
+        await using (stream)
         {
             return await persister.SaveStream(connection, transaction, messageId, name, expiry, stream, metadata);
         }

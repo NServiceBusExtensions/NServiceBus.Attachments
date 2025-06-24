@@ -37,7 +37,7 @@ public partial class StubMessageAttachments
     {
         foreach (var pair in currentAttachments)
         {
-            using var attachmentStream = pair.Value.ToAttachmentStream();
+            await using var attachmentStream = pair.Value.ToAttachmentStream();
             await action(pair.Value.ToAttachmentBytes(), cancel);
         }
     }

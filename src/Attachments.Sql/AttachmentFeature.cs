@@ -42,7 +42,7 @@ class AttachmentFeature :
         new(
             async token =>
             {
-                using var connection = await settings.ConnectionFactory(token);
+                await using var connection = await settings.ConnectionFactory(token);
                 var count = await persister.CleanupItemsOlderThan(connection, null, DateTime.UtcNow, token);
                 if (count != 0)
                 {

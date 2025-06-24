@@ -13,8 +13,8 @@ public partial class Persister
     public virtual async Task ReadAllMessageInfo(SqlConnection connection, SqlTransaction? transaction, string messageId, Func<AttachmentInfo, Cancel, Task> action, Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
-        using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteReaderAsync(cancel);
+        await using var command = GetReadInfoCommand(connection, transaction, messageId);
+        await using var reader = await command.ExecuteReaderAsync(cancel);
         while (await reader.ReadAsync(cancel))
         {
             cancel.ThrowIfCancellationRequested();
@@ -36,8 +36,8 @@ public partial class Persister
         [EnumeratorCancellation] Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
-        using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteReaderAsync(cancel);
+        await using var command = GetReadInfoCommand(connection, transaction, messageId);
+        await using var reader = await command.ExecuteReaderAsync(cancel);
         while (await reader.ReadAsync(cancel))
         {
             cancel.ThrowIfCancellationRequested();
@@ -53,8 +53,8 @@ public partial class Persister
         [EnumeratorCancellation] Cancel cancel = default)
     {
         Guard.AgainstNullOrEmpty(messageId);
-        using var command = GetReadInfoCommand(connection, transaction, messageId);
-        using var reader = await command.ExecuteReaderAsync(cancel);
+        await using var command = GetReadInfoCommand(connection, transaction, messageId);
+        await using var reader = await command.ExecuteReaderAsync(cancel);
         while (await reader.ReadAsync(cancel))
         {
             cancel.ThrowIfCancellationRequested();
@@ -70,8 +70,8 @@ public partial class Persister
     /// <inheritdoc />
     public virtual async Task ReadAllInfo(SqlConnection connection, SqlTransaction? transaction, Func<AttachmentInfo, Cancel, Task> action, Cancel cancel = default)
     {
-        using var command = GetReadInfosCommand(connection, transaction);
-        using var reader = await command.ExecuteReaderAsync(cancel);
+        await using var command = GetReadInfosCommand(connection, transaction);
+        await using var reader = await command.ExecuteReaderAsync(cancel);
         while (await reader.ReadAsync(cancel))
         {
             cancel.ThrowIfCancellationRequested();
