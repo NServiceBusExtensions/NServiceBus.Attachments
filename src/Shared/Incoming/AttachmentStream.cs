@@ -1,4 +1,5 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+﻿// ReSharper disable CollectionNeverUpdated.Local
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace NServiceBus.Attachments
 #if FileShare
 .FileShare
