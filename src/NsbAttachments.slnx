@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="appveyor.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="mdsnippets.json" />
+  </Folder>
+  <Project Path="Attachments.FileShare.Raw/Attachments.FileShare.Raw.csproj" />
+  <Project Path="Attachments.FileShare.Sample/Attachments.FileShare.Sample.csproj" />
+  <Project Path="Attachments.FileShare.Tests/Attachments.FileShare.Tests.csproj" />
+  <Project Path="Attachments.FileShare/Attachments.FileShare.csproj" />
+  <Project Path="Attachments.Sql.Raw/Attachments.Sql.Raw.csproj" />
+  <Project Path="Attachments.Sql.Sample/Attachments.Sql.Sample.csproj" />
+  <Project Path="Attachments.Sql.Tests/Attachments.Sql.Tests.csproj" />
+  <Project Path="Attachments.Sql/Attachments.Sql.csproj" />
+  <Project Path="Helpers/Helpers.csproj" />
+  <Project Path="Shared.Tests/Shared.Tests.csproj" />
+  <Project Path="Shared/Shared.shproj" />
+</Solution>
